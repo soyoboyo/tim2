@@ -1,0 +1,44 @@
+<button mat-raised-button color="primary" (click)="goBack()">
+	<mat-icon>keyboard_arrow_left</mat-icon>
+	Go back
+</button>
+
+<h3>Message</h3>
+<p><strong>Update date:</strong> {{auditedMessage.updateDate | date:'dd.MM.yyyy HH:mm'}}</p>
+<p><strong>Created by:</strong> {{auditedMessage.createdBy}}</p>
+<p><strong>Key:</strong> {{auditedMessage.key}}</p>
+<p><strong>Content:</strong> {{auditedMessage.content}}</p>
+<strong>Description:</strong> {{auditedMessage.description}}
+
+
+<mat-divider></mat-divider>
+
+<h3>History</h3>
+<ol>
+	<li *ngFor="let version of messageVersions">
+		<p>
+			<strong>Update date:</strong> {{version.updateDate | date:'dd.MM.yyyy HH:mm'}}
+		</p>
+		<p>
+			<strong>Created by:</strong> {{version.createdBy}}
+		</p>
+		<div class="subcontent">
+			<p>
+				<strong>Key:</strong> {{version.key}}
+			</p>
+			<p>
+				<strong>Content:</strong> {{version.content}}
+			</p>
+			<p>
+				<strong>Description:</strong> {{version.description}}
+			</p>
+
+		</div>
+
+	</li>
+</ol>
+<mat-spinner *ngIf="loadingResults"></mat-spinner>
+<p *ngIf="!loadingResults && messageVersions.length < 1">
+	No history found.
+</p>
+

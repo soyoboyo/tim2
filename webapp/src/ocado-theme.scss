@@ -1,0 +1,169 @@
+@import "../node_modules/@angular/material/theming";
+
+// generator of palettes
+// http://mcg.mbitson.com/#!?mcgpalette0=%233f51b5
+
+@include mat-core();
+
+
+$ocado-primary-color: (
+		50 : #e4f3f9,
+		100 : #bce1f0,
+		200 : #8fcde6,
+		300 : #62b9db,
+		400 : #40aad4,
+		500 : #1e9bcc,
+		600 : #1a93c7,
+		700 : #1689c0,
+		800 : #127fb9,
+		900 : #0a6dad,
+		A100 : #daefff,
+		A200 : #a7d9ff,
+		A400 : #74c3ff,
+		A700 : #5ab8ff,
+		contrast: (
+				50 : #000000,
+				100 : #000000,
+				200 : #000000,
+				300 : #000000,
+				400 : #000000,
+				500 : #ffffff,
+				600 : #ffffff,
+				700 : #ffffff,
+				800 : #ffffff,
+				900 : #ffffff,
+				A100 : #000000,
+				A200 : #000000,
+				A400 : #000000,
+				A700 : #000000,
+		)
+);
+
+
+$ocado-warn-color: (
+		50 : #f9e5e4,
+		100 : #f0bfbc,
+		200 : #e6948f,
+		300 : #db6962,
+		400 : #d44940,
+		500 : #cc291e,
+		600 : #c7241a,
+		700 : #c01f16,
+		800 : #b91912,
+		900 : #ad0f0a,
+		A100 : #ffdada,
+		A200 : #ffa8a7,
+		A400 : #ff7674,
+		A700 : #ff5d5a,
+		contrast: (
+				50 : #000000,
+				100 : #000000,
+				200 : #000000,
+				300 : #000000,
+				400 : #ffffff,
+				500 : #ffffff,
+				600 : #ffffff,
+				700 : #ffffff,
+				800 : #ffffff,
+				900 : #ffffff,
+				A100 : #000000,
+				A200 : #000000,
+				A400 : #000000,
+				A700 : #000000,
+		)
+);
+
+
+$ocado-accent-color: (
+		50 : #e4f9ea,
+		100 : #bcf0ca,
+		200 : #8fe6a7,
+		300 : #62db84,
+		400 : #40d469,
+		500 : #1ecc4f,
+		600 : #1ac748,
+		700 : #16c03f,
+		800 : #12b936,
+		900 : #0aad26,
+		A100 : #daffde,
+		A200 : #a7ffb2,
+		A400 : #74ff86,
+		A700 : #5aff70,
+		contrast: (
+				50 : #000000,
+				100 : #000000,
+				200 : #000000,
+				300 : #000000,
+				400 : #000000,
+				500 : #000000,
+				600 : #000000,
+				700 : #ffffff,
+				800 : #ffffff,
+				900 : #ffffff,
+				A100 : #000000,
+				A200 : #000000,
+				A400 : #000000,
+				A700 : #000000,
+		)
+);
+
+
+$dark-warn-color: (
+		50 : #fdecfe,
+		100 : #fbcefc,
+		200 : #f8aefa,
+		300 : #f58ef8,
+		400 : #f375f7,
+		500 : #f15df5,
+		600 : #ef55f4,
+		700 : #ed4bf2,
+		800 : #eb41f0,
+		900 : #e730ee,
+		A100 : #ffffff,
+		A200 : #fffdff,
+		A400 : #fdcaff,
+		A700 : #fcb1ff,
+		contrast: (
+				50 : #000000,
+				100 : #000000,
+				200 : #000000,
+				300 : #000000,
+				400 : #000000,
+				500 : #000000,
+				600 : #000000,
+				700 : #000000,
+				800 : #000000,
+				900 : #ffffff,
+				A100 : #000000,
+				A200 : #000000,
+				A400 : #000000,
+				A700 : #000000,
+		)
+);
+
+$ocado-theme-primary: mat-palette($ocado-primary-color);
+$ocado-theme-accent: mat-palette($ocado-accent-color);
+$ocado-theme-warn: mat-palette($ocado-warn-color);
+
+$ocado-theme: mat-light-theme($ocado-theme-primary, $ocado-theme-accent, $ocado-theme-warn);
+
+@include angular-material-theme($ocado-theme);
+$dark-theme-primary: mat-palette($mat-cyan);
+$dark-theme-accent: mat-palette($mat-yellow);
+$dark-theme-warn: mat-palette($dark-warn-color);
+
+$dark-theme: mat-dark-theme($dark-theme-primary, $ocado-theme-accent, $dark-theme-warn);
+.dark-theme {
+  @include angular-material-theme($dark-theme);
+}
+
+//@include mat-toolbar-theme($ocado-theme);
+
+//@mixin ocado-dark-theme($theme) {
+//  $accent: map-get($theme, accent);
+//  ::ng-deep .snackbar-error {
+//	font-size: 20px;
+//	background: $dark-warn-color;
+//	color: white;
+//  }
+//}

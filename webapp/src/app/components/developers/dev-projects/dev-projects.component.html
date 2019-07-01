@@ -1,0 +1,175 @@
+<div fxLayout="row" fxLayoutAlign="space-evenly start">
+	<div class="app-table-wrapper">
+		<app-dev-projects-table [projects]="projects"
+								[selectedRowIndex]="selectedRowIndex"
+								[isLoadingResults]="isLoadingResults"
+								(editEvent)="editProject($event)"
+								(formToggle)="toggleForm($event)"
+								(removeEvent)="removeProject($event)"></app-dev-projects-table>
+
+	</div>
+	<div *ngIf="showForm" class="form-wrapper">
+		<mat-card *ngIf="showForm" class="form-container mat-elevation-z4">
+			<h1>{{formMode}} project</h1>
+			<form [formGroup]="projectParams">
+
+				<mat-form-field class="form-field">
+					<input formControlName="projectName"
+						   placeholder="Project name *"
+						   matInput>
+					<mat-error *ngIf="projectNameControl.hasError('required')">
+						Project name is <strong>required</strong>
+					</mat-error>
+				</mat-form-field>
+
+				<div class="divider-wrapper">
+					<mat-divider></mat-divider>
+				</div>
+
+				<mat-label>Source locale</mat-label>
+				<mat-form-field>
+					<input formControlName="sourceLanguage"
+						   placeholder="Source language"
+						   [matAutocomplete]="autoSourceLanguage"
+						   matInput required>
+					<mat-autocomplete #autoSourceLanguage="matAutocomplete">
+						<mat-option *ngFor="let language of filteredLanguages | async" [value]="language" (onSelectionChange)="onSelectSourceLanguage(language)">
+							{{language}}
+						</mat-option>
+					</mat-autocomplete>
+					<mat-error *ngIf="sourceLanguageControl.hasError('required')">
+						Source language is <strong>required</strong>
+					</mat-error>
+				</mat-form-field>
+
+				<mat-form-field>
+					<input formControlName="sourceCountry"
+						   placeholder="Source country"
+						   [matAutocomplete]="autoSourceCountry"
+						   matInput required>
+					<mat-autocomplete #autoSourceCountry="matAutocomplete">
+						<mat-option *ngFor="let country of filteredCountries | async" [value]="country" (onSelectionChange)="onSelectSourceCountry(country)">
+							{{country}}
+						</mat-option>
+					</mat-autocomplete>
+					<mat-error *ngIf="sourceCountryControl.hasError('required')">
+						Source country is <strong>required</strong>
+					</mat-error>
+				</mat-form-field>
+
+				<div class="divider-wrapper">
+					<mat-divider></mat-divider>
+				</div>
+
+				<mat-label>Target locales</mat-label>
+
+				<mat-form-field>
+					<input formControlName="targetLanguage"
+						   placeholder="Target language"
+						   [matAutocomplete]="autoTargetLanguage"
+						   matInput>
+					<button mat-button *ngIf="projectParams.get('targetLanguage').value" matSuffix mat-icon-button aria-label="Clear" type="button" (click)="projectParams.get('targetLanguage').patchValue(null, {emitEvent: true})">
+						<mat-icon>close</mat-icon>
+					</button>
+					<mat-autocomplete #autoTargetLanguage="matAutocomplete">
+						<mat-option *ngFor="let language of filteredTargetLanguages | async" [value]="language">
+							{{language}}
+						</mat-option>
+					</mat-autocomplete>
+				</mat-form-field>
+
+				<mat-form-field>
+					<input formControlName="targetCountry"
+						   placeholder="Target country"
+						   [matAutocomplete]="autoTargetCountry"
+						   matInput>
+					<button mat-button *ngIf="projectParams.get('targetCountry').value" matSuffix mat-icon-button aria-label="Clear" type="button" (click)="projectParams.get('targetCountry').patchValue(null, {emitEvent: true})">
+						<mat-icon>close</mat-icon>
+					</button>
+					<mat-autocomplete #autoTargetCountry="matAutocomplete">
+						<mat-option *ngFor="let country of filteredTargetCountries | async" [value]="country">
+							{{country}}
+						</mat-option>
+					</mat-autocomplete>
+				</mat-form-field>
+
+				<button class="form-button" type="button" mat-button color="primary" (click)="addNewTargetLocale()" [disabled]="!( projectParams.get('targetLanguage').value && projectParams.get('targetCountry').value)">
+					<mat-icon>add</mat-icon>
+					Add target locale
+				</button>
+
+				<div class="chip-list-wrapper">
+					<mat-chip-list minlength="2">
+						<mat-chip
+							*ngFor="let cat of selectedTargetLocales"
+							[selectable]="true"
+							[removable]="true"
+							(removed)="removeTargetLocale(cat)">
+							{{cat}}
+							<mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+						</mat-chip>
+					</mat-chip-list>
+				</div>
+
+				<mat-label class="target-locales-info" *ngIf="selectedTargetLocales.length < 1" class="warning">At least 1 target locale is <strong>required</strong></mat-label>
+
+				<div class="divider-wrapper">
+					<mat-divider></mat-divider>
+				</div>
+
+				<div *ngIf="selectedTargetLocales.length < 2" class="replacements">Select at least 2 target locales to add replacements</div>
+				<div *ngIf="selectedTargetLocales.length > 1" formArrayName="replacableLocale" class="replacements">
+					<div *ngFor="let locale of projectParams.get('replacableLocale').controls; let i=index">
+						<div>
+							<mat-label>Replacement {{i + 1}}</mat-label>
+							<button mat-button color="warn" *ngIf="this.projectParams.get('replacableLocale').length > 1" type="button" (click)="removeReplacableLocale(i)">
+								<mat-icon>clear</mat-icon>
+								Remove
+							</button>
+						</div>
+
+						<div fxLayout="row" fxLayoutAlign="start start">
+							<mat-form-field fxFlex="40" [formGroupName]="i">
+								<mat-select formControlName="target" placeholder="Target">
+									<mat-option *ngFor="let locale of selectedTargetLocales.sort()" [value]="locale">
+										{{locale}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+							<div fxFlex="5"></div>
+							<mat-form-field fxFlex="40" [formGroupName]="i">
+								<mat-select formControlName="replacement" placeholder="Replacement">
+									<mat-option *ngFor="let locale of availableReplacements.sort()" [value]="locale">
+										{{locale}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+
+				<button class="form-button" *ngIf="selectedTargetLocales.length > 1" mat-button type="button" color="primary" (click)="addReplacableLocale()">
+					<mat-icon>add</mat-icon>
+					Add more replacements
+				</button>
+
+				<div class="divider-wrapper">
+					<mat-divider></mat-divider>
+				</div>
+
+				<div class="buttons-row">
+					<button (click)="createProject(projectParams)" class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="!(projectParams.valid && selectedTargetLocales.length > 0)">
+						{{formMode}}
+					</button>
+					<button class="button-spacer" mat-button color="warn" type="button" (click)="cancelUpdate()">
+						Cancel
+					</button>
+					<button mat-raised-button color="warn" type="button" (click)="this.clearForm()">
+						Clear
+					</button>
+				</div>
+
+			</form>
+		</mat-card>
+	</div>
+</div>

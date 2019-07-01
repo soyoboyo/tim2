@@ -1,0 +1,52 @@
+@import "~src/theme-variables.scss";
+
+.form-container {
+  width: 300px;
+  margin: 10px auto;
+}
+
+form mat-form-field {
+  width: 100%;
+}
+
+h1 {
+  text-align: center;
+}
+
+.buttons-row {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.button-spacer {
+  margin-right: 5px;
+}
+
+.highlight {
+  background: $highlight-primary;
+}
+
+.highlight-accent {
+  background: $highlight-accent;
+}
+
+.add-button {
+  text-align: center;
+}
+
+.form-wrapper {
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+.select-project {
+  width: 400px;
+}
+
+.warning{
+  color: $warn;
+}
+
+.app-table-wrapper {
+  width: 100%;
+}

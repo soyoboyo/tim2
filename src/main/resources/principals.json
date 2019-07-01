@@ -1,0 +1,19 @@
+{
+	"users": [
+		{
+			"username": "prog",
+			"password": "prog",
+			"role": "DEVELOPER"
+		},
+		{
+			"username": "tran",
+			"password": "tran",
+			"role": "TRANSLATOR"
+		},
+		{
+			"username": "ci",
+			"password": "ci",
+			"role": "CI/CD"
+		}
+	]
+}

@@ -1,0 +1,33 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+	<h3>Welcome to Translation & Internationalization Manager</h3>
+	<p>Please login to perform any actions</p>
+</div>
+
+
+<mat-card class="form-container mat-elevation-z8">
+	<h2>Login</h2>
+	<form (ngSubmit)="loginButtonClicked()" [formGroup]="loginParams">
+		<div *ngIf="!isLoggedOk" class="text-bad-credential">
+		Bad credentials!
+		</div>
+
+		<mat-form-field class="form-field">
+			<input matInput placeholder="Username"
+				   formControlName="username">
+			<mat-error *ngIf="usernameFormControl.hasError('required')">
+				Username is <strong>required</strong>
+			</mat-error>
+		</mat-form-field>
+
+		<mat-form-field class="form-field ">
+			<input matInput placeholder="Password"
+				   formControlName="password"
+				   type="password">
+			<mat-error *ngIf="passwordFormControl.hasError('required')">
+				Password is <strong>required</strong>
+			</mat-error>
+		</mat-form-field>
+
+		<button class="form-field form-button" mat-raised-button color="primary" [disabled]="!loginParams.valid">Log in</button>
+	</form>
+</mat-card>

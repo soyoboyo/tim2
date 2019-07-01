@@ -1,0 +1,6 @@
+@import "~src/theme-variables";
+
+::ng-deep .mat-tab-label-active {
+  background-color: $primary;
+  color: white;
+}

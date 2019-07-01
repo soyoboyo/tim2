@@ -1,0 +1,92 @@
+@import '../ocado-theme';
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+* {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+}
+
+.mat-icon {
+  font-family: 'Material Icons';
+}
+
+.main-content-light {
+  min-height: calc(100vh - 64px);
+  width: 65%;
+  margin: auto;
+}
+
+.main-content-dark {
+  min-height: calc(100vh - 64px);
+  width: 70%;
+  max-width: 75%;
+  margin: auto;
+}
+
+.navbar {
+  height: 64px;
+}
+
+::ng-deep .mat-sidenav-container {
+  min-height: calc(100vh - 64px) !important; /* or 100% */
+}
+
+.content-sides-light {
+  background: #daefff;
+}
+
+.content-sides-dark {
+  //background-image: url(https://www.pixelstalk.net/wp-content/uploads/2016/06/Night-Sky-Backgrounds.jpg)
+  background: #030b25;
+}
+
+.footer {
+  left: 0;
+  bottom: 0;
+  padding: 0;
+  height: 45px;
+  width: 100%;
+  background-color: #1e9bcc;
+  color: white;
+  text-align: center;
+}
+
+.site {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
+
+
+::ng-deep .snackbar-success {
+  font-size: 20px;
+  background: #1ecc4f;
+  color: black;
+}
+
+::ng-deep .snackbar-success .mat-simple-snackbar-action {
+  font-size: 20px;
+  color: black !important;
+}
+
+::ng-deep .snackbar-error {
+  font-size: 20px;
+  background: #cc291e;
+  color: white;
+}
+
+::ng-deep .snackbar-error .mat-simple-snackbar-action {
+  font-size: 20px;
+  color: white !important;
+}
+
+@media (max-width: 1500px) {
+  .main-content-light {
+	min-height: calc(100vh - 64px);
+	width: 100%;
+	margin: 0;
+  }
+}

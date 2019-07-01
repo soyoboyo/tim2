@@ -1,0 +1,9 @@
+@import '../node_modules/@angular/material/theming';
+@import "ocado-theme";
+
+$primary: mat-color(mat-palette($ocado-primary-color));
+$warn: mat-color(mat-palette($ocado-warn-color));
+$highlight-primary: mat-color(mat-palette($ocado-primary-color), 100);
+$highlight-accent: mat-color(mat-palette($ocado-accent-color), 100);
+$highlight-warn: mat-color(mat-palette($ocado-warn-color), 50);
+

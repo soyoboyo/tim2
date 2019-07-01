@@ -1,0 +1,35 @@
+package org.tim.DTOs.output;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import org.tim.DTOs.output.WarningDTO;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class MessageWithWarningsDTO {
+
+    @NotNull
+    private Long id;
+
+    @NotBlank
+    @NonNull
+    private String key;
+
+    @NotBlank
+    @NonNull
+    private String content;
+
+    private String description;
+
+    @NonNull
+    private Long projectId;
+
+    WarningDTO warnings;
+
+}

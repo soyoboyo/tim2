@@ -1,0 +1,70 @@
+@import "~src/theme-variables.scss";
+
+.form-container {
+  width: 300px;
+  margin: 5px auto;
+}
+
+form mat-form-field {
+  width: 100%;
+}
+
+h1 {
+  text-align: center;
+}
+
+.buttons-row {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.button-spacer {
+  margin-right: 5px;
+}
+
+.highlight {
+  background: $highlight-primary;
+}
+
+.add-button {
+  text-align: center;
+}
+
+.replacements {
+  margin-top: 16px;
+}
+
+.form-button {
+  padding-left: 0;
+  display: block;
+  margin: 0 auto;
+}
+
+.divider-wrapper {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 1px;
+}
+
+.chip-list-wrapper {
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.target-locales-info {
+  //color: $warn;
+  color: gray;
+}
+
+.warning {
+  color: $warn;
+}
+
+.app-table-wrapper {
+  width: 100%;
+}
+
+.form-wrapper {
+  padding-right: 4px;
+  padding-left: 4px;
+}

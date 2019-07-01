@@ -1,0 +1,20 @@
+.nav-link {
+  display: block;
+  //display: flex;
+  padding: 1rem;
+  //text-decoration: none;
+  font-size: 20px;
+  align-items: center;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+span {
+  font-size: 20px;
+}
+
+.menu-button {
+  margin-right: 12px;
+}

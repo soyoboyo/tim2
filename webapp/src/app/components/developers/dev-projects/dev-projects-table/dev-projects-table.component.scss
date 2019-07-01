@@ -1,0 +1,39 @@
+@import "~src/theme-variables";
+
+tr.project-row:not(.message-expanded-row):hover {
+  background: $highlight-primary;
+
+  .mat-cell {
+	color: black;
+  }
+}
+
+table {
+  width: 99%;
+  margin: auto;
+}
+
+.table-container {
+  min-height: 50px;
+  margin: 5px;
+}
+
+th {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.filter-paginator-wrapper {
+  margin-left: 12px;
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.highlight {
+  background: $highlight-primary;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
