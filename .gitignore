@@ -25,3 +25,4 @@
 /build/
 
 /webapp/node_modules
+backend/target

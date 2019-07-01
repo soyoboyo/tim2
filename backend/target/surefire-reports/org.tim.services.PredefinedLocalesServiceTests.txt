@@ -1,9 +1,0 @@
--------------------------------------------------------------------------------
-Test set: org.tim.services.PredefinedLocalesServiceTests
--------------------------------------------------------------------------------
-Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.738 s <<< FAILURE! - in org.tim.services.PredefinedLocalesServiceTests
-whenGetPredefinedLanguagesThenReturnElementsCompatibleWithRegex  Time elapsed: 0.105 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
-	at org.tim.services.PredefinedLocalesServiceTests.lambda$whenGetPredefinedLanguagesThenReturnElementsCompatibleWithRegex$0(PredefinedLocalesServiceTests.java:29)
-	at org.tim.services.PredefinedLocalesServiceTests.whenGetPredefinedLanguagesThenReturnElementsCompatibleWithRegex(PredefinedLocalesServiceTests.java:28)
-
