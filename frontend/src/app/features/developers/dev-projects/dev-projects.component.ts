@@ -82,8 +82,6 @@ export class DevProjectsComponent implements OnInit {
 	async getLocales() {
 		this.allLanguages = await this.http.getAll('locales/languages/getAll');
 		this.allCountries = await this.http.getAll('locales/countries/getAll');
-		this.allLanguages.sort();
-		this.allCountries.sort();
 		this.allTargetLanguages = this.allLanguages;
 		this.allTargetCountries = this.allCountries;
 	}
@@ -270,15 +268,8 @@ export class DevProjectsComponent implements OnInit {
 	}
 
 	removeTargetLocale(targetLocale: string): void {
-		const index = this.selectedTargetLocales.indexOf(targetLocale);
-		if (index >= 0) {
-			this.selectedTargetLocales.splice(index, 1);
-		}
-		const replacementIndex = this.availableReplacements.indexOf(targetLocale);
-		if (replacementIndex >= 0) {
-			this.availableReplacements.splice(replacementIndex, 1);
-		}
-
+		this.removeLocaleFromArray(targetLocale, this.selectedTargetLocales);
+		this.removeLocaleFromArray(targetLocale, this.availableReplacements);
 	}
 
 	public getCode(value: string): string {
@@ -289,10 +280,9 @@ export class DevProjectsComponent implements OnInit {
 		this.projectParams.markAsPristine();
 		this.projectParams.markAsUntouched();
 		this.projectParams.reset();
-		const replacementControls = this.projectParams.get('replacableLocale') as FormArray;
-		const i = 0;
+		const replacementControls = <FormArray> this.projectParams.get('replacableLocale');
 		while (replacementControls.controls.length > 0) {
-			replacementControls.removeAt(i);
+			replacementControls.removeAt(0);
 		}
 		this.availableReplacements = [];
 		this.selectedTargetLocales = [];
