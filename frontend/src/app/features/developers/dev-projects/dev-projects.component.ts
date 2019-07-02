@@ -197,8 +197,8 @@ export class DevProjectsComponent implements OnInit {
 			targetLanguage: '',
 			targetCountry: ''
 		});
-		this.selectedTargetLocales = project.targetLocales;
-		this.availableReplacements = project.availableReplacements;
+		this.selectedTargetLocales = [].concat(project.targetLocales);
+		this.availableReplacements = [].concat(project.availableReplacements);
 
 		const replacements = project.substitutes;
 		Object.keys(replacements).forEach((key) => {
@@ -263,6 +263,10 @@ export class DevProjectsComponent implements OnInit {
 			if (lang !== '' && co !== '') {
 				this.selectedTargetLocales.push(targetLocale);
 				this.availableReplacements.push(targetLocale);
+				this.projectParams.patchValue({
+					targetLanguage: '',
+					targetCountry: ''
+				});
 			}
 		}
 	}
@@ -280,7 +284,7 @@ export class DevProjectsComponent implements OnInit {
 		this.projectParams.markAsPristine();
 		this.projectParams.markAsUntouched();
 		this.projectParams.reset();
-		const replacementControls = <FormArray> this.projectParams.get('replacableLocale');
+		const replacementControls = <FormArray>this.projectParams.get('replacableLocale');
 		while (replacementControls.controls.length > 0) {
 			replacementControls.removeAt(0);
 		}
@@ -303,7 +307,7 @@ export class DevProjectsComponent implements OnInit {
 		}
 	}
 
-	onSelectSourceCountry(country: any) {
+	onSelectSourceCountry(country: string) {
 		if (this.sourceLocale !== null) {
 			this.removeLocaleFromArray(this.sourceLocale, this.availableReplacements);
 		}
