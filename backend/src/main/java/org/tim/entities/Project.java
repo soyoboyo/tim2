@@ -44,7 +44,7 @@ public class Project {
     @Setter(AccessLevel.NONE)
     @ManyToMany(cascade = {
             CascadeType.MERGE, CascadeType.DETACH},
-            fetch = FetchType.LAZY)
+            fetch = FetchType.EAGER)
     @JoinTable(name = "project_locale_wrapper",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "locale_wrapper_id"))
@@ -56,6 +56,11 @@ public class Project {
                 targetLocales.add(locale);
             }
         }
+    }
+
+    public List<LocaleWrapper> getTargetLocales() {
+        LinkedHashSet<LocaleWrapper> uniqueTargetLocale = new LinkedHashSet<>(targetLocales);
+        return new ArrayList<>(uniqueTargetLocale);
     }
 
     public void removeTargetLocale(@NotNull LocaleWrapper locale) {
