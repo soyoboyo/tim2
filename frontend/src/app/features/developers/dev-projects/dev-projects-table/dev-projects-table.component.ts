@@ -9,15 +9,26 @@ import {
 } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Project } from '../../../../shared/types/entities/Project';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
 	selector: 'app-dev-projects-table',
 	templateUrl: './dev-projects-table.component.html',
-	styleUrls: ['./dev-projects-table.component.scss', '../dev-projects.component.scss']
+	styleUrls: ['./dev-projects-table.component.scss', '../dev-projects.component.scss'],
+	animations: [
+		trigger('detailExpand', [
+			state('collapsed', style({ height: '0', minHeight: '0' })),
+			state('expanded', style({ height: '*' })),
+			transition('* => collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+			transition('expanded => *', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+			transition('* => expanded', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+			transition('collapsed => *', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+		])
+	]
 })
 export class DevProjectsTableComponent implements OnInit, OnChanges {
 
-	@Input() selectedRowIndex: number = -1;
+	@Input() selectedRowIndex = -1;
 	@Input() projects: Project[] = [];
 	@Input() isLoadingResults = true;
 	@Output() editEvent = new EventEmitter<any>();
@@ -30,6 +41,8 @@ export class DevProjectsTableComponent implements OnInit, OnChanges {
 
 	displayedColumns: string[] = ['name', 'sourceLocale', 'actions'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
+
+	expandedRow = null;
 
 	constructor() {
 	}

@@ -1,13 +1,5 @@
 @import "~src/theme-variables";
 
-tr.project-row:not(.message-expanded-row):hover {
-  background: $highlight-primary;
-
-  .mat-cell {
-	color: black;
-  }
-}
-
 table {
   width: 99%;
   margin: auto;
@@ -36,4 +28,56 @@ th {
 
 .spacer {
   flex: 1 1 auto;
+}
+
+
+tr.project-row:not(.project-expanded-row):hover {
+  background: $highlight-primary;
+
+  .mat-cell {
+	color: black;
+  }
+}
+
+tr.project-row:not(.project-expanded-row):active {
+  background: $highlight-primary;
+
+  .mat-cell {
+	color: black;
+  }
+}
+
+.project-detail {
+  cursor: auto;
+  overflow: hidden;
+}
+
+tr.project-detail-row {
+  height: 0;
+}
+
+.project-row td {
+  border-bottom-width: 0;
+}
+
+.mat-cell {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.mat-header-cell {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.padding-inside {
+  padding: 10px;
+}
+
+tr:hover {
+  cursor: pointer;
+}
+
+.highlight-accent {
+  background: $highlight-accent;
 }

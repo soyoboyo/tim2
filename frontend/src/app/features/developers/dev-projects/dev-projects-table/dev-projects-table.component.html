@@ -10,7 +10,7 @@
 	</div>
 </div>
 <div class="table-container mat-elevation-z8">
-	<table class="table-container" mat-table [dataSource]="dataSource" matSort>
+	<table class="table-container" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
 		<ng-container matColumnDef="name">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
@@ -39,6 +39,21 @@
 			</td>
 		</ng-container>
 
+
+
+		<ng-container matColumnDef="projectDetails">
+			<td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
+				<div class="project-detail" [@detailExpand]="row == expandedRow ? 'expanded' : 'collapsed'">
+					<div class="padding-inside">
+
+
+						<p>expanded row :)</p>
+
+					</div>
+				</div>
+			</td>
+		</ng-container>
+
 		<ng-container matColumnDef="add-new-project">
 			<th [attr.colspan]="displayedColumns.length" mat-header-cell *matHeaderCellDef>
 				<div class="add-button">
@@ -54,8 +69,10 @@
 		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 		<tr mat-row *matRowDef="let row; columns: displayedColumns"
 			class="project-row"
-			[ngClass]="{'highlight': selectedRowIndex == row.id}"></tr>
-
+			[ngClass]="{'highlight': selectedRowIndex == row.id, 'highlight-accent': expandedRow == row}"
+			[class.project-expanded-row]="expandedRow === row"
+			(click)="expandedRow = expandedRow === row ? null : row"></tr>
+		<tr mat-row *matRowDef="let row; columns: ['projectDetails']" class="project-detail-row"></tr>
 	</table>
 </div>
 
