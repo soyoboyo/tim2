@@ -9,7 +9,6 @@ import org.tim.DTOs.input.TranslationCreateDTO;
 import org.tim.DTOs.input.TranslationUpdateDTO;
 import org.tim.entities.Translation;
 import org.tim.entities.TranslationVersion;
-import org.tim.services.MessageTranslationService;
 import org.tim.services.TranslationService;
 import org.tim.services.TranslationVersionService;
 import org.tim.validators.DTOValidator;
@@ -27,7 +26,6 @@ public class TranslationController {
 
 	private final TranslationService translationService;
 	private final TranslationVersionService translationVersionService;
-	private final MessageTranslationService messageTranslationService;
 
 	@PostMapping(CREATE)
 	public ResponseEntity<Translation> createTranslation(@RequestBody @Valid TranslationCreateDTO translationCreateDTO,
@@ -50,11 +48,6 @@ public class TranslationController {
 	public ResponseEntity<Translation> invalidateTranslation(@PathVariable("id") Long translationId,
 															 @RequestParam Long messageId) {
 		return ResponseEntity.ok(translationService.invalidateTranslation(translationId, messageId));
-	}
-
-	@GetMapping(GET_BY_MESSAGE)
-	public ResponseEntity<List<Translation>> getTranslationsByMessage(@PathVariable Long messageId) {
-		return ResponseEntity.ok(messageTranslationService.getTranslationDTOsByMessage(messageId));
 	}
 
 	@GetMapping(VERSION)
