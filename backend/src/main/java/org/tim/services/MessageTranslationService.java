@@ -3,7 +3,6 @@ package org.tim.services;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.tim.DTOs.MessageDTO;
 import org.tim.DTOs.output.MessageWithWarningsDTO;
 import org.tim.DTOs.output.WarningDTO;
 import org.tim.entities.LocaleWrapper;
@@ -27,13 +26,6 @@ public class MessageTranslationService {
 	private final LocaleWrapperRepository localeWrapperRepository;
 	private final ModelMapper mapper = new ModelMapper();
 
-	public List<MessageWithWarningsDTO> getMissingTranslationForProject(Long projectId) {
-		List<MessageWithWarningsDTO> list = new ArrayList<>();
-		Project project = projectRepository.findById(projectId).orElseThrow(NoSuchElementException::new);
-		for (LocaleWrapper localeWrapper : project.getTargetLocales())
-			list.addAll(getMissingTranslation(projectId, localeWrapper.getLocale().toString()));
-		return list;
-	}
 
 	public List<MessageWithWarningsDTO> getMissingTranslation(Long projectId, String loc) {
 		Locale locale = new Locale(loc);
@@ -42,29 +34,6 @@ public class MessageTranslationService {
 		List<Message> messages = getMessagesWithoutValidTranslations(projectId, locale);
 		return setWarnings(messages, locale, project, substituteLocale);
 
-	}
-
-	public List<MessageDTO> getMessagesWithTranslationsByProject(Long projectId) {
-		List<MessageDTO> messageDTOS = new ArrayList<>();
-		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsRemovedFalse(projectId);
-		for (Message message : messages) {
-			MessageDTO messageDTO = mapper.map(message, MessageDTO.class);
-			messageDTO.setProjectId(message.getProject().getId());
-			List<Translation> translationDTOS = getTranslationDTOsByMessage(message.getId());
-			messageDTO.setTranslations(translationDTOS);
-			messageDTOS.add(messageDTO);
-		}
-		return messageDTOS;
-	}
-
-	public List<Translation> getTranslationDTOsByMessage(Long messageId) {
-		List<Translation> translationDTOS = new ArrayList<>();
-		List<Translation> translations = translationRepository.findTranslationsByMessageIdAndIsValidTrue(messageId);
-		for (Translation translation : translations) {
-			Translation translationDTO = mapper.map(translation, Translation.class);
-			translationDTOS.add(translationDTO);
-		}
-		return translationDTOS;
 	}
 
 	private List<MessageWithWarningsDTO> setWarnings(List<Message> messages, Locale sourceLocale, Project project, Optional<LocaleWrapper> substituteLocale) {

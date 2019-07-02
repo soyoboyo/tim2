@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class XlsConversionService {
 
     private final MessageTranslationService messageTranslationService;
