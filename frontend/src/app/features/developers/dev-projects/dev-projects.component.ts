@@ -18,8 +18,8 @@ export class DevProjectsComponent implements OnInit {
 
 	projectParams: FormGroup;
 	projectNameControl = new FormControl([''], [Validators.required]);
-	sourceLanguageControl = new FormControl([''], [Validators.required]);
-	sourceCountryControl = new FormControl([''], [Validators.required]);
+	sourceLanguageControl = new FormControl([''], [Validators.required, Validators.pattern('[a-z]{2} .{0,}|[a-z]{2}')]);
+	sourceCountryControl = new FormControl([''], [Validators.required, Validators.pattern('[A-Z]{2} .{0,}|[A-Z]{2}')]);
 	targetLanguageControl = new FormControl(null);
 	targetCountryControl = new FormControl(null);
 	filteredLanguages: Observable<any[]>;

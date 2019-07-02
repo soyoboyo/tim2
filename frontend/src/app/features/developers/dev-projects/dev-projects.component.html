@@ -40,6 +40,9 @@
 					<mat-error *ngIf="sourceLanguageControl.hasError('required')">
 						Source language is <strong>required</strong>
 					</mat-error>
+					<mat-error *ngIf="sourceLanguageControl.hasError('pattern')">
+						Wrong pattern: requires 2 small letters
+					</mat-error>
 				</mat-form-field>
 
 				<mat-form-field>
@@ -54,6 +57,9 @@
 					</mat-autocomplete>
 					<mat-error *ngIf="sourceCountryControl.hasError('required')">
 						Source country is <strong>required</strong>
+					</mat-error>
+					<mat-error *ngIf="sourceCountryControl.hasError('pattern')">
+						Wrong pattern: requires 2 big letters
 					</mat-error>
 				</mat-form-field>
 

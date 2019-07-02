@@ -15,12 +15,12 @@ public class PredefinedLocalesServiceTests {
 
     @Test
     public void whenGetPredefinedLanguagesThenReturnNotEmptyList() {
-        assertTrue(!predefinedLocalesService.getPredefinedLanguages().isEmpty());
+		assertFalse(predefinedLocalesService.getPredefinedLanguages().isEmpty());
     }
 
     @Test
     public void whenGetPredefinedCountriesThenReturnNotEmptyList() {
-        assertTrue(!predefinedLocalesService.getPredefinedCounties().isEmpty());
+		assertFalse(predefinedLocalesService.getPredefinedCounties().isEmpty());
     }
 
     @Test

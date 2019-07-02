@@ -7,9 +7,9 @@ import java.util.*;
 @Service
 public class PredefinedLocalesService {
 
-	public LinkedHashSet<String> getPredefinedLanguages() {
+	public TreeSet<String> getPredefinedLanguages() {
 		Locale locales[] = Locale.getAvailableLocales();
-		LinkedHashSet<String> languages = new LinkedHashSet<>();
+		TreeSet<String> languages = new TreeSet<>();
 		for (int i = 0; i < locales.length; i++) {
 			if (!(locales[i].getLanguage().isEmpty() || locales[i].getCountry().isEmpty())) {
 				if (locales[i].getLanguage().length() == 2) {
@@ -20,9 +20,9 @@ public class PredefinedLocalesService {
 		return languages;
 	}
 
-	public LinkedHashSet<String> getPredefinedCounties() {
+	public TreeSet<String> getPredefinedCounties() {
 		Locale locales[] = Locale.getAvailableLocales();
-		LinkedHashSet<String> countries = new LinkedHashSet<>();
+		TreeSet<String> countries = new TreeSet<>();
 		for (int i = 0; i < locales.length; i++) {
 			if (!(locales[i].getLanguage().isEmpty() || locales[i].getCountry().isEmpty() ||
 					!locales[i].getDisplayCountry().matches("[A-Z][a-zA-Z ]{0,}[a-z]") ||

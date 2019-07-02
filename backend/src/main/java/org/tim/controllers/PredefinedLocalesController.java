@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tim.services.PredefinedLocalesService;
 
-import java.util.LinkedHashSet;
+import java.util.TreeSet;
 
 import static org.tim.utils.Mapping.*;
 
@@ -17,15 +17,15 @@ import static org.tim.utils.Mapping.*;
 @PreAuthorize("hasAnyRole('ROLE_DEVELOPER', 'ROLE_TRANSLATOR')")
 public class PredefinedLocalesController {
 
-    private final PredefinedLocalesService predefinedLocalesService;
+	private final PredefinedLocalesService predefinedLocalesService;
 
-    @GetMapping(LANGUAGES + GET_ALL)
-    public LinkedHashSet<String> getAllPredefinedLanguages() {
-        return predefinedLocalesService.getPredefinedLanguages();
-    }
+	@GetMapping(LANGUAGES + GET_ALL)
+	public TreeSet<String> getAllPredefinedLanguages() {
+		return predefinedLocalesService.getPredefinedLanguages();
+	}
 
-    @GetMapping(COUNTRIES + GET_ALL)
-    public LinkedHashSet<String> getAllPredefinedCountries() {
-        return predefinedLocalesService.getPredefinedCounties();
-    }
+	@GetMapping(COUNTRIES + GET_ALL)
+	public TreeSet<String> getAllPredefinedCountries() {
+		return predefinedLocalesService.getPredefinedCounties();
+	}
 }
