@@ -1,4 +1,4 @@
-package org.tim.DTOs;
+package org.tim.DTOs.output;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
