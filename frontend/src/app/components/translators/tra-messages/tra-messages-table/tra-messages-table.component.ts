@@ -34,7 +34,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<MessageForTranslator>();
-	displayedColumns: string[] = ['key', 'content'];
+	displayedColumns: string[] = ['index', 'content'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	isLoadingResults = false;
 
@@ -94,7 +94,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	}
 
 	isTranslationOutdated(message: MessageForTranslator): boolean {
-		if(message.translation !== null){
+		if (message.translation !== null) {
 			return message.updateDate > message.translation.updateDate;
 		} else {
 			return false;

@@ -22,9 +22,9 @@
 <div class="table-container mat-elevation-z8">
 	<table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
-		<ng-container matColumnDef="key">
-			<th mat-header-cell *matHeaderCellDef>Key</th>
-			<td mat-cell *matCellDef="let message">{{message.key}}</td>
+		<ng-container matColumnDef="index">
+			<th mat-header-cell *matHeaderCellDef>No.</th>
+			<td mat-cell *matCellDef="let message">{{message.id}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="content">
@@ -60,7 +60,13 @@
 
 						<div *ngIf="selectedLocale === null">
 							<p>
-								<strong>Message:</strong> {{row.content}}
+								<strong>Key:</strong> {{row.key}}
+							</p>
+							<p>
+								<strong>Update date:</strong> {{row.updateDate | date:'dd.MM.yyyy HH:mm'}}
+							</p>
+							<p>
+								<strong>Content:</strong> {{row.content}}
 							</p>
 							<p>
 								<strong>Description: </strong> {{row.description}}
@@ -72,10 +78,14 @@
 
 						<div *ngIf="selectedLocale !== null ">
 							<p>
-								<strong>Update date:</strong> {{row.updateDate | date:'dd.MM.yyyy HH:mm'}}
+								<strong>Key:</strong> {{row.key}}
 							</p>
 							<p>
-								<strong>Message:</strong> {{row.content}}
+								<strong>Update date:</strong> {{row.updateDate | date:'dd.MM.yyyy HH:mm'}}
+							</p>
+
+							<p>
+								<strong>Content:</strong> {{row.content}}
 							</p>
 							<p>
 								<strong>Description: </strong> {{row.description}}

@@ -111,18 +111,18 @@
 					</mat-chip-list>
 				</div>
 
-				<mat-label class="target-locales-info" *ngIf="selectedTargetLocales.length < 1" class="warning">At least 1 target locale is <strong>required</strong></mat-label>
+				<mat-label *ngIf="selectedTargetLocales.length < 1" class="target-locales-info">At least 1 target locale is <strong>required</strong></mat-label>
 
 				<div class="divider-wrapper">
 					<mat-divider></mat-divider>
 				</div>
 
-				<div *ngIf="selectedTargetLocales.length < 2" class="replacements">Select at least 2 target locales to add replacements</div>
+				<div *ngIf="selectedTargetLocales.length < 2" class="replacements">Select source locale and at least 1 target locale to add substitutes</div>
 				<div *ngIf="selectedTargetLocales.length > 1" formArrayName="replacableLocale" class="replacements">
 					<div *ngFor="let locale of projectParams.get('replacableLocale').controls; let i=index">
 						<div>
-							<mat-label>Replacement {{i + 1}}</mat-label>
-							<button mat-button color="warn" *ngIf="this.projectParams.get('replacableLocale').length > 1" type="button" (click)="removeReplacableLocale(i)">
+							<mat-label>Substitute {{i + 1}}</mat-label>
+							<button mat-button color="warn" *ngIf="this.projectParams.get('replacableLocale').length > 0" type="button" (click)="removeReplacableLocale(i)">
 								<mat-icon>clear</mat-icon>
 								Remove
 							</button>
@@ -148,7 +148,7 @@
 					</div>
 				</div>
 
-				<button class="form-button" *ngIf="selectedTargetLocales.length > 1" mat-button type="button" color="primary" (click)="addReplacableLocale()">
+				<button class="form-button" [disabled]="(availableReplacements.length < 2)" mat-button type="button" color="primary" (click)="addReplacableLocale()">
 					<mat-icon>add</mat-icon>
 					Add more replacements
 				</button>

@@ -3,7 +3,6 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { ProjectDTO } from '../../../models/DTOs/ProjectDTO';
 import { RestService } from '../../../services/rest/rest.service';
 import { SnackbarService } from '../../../services/snackbar/snackbar.service';
-import { UtilsService } from '../../../services/utils/utils.service';
 import { ConfirmationDialogService } from '../../../services/confirmation-dialog/confirmation-dialog.service';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -27,12 +26,12 @@ export class DevProjectsComponent implements OnInit {
 	filteredTargetLanguages: Observable<any[]>;
 	filteredTargetCountries: Observable<any[]>;
 
-	formMode: string = 'Add';
+	formMode = 'Add';
 	toUpdate: any = null;
 	showForm = false;
 
 	isLoadingResults = true;
-	selectedRowIndex: number = -1;
+	selectedRowIndex = -1;
 
 	projects: Project[] = [];
 
@@ -49,7 +48,6 @@ export class DevProjectsComponent implements OnInit {
 				private cd: ChangeDetectorRef,
 				private http: RestService,
 				private snackbar: SnackbarService,
-				public utils: UtilsService,
 				private confirmService: ConfirmationDialogService) {
 	}
 
@@ -122,17 +120,17 @@ export class DevProjectsComponent implements OnInit {
 	}
 
 	addReplacableLocale() {
-		const control = <FormArray>this.projectParams.get('replacableLocale');
+		const control = this.projectParams.get('replacableLocale') as FormArray;
 		control.push(this.initReplacableLocale());
 	}
 
 	removeReplacableLocale(i: number) {
-		const control = <FormArray>this.projectParams.get('replacableLocale');
+		const control = this.projectParams.get('replacableLocale') as FormArray;
 		control.removeAt(i);
 	}
 
 	addExistingReplacableLocale(replaced: string, replacement: string) {
-		const control = <FormArray>this.projectParams.get('replacableLocale');
+		const control = this.projectParams.get('replacableLocale') as FormArray;
 		control.push(this.initExistingReplacableLocale(replaced, replacement));
 	}
 
@@ -144,7 +142,7 @@ export class DevProjectsComponent implements OnInit {
 	}
 
 	createProject(params: any) {
-		let replacements = new Map<string, string>();
+		const replacements = new Map<string, string>();
 		params.value.replacableLocale.forEach((group) => {
 			if (group.target !== '' && group.replacement !== '') {
 				replacements[group.target] = group.replacement;
@@ -193,11 +191,11 @@ export class DevProjectsComponent implements OnInit {
 		}
 		this.sourceLocale = project.sourceLocale;
 		this.projectParams.patchValue({
-			'projectName': project.name,
-			'sourceLanguage': project.sourceLocale.split('_')[0],
-			'sourceCountry': project.sourceLocale.split('_')[1],
-			'targetLanguage': '',
-			'targetCountry': ''
+			projectName: project.name,
+			sourceLanguage: project.sourceLocale.split('_')[0],
+			sourceCountry: project.sourceLocale.split('_')[1],
+			targetLanguage: '',
+			targetCountry: ''
 		});
 		project.targetLocales.forEach((t) => {
 			this.selectedTargetLocales.push(t.locale);
@@ -294,8 +292,8 @@ export class DevProjectsComponent implements OnInit {
 		this.projectParams.markAsPristine();
 		this.projectParams.markAsUntouched();
 		this.projectParams.reset();
-		const replacementControls = <FormArray>this.projectParams.get('replacableLocale');
-		let i = 0;
+		const replacementControls = this.projectParams.get('replacableLocale') as FormArray;
+		const i = 0;
 		while (replacementControls.controls.length > 0) {
 			replacementControls.removeAt(i);
 		}
