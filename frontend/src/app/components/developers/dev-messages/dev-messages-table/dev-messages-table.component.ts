@@ -23,7 +23,7 @@ import { MessageForDeveloper } from '../../../../models/MessageForDeveloper';
 })
 export class DevMessagesTableComponent implements OnInit, OnChanges {
 
-	@Input() selectedRowIndex: number = -1;
+	@Input() selectedRowIndex = -1;
 	@Input() selectedProject: Project;
 	@Input() messages: MessageForDeveloper[] = [];
 	@Output() editEvent = new EventEmitter<any>();
@@ -33,7 +33,7 @@ export class DevMessagesTableComponent implements OnInit, OnChanges {
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<MessageForDeveloper>();
-	displayedColumns: string[] = ['key', 'updateDate', 'content', 'actions'];
+	displayedColumns: string[] = ['key', 'content', 'actions'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	isLoadingResults = false;
 

@@ -42,8 +42,6 @@ export class DevMessagesComponent implements OnInit {
 		this.initProjectForm();
 		this.getProjects();
 		this.getMessages();
-
-
 	}
 
 

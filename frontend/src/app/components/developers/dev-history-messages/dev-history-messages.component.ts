@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuditMessageService } from '../../../services/audit-message/audit-message.service';
 import { RestService } from '../../../services/rest/rest.service';
-import { MessageForDeveloper } from '../../../models/MessageForDeveloper';
 
 @Component({
 	selector: 'app-dev-history-messages',
@@ -31,7 +30,7 @@ export class DevHistoryMessagesComponent implements OnInit {
 		this.getMessageVersions();
 	}
 
-	async getMessageVersions(){
+	async getMessageVersions() {
 		this.loadingResults = true;
 		this.messageVersions = await this.http.getAll('message/version/' + this.id);
 		this.loadingResults = false;

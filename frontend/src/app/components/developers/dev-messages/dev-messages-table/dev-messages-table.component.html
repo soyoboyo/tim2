@@ -17,11 +17,6 @@
 			<td mat-cell *matCellDef="let message">{{message.key | shorten: [40, '...']}}</td>
 		</ng-container>
 
-		<ng-container matColumnDef="updateDate">
-			<th mat-header-cell *matHeaderCellDef>Update date</th>
-			<td mat-cell *matCellDef="let message">{{message.updateDate | date:'dd.MM.yyyy HH:mm'}}</td>
-		</ng-container>
-
 		<ng-container matColumnDef="content">
 			<th mat-header-cell *matHeaderCellDef>Content</th>
 			<td mat-cell *matCellDef="let message">{{message.content | shorten: [40, '...']}}</td>
@@ -51,6 +46,9 @@
 			<td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
 				<div class="message-detail" [@detailExpand]="row == expandedRow ? 'expanded' : 'collapsed'">
 					<div class="padding-inside">
+						<p>
+							<strong>Update date:</strong> {{row.updateDate | date:'dd.MM.yyyy HH:mm'}}
+						</p>
 						<p>
 							<strong>Content:</strong> {{row.content}}
 						</p>

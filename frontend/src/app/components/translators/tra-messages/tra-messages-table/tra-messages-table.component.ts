@@ -23,7 +23,7 @@ import { MessageForTranslator } from '../../../../models/MessageForTranslator';
 
 export class TraMessagesTableComponent implements OnInit, OnChanges {
 
-	@Input() selectedRowIndex: number = -1;
+	@Input() selectedRowIndex = -1;
 	@Input() selectedProject: Project;
 	@Input() messages: Message[] = [];
 	@Output() sendSelectedLocale = new EventEmitter<any>();
@@ -34,7 +34,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<MessageForTranslator>();
-	displayedColumns: string[] = ['key', 'updateDate', 'content'];
+	displayedColumns: string[] = ['key', 'content'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	isLoadingResults = false;
 
