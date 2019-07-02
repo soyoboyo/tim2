@@ -33,7 +33,7 @@ export class DevMessagesTableComponent implements OnInit, OnChanges {
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<MessageForDeveloper>();
-	displayedColumns: string[] = ['key', 'content', 'actions'];
+	displayedColumns: string[] = ['key', 'content', 'translations', 'actions'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	isLoadingResults = false;
 

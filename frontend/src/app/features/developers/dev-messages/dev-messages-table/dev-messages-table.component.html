@@ -22,14 +22,15 @@
 			<td mat-cell *matCellDef="let message">{{message.content | shorten: [40, '...']}}</td>
 		</ng-container>
 
+		<ng-container matColumnDef="translations">
+			<th mat-header-cell *matHeaderCellDef>Translations</th>
+			<td mat-cell *matCellDef="let message" matTooltip="correct/missing/invalid/outdated" matTooltipClass="tooltip-font">2/1/3/7</td>
+		</ng-container>
+
 		<ng-container matColumnDef="actions">
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
 			<td mat-cell *matCellDef="let message">
 				<p>
-					<button mat-button routerLink="/developer/message/{{message.id}}" routerLinkActive="active" (click)="auditMessage(message)">
-						<mat-icon>info</mat-icon>
-						History
-					</button>
 					<button color="primary" mat-button (click)="editMessage(message)">
 						<mat-icon>edit</mat-icon>
 						Edit
@@ -54,6 +55,13 @@
 						</p>
 						<p>
 							<strong>Description: </strong> {{row.description}}
+						</p>
+
+						<p>
+							<button mat-button routerLink="/developer/message/{{row.id}}" routerLinkActive="active" (click)="auditMessage(row)">
+								<mat-icon>info</mat-icon>
+								Message history
+							</button>
 						</p>
 
 						<p class="warning" *ngIf="row.missingLocales.length > 0">

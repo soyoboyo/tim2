@@ -101,6 +101,7 @@ export class DevMessagesComponent implements OnInit {
 	}
 
 	changeProject(value) {
+		this.cancelUpdate();
 		this.selectedProject = value;
 		this.projectStoreService.setSelectedProject(value);
 		this.getMessages();
