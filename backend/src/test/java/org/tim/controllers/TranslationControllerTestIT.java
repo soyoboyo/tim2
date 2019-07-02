@@ -18,6 +18,7 @@ import org.tim.entities.Translation;
 import org.tim.services.TranslationService;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.tim.utils.Mapping.API_VERSION;
@@ -61,13 +62,14 @@ public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 
 	@Test
 	public void createNewTranslation_DataCorrect_Success() throws Exception {
-		when(translationService.createTranslation(any(), 1L)).thenReturn(expectedTranslation);
+		when(translationService.createTranslation(any(), any())).thenReturn(expectedTranslation);
 		String jsonRequest = mapper.writeValueAsString(translationDTO);
 		mockMvc.perform(post(BASE_URL + TRANSLATION + CREATE)
 				.contentType(MediaType.APPLICATION_JSON)
+				.param("messageId", "1")
 				.content(jsonRequest))
-				.andExpect(status().isOk())
 				.andDo(print())
+				.andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is(expectedTranslation.getContent())))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.locale", Matchers.is(expectedTranslation.getLocale().toString())));
 	}
@@ -78,7 +80,8 @@ public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 		String jsonRequest = mapper.writeValueAsString(translationDTO);
 		mockMvc.perform(post(BASE_URL + TRANSLATION + CREATE)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsonRequest))
+				.content(jsonRequest)
+				.param("messageId", "1"))
 				.andExpect(status().isBadRequest())
 				.andDo(print());
 	}
