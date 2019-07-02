@@ -1,0 +1,121 @@
+<div class="filter-paginator-wrapper">
+	<div>
+		<mat-form-field>
+			<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+		</mat-form-field>
+	</div>
+	<span class="spacer"></span>
+	<div>
+		<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+	</div>
+</div>
+<div class="table-container mat-elevation-z8">
+	<table class="table-container" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+
+		<ng-container matColumnDef="key">
+			<th mat-header-cell *matHeaderCellDef>Key</th>
+			<td mat-cell *matCellDef="let message">{{message.key | shorten: [40, '...']}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="content">
+			<th mat-header-cell *matHeaderCellDef>Content</th>
+			<td mat-cell *matCellDef="let message">{{message.content | shorten: [40, '...']}}</td>
+		</ng-container>
+
+		<ng-container matColumnDef="translations">
+			<th mat-header-cell *matHeaderCellDef>Translations</th>
+			<td mat-cell *matCellDef="let message" matTooltip="correct/missing/invalid/outdated" matTooltipClass="tooltip-font">2/1/3/7</td>
+		</ng-container>
+
+		<ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef>Actions</th>
+			<td mat-cell *matCellDef="let message">
+				<p>
+					<button color="primary" mat-button (click)="editMessage(message)">
+						<mat-icon>edit</mat-icon>
+						Edit
+					</button>
+					<button color="warn" mat-button (click)="archiveMessage(message.id)">
+						<mat-icon>archive</mat-icon>
+						Archive
+					</button>
+				</p>
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="messageDetails">
+			<td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
+				<div class="message-detail" [@detailExpand]="row == expandedRow ? 'expanded' : 'collapsed'">
+					<div class="padding-inside">
+						<p>
+							<strong>Update date:</strong> {{row.updateDate | date:'dd.MM.yyyy HH:mm'}}
+						</p>
+						<p>
+							<strong>Content:</strong> {{row.content}}
+						</p>
+						<p>
+							<strong>Description: </strong> {{row.description}}
+						</p>
+
+						<p>
+							<button mat-button routerLink="/developer/message/{{row.id}}" routerLinkActive="active" (click)="auditMessage(row)">
+								<mat-icon>info</mat-icon>
+								Message history
+							</button>
+						</p>
+
+						<p class="warning" *ngIf="row.missingLocales.length > 0">
+							Missing translations for locales: {{row.missingLocales}}
+						</p>
+
+						<div *ngIf="row.translations.length < 1">
+							<strong>Translations: </strong> none.
+						</div>
+						<div *ngIf="row.translations.length > 0">
+							<p>List of existing translations:</p>
+							<div *ngFor="let translation of row.translations; let i = index">
+								<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+									<div>
+										<button mat-button routerLink="/developer/translation/{{translation.id}}" routerLinkActive="active"
+												(click)="auditTranslation(translation)">
+											<mat-icon>info</mat-icon>
+											History
+										</button>
+									</div>
+									<div>
+										<strong>{{translation.locale}}:</strong>
+									</div>
+									<div>
+										{{translation.content}}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="add-new-message">
+			<th [attr.colspan]="displayedColumns.length" mat-header-cell *matHeaderCellDef>
+				<div class="add-button">
+					<button mat-raised-button color="accent" type="button" (click)="toggleForm()">Add new message</button>
+				</div>
+			</th>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="['add-new-message']">
+		</tr>
+
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns"
+			class="message-row"
+			[ngClass]="{'highlight': selectedRowIndex == row.id, 'highlight-accent': expandedRow == row }"
+			[class.message-expanded-row]="expandedRow === row"
+			(click)="expandedRow = expandedRow === row ? null : row"></tr>
+		<tr mat-row *matRowDef="let row; columns: ['messageDetails']" class="message-detail-row"></tr>
+
+	</table>
+
+</div>
+<app-nothing-found [nothingFound]="messages.length == 0 && !isLoadingResults" [message]="'Select project to see messages.'"></app-nothing-found>

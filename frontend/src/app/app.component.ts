@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { MatSidenav } from '@angular/material';
-import { NavbarService } from './services/navbar/navbar.service';
+import { NavbarService } from './shared/services/navbar-service/navbar.service';
 
 @Component({
 	selector: 'app-root',

@@ -6,78 +6,67 @@ import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { routes } from './routes';
-import { HomepageComponent } from './components/homepage/homepage.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { DevelopersComponent } from './components/developers/developers.component';
-import { TranslatorsComponent } from './components/translators/translators.component';
-import { DevProjectsComponent } from './components/developers/dev-projects/dev-projects.component';
+import { NavbarComponent } from './layout/navbar/navbar.component';
+import { DevelopersComponent } from './features/developers/developers.component';
+import { TranslatorsComponent } from './features/translators/translators.component';
+import { DevProjectsComponent } from './features/developers/dev-projects/dev-projects.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { DevMessagesComponent } from './components/developers/dev-messages/dev-messages.component';
-import { DevMessagesTableComponent } from './components/developers/dev-messages/dev-messages-table/dev-messages-table.component';
-import { SnackbarService } from './services/snackbar/snackbar.service';
+import { DevMessagesComponent } from './features/developers/dev-messages/dev-messages.component';
+import { DevMessagesTableComponent } from './features/developers/dev-messages/dev-messages-table/dev-messages-table.component';
+import { SnackbarService } from './shared/services/snackbar-service/snackbar.service';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
-import { UtilsService } from './services/utils/utils.service';
-import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
-import { ShortenPipe } from './pipes/shorten/shorten.pipe';
-import { DevProjectsTableComponent } from './components/developers/dev-projects/dev-projects-table/dev-projects-table.component';
-import { LoginComponent } from './components/login/login.component';
-import { LoginService } from './services/login/login.service';
+import { UtilsService } from './shared/services/utils-service/utils.service';
+import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
+import { DevProjectsTableComponent } from './features/developers/dev-projects/dev-projects-table/dev-projects-table.component';
+import { LoginComponent } from './core/login-component/login.component';
+import { LoginService } from './core/login-service/login.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { TraMessagesComponent } from './components/translators/tra-messages/tra-messages.component';
-import { TraMessagesTableComponent } from './components/translators/tra-messages/tra-messages-table/tra-messages-table.component';
-import { OutdatedPipe } from './pipes/outdated/outdated.pipe';
-import { OutdatedTranslationPipe } from './pipes/outdated-translation/outdated-translation.pipe';
-import { NothingFoundComponent } from './components/nothing-found/nothing-found.component';
-import { DevHistoryTranslationsComponent } from './components/developers/dev-history-translations/dev-history-translations.component';
-import { DevHistoryMessagesComponent } from './components/developers/dev-history-messages/dev-history-messages.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
+import { TraMessagesComponent } from './features/translators/tra-messages/tra-messages.component';
+import { TraMessagesTableComponent } from './features/translators/tra-messages/tra-messages-table/tra-messages-table.component';
+import { DevHistoryTranslationsComponent } from './features/developers/dev-history-translations/dev-history-translations.component';
+import { DevHistoryMessagesComponent } from './features/developers/dev-history-messages/dev-history-messages.component';
+import { ViewsModule } from './views/views.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomepageComponent,
-        NavbarComponent,
-        LoginComponent,
-        DevelopersComponent,
-        TranslatorsComponent,
-        TraMessagesComponent,
-        TraMessagesTableComponent,
-        DevProjectsComponent,
-        DevMessagesComponent,
-        DevMessagesTableComponent,
-        ConfirmationDialogComponent,
-        ShortenPipe,
-        DevProjectsTableComponent,
-        OutdatedPipe,
-        OutdatedTranslationPipe,
-        NothingFoundComponent,
-        DevHistoryTranslationsComponent,
-        DevHistoryMessagesComponent,
-        PageNotFoundComponent,
-        AccessDeniedComponent
-    ],
-    imports: [
-        RouterModule.forRoot(routes),
-        BrowserModule,
-        MaterialModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        FlexLayoutModule,
-    ],
-    exports: [
-        FormsModule,
-        FlexLayoutModule,
-        BrowserAnimationsModule
-    ],
-    providers: [LoginService, UtilsService,  SnackbarService,
-        { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } }],
-    bootstrap: [AppComponent],
-    entryComponents: [ConfirmationDialogComponent]
+	declarations: [
+		AppComponent,
+		NavbarComponent,
+		LoginComponent,
+		DevelopersComponent,
+		TranslatorsComponent,
+		TraMessagesComponent,
+		TraMessagesTableComponent,
+		DevProjectsComponent,
+		DevMessagesComponent,
+		DevMessagesTableComponent,
+		DevProjectsTableComponent,
+		DevHistoryTranslationsComponent,
+		DevHistoryMessagesComponent
+	],
+	imports: [
+		RouterModule.forRoot(routes),
+		SharedModule,
+		BrowserModule,
+		MaterialModule,
+		ReactiveFormsModule,
+		BrowserAnimationsModule,
+		FormsModule,
+		ReactiveFormsModule,
+		HttpClientModule,
+		FlexLayoutModule,
+		ViewsModule
+	],
+	exports: [
+		FormsModule,
+		FlexLayoutModule,
+		BrowserAnimationsModule
+	],
+	providers: [LoginService, UtilsService, SnackbarService,
+		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } }],
+	bootstrap: [AppComponent],
+	entryComponents: [ConfirmationDialogComponent]
 })
 export class AppModule {
 }
