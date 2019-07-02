@@ -66,7 +66,7 @@ public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 		String jsonRequest = mapper.writeValueAsString(translationDTO);
 		mockMvc.perform(post(BASE_URL + TRANSLATION + CREATE)
 				.contentType(MediaType.APPLICATION_JSON)
-				.requestAttr("messageId", 1L)
+				.param("messageId", "1")
 				.content(jsonRequest))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -80,7 +80,8 @@ public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 		String jsonRequest = mapper.writeValueAsString(translationDTO);
 		mockMvc.perform(post(BASE_URL + TRANSLATION + CREATE)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(jsonRequest))
+				.content(jsonRequest)
+				.param("messageId", "1"))
 				.andExpect(status().isBadRequest())
 				.andDo(print());
 	}
