@@ -6,11 +6,6 @@ before_install:
   - npm install -g @angular/cli
 stages:
   - name: test
-  - name: build
-  - name: deliver
-    if: branch = develop
-  - name: deploy
-    if: branch = maste
 jobs:
   include:
       - stage: test
