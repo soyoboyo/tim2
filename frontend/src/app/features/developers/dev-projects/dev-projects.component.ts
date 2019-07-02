@@ -7,6 +7,7 @@ import { ConfirmationDialogService } from '../../../shared/services/confirmation
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Project } from '../../../shared/types/entities/Project';
+import { ProjectForDeveloper } from '../../../shared/types/DTOs/output/ProjectForDeveloper';
 
 @Component({
 	selector: 'app-dev-projects',
@@ -89,8 +90,9 @@ export class DevProjectsComponent implements OnInit {
 
 	async getProjects() {
 		this.isLoadingResults = true;
-		this.projects = await this.http.getAll('project/getAll');
+		this.projects = await this.http.getAll('project/developer/getAll');
 		this.projects = [].concat(this.projects);
+		console.table(this.projects);
 		this.isLoadingResults = false;
 	}
 
@@ -181,7 +183,7 @@ export class DevProjectsComponent implements OnInit {
 		});
 	}
 
-	editProject(project: Project) {
+	editProject(project: ProjectForDeveloper) {
 		this.toUpdate = project;
 		this.formMode = 'Update';
 		this.clearForm();
@@ -189,26 +191,21 @@ export class DevProjectsComponent implements OnInit {
 		if (this.showForm === false) {
 			this.showForm = true;
 		}
-		this.sourceLocale = project.sourceLocale;
+		this.sourceLocale = project.sourceLanguage + '_' + project.sourceCountry;
 		this.projectParams.patchValue({
 			projectName: project.name,
-			sourceLanguage: project.sourceLocale.split('_')[0],
-			sourceCountry: project.sourceLocale.split('_')[1],
+			sourceLanguage: project.sourceLanguage,
+			sourceCountry: project.sourceCountry,
 			targetLanguage: '',
 			targetCountry: ''
 		});
-		project.targetLocales.forEach((t) => {
-			this.selectedTargetLocales.push(t.locale);
-			this.availableReplacements.push(t.locale);
-		});
-		this.removeLocaleFromArray(this.sourceLocale, this.selectedTargetLocales);
+		this.selectedTargetLocales = project.targetLocales;
+		this.availableReplacements = project.availableReplacements;
 
-
-		const replacements = project.replaceableLocaleToItsSubstitute;
+		const replacements = project.substitutes;
 		Object.keys(replacements).forEach((key) => {
-			let replacedLocale = key.split(',')[1].split('=')[1];
-			replacedLocale = replacedLocale.slice(0, -1);
-			const replacement = replacements[key].locale;
+			const replacedLocale = key;
+			const replacement = replacements[key];
 			this.addExistingReplacableLocale(replacedLocale, replacement);
 		});
 	}

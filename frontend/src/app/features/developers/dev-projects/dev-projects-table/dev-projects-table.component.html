@@ -19,7 +19,7 @@
 
 		<ng-container matColumnDef="sourceLocale">
 			<th mat-header-cell *matHeaderCellDef>Source locale</th>
-			<td mat-cell *matCellDef="let project">{{project.sourceLocale}}</td>
+			<td mat-cell *matCellDef="let project">{{project.sourceLanguage}}_{{project.sourceCountry}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="targetLocales">
@@ -40,14 +40,16 @@
 		</ng-container>
 
 
-
 		<ng-container matColumnDef="projectDetails">
 			<td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
 				<div class="project-detail" [@detailExpand]="row == expandedRow ? 'expanded' : 'collapsed'">
 					<div class="padding-inside">
-
-
-						<p>expanded row :)</p>
+						<p>
+							<strong>Project name:</strong> {{row.name}}
+						</p>
+						<p>
+							<strong>Target locales:</strong> {{row.targetLocales.join(',  ')}}
+						</p>
 
 					</div>
 				</div>
