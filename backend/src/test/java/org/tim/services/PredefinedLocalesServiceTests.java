@@ -26,14 +26,14 @@ public class PredefinedLocalesServiceTests {
     @Test
     public void whenGetPredefinedLanguagesThenReturnElementsCompatibleWithRegex() {
         predefinedLocalesService.getPredefinedLanguages().forEach(language -> {
-            assertTrue(language.matches("[a-zA-Z]{1,}[ ][(][a-zA-ZÚ-\uAB52 -]{1,}[)]"));
+            assertTrue(language.matches("[a-z]{2} .{0,}|[a-z]{2}"));
         });
     }
 
     @Test
     public void whenGetPredefinedCountriesThenReturnElementsCompatibleWithRegex() {
         predefinedLocalesService.getPredefinedCounties().forEach(language -> {
-            assertTrue(language.matches("[a-zA-Z]{1,}[ ][(][A-Z][a-zA-Z ]{0,}[a-z][)]"));
+            assertTrue(language.matches("[A-Z]{2} .{0,}|[A-Z]{2}"));
         });
     }
 }
