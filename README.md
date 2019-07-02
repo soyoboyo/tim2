@@ -56,11 +56,9 @@ For translators:
             * docker run -it -p 5432:5432 -d -v /var/database:/var/lib/postgresql/data postgres 
 1. Run apps:
     * docker run -it -p 4200:4200 -d studentproject/ocado-tim-frontend
-    * docker run -it -p 8081:8080 -d -v <path to users config\>:/home/principals.json
-        * where <path to users config\> is path to file with principals.json e.g.
-          * docker run -it -p 8081:8080 -d -v /home/oem/Github/tim/principals.json:/home/principals.json studentproject/ocado-tim-backend
+    * docker run -it -p 8081:8080 -d studentproject/ocado-tim-backend
     * docker run -it -p 8080:8080 -d studentproject/simple-web-app  
-1. The app is availaible on localhost or address 192.168.99.100 (depends on os)
+1. The app is available on localhost or address 192.168.99.100 (depends on os)
 
 
 # 6. Installation guide (developers)

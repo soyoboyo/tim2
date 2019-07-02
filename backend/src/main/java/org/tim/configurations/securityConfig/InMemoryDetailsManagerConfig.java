@@ -19,32 +19,13 @@ public class InMemoryDetailsManagerConfig {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Value("${usersConfig}")
-    private String pathToUsersConfig;
-
     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() throws IOException {
         final Properties users = new Properties();
-        File file;
-        if(pathToUsersConfig.isEmpty()) {
-            file = new File(new ClassPathResource("/principals.json").getURI());
-        } else {
-            file = new File(pathToUsersConfig);
-        }
-        byte[] data;
-        try (FileInputStream fileInputStream = new FileInputStream(file)) {
-            data = new byte[(int) file.length()];
-            fileInputStream.read(data);
-        }
-        JSONObject jsonObject = new JSONObject(new String(data, "UTF-8"));
-        JSONArray principalsArray = jsonObject.getJSONArray("users");
-        JSONObject principals;
-        for ( int i = 0; i < principalsArray.length(); i++) {
-            principals = (JSONObject) principalsArray.get(i);
-            users.put(principals.getString("username"),
-                    bCryptPasswordEncoder.encode(principals.getString("password")) +
-                            ",ROLE_" + principals.getString("role") + ",enabled");
-        }
+        users.put("prog", bCryptPasswordEncoder.encode("prog") + ",ROLE_DEVELOPER" + ",enabled");
+        users.put("tran", bCryptPasswordEncoder.encode("tran") + ",ROLE_TRANSLATOR" + ",enabled");
+        users.put("ci", bCryptPasswordEncoder.encode("ci") + ",ROLE_CI/CD" + ",enabled");
+
         return new InMemoryUserDetailsManager(users);
     }
 }
