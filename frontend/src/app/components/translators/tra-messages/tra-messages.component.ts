@@ -20,12 +20,12 @@ import { TranslationCreateDTO } from '../../../models/DTOs/TranslationCreateDTO'
 export class TraMessagesComponent implements OnInit {
 
 	messageParams: FormGroup;
-	formMode: string = 'Add';
+	formMode = 'Add';
 	toUpdate: any = null;
 	showForm = false;
 
 	isLoadingResults = true;
-	selectedRowIndex: number = -1;
+	selectedRowIndex = -1;
 
 	projects: Project[] = [];
 	messages: Message[] = [];
@@ -69,7 +69,9 @@ export class TraMessagesComponent implements OnInit {
 
 	addNewTranslation(message: MessageForTranslator) {
 		this.selectedMessage = message;
-		if (this.showForm == false) {
+		this.selectedRowIndex = message.id;
+
+		if (this.showForm === false) {
 			this.showForm = true;
 		}
 	}
@@ -84,7 +86,7 @@ export class TraMessagesComponent implements OnInit {
 		}
 
 		this.messageParams.patchValue({
-			'content': message.translation.content,
+			content: message.translation.content,
 		});
 
 		this.toUpdate = message;
@@ -162,7 +164,7 @@ export class TraMessagesComponent implements OnInit {
 				this.http.update('translation/invalidate/' + message.translation.id + '?messageId=' + message.id, null).subscribe((response) => {
 					if (response !== null) {
 						this.getMessagesForTranslator();
-						this.snackbar.snackSuccess('Translation invalidated successfully!', 'OK')
+						this.snackbar.snackSuccess('Translation invalidated successfully!', 'OK');
 					}
 				}, (error) => {
 					this.snackbar.snackError(error.error.message, 'OK');
@@ -185,6 +187,7 @@ export class TraMessagesComponent implements OnInit {
 	}
 
 	cancelUpdate() {
+		this.selectedMessage = null;
 		this.toUpdate = null;
 		this.selectedRowIndex = -1;
 		this.formMode = 'Add';

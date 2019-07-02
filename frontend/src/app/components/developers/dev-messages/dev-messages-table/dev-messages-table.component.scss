@@ -17,6 +17,7 @@ tr.message-row:not(.message-expanded-row):active {
 }
 
 .message-detail {
+  cursor: auto;
   overflow: hidden;
 }
 
@@ -83,4 +84,8 @@ th {
 
 .padding-inside {
   padding: 10px;
+}
+
+tr:hover {
+  cursor: pointer;
 }
