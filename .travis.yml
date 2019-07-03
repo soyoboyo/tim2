@@ -8,8 +8,6 @@ stages:
   - name: test
   - name: build
   - name: deliver
-  - name: deploy
-    if: branch = master
 jobs:
   include:
     - stage: test
