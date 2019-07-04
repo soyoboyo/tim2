@@ -8,6 +8,7 @@ stages:
   - name: test
   - name: build
   - name: deliver
+    if: branch = feature/travis_pipeline
 jobs:
   include:
     - stage: test
