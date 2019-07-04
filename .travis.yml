@@ -17,9 +17,10 @@ jobs:
          - cd backend
          - chmod +x mvnw
          - mvn test
+      - stage: build
         script:
          - cd frontend
-         - npm i
+         - npm i -f
          - ng build
          - cd -
          - cd backend
@@ -31,7 +32,7 @@ jobs:
           - docker build -t studentproject/ocado-tim-backend:latest .
           - cd -
           - cd frontend
-          - npm install
+          - npm install -f
           - npm install @types/node --save-dev
           - npm run build
           - docker build -t studentproject/ocado-tim-frontend:latest .
