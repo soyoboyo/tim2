@@ -1,16 +1,14 @@
 language: java
-jdk:
-    openjdk11
+jdk: openjdk11
 install: true
 before_install:
-  - npm install -g @angular/cli
+ - npm install -g @angular/cli
 stages:
-  - name: test
+ - name: test
 jobs:
-  include:
-    - stage: test
-        script:
-         - cd backend
-         - chmod +x mvnw
-         - mvn test
-
+ include:
+ - stage: test
+    script:
+    - cd backend
+    - chmod +x mvnw
+    - mvn test
