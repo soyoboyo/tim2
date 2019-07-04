@@ -6,9 +6,6 @@ before_install:
   - npm install -g @angular/cli
 stages:
   - name: test
-  - name: build
-  - name: deliver
-    if: branch = feature/travis_pipeline
 jobs:
   include:
     - stage: test
@@ -16,26 +13,4 @@ jobs:
          - cd backend
          - chmod +x mvnw
          - mvn test
-    - stage: build
-        script:
-         - cd frontend
-         - npm i
-         - ng build
-         - cd -
-         - cd backend
-         - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-    - stage: deliver
-        script:
-          - cd backend
-          - mvn package
-          - docker build -t studentproject/ocado-tim-backend:latest .
-          - cd -
-          - cd frontend
-          - npm install
-          - npm install @types/node --save-dev
-          - npm run build
-          - docker build -t studentprojecct/ocado-tim-frontend:latest .
-          - docker login -u "studentproject" -p "$DOCKER_PASSWORD"
-          - docker push studentproject/ocado-tim-backend:latest
-          - docker push studentproject/simple-web-app:latest
 
