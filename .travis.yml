@@ -5,26 +5,9 @@ install: true
 before_install:
   - npm install -g @angular/cli@7.3.9
 stages:
-  - name: test
-  - name: build
   - name: deliver
-  - name: deploy
-    if: branch = master
 jobs:
   include:
-      - stage: test
-        script:
-         - cd backend
-         - chmod +x mvnw
-         - mvn test
-      - stage: build
-        script:
-         - cd frontend
-         - npm i -f
-         - ng build
-         - cd -
-         - cd backend
-         - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       - stage: deliver
         script:
           - cd backend
@@ -33,6 +16,11 @@ jobs:
           - cd -
           - cd frontend
           - npm install -f
+          - node -v
+          - sudo n latest
+          - sudo ln -sf /usr/local/n/versions/node/12.6.0 /usr/bin/node
+          - node -v
+          - npm install @types/node --save-dev
           - npm run build
           - docker build -t studentproject/ocado-tim-frontend:latest .
           - docker login -u "studentproject" -p "$DOCKER_PASSWORD"
