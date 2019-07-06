@@ -13,9 +13,8 @@ jobs:
           - cd frontend
           - npm install -f
           - node -v
-          - sed -i.bak "s%^prefix=.*$%prefix=/usr/local/bin%" ~/.npmrc
           - npm install -g n
-          - n latest
+          - sudo npm n latest
           - sudo ln -sf /usr/local/n/versions/node/12.6.0 /usr/bin/node
           - node -v
           - npm install @types/node --save-dev
