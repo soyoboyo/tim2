@@ -15,7 +15,8 @@ jobs:
           - node -v
           - npm cache clean -f
           - npm install -g n
-          - sudo chown -R $(whoami) /usr/local/n
+          - sudo mkdir /usr/local/n
+          - sudo chown -R $(whoami) $_
           - n latest
           - sudo ln -sf /usr/local/n/versions/node/12.6.0 /usr/bin/node
           - node -v
