@@ -13,8 +13,8 @@ jobs:
           - cd frontend
           - npm install -f
           - node -v
-          - sudo npm install -g n
-          - sudo n latest
+          - npm install -g n
+          - n latest
           - sudo ln -sf /usr/local/n/versions/node/12.6.0 /usr/bin/node
           - node -v
           - npm install @types/node --save-dev
