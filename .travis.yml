@@ -3,10 +3,10 @@ jdk:
     openjdk11
 install: true
 before_install:
-  - npm install -g @angular/cli@latest
   - nvm ls-remote
   - nvm install 12.6.0
   - nvm use 12.6.0
+  - npm install -g @angular/cli@latest
 stages:
 stages:
   - name: test
@@ -24,7 +24,7 @@ jobs:
         script:
          - cd frontend
          - npm i
-         - ng build
+         - ng build --prod
          - cd ../backend
          - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       - stage: deliver
@@ -38,9 +38,9 @@ jobs:
           - npm install @types/node --save-dev
           - npm run build
           - docker build -t studentproject/ocado-tim-frontend:latest .
-          -
           - docker login -u "studentproject" -p "$DOCKER_PASSWORD"
           - docker push studentproject/ocado-tim-frontend:latest
+          - docker push studentproject/ocado-tim-backend:latest
       - stage: deploy
         script:
           - curl https://cli-assets.heroku.com/install-standalone.sh | sh
