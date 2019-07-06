@@ -3,6 +3,8 @@ jdk:
     openjdk11
 install: true
 before_install:
+  - sudo apt install nodejs
+  - sudo apt install npm
   - node -v
   - sudo npm cache clean -f
   - sudo npm install -g n
