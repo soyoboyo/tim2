@@ -1,9 +1,10 @@
 language: java
+nodejs:
+    - "10.9"
 jdk:
     openjdk11
 install: true
 before_install:
-  - sudo apt-get install nodejs
   - npm install -g @angular/cli@latest
 stages:
   - name: test
