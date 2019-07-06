@@ -3,7 +3,7 @@ jdk:
     openjdk11
 install: true
 before_install:
-  - npm install -g @angular/cli
+  - npm install -g @angular/cli@latest
 stages:
   - name: test
   - name: build
