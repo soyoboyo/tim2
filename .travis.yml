@@ -10,13 +10,10 @@ jobs:
   include:
       - stage: deliver
         script:
-          - cd backend
-          - mvn package
-          - docker build -t studentproject/ocado-tim-backend:latest .
-          - cd -
           - cd frontend
           - npm install -f
           - node -v
+          - sudo npm install -g n
           - sudo n latest
           - sudo ln -sf /usr/local/n/versions/node/12.6.0 /usr/bin/node
           - node -v
@@ -24,5 +21,4 @@ jobs:
           - npm run build
           - docker build -t studentproject/ocado-tim-frontend:latest .
           - docker login -u "studentproject" -p "$DOCKER_PASSWORD"
-          - docker push studentproject/ocado-tim-backend:latest
           - docker push studentproject/ocado-tim-frontend:latest
