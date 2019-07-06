@@ -18,6 +18,7 @@ jobs:
           - sudo chmod -R 777 /usr/local
           - n latest
           - sudo ln -sf /usr/local/n/versions/node/12.6.0 /usr/bin/node
+          - sudo ln -sf /usr/bin/nodejs /usr/sbin/node
           - node -v
           - npm install @types/node --save-dev
           - npm run build
