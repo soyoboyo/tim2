@@ -13,12 +13,10 @@ jobs:
           - cd frontend
           - npm install -f
           - node -v
-          - npm cache clean -f
-          - npm install -g n
-          - sudo chmod -R 777 /usr/local
-          - n latest
+          - nvm ls-remote
+          - nvm install 12.6.0
+          - nvm use 12.6.0
           - sudo ln -sf /usr/local/n/versions/node/12.6.0 /usr/bin/node
-          - sudo ln -sf /usr/bin/nodejs /usr/sbin/node
           - node -v
           - npm install @types/node --save-dev
           - npm run build
