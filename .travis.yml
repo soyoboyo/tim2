@@ -3,7 +3,10 @@ jdk:
     openjdk11
 install: true
 before_install:
-  - npm install -g @angular/cli@7.3.9
+  - npm install -g @angular/cli@latest
+  - nvm ls-remote
+  - nvm install 12.6.0
+  - nvm use 12.6.0
 stages:
   - name: deliver
 jobs:
@@ -12,11 +15,6 @@ jobs:
         script:
           - cd frontend
           - npm install -f
-          - node -v
-          - nvm ls-remote
-          - nvm install 12.6.0
-          - nvm use 12.6.0
-          - sudo ln -sf /usr/local/n/versions/node/12.6.0 /usr/bin/node
           - node -v
           - npm install @types/node --save-dev
           - npm run build
