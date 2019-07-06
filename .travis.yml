@@ -3,16 +3,7 @@ jdk:
     openjdk11
 install: true
 before_install:
-  - sudo apt install nodejs
-  - sudo apt install npm
-  - node -v
-  - sudo npm cache clean -f
-  - sudo npm install -g n
-  - sudo n latest
-  - sudo ln -sf /usr/local/n/versions/node/12.6.0 /usr/bin/node
-  - node -v
-  - sudo npm i -g npm@latest
-  - npm install -g @angular/cli@latest
+  - sudo npm install -g @angular/cli@7.3.9
 stages:
   - name: test
   - name: build
