@@ -3,7 +3,7 @@ jdk:
     openjdk11
 install: true
 before_install:
-  - npm install -g @angular/cli@7.3.9
+  - sudo npm install -g @angular/cli@7.3.9
 stages:
   - name: deliver
 jobs:
@@ -13,8 +13,9 @@ jobs:
           - cd frontend
           - npm install -f
           - node -v
-          - npm install -g n
-          - sudo npm n latest
+          - sudo npm cache clean -f
+          - sudo npm install -g n
+          - sudo n latest
           - sudo ln -sf /usr/local/n/versions/node/12.6.0 /usr/bin/node
           - node -v
           - npm install @types/node --save-dev
