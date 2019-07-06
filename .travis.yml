@@ -3,13 +3,13 @@ jdk:
     openjdk11
 install: true
 before_install:
-  - sudo npm i -g npm@latest
   - node -v
   - sudo npm cache clean -f
   - sudo npm install -g n
   - sudo n latest
   - sudo ln -sf /usr/local/n/versions/node/12.6.0 /usr/bin/node
   - node -v
+  - sudo npm i -g npm@latest
   - npm install -g @angular/cli@latest
 stages:
   - name: test
