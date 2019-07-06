@@ -9,7 +9,7 @@ stages:
   - name: build
   - name: deliver
   - name: deploy
-    if: branch = maste
+    if: branch = master
 jobs:
   include:
       - stage: test
@@ -33,7 +33,6 @@ jobs:
           - cd -
           - cd frontend
           - npm install -f
-          - npm install @types/node@7.10.6 --save-dev
           - npm run build
           - docker build -t studentproject/ocado-tim-frontend:latest .
           - docker login -u "studentproject" -p "$DOCKER_PASSWORD"
