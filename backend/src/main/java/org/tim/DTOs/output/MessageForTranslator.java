@@ -5,7 +5,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.tim.DTOs.output.TranslationForTranslator;
 
 import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;

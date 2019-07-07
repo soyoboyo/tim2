@@ -117,9 +117,9 @@ public class MessageControllerTestIT extends SpringTestsCustomExtension {
     public void whenMessageIsGivingForRemovalThenItGoesToService() throws Exception {
         //given
         Long messageId = 1L;
-        when(messageService.deleteMessage(messageId)).thenReturn(message);
+        when(messageService.archiveMessage(messageId)).thenReturn(message);
         //when
-        mockMvc.perform(delete(BASE_URL + API_VERSION + MESSAGE + "/remove/" + messageId))
+        mockMvc.perform(delete(BASE_URL + API_VERSION + MESSAGE + "/archive/" + messageId))
                 //then
                 .andExpect(status().isOk());
     }

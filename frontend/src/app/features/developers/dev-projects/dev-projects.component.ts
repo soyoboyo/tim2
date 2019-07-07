@@ -7,6 +7,7 @@ import { ConfirmationDialogService } from '../../../shared/services/confirmation
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Project } from '../../../shared/types/entities/Project';
+import { ProjectForDeveloper } from '../../../shared/types/DTOs/output/ProjectForDeveloper';
 
 @Component({
 	selector: 'app-dev-projects',
@@ -17,8 +18,8 @@ export class DevProjectsComponent implements OnInit {
 
 	projectParams: FormGroup;
 	projectNameControl = new FormControl([''], [Validators.required]);
-	sourceLanguageControl = new FormControl([''], [Validators.required]);
-	sourceCountryControl = new FormControl([''], [Validators.required]);
+	sourceLanguageControl = new FormControl([''], [Validators.required, Validators.pattern('[a-z]{2} .{0,}|[a-z]{2}')]);
+	sourceCountryControl = new FormControl([''], [Validators.required, Validators.pattern('[A-Z]{2} .{0,}|[A-Z]{2}')]);
 	targetLanguageControl = new FormControl(null);
 	targetCountryControl = new FormControl(null);
 	filteredLanguages: Observable<any[]>;
@@ -81,15 +82,13 @@ export class DevProjectsComponent implements OnInit {
 	async getLocales() {
 		this.allLanguages = await this.http.getAll('locales/languages/getAll');
 		this.allCountries = await this.http.getAll('locales/countries/getAll');
-		this.allLanguages.sort();
-		this.allCountries.sort();
 		this.allTargetLanguages = this.allLanguages;
 		this.allTargetCountries = this.allCountries;
 	}
 
 	async getProjects() {
 		this.isLoadingResults = true;
-		this.projects = await this.http.getAll('project/getAll');
+		this.projects = await this.http.getAll('project/developer/getAll');
 		this.projects = [].concat(this.projects);
 		this.isLoadingResults = false;
 	}
@@ -120,17 +119,17 @@ export class DevProjectsComponent implements OnInit {
 	}
 
 	addReplacableLocale() {
-		const control = this.projectParams.get('replacableLocale') as FormArray;
+		const control = <FormArray>this.projectParams.get('replacableLocale');
 		control.push(this.initReplacableLocale());
 	}
 
 	removeReplacableLocale(i: number) {
-		const control = this.projectParams.get('replacableLocale') as FormArray;
+		const control = <FormArray>this.projectParams.get('replacableLocale');
 		control.removeAt(i);
 	}
 
 	addExistingReplacableLocale(replaced: string, replacement: string) {
-		const control = this.projectParams.get('replacableLocale') as FormArray;
+		const control = <FormArray>this.projectParams.get('replacableLocale');
 		control.push(this.initExistingReplacableLocale(replaced, replacement));
 	}
 
@@ -152,6 +151,7 @@ export class DevProjectsComponent implements OnInit {
 		const sourceLocale = this.getCode(params.value.sourceLanguage) + '_' + this.getCode(params.value.sourceCountry);
 		const targetLocales = [].concat(this.selectedTargetLocales);
 		targetLocales.push(sourceLocale);
+		this.removeLocaleFromArray(sourceLocale, targetLocales);
 		const body = new ProjectDTO(
 			params.value.projectName,
 			sourceLocale,
@@ -181,7 +181,7 @@ export class DevProjectsComponent implements OnInit {
 		});
 	}
 
-	editProject(project: Project) {
+	editProject(project: ProjectForDeveloper) {
 		this.toUpdate = project;
 		this.formMode = 'Update';
 		this.clearForm();
@@ -189,26 +189,21 @@ export class DevProjectsComponent implements OnInit {
 		if (this.showForm === false) {
 			this.showForm = true;
 		}
-		this.sourceLocale = project.sourceLocale;
+		this.sourceLocale = project.sourceLanguage + '_' + project.sourceCountry;
 		this.projectParams.patchValue({
 			projectName: project.name,
-			sourceLanguage: project.sourceLocale.split('_')[0],
-			sourceCountry: project.sourceLocale.split('_')[1],
+			sourceLanguage: project.sourceLanguage,
+			sourceCountry: project.sourceCountry,
 			targetLanguage: '',
 			targetCountry: ''
 		});
-		project.targetLocales.forEach((t) => {
-			this.selectedTargetLocales.push(t.locale);
-			this.availableReplacements.push(t.locale);
-		});
-		this.removeLocaleFromArray(this.sourceLocale, this.selectedTargetLocales);
+		this.selectedTargetLocales = [].concat(project.targetLocales);
+		this.availableReplacements = [].concat(project.availableReplacements);
 
-
-		const replacements = project.replaceableLocaleToItsSubstitute;
+		const replacements = project.substitutes;
 		Object.keys(replacements).forEach((key) => {
-			let replacedLocale = key.split(',')[1].split('=')[1];
-			replacedLocale = replacedLocale.slice(0, -1);
-			const replacement = replacements[key].locale;
+			const replacedLocale = key;
+			const replacement = replacements[key];
 			this.addExistingReplacableLocale(replacedLocale, replacement);
 		});
 	}
@@ -268,20 +263,17 @@ export class DevProjectsComponent implements OnInit {
 			if (lang !== '' && co !== '') {
 				this.selectedTargetLocales.push(targetLocale);
 				this.availableReplacements.push(targetLocale);
+				this.projectParams.patchValue({
+					targetLanguage: '',
+					targetCountry: ''
+				});
 			}
 		}
 	}
 
 	removeTargetLocale(targetLocale: string): void {
-		const index = this.selectedTargetLocales.indexOf(targetLocale);
-		if (index >= 0) {
-			this.selectedTargetLocales.splice(index, 1);
-		}
-		const replacementIndex = this.availableReplacements.indexOf(targetLocale);
-		if (replacementIndex >= 0) {
-			this.availableReplacements.splice(replacementIndex, 1);
-		}
-
+		this.removeLocaleFromArray(targetLocale, this.selectedTargetLocales);
+		this.removeLocaleFromArray(targetLocale, this.availableReplacements);
 	}
 
 	public getCode(value: string): string {
@@ -292,10 +284,9 @@ export class DevProjectsComponent implements OnInit {
 		this.projectParams.markAsPristine();
 		this.projectParams.markAsUntouched();
 		this.projectParams.reset();
-		const replacementControls = this.projectParams.get('replacableLocale') as FormArray;
-		const i = 0;
+		const replacementControls = <FormArray>this.projectParams.get('replacableLocale');
 		while (replacementControls.controls.length > 0) {
-			replacementControls.removeAt(i);
+			replacementControls.removeAt(0);
 		}
 		this.availableReplacements = [];
 		this.selectedTargetLocales = [];
@@ -307,25 +298,23 @@ export class DevProjectsComponent implements OnInit {
 			this.removeLocaleFromArray(this.sourceLocale, this.availableReplacements);
 		}
 
-		const lang = language.split(' ')[0];
 		if (typeof this.projectParams.value.sourceCountry === 'string') {
 			const coun = this.projectParams.value.sourceCountry.split(' ')[0];
-			this.sourceLocale = this.getCode(lang) + '_' + this.getCode(coun);
+			this.sourceLocale = this.getCode(language) + '_' + this.getCode(coun);
 			if (!this.availableReplacements.includes(this.sourceLocale)) {
 				this.availableReplacements.push(this.sourceLocale);
 			}
 		}
 	}
 
-	onSelectSourceCountry(country: any) {
+	onSelectSourceCountry(country: string) {
 		if (this.sourceLocale !== null) {
 			this.removeLocaleFromArray(this.sourceLocale, this.availableReplacements);
 		}
 
-		const coun = country.split(' ')[0];
 		if (typeof this.projectParams.value.sourceLanguage === 'string') {
 			const lang = this.projectParams.value.sourceLanguage.split(' ')[0];
-			this.sourceLocale = this.getCode(lang) + '_' + this.getCode(coun);
+			this.sourceLocale = this.getCode(lang) + '_' + this.getCode(country);
 			if (!this.availableReplacements.includes(this.sourceLocale)) {
 				this.availableReplacements.push(this.sourceLocale);
 			}

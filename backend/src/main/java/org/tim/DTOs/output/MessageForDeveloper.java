@@ -5,10 +5,13 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.tim.entities.Translation;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -38,4 +41,9 @@ public class MessageForDeveloper {
 
 	private List<String> missingLocales;
 
+	private Map<String, Integer> translationStatuses = new HashMap<>();
+
+	public Boolean isTranslationOutdated(TranslationForDeveloper translation) {
+		return !translation.getUpdateDate().isAfter(this.getUpdateDate());
+	}
 }

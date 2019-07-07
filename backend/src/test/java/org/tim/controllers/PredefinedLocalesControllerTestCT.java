@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.tim.services.PredefinedLocalesService;
 
-import java.util.LinkedHashSet;
+import java.util.TreeSet;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -26,10 +26,10 @@ import static org.tim.utils.Mapping.*;
 public class PredefinedLocalesControllerTestCT {
 
 	private MockMvc mockMvc;
-	private static LinkedHashSet<String> expectedPredefinedLanguages;
-	private static String expectedLanguages[];
-	private static LinkedHashSet<String> expectedPredefinedCountries;
-	private static String expectedCountries[];
+	private static TreeSet<String> expectedPredefinedLanguages;
+	private static String[] expectedLanguages;
+	private static TreeSet<String> expectedPredefinedCountries;
+	private static String[] expectedCountries;
 
 	private final String BASE_URL = "http://localhost:8081";
 
@@ -41,18 +41,18 @@ public class PredefinedLocalesControllerTestCT {
 
 	@BeforeAll
 	public static void init() {
-		expectedPredefinedLanguages = new LinkedHashSet<>();
+		expectedPredefinedLanguages = new TreeSet<>();
 		expectedPredefinedLanguages.add("pl (Polish)");
 		expectedPredefinedLanguages.add("de (German)");
 		expectedLanguages = new String[2];
-		expectedLanguages[0] = "pl (Polish)";
-		expectedLanguages[1] = "de (German)";
-		expectedPredefinedCountries = new LinkedHashSet<>();
+		expectedLanguages[0] = "de (German)";
+		expectedLanguages[1] = "pl (Polish)";
+		expectedPredefinedCountries = new TreeSet<>();
 		expectedPredefinedCountries.add("SG (Singapore)");
 		expectedPredefinedCountries.add("ME (Montenegro)");
 		expectedCountries = new String[2];
-		expectedCountries[0] = "SG (Singapore)";
-		expectedCountries[1] = "ME (Montenegro)";
+		expectedCountries[0] = "ME (Montenegro)";
+		expectedCountries[1] = "SG (Singapore)";
 	}
 
 	@BeforeEach

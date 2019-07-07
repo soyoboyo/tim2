@@ -39,7 +39,7 @@ public class MessageVersion {
 	private String createdBy;
 
 	@NotNull
-	private Boolean isRemoved;
+	private Boolean isArchived;
 
 	@NotNull
 	Long messageId;
