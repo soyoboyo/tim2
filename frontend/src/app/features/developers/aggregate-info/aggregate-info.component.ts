@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { RestService } from '../../../shared/services/rest/rest.service';
-import { Project } from '../../../shared/types/entities/Project';
 
 @Component({
 	selector: 'app-aggregate-info',
@@ -9,7 +8,7 @@ import { Project } from '../../../shared/types/entities/Project';
 })
 export class AggregateInfoComponent implements OnInit, OnChanges {
 
-	@Input() selectedProjectId: Project;
+	@Input() selectedProjectId: number;
 	aggregatedInfoList: any;
 	aggregatedInfo = null;
 
@@ -20,7 +19,6 @@ export class AggregateInfoComponent implements OnInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		console.log(this.selectedProjectId);
 		this.getAggregatedInfo();
 	}
 

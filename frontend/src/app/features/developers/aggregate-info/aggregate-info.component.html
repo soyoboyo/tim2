@@ -12,12 +12,14 @@
 		<table>
 			<tr>
 				<th>locale</th>
+				<th>coverage</th>
 				<th>correct</th>
 				<th>incorrect</th>
 				<th>missing</th>
 			</tr>
 			<tr *ngFor="let o of aggregatedInfoList  |  keyvalue">
 				<td>{{o.key}}</td>
+				<td>{{((o.value['correct'] * 100) / (o.value['correct'] + o.value['incorrect'] + o.value['missing'])) | number:'1.0-0'}}%</td>
 				<td>{{o.value['correct']}}</td>
 				<td>{{o.value['incorrect']}}</td>
 				<td>{{o.value['missing']}}</td>

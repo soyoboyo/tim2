@@ -9,6 +9,16 @@
 			</mat-select>
 		</mat-form-field>
 	</div>
+	<div *ngIf="selectedProject !== null" class="select-locale">
+		<mat-form-field>
+			<mat-label>Select locale</mat-label>
+			<mat-select (selectionChange)="selectLocale($event.value)">
+				<mat-option *ngFor="let locale of selectedProject.targetLocales" [value]="locale.locale">
+					{{locale.locale}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
 	<div>
 		<button mat-raised-button
 				color="accent"
@@ -32,7 +42,10 @@
 								(editTranslationEvent)="editTranslation($event)"
 								(sendSelectedLocale)="selectLocale($event)"
 								(invalidateTranslationEvent)="invalidateTranslation($event)"
-								[selectedProject]="selectedProject"></app-tra-messages-table>
+								[selectedProject]="selectedProject"
+								[selectedLocale]="selectedLocale"
+
+		></app-tra-messages-table>
 	</div>
 
 	<div *ngIf="showForm" class="form-wrapper">

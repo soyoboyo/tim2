@@ -25,6 +25,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 
 	@Input() selectedRowIndex = -1;
 	@Input() selectedProject: Project;
+	@Input() selectedLocale: string = null;
 	@Input() messages: Message[] = [];
 	@Output() sendSelectedLocale = new EventEmitter<any>();
 	@Output() addTranslationEvent = new EventEmitter<any>();
@@ -39,7 +40,6 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	isLoadingResults = false;
 
 	expandedRow = null;
-	selectedLocale: string = null;
 
 	constructor() {
 	}
@@ -49,6 +49,12 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
+		if(this.selectedLocale !== null){
+			if (!this.displayedColumns.includes('actions')) {
+				this.displayedColumns.push('actions');
+			}
+		}
+
 		this.getMessages();
 	}
 
@@ -79,14 +85,6 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
 		};
 		this.dataSource.sort = this.sort;
-	}
-
-	selectLocale(value: string) {
-		if (!this.displayedColumns.includes('actions')) {
-			this.displayedColumns.push('actions');
-		}
-		this.selectedLocale = value;
-		this.sendSelectedLocale.emit(value);
 	}
 
 	async invalidateTranslation(message: any) {

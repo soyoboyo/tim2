@@ -119,7 +119,7 @@ export class DevMessagesComponent implements OnInit {
 			this.isLoadingResults = true;
 			const response = await this.http.getAll('message/developer/getByProject/' + this.selectedProject.id);
 			this.messages = [].concat(response);
-			this.selectedProjectId = this.selectedProject.id;
+			this.selectedProjectId = new Number(this.selectedProject.id);
 			this.isLoadingResults = false;
 		}
 	}
