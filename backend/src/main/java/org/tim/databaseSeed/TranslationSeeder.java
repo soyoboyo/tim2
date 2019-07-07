@@ -46,7 +46,7 @@ public class TranslationSeeder {
         translationT1M3.setContent("Wir haben ein einzigartiges Geschäftsmodell entwickelt und betreiben, das uns stark positioniert, " +
                 "da sich immer mehr Verbraucher für Online-Shopping entscheiden.");
 
-        Translation translationT2M3 = new Translation(LocaleUtils.toLocale("en_UK"), messages.get("messageM3"));
+        Translation translationT2M3 = new Translation(LocaleUtils.toLocale("en_GB"), messages.get("messageM3"));
         translationT2M3.setContent("We have developed and operate a unique business model which positions us strongly" +
                 " as more consumers choose to shop online.");
 
@@ -60,7 +60,7 @@ public class TranslationSeeder {
         translationT1M4.setContent("Unser strategisches Ziel ist es, die Interessen unserer Kunden, Investoren und anderer Stakeholder in " +
                 "Einklang zu bringen, um einen langfristigen Shareholder Value zu erzielen.");
 
-        Translation translationT2M4 = new Translation(LocaleUtils.toLocale("en_UK"), messages.get("messageM4"));
+        Translation translationT2M4 = new Translation(LocaleUtils.toLocale("en_GB"), messages.get("messageM4"));
         translationT2M4.setContent("Our strategic objective is to align the interests of our customers, " +
                 "investors and other stakeholders to deliver long term shareholder value.");
 

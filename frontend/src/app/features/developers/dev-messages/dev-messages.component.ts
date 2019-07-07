@@ -26,12 +26,12 @@ export class DevMessagesComponent implements OnInit {
 	messages: any[] = [];
 
 	selectedProject = null;
+	selectedProjectId = null;
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
 				private http: RestService,
 				private snackbar: SnackbarService,
-				public utils: UtilsService,
 				private projectsStore: ProjectsStoreService,
 				private confirmService: ConfirmationDialogService,
 				private projectStoreService: ProjectsStoreService) {
@@ -103,6 +103,7 @@ export class DevMessagesComponent implements OnInit {
 	changeProject(value) {
 		this.cancelUpdate();
 		this.selectedProject = value;
+		this.selectedProjectId = value.id;
 		this.projectStoreService.setSelectedProject(value);
 		this.getMessages();
 	}
@@ -118,6 +119,7 @@ export class DevMessagesComponent implements OnInit {
 			this.isLoadingResults = true;
 			const response = await this.http.getAll('message/developer/getByProject/' + this.selectedProject.id);
 			this.messages = [].concat(response);
+			this.selectedProjectId = new Number(this.selectedProject.id);
 			this.isLoadingResults = false;
 		}
 	}

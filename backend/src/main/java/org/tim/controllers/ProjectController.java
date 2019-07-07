@@ -6,7 +6,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.tim.DTOs.input.ProjectDTO;
 import org.tim.DTOs.output.ProjectForDeveloper;
+import org.tim.entities.AggregatedInfoForDeveloper;
 import org.tim.entities.Project;
+import org.tim.services.AggregatedInfoService;
 import org.tim.services.ProjectService;
 import org.tim.validators.DTOValidator;
 
@@ -23,6 +25,7 @@ import static org.tim.utils.Mapping.*;
 public class ProjectController {
 
 	private final ProjectService projectService;
+	private final AggregatedInfoService aggregatedInfoService;
 
 	@GetMapping(GET_ALL)
 	@PreAuthorize("hasRole('ROLE_TRANSLATOR')")
@@ -45,5 +48,10 @@ public class ProjectController {
 	public Project updateProject(@RequestBody @Valid ProjectDTO projectDTO, @PathVariable Long id, BindingResult bindingResult) {
 		DTOValidator.validate(bindingResult);
 		return projectService.updateProject(projectDTO, id);
+	}
+
+	@GetMapping(DEVELOPER + AGGREGATE)
+	public AggregatedInfoForDeveloper getAggregatedInfoAboutTranslationsInProject( @PathVariable Long id){
+		return aggregatedInfoService.getAggregatedInfoForDeveloper(id);
 	}
 }

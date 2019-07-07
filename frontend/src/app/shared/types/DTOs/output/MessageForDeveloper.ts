@@ -8,10 +8,12 @@ export class MessageForDeveloper {
 	updateDate: Date;
 	createdBy: string;
 
+	projectId: number;
+
 	translations: Translation[];
 
 	missingLocales: string[];
 
-	projectId: number;
+	translationStatuses: Map<string, number>;
 
 }

@@ -24,7 +24,9 @@
 
 		<ng-container matColumnDef="translations">
 			<th mat-header-cell *matHeaderCellDef>Translations</th>
-			<td mat-cell *matCellDef="let message" matTooltip="correct/missing/invalid/outdated" matTooltipClass="tooltip-font">2/1/3/7</td>
+			<td mat-cell *matCellDef="let message" matTooltip="correct/incorrect/missing" matTooltipClass="tooltip-font">
+				{{message.translationStatuses['correct']}}/{{message.translationStatuses['incorrect']}}/{{message.translationStatuses['missing']}}
+			</td>
 		</ng-container>
 
 		<ng-container matColumnDef="actions">
