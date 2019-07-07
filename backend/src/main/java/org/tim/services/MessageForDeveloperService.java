@@ -30,12 +30,12 @@ public class MessageForDeveloperService {
 		List<MessageForDeveloper> messagesForDeveloper = new ArrayList<>();
 		Project project = projectRepository.findById(projectId).orElseThrow(() ->
 				new NoSuchElementException(String.format("Project with id %s not found", projectId)));
-		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsRemovedFalse(projectId);
+		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
 
 		for (Message m : messages) {
 			MessageForDeveloper mForDeveloper = mapper.map(m, MessageForDeveloper.class);
 			mForDeveloper.setProjectId(projectId);
-			List<Translation> translations = translationRepository.findAllByMessageAndIsRemovedFalseOrderByLocale(m);
+			List<Translation> translations = translationRepository.findAllByMessageAndIsArchivedFalseOrderByLocale(m);
 
 			mForDeveloper.setTranslations(getTranslationsForDeveloper(translations));
 

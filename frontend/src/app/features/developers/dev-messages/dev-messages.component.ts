@@ -125,7 +125,7 @@ export class DevMessagesComponent implements OnInit {
 	async archiveMessage(id: any) {
 		await this.confirmService.openDialog('Are you sure you want to archive selected message?').subscribe((result) => {
 			if (result) {
-				this.http.remove('message/remove/' + id).subscribe((response) => {
+				this.http.remove('message/archive/' + id).subscribe((response) => {
 					if (response == null) {
 						this.selectedRowIndex = -1;
 						this.snackbar.snackSuccess('Success!', 'OK');

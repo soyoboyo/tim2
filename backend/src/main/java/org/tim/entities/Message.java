@@ -51,7 +51,7 @@ public class Message {
 	private Project project;
 
 	@NotNull
-	private Boolean isRemoved = false;
+	private Boolean isArchived = false;
 
 	private String createdBy;
 

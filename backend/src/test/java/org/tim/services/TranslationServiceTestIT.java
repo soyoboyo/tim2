@@ -175,7 +175,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 
 
 	@Test
-	void whenDeletingExistingTranslationThenTranslationIsDeleted() {
+	void whenArchivingExistingTranslationThenTranslationIsArchived() {
 		//given
 		Project project = createEmptyGermanToEnglishProject();
 		Message message = createRandomMessage(project);
@@ -183,9 +183,9 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 		translationCreateDTO.setLocale("en");
 		Translation createdTranslation = translationService.createTranslation(translationCreateDTO, message.getId());
 		//when
-		Translation translation = translationService.deleteTranslation(createdTranslation.getId());
+		Translation translation = translationService.archiveTranslation(createdTranslation.getId());
 		Optional<Translation> translationFromDB = translationRepository.findById(translation.getId());
 		//then
-		assertTrue(translationFromDB.get().getIsRemoved());
+		assertTrue(translationFromDB.get().getIsArchived());
 	}
 }
