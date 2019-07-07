@@ -26,7 +26,7 @@ public class CIExportsService {
 
 	public String exportAllReadyTranslationsByProjectAndByLocale(Long projectId, String locale) {
 		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
-		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsRemovedFalse(projectId);
+		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
 		Map<LocaleWrapper, LocaleWrapper> replaceableLocaleToItsSubstitute = project.getReplaceableLocaleToItsSubstitute();
 		Locale orderedLocale;
 		try {

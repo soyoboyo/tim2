@@ -20,12 +20,10 @@ public interface TranslationRepository extends JpaRepository<Translation, Long> 
 
     List<Translation> findTranslationsByLocaleAndMessage_ProjectIdAndIsValidTrue(Locale locale, Long projectId);
 
-    List<Translation> findTranslationsByMessageIdAndIsValidTrue(Long messageId);
-
     Optional<Translation> findTranslationsByLocaleAndMessage(Locale locale, Message message);
 
 	Translation findTranslationByLocaleAndMessageId(Locale locale, Long message_id);
 
 
-	List<Translation> findAllByMessageAndIsRemovedFalseOrderByLocale(Message message);
+	List<Translation> findAllByMessageAndIsArchivedFalseOrderByLocale(Message message);
 }

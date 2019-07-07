@@ -50,7 +50,7 @@ public class Translation {
 
 	private Boolean isValid = true;
 
-	private Boolean isRemoved = false;
+	private Boolean isArchived = false;
 
 	private String createdBy;
 

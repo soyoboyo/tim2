@@ -19,7 +19,6 @@ import org.tim.repositories.TranslationVersionRepository;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static org.tim.utils.UserMessages.LANG_NOT_FOUND_IN_PROJ;
@@ -36,9 +35,8 @@ public class TranslationService {
 
 	public Translation createTranslation(TranslationCreateDTO translationCreateDTO, Long messageId) {
 		checkIfTranslationAlreadyExists(translationCreateDTO.getLocale(), messageId);
+		Message message = checkIfMessageExists(messageId);
 
-		Message message = messageRepository.findById(messageId).orElseThrow(() ->
-				new EntityNotFoundException("message"));
 		List<LocaleWrapper> projectTargetLocales = message.getProject().getTargetLocales();
 		Locale translationLocale = LocaleUtils.toLocale(translationCreateDTO.getLocale());
 		boolean existInProject = false;
@@ -62,7 +60,8 @@ public class TranslationService {
 	}
 
 	public Translation updateTranslation(TranslationUpdateDTO translationUpdateDTO, Long translationId, Long messageId) {
-		Translation translation = checkIfTranslationExists(translationId);checkIfMessageExists(messageId);
+		Translation translation = checkIfTranslationExists(translationId);
+		checkIfMessageExists(messageId);
 
 		saveTranslationVersion(translation);
 
@@ -72,7 +71,8 @@ public class TranslationService {
 	}
 
 	public Translation invalidateTranslation(Long translationId, Long messageId) {
-		Translation translation = checkIfTranslationExists(translationId);checkIfMessageExists(messageId);
+		Translation translation = checkIfTranslationExists(translationId);
+		checkIfMessageExists(messageId);
 
 		saveTranslationVersion(translation);
 
@@ -80,16 +80,16 @@ public class TranslationService {
 		return translationRepository.save(translation);
 	}
 
-	public Translation deleteTranslation(Long id) {
+	public Translation archiveTranslation(Long id) {
 		Translation translation = checkIfTranslationExists(id);
 
 		saveTranslationVersion(translation);
 
-		translation.setIsRemoved(true);
+		translation.setIsArchived(true);
 		return translationRepository.save(translation);
 	}
 
-	private void saveTranslationVersion(Translation translation){
+	private void saveTranslationVersion(Translation translation) {
 		TranslationVersion translationVersion = mapper.map(translation, TranslationVersion.class);
 		translationVersion.setTranslationId(translation.getId());
 		translationVersionRepository.save(translationVersion);
@@ -97,12 +97,12 @@ public class TranslationService {
 
 	private Translation checkIfTranslationExists(Long translationId) {
 		return translationRepository.findById(translationId).orElseThrow(() ->
-				new NoSuchElementException(String.format("Translation with id %s is not found", translationId)));
+				new EntityNotFoundException("translation"));
 	}
 
 	private Message checkIfMessageExists(Long messageId) {
 		return messageRepository.findById(messageId).orElseThrow(() ->
-				new NoSuchElementException(String.format("Message with id %s is not found", messageId)));
+				new EntityNotFoundException("message"));
 	}
 
 	private void checkIfTranslationAlreadyExists(String locale, Long messageId) {

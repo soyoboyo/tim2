@@ -26,6 +26,7 @@ public class Mapping {
     public static final String GET_BY_PROJECT = "/getByProject/{projectId}";
     public static final String GET_ALL = "/getAll";
     public static final String REMOVE = "/remove/{id}";
+    public static final String ARCHIVE = "/archive/{id}";
     public static final String GET = "/get";
     public static final String CREATE = "/create";
     public static final String UPDATE = "/update/{id}";
