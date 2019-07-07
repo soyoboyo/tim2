@@ -1,0 +1,17 @@
+server:
+  port: 9000
+spring:
+  h2:
+    console:
+      enabled: false
+  datasource:
+    platform: h2
+    url: jdbc:h2:~/oauth-tests;DB_CLOSE_ON_EXIT=TRUE
+    username: sa
+    password: sa
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
