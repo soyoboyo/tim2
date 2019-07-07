@@ -41,6 +41,21 @@ public class MessageForDeveloperService {
 
 			mForDeveloper.setMissingLocales(getMissingLocales(project, translations));
 
+			Map<String, Integer> translationStatuses = new HashMap<>();
+
+			translationStatuses.put("missing", mForDeveloper.getMissingLocales().size());
+
+			Integer incorrectCount = 0;
+			for (TranslationForDeveloper t : mForDeveloper.getTranslations()) {
+				if (!t.getIsValid() || mForDeveloper.isTranslationOutdated(t)) {
+					incorrectCount++;
+				}
+			}
+			translationStatuses.put("incorrect", incorrectCount);
+			translationStatuses.put("correct", (translations.size() - incorrectCount));
+
+			mForDeveloper.setTranslationStatuses(translationStatuses);
+
 			messagesForDeveloper.add(mForDeveloper);
 		}
 
