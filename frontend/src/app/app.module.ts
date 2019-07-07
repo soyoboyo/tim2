@@ -28,6 +28,7 @@ import { DevHistoryTranslationsComponent } from './features/developers/dev-histo
 import { DevHistoryMessagesComponent } from './features/developers/dev-history-messages/dev-history-messages.component';
 import { ViewsModule } from './views/views.module';
 import { SharedModule } from './shared/shared.module';
+import { AggregateInfoComponent } from './features/developers/aggregate-info/aggregate-info.component';
 
 @NgModule({
 	declarations: [
@@ -43,7 +44,8 @@ import { SharedModule } from './shared/shared.module';
 		DevMessagesTableComponent,
 		DevProjectsTableComponent,
 		DevHistoryTranslationsComponent,
-		DevHistoryMessagesComponent
+		DevHistoryMessagesComponent,
+		AggregateInfoComponent
 	],
 	imports: [
 		RouterModule.forRoot(routes),

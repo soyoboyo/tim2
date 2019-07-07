@@ -1,14 +1,5 @@
-import {
-	Component,
-	EventEmitter,
-	Input,
-	OnChanges,
-	OnInit,
-	Output,
-	SimpleChanges, ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { Project } from '../../../../shared/types/entities/Project';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ProjectForDeveloper } from '../../../../shared/types/DTOs/output/ProjectForDeveloper';
 

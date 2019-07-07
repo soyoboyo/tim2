@@ -21,8 +21,8 @@ public class AggregatedInfoService {
 	private final TranslationRepository translationRepository;
 
 	public AggregatedInfoForDeveloper getAggregatedInfoForDeveloper(Long projectId) {
-		AggregatedInfoForDeveloper aifd = new AggregatedInfoForDeveloper();
-		aifd.setProjectId(projectId);
+		AggregatedInfoForDeveloper aggregatedInfo = new AggregatedInfoForDeveloper();
+		aggregatedInfo.setProjectId(projectId);
 
 		String correct = "correct";
 		String incorrect = "incorrect";
@@ -40,7 +40,7 @@ public class AggregatedInfoService {
 			translationStatusesByLocale.put(lw.getLocale().toString(), details);
 			targetLocales.add(lw.getLocale().toString());
 		}
-
+		
 		List<Message> messages = new LinkedList<>(messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId));
 		for (Message m : messages) {
 			List<Translation> translations = translationRepository.findTranslationsByMessageIdAndIsArchivedFalse(m.getId());
@@ -48,7 +48,6 @@ public class AggregatedInfoService {
 
 			for (Translation t : translations) {
 				String locale = t.getLocale().toString();
-
 				if (m.isTranslationOutdated(t) || !t.getIsValid()) {
 					translationStatusesByLocale.get(locale).put(
 							incorrect,
@@ -72,9 +71,9 @@ public class AggregatedInfoService {
 
 		}
 
-		aifd.setTranslationStatusesByLocale(translationStatusesByLocale);
-		aifd.setMessagesTotal(messages.size());
+		aggregatedInfo.setTranslationStatusesByLocale(translationStatusesByLocale);
+		aggregatedInfo.setMessagesTotal(messages.size());
 
-		return aifd;
+		return aggregatedInfo;
 	}
 }
