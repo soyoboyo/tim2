@@ -40,6 +40,9 @@
 					<mat-error *ngIf="sourceLanguageControl.hasError('required')">
 						Source language is <strong>required</strong>
 					</mat-error>
+					<mat-error *ngIf="sourceLanguageControl.hasError('pattern')">
+						Wrong pattern: requires 2 small letters
+					</mat-error>
 				</mat-form-field>
 
 				<mat-form-field>
@@ -54,6 +57,9 @@
 					</mat-autocomplete>
 					<mat-error *ngIf="sourceCountryControl.hasError('required')">
 						Source country is <strong>required</strong>
+					</mat-error>
+					<mat-error *ngIf="sourceCountryControl.hasError('pattern')">
+						Wrong pattern: requires 2 big letters
 					</mat-error>
 				</mat-form-field>
 
@@ -118,7 +124,7 @@
 				</div>
 
 				<div *ngIf="selectedTargetLocales.length < 2" class="replacements">Select source locale and at least 1 target locale to add substitutes</div>
-				<div *ngIf="selectedTargetLocales.length > 1" formArrayName="replacableLocale" class="replacements">
+				<div *ngIf="(selectedTargetLocales.length > 0 && sourceLocale !== null) || selectedTargetLocales.length > 1" formArrayName="replacableLocale" class="replacements">
 					<div *ngFor="let locale of projectParams.get('replacableLocale').controls; let i=index">
 						<div>
 							<mat-label>Substitute {{i + 1}}</mat-label>

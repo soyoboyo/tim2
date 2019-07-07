@@ -65,7 +65,7 @@
 						</p>
 
 						<p class="warning" *ngIf="row.missingLocales.length > 0">
-							Missing translations for locales: {{row.missingLocales}}
+							Missing translations for locales: {{row.missingLocales.join(',  ')}}
 						</p>
 
 						<div *ngIf="row.translations.length < 1">

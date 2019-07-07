@@ -3,7 +3,7 @@ package org.tim.services;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.LocaleUtils;
 import org.springframework.stereotype.Service;
-import org.tim.DTOs.LocaleDTO;
+import org.tim.DTOs.output.LocaleDTO;
 import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
