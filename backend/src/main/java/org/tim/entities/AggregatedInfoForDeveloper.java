@@ -11,8 +11,8 @@ public class AggregatedInfoForDeveloper {
 
 	private Long projectId;
 
-	private Map<String, Long> localeCorrectMessages;
+	private Map<String, Map<String, Integer>> translationStatusesByLocale;
 
-	private Long messagesTotal;
+	private Integer messagesTotal;
 
 }

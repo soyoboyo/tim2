@@ -24,6 +24,7 @@ public interface TranslationRepository extends JpaRepository<Translation, Long> 
 
 	Translation findTranslationByLocaleAndMessageId(Locale locale, Long message_id);
 
+	List<Translation> findTranslationsByMessageIdAndIsArchivedFalse(Long messageId);
 
 	List<Translation> findAllByMessageAndIsArchivedFalseOrderByLocale(Message message);
 }
