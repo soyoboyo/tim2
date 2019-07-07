@@ -40,7 +40,7 @@ public class AggregatedInfoService {
 			translationStatusesByLocale.put(lw.getLocale().toString(), details);
 			targetLocales.add(lw.getLocale().toString());
 		}
-		
+
 		List<Message> messages = new LinkedList<>(messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId));
 		for (Message m : messages) {
 			List<Translation> translations = translationRepository.findTranslationsByMessageIdAndIsArchivedFalse(m.getId());
@@ -68,11 +68,14 @@ public class AggregatedInfoService {
 						(translationStatusesByLocale.get(missingLocale).get(missing) + 1)
 				);
 			}
-
 		}
 
 		aggregatedInfo.setTranslationStatusesByLocale(translationStatusesByLocale);
 		aggregatedInfo.setMessagesTotal(messages.size());
+
+		for (Map.Entry<String, Map<String, Integer>> locale : translationStatusesByLocale.entrySet()) {
+			locale.getValue().put("coverage", messages.size());
+		}
 
 		return aggregatedInfo;
 	}
