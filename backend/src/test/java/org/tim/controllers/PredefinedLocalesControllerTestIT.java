@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.tim.utils.Mapping.*;
 
 @ExtendWith({SpringExtension.class})
-public class PredefinedLocalesControllerTestCT {
+public class PredefinedLocalesControllerTestIT {
 
 	private MockMvc mockMvc;
 	private static TreeSet<String> expectedPredefinedLanguages;
