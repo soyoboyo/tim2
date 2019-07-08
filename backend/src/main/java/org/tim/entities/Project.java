@@ -48,19 +48,10 @@ public class Project {
     @JoinTable(name = "project_locale_wrapper",
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "locale_wrapper_id"))
-    final private List<LocaleWrapper> targetLocales = new ArrayList<>();
+    final private Set<LocaleWrapper> targetLocales = new HashSet<>();
 
     public void addTargetLocale(@NotNull List<LocaleWrapper> locales) {
-        for (LocaleWrapper locale : locales) {
-            if (!targetLocales.contains(locale)) {
-                targetLocales.add(locale);
-            }
-        }
-    }
-
-    public List<LocaleWrapper> getTargetLocales() {
-        LinkedHashSet<LocaleWrapper> uniqueTargetLocale = new LinkedHashSet<>(targetLocales);
-        return new ArrayList<>(uniqueTargetLocale);
+		targetLocales.addAll(locales);
     }
 
     public void removeTargetLocale(@NotNull LocaleWrapper locale) {

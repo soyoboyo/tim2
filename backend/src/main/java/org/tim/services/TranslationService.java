@@ -19,6 +19,7 @@ import org.tim.repositories.TranslationVersionRepository;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.tim.utils.UserMessages.LANG_NOT_FOUND_IN_PROJ;
@@ -37,7 +38,7 @@ public class TranslationService {
 		checkIfTranslationAlreadyExists(translationCreateDTO.getLocale(), messageId);
 		Message message = checkIfMessageExists(messageId);
 
-		List<LocaleWrapper> projectTargetLocales = message.getProject().getTargetLocales();
+		Set<LocaleWrapper> projectTargetLocales = message.getProject().getTargetLocales();
 		Locale translationLocale = LocaleUtils.toLocale(translationCreateDTO.getLocale());
 		boolean existInProject = false;
 		for (LocaleWrapper localeWrapper : projectTargetLocales) {
