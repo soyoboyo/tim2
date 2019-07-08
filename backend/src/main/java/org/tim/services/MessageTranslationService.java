@@ -3,6 +3,7 @@ package org.tim.services;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.output.MessageWithWarningsDTO;
 import org.tim.DTOs.output.WarningDTO;
 import org.tim.entities.LocaleWrapper;
@@ -17,6 +18,7 @@ import org.tim.repositories.TranslationRepository;
 import java.util.*;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MessageTranslationService {
 
