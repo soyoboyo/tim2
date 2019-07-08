@@ -8,7 +8,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith({SpringExtension.class})
-public class PredefinedLocalesServiceTests {
+public class PredefinedLocalesServiceTestsIT {
 
     @InjectMocks
     private PredefinedLocalesService predefinedLocalesService;

@@ -8,7 +8,6 @@ before_install:
   - nvm use 12.6.0
   - npm install -g @angular/cli@latest
 stages:
-stages:
   - name: test
   - name: build
   - name: deliver
@@ -28,11 +27,11 @@ jobs:
          - npm i
          - ng build --prod
          - cd ../backend
-         - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+         - mvn install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B -V
       - stage: deliver
         script:
           - cd backend
-          - mvn package
+          - mvn package -Dmaven.test.skip=true
           - docker build -t studentproject/ocado-tim-backend:latest .
           - cd ../frontend
           - npm install -f
@@ -48,7 +47,7 @@ jobs:
           - curl https://cli-assets.heroku.com/install-standalone.sh | sh
           - docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com
           - cd backend
-          - mvn package -DskipTests
+          - mvn package -Dmaven.test.skip=true
           - docker build -t registry.heroku.com/studentproject-tim-backend/web -f Dockerfile.prod .
           - docker push registry.heroku.com/studentproject-tim-backend/web
           - /usr/local/bin/heroku container:release web -a studentproject-tim-backend
