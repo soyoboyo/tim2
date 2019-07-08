@@ -35,7 +35,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<MessageForTranslator>();
-	displayedColumns: string[] = ['index', 'content'];
+	displayedColumns: string[] = ['index', 'content', 'existing', 'upToDate', 'valid'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	isLoadingResults = false;
 
@@ -49,10 +49,12 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if(this.selectedLocale !== null){
+		if (this.selectedLocale !== null) {
 			if (!this.displayedColumns.includes('actions')) {
-				this.displayedColumns.push('actions');
+				this.displayedColumns = ['index', 'content', 'existing', 'upToDate', 'valid', 'actions'];
 			}
+		} else {
+			this.displayedColumns = ['index', 'content'];
 		}
 
 		this.getMessages();

@@ -22,23 +22,62 @@
 			<td mat-cell *matCellDef="let message">{{message.content | shorten: [60, '...']}}</td>
 		</ng-container>
 
+		<ng-container matColumnDef="existing">
+			<th mat-header-cell *matHeaderCellDef>Existing</th>
+			<td mat-cell *matCellDef="let message">
+				<p *ngIf="message.translation">
+					<mat-icon color="accent">check_circle_outline</mat-icon>
+				</p>
+				<p *ngIf="!message.translation">
+					<mat-icon color="warn">highlight_off</mat-icon>
+				</p>
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="valid">
+			<th mat-header-cell *matHeaderCellDef>Valid</th>
+			<td mat-cell *matCellDef="let message">
+				<p *ngIf="message.translation">
+					<mat-icon color="accent" *ngIf="message.translation.isValid">check_circle_outline</mat-icon>
+					<mat-icon color="warn" *ngIf="!message.translation.isValid">highlight_off</mat-icon>
+				</p>
+				<p *ngIf="!message.translation">
+					-
+				</p>
+
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="upToDate">
+			<th mat-header-cell *matHeaderCellDef>Up to date</th>
+			<td mat-cell *matCellDef="let message">
+				<p *ngIf="message.translation">
+					<mat-icon color="accent" *ngIf="!isTranslationOutdated(message)">check_circle_outline</mat-icon>
+					<mat-icon color="warn" *ngIf="isTranslationOutdated(message)">highlight_off</mat-icon>
+				</p>
+				<p *ngIf="!message.translation">
+					-
+				</p>
+			</td>
+		</ng-container>
+
+
 		<ng-container matColumnDef="actions">
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
 			<td mat-cell *matCellDef="let message">
 				<p>
-					<button mat-button color="primary" (click)="addTranslation(message)" *ngIf="!selectedLocale || !message.translation">
+					<button mat-button color="primary" (click)="addTranslation(message)" *ngIf="!selectedLocale || !message.translation" matTooltip="Add new translation" matTooltipClass="tooltip-font">
 						<mat-icon>add</mat-icon>
-						Add translation
+						Add
 					</button>
-					<button mat-button (click)="updateTranslation(message)" *ngIf="selectedLocale && message.translation">
+					<button mat-button (click)="updateTranslation(message)" *ngIf="selectedLocale && message.translation" matTooltip="Update translation" matTooltipClass="tooltip-font">
 						<mat-icon>update</mat-icon>
-						Update translation
+						Update
 					</button>
-					<button mat-button color="warn" (click)="invalidateTranslation(message)" *ngIf="selectedLocale && message.translation && message.translation.isValid">
+					<button mat-button color="warn" (click)="invalidateTranslation(message)" *ngIf="selectedLocale && message.translation && message.translation.isValid" matTooltip="Invalidate translation if it's not correct" matTooltipClass="tooltip-font">
 						<mat-icon>highlight_off</mat-icon>
-						Invalidate translation
+						Invalidate
 					</button>
-
 				</p>
 			</td>
 		</ng-container>
