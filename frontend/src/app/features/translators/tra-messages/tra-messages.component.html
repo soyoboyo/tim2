@@ -19,6 +19,18 @@
 			</mat-select>
 		</mat-form-field>
 	</div>
+</div>
+
+<mat-divider></mat-divider>
+
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" *ngIf="selectedProject">
+	<mat-label>Get report for selected locales:</mat-label>
+	<mat-form-field>
+		<mat-label>Locales</mat-label>
+		<mat-select multiple>
+			<mat-option *ngFor="let locale of selectedProject.targetLocales" [value]="locale.locale">{{locale.locale}}</mat-option>
+		</mat-select>
+	</mat-form-field>
 	<div>
 		<button mat-raised-button
 				color="accent"

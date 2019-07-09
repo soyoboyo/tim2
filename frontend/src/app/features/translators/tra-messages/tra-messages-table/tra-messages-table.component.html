@@ -1,14 +1,24 @@
-<div class="filter-paginator-wrapper">
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
 	<div>
 		<mat-form-field>
 			<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 		</mat-form-field>
+	</div>
+	<div>
+		<mat-checkbox>Missing</mat-checkbox>
+	</div>
+	<div>
+		<mat-checkbox>Outdated</mat-checkbox>
+	</div>
+	<div>
+		<mat-checkbox>Invalid</mat-checkbox>
 	</div>
 	<span class="spacer"></span>
 	<div>
 		<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 	</div>
 </div>
+
 <div class="table-container mat-elevation-z8">
 	<table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
@@ -44,7 +54,6 @@
 				<p *ngIf="!message.translation">
 					-
 				</p>
-
 			</td>
 		</ng-container>
 
@@ -74,7 +83,7 @@
 						<mat-icon>update</mat-icon>
 						Update
 					</button>
-					<button mat-button color="warn" (click)="invalidateTranslation(message)" *ngIf="selectedLocale && message.translation && message.translation.isValid" matTooltip="Invalidate translation if it's not correct" matTooltipClass="tooltip-font">
+					<button mat-button color="warn" (click)="invalidateTranslation(message)" *ngIf="selectedLocale && message.translation && message.translation.isValid" matTooltip="Invalidate translation if it's incorrect" matTooltipClass="tooltip-font">
 						<mat-icon>highlight_off</mat-icon>
 						Invalidate
 					</button>
@@ -101,44 +110,37 @@
 							<strong>Description: </strong> {{row.description}}
 						</p>
 
-						<p *ngIf="selectedLocale === null" class="warning">
-							Select locale to see translations.
-						</p>
+						<hr>
 
-						<hr *ngIf="selectedLocale !== null">
-						<p *ngIf=" row.translation !== null && !isTranslationOutdated(row)">
+						<div *ngIf="row.translation !== null && !row.translation.isValid">
+							<p class="warning">
+								Translation has been invalidated.
+							</p>
+						</div>
+
+						<div *ngIf="isTranslationOutdated(row)">
+							<p class="warning">
+								Translation is outdated.
+							</p>
+							<p>
+								<strong>Previous message content: </strong> {{row.previousMessageContent}}
+							</p>
+						</div>
+
+						<p *ngIf=" row.translation !== null">
 							<strong>Last updated: </strong> {{row.translation.updateDate | date:'dd.MM.yyyy HH:mm' }}
 						</p>
-						<div *ngIf="selectedLocale !== null">
-							<div *ngIf="isTranslationOutdated(row)">
-								<p class="warning">
-									Translation is outdated.
-								</p>
-								<p>
-									<strong>Previous message content: </strong> {{row.previousMessageContent}}
-								</p>
-							</div>
-							<p *ngIf="row.translation !== null && row.translation !== undefined">
-								<strong>Translation: </strong> {{row.translation.content}}
-							</p>
-							<p *ngIf="row.translation === null" class="warning">
-								<strong>Translation: </strong> none.
-							</p>
-							<p *ngIf="row.substitute">
-								<strong>Substitute from locale {{row.substitute.locale}}:</strong> {{row.substitute.content}}
-							</p>
 
-							<div *ngIf="row.translation !== null && !row.translation.isValid">
-								<p class="warning">
-									Translation has been invalidated.
-								</p>
-								<p>
-									Previous translation content: NOT IMPLEMENTED
-								</p>
-							</div>
+						<p *ngIf="row.translation !== null && row.translation !== undefined">
+							<strong>Translation: </strong> {{row.translation.content}}
+						</p>
+						<p *ngIf="row.translation === null" class="warning">
+							<strong>Translation: </strong> none.
+						</p>
+						<p *ngIf="row.substitute">
+							<strong>Substitute from locale {{row.substitute.locale}}:</strong> {{row.substitute.content}}
+						</p>
 
-
-						</div>
 					</div>
 
 				</div>
@@ -155,4 +157,4 @@
 
 	</table>
 </div>
-<app-nothing-found [nothingFound]="messages.length == 0 && !isLoadingResults" [message]="'Select project to see messages.'"></app-nothing-found>
+<app-nothing-found [nothingFound]="messages.length == 0 && !isLoadingResults" [message]="'Select project and locale to see messages.'"></app-nothing-found>
