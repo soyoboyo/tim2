@@ -14,7 +14,6 @@ import static org.tim.utils.Mapping.*;
 
 @RestController
 @RequiredArgsConstructor
-//@PreAuthorize("hasAnyRole('ROLE_CI/CD', 'ROLE_DEVELOPER')")
 @RequestMapping(API_VERSION + EXPORT_CI)
 public class CIExportsController {
 

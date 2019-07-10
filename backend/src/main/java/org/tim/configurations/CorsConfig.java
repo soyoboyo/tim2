@@ -18,9 +18,8 @@ public class CorsConfig {
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.setAllowedOrigins(Collections.singletonList("*"));
-        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept",
-                "xsrf-token", "Cache-Control", "authorization", "x-requested-with"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
+        config.setAllowedHeaders(Arrays.asList("Content-Type", "Cache-Control", "Authorization", "Accept"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "DELETE"));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

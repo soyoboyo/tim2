@@ -23,7 +23,6 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping(GET_ALL)
-	@PreAuthorize("hasRole('ROLE_TRANSLATOR')")
     public List<Project> getAllProjects() {
         return projectService.getAllProjects();
     }

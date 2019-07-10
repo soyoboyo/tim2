@@ -31,4 +31,6 @@ public class Mapping {
     public static final String UPDATE = "/update/{id}";
     public static final String INVALIDATE = "/invalidate/{id}";
 
+    public static final String SWAGGER_UI = "/swagger-ui.html";
+
 }

@@ -1,4 +1,14 @@
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+security:
+  jwt:
+    public-key: classpath:public.txt
+    clientId: timApp
+    clientSecret: OcadoProject
+    tokenEndpoint: http://localhost:9090/oauth/token
 spring:
   profiles:
-    active: develop
-usersConfig: null
+    active: h2
