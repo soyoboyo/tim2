@@ -1,0 +1,30 @@
+<mat-accordion *ngIf="aggregatedInfo !== null">
+	<mat-expansion-panel>
+		<mat-expansion-panel-header>
+			<mat-panel-title>
+				Project's translations
+			</mat-panel-title>
+			<mat-panel-description>
+				Expand to see detailed info
+			</mat-panel-description>
+		</mat-expansion-panel-header>
+		Messages total: {{aggregatedInfo.messagesTotal}}
+		<table>
+			<tr>
+				<th>locale</th>
+				<th>coverage</th>
+				<th>correct</th>
+				<th>incorrect</th>
+				<th>missing</th>
+			</tr>
+			<tr *ngFor="let o of aggregatedInfoList  |  keyvalue">
+				<td>{{o.key}}</td>
+				<td>{{o.value['coverage']}}%</td>
+				<td>{{o.value['correct']}}</td>
+				<td>{{o.value['incorrect']}}</td>
+				<td>{{o.value['missing']}}</td>
+			</tr>
+		</table>
+	</mat-expansion-panel>
+
+</mat-accordion>

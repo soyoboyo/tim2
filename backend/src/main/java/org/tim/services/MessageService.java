@@ -36,7 +36,7 @@ public class MessageService {
 		Project project = checkIfProjectExists(messageDTO.getProjectId());
 		Message message = checkIfMessageExists(messageId, messageDTO.getKey());
 		saveMessageVersion(message);
-		if (!message.getIsRemoved()) {
+		if (!message.getIsArchived()) {
 			message.setContent(messageDTO.getContent());
 			message.setKey(messageDTO.getKey());
 			message.setDescription(messageDTO.getDescription());
@@ -47,10 +47,10 @@ public class MessageService {
 		}
 	}
 
-	public Message deleteMessage(Long id) {
+	public Message archiveMessage(Long id) {
 		Message message = checkIfMessageExists(id, "");
 		saveMessageVersion(message);
-		message.setIsRemoved(true);
+		message.setIsArchived(true);
 		return messageRepository.save(message);
 	}
 

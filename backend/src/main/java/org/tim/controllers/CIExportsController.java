@@ -3,9 +3,8 @@ package org.tim.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.tim.DTOs.LocaleDTO;
+import org.tim.DTOs.output.LocaleDTO;
 import org.tim.services.CIExportsService;
 
 import java.util.List;

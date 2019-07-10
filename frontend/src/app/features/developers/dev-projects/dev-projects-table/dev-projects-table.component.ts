@@ -1,15 +1,7 @@
-import {
-	Component,
-	EventEmitter,
-	Input,
-	OnChanges,
-	OnInit,
-	Output,
-	SimpleChanges, ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { Project } from '../../../../shared/types/entities/Project';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ProjectForDeveloper } from '../../../../shared/types/DTOs/output/ProjectForDeveloper';
 
 @Component({
 	selector: 'app-dev-projects-table',
@@ -29,7 +21,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class DevProjectsTableComponent implements OnInit, OnChanges {
 
 	@Input() selectedRowIndex = -1;
-	@Input() projects: Project[] = [];
+	@Input() projects: ProjectForDeveloper[] = [];
 	@Input() isLoadingResults = true;
 	@Output() editEvent = new EventEmitter<any>();
 	@Output() removeEvent = new EventEmitter<any>();
@@ -37,7 +29,7 @@ export class DevProjectsTableComponent implements OnInit, OnChanges {
 
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-	dataSource = new MatTableDataSource<Project>();
+	dataSource = new MatTableDataSource<ProjectForDeveloper>();
 
 	displayedColumns: string[] = ['name', 'sourceLocale', 'actions'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;

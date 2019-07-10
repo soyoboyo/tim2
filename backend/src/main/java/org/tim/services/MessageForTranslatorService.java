@@ -34,7 +34,7 @@ public class MessageForTranslatorService {
 		List<MessageForTranslator> messagesForTranslator = new ArrayList<>();
 		Project project = projectRepository.findById(projectId).orElseThrow(() ->
 				new NoSuchElementException(String.format("Project with id %s not found", projectId)));
-		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsRemovedFalse(projectId);
+		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
 
 		Map<Locale, Locale> replaceableLocaleToItsSubstitute = new HashMap<>();
 		for (Map.Entry<LocaleWrapper, LocaleWrapper> pair : project.getReplaceableLocaleToItsSubstitute().entrySet()) {
@@ -68,7 +68,7 @@ public class MessageForTranslatorService {
 
 	public List<MessageForTranslator> getMessagesForTranslator(Long projectId) {
 		List<MessageForTranslator> messagesForTranslator = new ArrayList<>();
-		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsRemovedFalse(projectId);
+		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
 
 		for (Message m : messages) {
 			MessageForTranslator mForTranslator = mapper.map(m, MessageForTranslator.class);

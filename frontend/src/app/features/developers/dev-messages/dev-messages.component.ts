@@ -26,12 +26,12 @@ export class DevMessagesComponent implements OnInit {
 	messages: any[] = [];
 
 	selectedProject = null;
+	selectedProjectId = null;
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
 				private http: RestService,
 				private snackbar: SnackbarService,
-				public utils: UtilsService,
 				private projectsStore: ProjectsStoreService,
 				private confirmService: ConfirmationDialogService,
 				private projectStoreService: ProjectsStoreService) {
@@ -103,6 +103,7 @@ export class DevMessagesComponent implements OnInit {
 	changeProject(value) {
 		this.cancelUpdate();
 		this.selectedProject = value;
+		this.selectedProjectId = value.id;
 		this.projectStoreService.setSelectedProject(value);
 		this.getMessages();
 	}
@@ -118,6 +119,7 @@ export class DevMessagesComponent implements OnInit {
 			this.isLoadingResults = true;
 			const response = await this.http.getAll('message/developer/getByProject/' + this.selectedProject.id);
 			this.messages = [].concat(response);
+			this.selectedProjectId = new Number(this.selectedProject.id);
 			this.isLoadingResults = false;
 		}
 	}
@@ -125,7 +127,7 @@ export class DevMessagesComponent implements OnInit {
 	async archiveMessage(id: any) {
 		await this.confirmService.openDialog('Are you sure you want to archive selected message?').subscribe((result) => {
 			if (result) {
-				this.http.remove('message/remove/' + id).subscribe((response) => {
+				this.http.remove('message/archive/' + id).subscribe((response) => {
 					if (response == null) {
 						this.selectedRowIndex = -1;
 						this.snackbar.snackSuccess('Success!', 'OK');

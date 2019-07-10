@@ -65,10 +65,10 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 		messageDTO.setProjectId(project.getId());
 		Message createdMessage = messageService.createMessage(messageDTO);
 		//when
-		Message message = messageService.deleteMessage(createdMessage.getId());
+		Message message = messageService.archiveMessage(createdMessage.getId());
 		Optional<Message> messageFromDB = messageRepository.findById(message.getId());
 		//then
-		assertTrue(messageFromDB.get().getIsRemoved());
+		assertTrue(messageFromDB.get().getIsArchived());
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 		Long id = 1L;
 		//when
 		//then
-		assertThrows(NoSuchElementException.class, () -> messageService.deleteMessage(id));
+		assertThrows(NoSuchElementException.class, () -> messageService.archiveMessage(id));
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 		messageDTO.setProjectId(project.getId());
 		Message createdMessage = messageService.createMessage(messageDTO);
 		messageDTO.setContent("updated_content");
-		messageService.deleteMessage(createdMessage.getId());
+		messageService.archiveMessage(createdMessage.getId());
 		//when
 		//then
 		assertThrows(NoSuchElementException.class, () -> messageService.updateMessage(messageDTO, createdMessage.getId()));

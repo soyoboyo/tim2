@@ -26,9 +26,9 @@ public class MessageController {
 	private final MessageVersionService messageVersionService;
 
 
-	@DeleteMapping(value = REMOVE)
-	public ResponseEntity deleteMessage(@PathVariable Long id) {
-		return messageService.deleteMessage(id) != null ? ResponseEntity.ok("") : ResponseEntity.badRequest().body("");
+	@DeleteMapping(value = ARCHIVE)
+	public ResponseEntity archiveMessage(@PathVariable Long id) {
+		return messageService.archiveMessage(id) != null ? ResponseEntity.ok("") : ResponseEntity.badRequest().body("");
 	}
 
 	@PostMapping(value = CREATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -29,10 +29,18 @@ For developers:
 For translators:
 * adding, editing, removing, invalidating translations of messages
 
-# 3. Technical details
+
+# 3. Web pages
+* Frontend
+    * https://studentproject-tim-frontend.herokuapp.com
+* Backend
+    * https://studentproject-tim-backend.herokuapp.com
 
 
-# 4. Technologies
+# 4. Technical details
+
+
+# 5. Technologies
 * Backend
   * [Java 11](https://openjdk.java.net/projects/jdk/11/)
   * [Spring 5](https://spring.io/)
@@ -44,7 +52,7 @@ For translators:
 * Other
   * [Swagger UI](https://swagger.io/)
 
-# 5. Installation guide (users)
+# 6. Installation guide (users)
 1. Install docker
 1. Pull backend and frontend project from dockerhub:
     * docker pull studentproject/ocado-tim-backend
@@ -56,14 +64,12 @@ For translators:
             * docker run -it -p 5432:5432 -d -v /var/database:/var/lib/postgresql/data postgres 
 1. Run apps:
     * docker run -it -p 4200:4200 -d studentproject/ocado-tim-frontend
-    * docker run -it -p 8081:8080 -d -v <path to users config\>:/home/principals.json
-        * where <path to users config\> is path to file with principals.json e.g.
-          * docker run -it -p 8081:8080 -d -v /home/oem/Github/tim/principals.json:/home/principals.json studentproject/ocado-tim-backend
+    * docker run -it -p 8081:8080 -d studentproject/ocado-tim-backend
     * docker run -it -p 8080:8080 -d studentproject/simple-web-app  
-1. The app is availaible on localhost or address 192.168.99.100 (depends on os)
+1. The app is available on localhost or address 192.168.99.100 (depends on os)
 
 
-# 6. Installation guide (developers)
+# 7. Installation guide (developers)
 Backend:  
 1. Install prerequisites (OpenJDK 11, maven)
 1. Run `mvn clean install`  
@@ -81,7 +87,7 @@ Frontend:
 1. Run `ng serve` to start the application. App will be available at `localhost:4200`.  
 
 
-# 7. Docker:
+# 8. Docker:
 0. Login
  * docker login
     * Username: studentproject
@@ -100,7 +106,7 @@ Frontend:
     * docker push studentproject/simple-web-app:latest
  
 
-# 8. Contributing
+# 9. Contributing
 * Mikołaj Banaszkiewicz
 * Alex Kostiukov 
 * Matusz Mytnik

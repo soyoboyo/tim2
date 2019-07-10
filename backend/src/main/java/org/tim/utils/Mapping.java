@@ -30,7 +30,8 @@ public class Mapping {
     public static final String CREATE = "/create";
     public static final String UPDATE = "/update/{id}";
     public static final String INVALIDATE = "/invalidate/{id}";
-
     public static final String SWAGGER_UI = "/swagger-ui.html";
+	public static final String ARCHIVE = "/archive/{id}";
+	public static final String AGGREGATE = "/aggregate/{id}";
 
 }
