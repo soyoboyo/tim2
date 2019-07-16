@@ -10,8 +10,8 @@
 
 		<span class="toolbar-spacer"></span>
 
-		<div>{{username}}</div>
-		<!--<div [hidden]="!isAuth">Logged as {{loggedAs}}</div>-->
+<!--		<div>{{username}}</div>-->
+		<div [hidden]="!isLoggedIn">Logged as {{username}}</div>
 
 		<button mat-icon-button [matMenuTriggerFor]="menuOptions">
 			<mat-icon>more_vert</mat-icon>
@@ -24,10 +24,10 @@
 			<button mat-menu-item routerLink="/homepage">
 				<span>Homepage</span>
 			</button>
-			<button mat-menu-item routerLink="/developer">
+			<button mat-menu-item routerLink="/developer" *ngIf="role==='ROLE_DEVELOPER'">
 				<span>Developers</span>
 			</button>
-			<button mat-menu-item routerLink="/translator">
+			<button mat-menu-item routerLink="/translator" *ngIf="role==='ROLE_TRANSLATOR'">
 				<span>Translators</span>
 			</button>
 			<button mat-menu-item (click)="logoutButtonClicked()" *ngIf="isLoggedIn">

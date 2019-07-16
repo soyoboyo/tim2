@@ -40,7 +40,7 @@ public class ProjectController {
     }
 
 	@GetMapping(GET_ALL)
-	@PreAuthorize("hasRole('ROLE_TRANSLATOR')")
+	@PreAuthorize("hasAnyRole('ROLE_TRANSLATOR', 'ROLE_DEVELOPER')")
 	public List<Project> getAllProjects() {
 		return projectService.getAllProjects();
 	}

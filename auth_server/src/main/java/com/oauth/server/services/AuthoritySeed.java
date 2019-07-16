@@ -35,6 +35,6 @@ public class AuthoritySeed {
         oauthClientDetailsRepository.save(new OauthClientDetails("timApp",
                 bCryptPasswordEncoder.encode("OcadoProject"), "read,write",
                 "password,refresh_token,client_credentials",
-                "ROLE_CLIENT", 5 * 60));
+                "ROLE_CLIENT", 8 * 60));
     }
 }
