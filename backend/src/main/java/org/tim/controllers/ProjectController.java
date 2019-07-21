@@ -27,8 +27,20 @@ public class ProjectController {
 	private final ProjectService projectService;
 	private final AggregatedInfoService aggregatedInfoService;
 
+    @PostMapping(CREATE)
+    public Project createProject(@RequestBody @Valid ProjectDTO projectDTO, BindingResult bindingResult) {
+        DTOValidator.validate(bindingResult);
+        return projectService.createProject(projectDTO);
+    }
+
+    @PostMapping(UPDATE)
+    public Project updateProject(@RequestBody @Valid ProjectDTO projectDTO, @PathVariable Long id, BindingResult bindingResult) {
+        DTOValidator.validate(bindingResult);
+        return projectService.updateProject(projectDTO, id);
+    }
+
 	@GetMapping(GET_ALL)
-	@PreAuthorize("hasRole('ROLE_TRANSLATOR')")
+	@PreAuthorize("hasAnyRole('ROLE_TRANSLATOR', 'ROLE_DEVELOPER')")
 	public List<Project> getAllProjects() {
 		return projectService.getAllProjects();
 	}
@@ -38,20 +50,9 @@ public class ProjectController {
 		return projectService.getAllProjectsForDeveloper();
 	}
 
-	@PostMapping(CREATE)
-	public Project createProject(@RequestBody @Valid ProjectDTO projectDTO, BindingResult bindingResult) {
-		DTOValidator.validate(bindingResult);
-		return projectService.createProject(projectDTO);
-	}
-
-	@PostMapping(UPDATE)
-	public Project updateProject(@RequestBody @Valid ProjectDTO projectDTO, @PathVariable Long id, BindingResult bindingResult) {
-		DTOValidator.validate(bindingResult);
-		return projectService.updateProject(projectDTO, id);
-	}
-
 	@GetMapping(DEVELOPER + AGGREGATE)
 	public AggregatedInfoForDeveloper getAggregatedInfoAboutTranslationsInProject( @PathVariable Long id){
 		return aggregatedInfoService.getAggregatedInfoForDeveloper(id);
 	}
+
 }

@@ -1,0 +1,19 @@
+security:
+  jwt:
+    key-store: classpath:keystore.jks
+    key-store-password: OcadoProject
+    key-pair-alias: jwt
+    key-pair-password: OcadoProject
+spring:
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+  jpa:
+    open-in-view: false
+  profiles:
+    active: h2
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

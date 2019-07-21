@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
+
 import javax.annotation.PostConstruct;
 import java.util.Map;
 

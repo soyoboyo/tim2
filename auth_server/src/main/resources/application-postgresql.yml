@@ -1,0 +1,25 @@
+server:
+  port: 9090
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    initialization-mode: always
+  jpa:
+    properties:
+      open-in-view: true
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+        ddl-auto: create-drop
+        jdbc:
+          lob:
+            non_contextual_creation: true
+      properties:
+        higernate:
+          temp:
+            use_jdbc_metadata_defaults: false
+    show-sql: true
