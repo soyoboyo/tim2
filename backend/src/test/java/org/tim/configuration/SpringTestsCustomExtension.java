@@ -19,25 +19,25 @@ import static io.github.benas.randombeans.api.EnhancedRandom.random;
 public abstract class SpringTestsCustomExtension {
 
     @Autowired
-    private ProjectRepository projectRepository;
+    protected ProjectRepository projectRepository;
 
     @Autowired
-    private MessageRepository messageRepository;
+    protected MessageRepository messageRepository;
 
     @Autowired
-    private TranslationAgencyRepository translationAgencyRepository;
+    protected TranslationAgencyRepository translationAgencyRepository;
 
     @Autowired
-    private TranslationRepository translationRepository;
+    protected TranslationRepository translationRepository;
 
     @Autowired
-    private LocaleWrapperRepository localeWrapperRepository;
+    protected LocaleWrapperRepository localeWrapperRepository;
 
     @Autowired
-    private TranslationVersionRepository translationVersionRepository;
+    protected TranslationVersionRepository translationVersionRepository;
 
     @Autowired
-	private MessageVersionRepository messageVersionRepository;
+    protected MessageVersionRepository messageVersionRepository;
 
     @BeforeEach
     public void prepareDatabaseForTests() {
