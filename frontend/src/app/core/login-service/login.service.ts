@@ -20,18 +20,18 @@ export class LoginService {
     })
   };
 
+  source = interval(1000 * 60 * 5);
+
 	constructor(private http: HttpClient,
               private router: Router,
               private cookieService: CookieService) {
-    const source = interval(1000 * 60 * 5);
-	  this.subscription = source.subscribe(() => this.refreshToken());
-
 		this.loggedIn.next(false);
-		this.getPrincipalFromAPI();
+		this.subscribeScheduler();
+    this.getPrincipalFromAPI();
 	}
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.unsubscribeScheduler();
   }
 
 	private loggedIn: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -50,9 +50,22 @@ export class LoginService {
 		return this.username.asObservable();
 	}
 
+	unsubscribeScheduler() {
+    if (this.subscription != null) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  subscribeScheduler() {
+	  this.unsubscribeScheduler();
+    this.subscription = this.source.subscribe(() => this.refreshToken());
+  }
+
 	async refreshToken() {
 	  const oauthToken = this.cookieService.get('refresh_token');
-    this.loginUser(null, null, oauthToken);
+	  if (oauthToken != null && oauthToken !== '') {
+      this.loginUser(null, null, oauthToken);
+    }
   }
 
 	async getPrincipalFromAPI() {
@@ -60,7 +73,7 @@ export class LoginService {
 		const response: any = await this.http.get<UserPrincipal>(API_URL + '/user/get', {withCredentials: true}).toPromise()
 		.catch((e: HttpErrorResponse) => {
 		  isStatusOk = false;
-			this.clearData();
+			this.logoutUser();
 			this.router.navigateByUrl('login');
 		});
 		const principal: UserPrincipal = response;
@@ -75,7 +88,7 @@ export class LoginService {
 				this.router.navigateByUrl('translator');
 			}
 		} else {
-			this.clearData();
+			this.logoutUser();
 		}
 	}
 
@@ -93,23 +106,25 @@ export class LoginService {
         });
     } else {
       body = body.set('grant_type', 'refresh_token');
-      principal = await this.http.post<any>(OAUTH_URL, body).toPromise()
+      body = body.set('refresh_token', token);
+      principal = await this.http.post<any>(OAUTH_URL, body, this.httpOptionsForLogin).toPromise()
         .catch((e: HttpErrorResponse) => {
           isStatusOk = false;
         });
     }
 		if (isStatusOk === true) {
+      this.subscribeScheduler();
 		  const oauthToken = principal.access_token;
 		  const refreshToken = principal.refresh_token;
 		  const expiresIn = principal.expires_in;
 		  this.cookieService.set('oauth_token', oauthToken);
 		  this.cookieService.set('refresh_token', refreshToken);
-		  sessionStorage.setItem('token_expires_in', expiresIn);
 		  this.loggedIn.next(true);
 		  this.getPrincipalFromAPI();
 		  this.isLoggedIn = true;
 		} else {
-			this.clearData();
+			this.logoutUser();
+
 		}
 		return isStatusOk;
 	}
@@ -118,6 +133,7 @@ export class LoginService {
 	  this.cookieService.delete('oauth_token');
     this.cookieService.delete('refresh_token');
     sessionStorage.clear();
+    this.unsubscribeScheduler();
     this.isLoggedIn = false;
     this.clearData();
 	  this.router.navigateByUrl('login');
@@ -129,6 +145,5 @@ export class LoginService {
 		this.role.next('');
 		this.username.next('Not logged in');
 		sessionStorage.setItem('possibleSignIn', 'false');
-		this.logoutUser();
 	}
 }
