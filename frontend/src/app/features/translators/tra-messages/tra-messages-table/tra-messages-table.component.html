@@ -1,14 +1,24 @@
-<div class="filter-paginator-wrapper">
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
 	<div>
 		<mat-form-field>
 			<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 		</mat-form-field>
+	</div>
+	<div>
+		<mat-checkbox  [(ngModel)]="missing" (change)="filterMessages()">Missing</mat-checkbox>
+	</div>
+	<div>
+		<mat-checkbox  [(ngModel)]="outdated" (change)="filterMessages()">Outdated</mat-checkbox>
+	</div>
+	<div>
+		<mat-checkbox  [(ngModel)]="invalid"  (change)="filterMessages()">Invalid</mat-checkbox>
 	</div>
 	<span class="spacer"></span>
 	<div>
 		<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 	</div>
 </div>
+
 <div class="table-container mat-elevation-z8">
 	<table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
@@ -22,23 +32,61 @@
 			<td mat-cell *matCellDef="let message">{{message.content | shorten: [60, '...']}}</td>
 		</ng-container>
 
+		<ng-container matColumnDef="existing">
+			<th mat-header-cell *matHeaderCellDef>Existing</th>
+			<td mat-cell *matCellDef="let message">
+				<p *ngIf="message.translation">
+					<mat-icon color="accent">check_circle_outline</mat-icon>
+				</p>
+				<p *ngIf="!message.translation">
+					<mat-icon color="warn">highlight_off</mat-icon>
+				</p>
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="valid">
+			<th mat-header-cell *matHeaderCellDef>Valid</th>
+			<td mat-cell *matCellDef="let message">
+				<p *ngIf="message.translation">
+					<mat-icon color="accent" *ngIf="message.translation.isValid">check_circle_outline</mat-icon>
+					<mat-icon color="warn" *ngIf="!message.translation.isValid">highlight_off</mat-icon>
+				</p>
+				<p *ngIf="!message.translation">
+					-
+				</p>
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="upToDate">
+			<th mat-header-cell *matHeaderCellDef>Up to date</th>
+			<td mat-cell *matCellDef="let message">
+				<p *ngIf="message.translation">
+					<mat-icon color="accent" *ngIf="!isTranslationOutdated(message)">check_circle_outline</mat-icon>
+					<mat-icon color="warn" *ngIf="isTranslationOutdated(message)">highlight_off</mat-icon>
+				</p>
+				<p *ngIf="!message.translation">
+					-
+				</p>
+			</td>
+		</ng-container>
+
+
 		<ng-container matColumnDef="actions">
 			<th mat-header-cell *matHeaderCellDef>Actions</th>
 			<td mat-cell *matCellDef="let message">
 				<p>
-					<button mat-button color="primary" (click)="addTranslation(message)" *ngIf="!selectedLocale || !message.translation">
+					<button mat-button color="primary" (click)="addTranslation(message)" *ngIf="!selectedLocale || !message.translation" matTooltip="Add new translation" matTooltipClass="tooltip-font">
 						<mat-icon>add</mat-icon>
-						Add translation
+						Add
 					</button>
-					<button mat-button (click)="updateTranslation(message)" *ngIf="selectedLocale && message.translation">
+					<button mat-button (click)="updateTranslation(message)" *ngIf="selectedLocale && message.translation" matTooltip="Update translation" matTooltipClass="tooltip-font">
 						<mat-icon>update</mat-icon>
-						Update translation
+						Update
 					</button>
-					<button mat-button color="warn" (click)="invalidateTranslation(message)" *ngIf="selectedLocale && message.translation && message.translation.isValid">
+					<button mat-button color="warn" (click)="invalidateTranslation(message)" *ngIf="selectedLocale && message.translation && message.translation.isValid" matTooltip="Invalidate translation if it's incorrect" matTooltipClass="tooltip-font">
 						<mat-icon>highlight_off</mat-icon>
-						Invalidate translation
+						Invalidate
 					</button>
-
 				</p>
 			</td>
 		</ng-container>
@@ -62,44 +110,37 @@
 							<strong>Description: </strong> {{row.description}}
 						</p>
 
-						<p *ngIf="selectedLocale === null" class="warning">
-							Select locale to see translations.
-						</p>
+						<hr>
 
-						<hr *ngIf="selectedLocale !== null">
-						<p *ngIf=" row.translation !== null && !isTranslationOutdated(row)">
+						<div *ngIf="row.translation !== null && !row.translation.isValid">
+							<p class="warning">
+								Translation has been invalidated.
+							</p>
+						</div>
+
+						<div *ngIf="isTranslationOutdated(row)">
+							<p class="warning">
+								Translation is outdated.
+							</p>
+							<p>
+								<strong>Previous message content: </strong> {{row.previousMessageContent}}
+							</p>
+						</div>
+
+						<p *ngIf=" row.translation !== null">
 							<strong>Last updated: </strong> {{row.translation.updateDate | date:'dd.MM.yyyy HH:mm' }}
 						</p>
-						<div *ngIf="selectedLocale !== null">
-							<div *ngIf="isTranslationOutdated(row)">
-								<p class="warning">
-									Translation is outdated.
-								</p>
-								<p>
-									<strong>Previous message content: </strong> {{row.previousMessageContent}}
-								</p>
-							</div>
-							<p *ngIf="row.translation !== null && row.translation !== undefined">
-								<strong>Translation: </strong> {{row.translation.content}}
-							</p>
-							<p *ngIf="row.translation === null" class="warning">
-								<strong>Translation: </strong> none.
-							</p>
-							<p *ngIf="row.substitute">
-								<strong>Substitute from locale {{row.substitute.locale}}:</strong> {{row.substitute.content}}
-							</p>
 
-							<div *ngIf="row.translation !== null && !row.translation.isValid">
-								<p class="warning">
-									Translation has been invalidated.
-								</p>
-								<p>
-									Previous translation content: NOT IMPLEMENTED
-								</p>
-							</div>
+						<p *ngIf="row.translation !== null && row.translation !== undefined">
+							<strong>Translation: </strong> {{row.translation.content}}
+						</p>
+						<p *ngIf="row.translation === null" class="warning">
+							<strong>Translation: </strong> none.
+						</p>
+						<p *ngIf="row.substitute">
+							<strong>Substitute from locale {{row.substitute.locale}}:</strong> {{row.substitute.content}}
+						</p>
 
-
-						</div>
 					</div>
 
 				</div>
@@ -116,4 +157,4 @@
 
 	</table>
 </div>
-<app-nothing-found [nothingFound]="messages.length == 0 && !isLoadingResults" [message]="'Select project to see messages.'"></app-nothing-found>
+<app-nothing-found [nothingFound]="messages.length == 0 && !isLoadingResults" [message]="'Select project and locale to see messages.'"></app-nothing-found>

@@ -91,15 +91,19 @@ public class MessageForTranslatorService {
 
 		LocalDateTime upperBound = message.getTranslation().getUpdateDate();
 
-		String previousMessageContent = "";
-		if(translationVersions.size() > 0){
+		String previousMessageContent = "SOMETHING IS WRONG";
+		if (!translationVersions.isEmpty()) {
 			LocalDateTime lowerBound = translationVersions.get(0).getUpdateDate();
 			List<MessageVersion> versions = messageVersionService.getMessageVersionsByMessageIdAndUpdateDateBetween(message.getId(), upperBound, lowerBound);
-			previousMessageContent = versions.get(0).getContent();
+			if (!versions.isEmpty()) {
+				previousMessageContent = versions.get(0).getContent();
+			}
 			message.setPreviousMessageContent(previousMessageContent);
 		} else {
 			List<MessageVersion> versions = messageVersionService.getMessageVersionsByMessageIdAndUpdateDate(message.getId(), upperBound);
-			previousMessageContent = versions.get(versions.size() - 1).getContent();
+			if (!versions.isEmpty()) {
+				previousMessageContent = versions.get(versions.size() - 1).getContent();
+			}
 			message.setPreviousMessageContent(previousMessageContent);
 		}
 

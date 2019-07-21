@@ -58,12 +58,6 @@ th {
   margin: 5px;
 }
 
-.filter-paginator-wrapper {
-  margin-left: 12px;
-  margin-top: 5px;
-  display: flex;
-}
-
 .warning {
   color: $warn;
 }
@@ -80,6 +74,6 @@ th {
   padding: 10px;
 }
 
-tr:hover {
+td:hover {
   cursor: pointer;
 }

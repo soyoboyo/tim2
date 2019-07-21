@@ -105,6 +105,7 @@ export class DevMessagesComponent implements OnInit {
 		this.selectedProject = value;
 		this.selectedProjectId = value.id;
 		this.projectStoreService.setSelectedProject(value);
+		console.log(this.selectedProject);
 		this.getMessages();
 	}
 

@@ -1,4 +1,4 @@
-<div class="filter-paginator-wrapper">
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" *ngIf="selectedProject">
 	<div>
 		<mat-form-field>
 			<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">

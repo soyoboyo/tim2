@@ -74,7 +74,7 @@ public class AggregatedInfoService {
 		aggregatedInfo.setMessagesTotal(messages.size());
 
 		for (Map.Entry<String, Map<String, Integer>> locale : translationStatusesByLocale.entrySet()) {
-			locale.getValue().put("coverage", (locale.getValue().get(correct) * 100) / (messages.size()));
+			locale.getValue().put("coverage", locale.getValue().get("correct") * 100 / messages.size());
 		}
 
 		return aggregatedInfo;
