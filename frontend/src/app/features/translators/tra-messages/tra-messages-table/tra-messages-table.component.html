@@ -5,13 +5,13 @@
 		</mat-form-field>
 	</div>
 	<div>
-		<mat-checkbox>Missing</mat-checkbox>
+		<mat-checkbox  [(ngModel)]="missing" (change)="filterMessages()">Missing</mat-checkbox>
 	</div>
 	<div>
-		<mat-checkbox>Outdated</mat-checkbox>
+		<mat-checkbox  [(ngModel)]="outdated" (change)="filterMessages()">Outdated</mat-checkbox>
 	</div>
 	<div>
-		<mat-checkbox>Invalid</mat-checkbox>
+		<mat-checkbox  [(ngModel)]="invalid"  (change)="filterMessages()">Invalid</mat-checkbox>
 	</div>
 	<span class="spacer"></span>
 	<div>

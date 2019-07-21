@@ -40,6 +40,9 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	isLoadingResults = false;
 
 	expandedRow = null;
+	missing = false;
+	outdated = false;
+	invalid = false;
 
 	constructor() {
 	}
@@ -84,10 +87,55 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		this.dataSource = new MatTableDataSource(messages);
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
-			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase());
+			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase())
+				&& this.filterByMissing(data)
+				&& this.filterByInvalid(data)
+				&& this.filterByOutdated(data);
 		};
 		this.dataSource.sort = this.sort;
 	}
+
+	filterByMissing(row): boolean {
+		if (this.missing === false) {
+			return true;
+		} else {
+			if (row.translation === null) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	filterByInvalid(row): boolean {
+		if (this.invalid === false) {
+			return true;
+		} else {
+			if (row.translation !== null) {
+				if (row.translation.isValid === false) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	filterByOutdated(row): boolean {
+		if (this.outdated === false) {
+			return true;
+		} else {
+			if (row.translation !== null) {
+				if (this.isTranslationOutdated(row)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	filterMessages() {
+		this.dataSource.filter = '{';
+	}
+
 
 	async invalidateTranslation(message: any) {
 		this.invalidateTranslationEvent.emit(message);
