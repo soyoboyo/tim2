@@ -58,13 +58,6 @@ th {
   margin: 5px;
 }
 
-.filter-paginator-wrapper {
-  margin-left: 12px;
-  margin-top: 5px;
-  display: flex;
-  justify-content: space-between;
-}
-
 .full-message {
   margin-bottom: 16px;
   max-width: 500px;
@@ -86,6 +79,6 @@ th {
   padding: 10px;
 }
 
-tr:hover {
+td:hover {
   cursor: pointer;
 }

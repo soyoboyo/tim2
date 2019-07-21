@@ -51,7 +51,8 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	public static void init() {
 		mapper = new ObjectMapper();
 		expectedProject = new Project("name", new Locale("pl", "PL"));
-		expectedProject.addTargetLocale(Arrays.asList(new LocaleWrapper(new Locale("pl", "PL")),
+		expectedProject.addTargetLocale(Arrays.asList(
+				new LocaleWrapper(new Locale("pl", "PL")),
 				new LocaleWrapper(Locale.UK),
 				new LocaleWrapper(Locale.US),
 				new LocaleWrapper(Locale.GERMANY)));
@@ -76,6 +77,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	void createNewProject_DataCorrect_Success() throws Exception {
 		when(projectService.createProject(any())).thenReturn(expectedProject);
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
+		LocaleWrapper[] targetLocalesArray = expectedProject.getTargetLocales().toArray(new LocaleWrapper[0]);
 		mockMvc.perform(post(BASE_URL + API_VERSION + PROJECT + CREATE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
@@ -84,20 +86,17 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is(expectedProject.getName())))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.sourceLocale", Matchers.is(
 						expectedProject.getSourceLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[0].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(0).getLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[1].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(1).getLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[2].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(2).getLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[3].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(3).getLocale().toString())));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[0].locale", Matchers.is(targetLocalesArray[0].getLocale().toString())))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[1].locale", Matchers.is(targetLocalesArray[1].getLocale().toString())))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[2].locale", Matchers.is(targetLocalesArray[2].getLocale().toString())))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[3].locale", Matchers.is(targetLocalesArray[3].getLocale().toString())));
 	}
 
 	@Test
 	void updateProject_DataCorrect_Success() throws Exception {
 		when(projectService.updateProject(any(), any())).thenReturn(expectedProject);
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
+		LocaleWrapper[] targetLocalesArray = expectedProject.getTargetLocales().toArray(new LocaleWrapper[0]);
 		mockMvc.perform(post(BASE_URL + API_VERSION + PROJECT + UPDATE_PROJECT)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
@@ -106,14 +105,10 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is(expectedProject.getName())))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.sourceLocale", Matchers.is(
 						expectedProject.getSourceLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[0].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(0).getLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[1].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(1).getLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[2].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(2).getLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[3].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(3).getLocale().toString())));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[0].locale", Matchers.is(targetLocalesArray[0].getLocale().toString())))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[1].locale", Matchers.is(targetLocalesArray[1].getLocale().toString())))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[2].locale", Matchers.is(targetLocalesArray[2].getLocale().toString())))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.targetLocales[3].locale", Matchers.is(targetLocalesArray[3].getLocale().toString())));
 	}
 
 	@Test
@@ -212,6 +207,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	void getAllProjects_AllProjectsReturned() throws Exception {
 		when(projectService.getAllProjects()).thenReturn(Arrays.asList(expectedProject));
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
+		LocaleWrapper[] targetLocalesArray = expectedProject.getTargetLocales().toArray(new LocaleWrapper[0]);
 		mockMvc.perform(get(BASE_URL + API_VERSION + PROJECT + GET_ALL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
@@ -220,13 +216,9 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].name", Matchers.is(expectedProject.getName())))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].sourceLocale", Matchers.is(
 						expectedProject.getSourceLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].targetLocales[0].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(0).getLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].targetLocales[1].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(1).getLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].targetLocales[2].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(2).getLocale().toString())))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].targetLocales[3].locale", Matchers.is(
-						expectedProject.getTargetLocales().get(3).getLocale().toString())));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].targetLocales[0].locale", Matchers.is(targetLocalesArray[0].getLocale().toString())))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].targetLocales[1].locale", Matchers.is(targetLocalesArray[1].getLocale().toString())))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].targetLocales[2].locale", Matchers.is(targetLocalesArray[2].getLocale().toString())))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.[0].targetLocales[3].locale", Matchers.is(targetLocalesArray[3].getLocale().toString())));
 	}
 }

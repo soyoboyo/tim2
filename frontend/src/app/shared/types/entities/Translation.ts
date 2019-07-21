@@ -1,17 +1,18 @@
 export class Translation {
-    id: number;
+	id: number;
 
-    content: string;
-    locale: string;
-    updateDate: Date;
+	content: string;
+	locale: string;
+	updateDate: Date;
+	isValid: boolean;
 
-    messageId: number;
+	messageId: number;
 
-    constructor(id: number, content: string, locale: string, updateDate: Date, messageId: number) {
-        this.id = id;
-        this.content = content;
-        this.locale = locale;
-        this.updateDate = updateDate;
-        this.messageId = messageId;
-    }
+	constructor(id: number, content: string, locale: string, updateDate: Date, messageId: number) {
+		this.id = id;
+		this.content = content;
+		this.locale = locale;
+		this.updateDate = updateDate;
+		this.messageId = messageId;
+	}
 }

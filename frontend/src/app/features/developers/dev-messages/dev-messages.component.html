@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
 	<div>
-		<mat-form-field [floatLabel]="'never'" class="select-project">
+		<mat-form-field class="select-project">
 			<mat-label>Select project</mat-label>
 			<mat-select [compareWith]="compareProjects" (selectionChange)="changeProject($event.value)" [(ngModel)]="selectedProject">
 				<mat-option *ngFor="let project of projects" [value]="project">
@@ -9,6 +9,15 @@
 			</mat-select>
 		</mat-form-field>
 	</div>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" *ngIf="selectedProject">
+	<mat-label>Get report for selected locales:</mat-label>
+	<mat-form-field>
+		<mat-label>Locales</mat-label>
+		<mat-select multiple>
+			<mat-option *ngFor="let locale of selectedProject.targetLocales" [value]="locale.locale">{{locale.locale}}</mat-option>
+		</mat-select>
+	</mat-form-field>
 	<div>
 		<button mat-raised-button
 				color="accent"
