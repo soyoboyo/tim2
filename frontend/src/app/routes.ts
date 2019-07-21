@@ -7,16 +7,17 @@ import { DevHistoryMessagesComponent } from './features/developers/dev-history-m
 import { DevHistoryTranslationsComponent } from './features/developers/dev-history-translations/dev-history-translations.component';
 import { AccessDeniedComponent } from './views/access-denied/access-denied.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
-import { AuthGuard } from './core/auth-guards/auth.guard';
+import { AuthDevGuard } from './core/guards/auth-dev-guards/auth-dev.guard';
+import {AuthTranGuard} from './core/guards/auth-tran-guards/auth-tran.guard';
 
 export const routes: Routes = [
 	{ path: '', redirectTo: 'login', pathMatch: 'full' },
 	{ path: 'homepage', component: HomepageComponent },
 	{ path: 'login', component: LoginComponent },
-	{ path: 'developer', component: DevelopersComponent, canActivate: [AuthGuard] },
-	{ path: 'developer/message/:id', component: DevHistoryMessagesComponent, data: { is: 'id' }, canActivate: [AuthGuard] },
-	{ path: 'developer/translation/:id', component: DevHistoryTranslationsComponent, data: { is: 'id' }, canActivate: [AuthGuard] },
-	{ path: 'translator', component: TranslatorsComponent, canActivate: [AuthGuard] },
+	{ path: 'developer', component: DevelopersComponent, canActivate: [AuthDevGuard] },
+	{ path: 'developer/message/:id', component: DevHistoryMessagesComponent, data: { is: 'id' }, canActivate: [AuthDevGuard] },
+	{ path: 'developer/translation/:id', component: DevHistoryTranslationsComponent, data: { is: 'id' }, canActivate: [AuthDevGuard] },
+	{ path: 'translator', component: TranslatorsComponent, canActivate: [AuthTranGuard] },
 	{ path: 'forbidden', component: AccessDeniedComponent },
 	{ path: '**', component: PageNotFoundComponent }
 ];

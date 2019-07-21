@@ -8,6 +8,9 @@ import org.tim.DTOs.UserPrincipal;
 import org.tim.services.UserService;
 import org.tim.utils.Mapping;
 
+import java.security.Principal;
+
+
 @RestController
 @RequestMapping(Mapping.USER)
 @RequiredArgsConstructor
@@ -16,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping(Mapping.GET)
-    public UserPrincipal getPrincipal() {
-        return userService.getUserPrincipal();
+    public UserPrincipal getPrincipal(Principal principal) {
+        return userService.getUserPrincipal(principal);
     }
 }

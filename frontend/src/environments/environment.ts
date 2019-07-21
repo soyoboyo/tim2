@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  API : 'http://localhost:8081'
+  API : 'http://localhost:8080',
+  OAUTH_URL : 'http://localhost:9090/oauth/token',
+  APP_CREDENTIAL : 'timApp:OcadoProject'
 };
 
 /*

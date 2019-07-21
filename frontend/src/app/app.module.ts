@@ -11,7 +11,7 @@ import { DevelopersComponent } from './features/developers/developers.component'
 import { TranslatorsComponent } from './features/translators/translators.component';
 import { DevProjectsComponent } from './features/developers/dev-projects/dev-projects.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { DevMessagesComponent } from './features/developers/dev-messages/dev-messages.component';
 import { DevMessagesTableComponent } from './features/developers/dev-messages/dev-messages-table/dev-messages-table.component';
 import { SnackbarService } from './shared/services/snackbar-service/snackbar.service';
@@ -29,6 +29,8 @@ import { DevHistoryMessagesComponent } from './features/developers/dev-history-m
 import { ViewsModule } from './views/views.module';
 import { SharedModule } from './shared/shared.module';
 import { AggregateInfoComponent } from './features/developers/aggregate-info/aggregate-info.component';
+import { CookieService } from 'ngx-cookie-service';
+import {AuthInterceptor} from './core/AuthInterceptor';
 
 @NgModule({
 	declarations: [
@@ -65,8 +67,9 @@ import { AggregateInfoComponent } from './features/developers/aggregate-info/agg
 		FlexLayoutModule,
 		BrowserAnimationsModule
 	],
-	providers: [LoginService, UtilsService, SnackbarService,
-		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } }],
+	providers: [LoginService, UtilsService, SnackbarService, CookieService,
+		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ],
 	bootstrap: [AppComponent],
 	entryComponents: [ConfirmationDialogComponent]
 })
