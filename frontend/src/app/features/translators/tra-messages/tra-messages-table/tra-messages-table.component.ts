@@ -4,6 +4,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Project } from '../../../../shared/types/entities/Project';
 import { Message } from '../../../../shared/types/entities/Message';
 import { MessageForTranslator } from '../../../../shared/types/DTOs/output/MessageForTranslator';
+import { log } from 'util';
 
 @Component({
 	selector: 'app-tra-messages-table',
@@ -56,11 +57,9 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 			if (!this.displayedColumns.includes('actions')) {
 				this.displayedColumns = ['index', 'content', 'existing', 'upToDate', 'valid', 'actions'];
 			}
-		} else {
-			this.displayedColumns = ['index', 'content'];
+			this.getMessages();
+			this.dataSource.filter = '{';
 		}
-
-		this.getMessages();
 	}
 
 	async getMessages() {
