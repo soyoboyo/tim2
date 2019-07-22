@@ -63,6 +63,8 @@ public class MessageForTranslatorService {
 			messagesForTranslator.add(mForTranslator);
 		}
 
+		messagesForTranslator.sort(Comparator.reverseOrder());
+
 		return messagesForTranslator;
 	}
 
@@ -76,6 +78,8 @@ public class MessageForTranslatorService {
 			mForTranslator.setSubstitute(null);
 			messagesForTranslator.add(mForTranslator);
 		}
+
+		messagesForTranslator.sort(Comparator.comparing(MessageForTranslator::getUpdateDate, Comparator.reverseOrder()));
 
 		return messagesForTranslator;
 	}
