@@ -9,7 +9,6 @@ spring:
     username: sa
     password: sa
   jpa:
-    show-sql: true
     properties:
       hibernate:
         ddl-auto: create-drop
