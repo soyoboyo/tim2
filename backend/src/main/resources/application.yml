@@ -1,8 +1,3 @@
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
 security:
   jwt:
     public-key: classpath:public.txt

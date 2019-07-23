@@ -10,10 +10,11 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 
 @Data
 @NoArgsConstructor
-public class MessageForTranslator {
+public class MessageForTranslator implements Comparable<MessageForTranslator> {
 
 	@NotNull
 	@NonNull
@@ -39,4 +40,16 @@ public class MessageForTranslator {
 
 	private String previousMessageContent;
 
+	@Override
+	public int compareTo(MessageForTranslator messageForTranslator) {
+		if (this.getTranslation() != null && messageForTranslator.getTranslation() != null) {
+			return this.getTranslation().getUpdateDate().compareTo(messageForTranslator.getTranslation().getUpdateDate());
+		} else if (this.getTranslation() != null) {
+			return this.getTranslation().getUpdateDate().compareTo(messageForTranslator.getUpdateDate());
+		} else if (messageForTranslator.getTranslation() != null) {
+			return this.getUpdateDate().compareTo(messageForTranslator.getTranslation().getUpdateDate());
+		} else {
+			return this.getUpdateDate().compareTo(messageForTranslator.getUpdateDate());
+		}
+	}
 }

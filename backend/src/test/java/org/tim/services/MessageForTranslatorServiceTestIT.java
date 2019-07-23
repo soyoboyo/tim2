@@ -10,11 +10,14 @@ import org.tim.DTOs.input.TranslationCreateDTO;
 import org.tim.DTOs.output.MessageForTranslator;
 import org.tim.DTOs.output.TranslationForTranslator;
 import org.tim.configuration.SpringTestsCustomExtension;
+import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
 import org.tim.exceptions.ValidationException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -75,6 +78,40 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 	}
 
 	@Test
+	@DisplayName("As a Translator I see messages without translations but ordered correctly.")
+	void whenGetMessageForTranslationWithoutLocaleThenReturnMessagesWithoutTranslationAndSubstituteOrderedCorrectly() {
+		//given
+		Project project = projectService.getAllProjects().get(0);
+		List<Message> messages = createMessagesForTests(project);
+		//when
+		List<MessageForTranslator> messageForTranslators = messageForTranslatorService.getMessagesForTranslator(project.getId());
+		//then
+		assertAll(
+				() -> assertEquals(messages.get(2).getKey(), messageForTranslators.get(0).getKey()),
+				() -> assertEquals(messages.get(1).getKey(), messageForTranslators.get(1).getKey()),
+				() -> assertEquals(messages.get(0).getKey(), messageForTranslators.get(2).getKey())
+		);
+	}
+
+	@Test
+	@DisplayName("As a Translator I see messages without translations but ordered correctly.")
+	void whenGetMessageForTranslationWithoutLocaleAndMessagesWereUpdatedThenReturnMessagesOrderedCorrectly() {
+		//given
+		Project project = projectService.getAllProjects().get(0);
+		List<Message> messages = createMessagesForTests(project);
+		messages.get(1).setContent("New content");
+		messageRepository.saveAll(messages);
+		//when
+		List<MessageForTranslator> messageForTranslators = messageForTranslatorService.getMessagesForTranslator(project.getId());
+		//then
+		assertAll(
+				() -> assertEquals(messageForTranslators.get(0).getKey(), messages.get(1).getKey()),
+				() -> assertEquals(messageForTranslators.get(1).getKey(), messages.get(2).getKey()),
+				() -> assertEquals(messageForTranslators.get(2).getKey(), messages.get(0).getKey())
+		);
+	}
+
+	@Test
 	void whenGetMessageAndTranslationAndSubstituteNotExistThenReturnMessagesWithoutTranslationAndSubstitute() {
 		Long projectId = projectService.getAllProjects().get(0).getId();
 		Message message = messageService.createMessage(new MessageDTO("key", "it's message", projectId));
@@ -84,6 +121,54 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 		assertAll(
 				() -> assertNull(messageForTranslators.get(0).getTranslation()),
 				() -> assertNull(messageForTranslators.get(0).getSubstitute())
+		);
+	}
+
+	@Test
+	@DisplayName("As a Translator I see messages with translations and ordered correctly.")
+	void whenGetMessageForTranslationWithLocaleAndTranslationExistThenReturnMessagesOrderedCorrectly() {
+		//given
+		Project project = projectService.getAllProjects().get(0);
+		List<Message> messages = createMessagesForTests(project);
+		Translation t1 = new Translation(Locale.GERMANY, messages.get(2));
+		t1.setContent("Inhalt1");
+		Translation t2 = new Translation(Locale.GERMANY, messages.get(1));
+		t2.setContent("Inhalt2");
+		Translation t3 = new Translation(Locale.GERMANY, messages.get(0));
+		t3.setContent("Inhalt3");
+		List<Translation> translations = Arrays.asList(t1, t2, t3);
+		translationRepository.saveAll(translations);
+		//when
+		List<MessageForTranslator> messageForTranslators = messageForTranslatorService.getMessagesForTranslator(project.getId(), "de_DE");
+		//then
+		assertAll(
+				() -> assertEquals(messageForTranslators.get(0).getKey(), messages.get(0).getKey()),
+				() -> assertEquals(messageForTranslators.get(1).getKey(), messages.get(1).getKey()),
+				() -> assertEquals(messageForTranslators.get(2).getKey(), messages.get(2).getKey())
+		);
+	}
+
+	@Test
+	@DisplayName("As a Translator I see messages with translations and ordered correctly.")
+	void whenGetMessageForTranslationWithLocaleAndTranslationPartlyExistAndMessagesWereUpdatedThenReturnMessagesOrderedCorrectly() {
+		//given
+		Project project = projectService.getAllProjects().get(0);
+		List<Message> messages = createMessagesForTests(project);
+		Translation t1 = new Translation(Locale.GERMANY, messages.get(2));
+		t1.setContent("Inhalt1");
+		Translation t3 = new Translation(Locale.GERMANY, messages.get(0));
+		t3.setContent("Inhalt3");
+		List<Translation> translations = Arrays.asList(t1, t3);
+		translationRepository.saveAll(translations);
+		messages.get(1).setKey("newKey");
+		List<Message> messagesAfterUpdated = messageRepository.saveAll(messages);
+		//when
+		List<MessageForTranslator> messageForTranslators = messageForTranslatorService.getMessagesForTranslator(project.getId(), "de_DE");
+		//then
+		assertAll(
+				() -> assertEquals(messageForTranslators.get(0).getKey(), messagesAfterUpdated.get(1).getKey()),
+				() -> assertEquals(messageForTranslators.get(1).getKey(), messagesAfterUpdated.get(0).getKey()),
+				() -> assertEquals(messageForTranslators.get(2).getKey(), messagesAfterUpdated.get(2).getKey())
 		);
 	}
 
@@ -145,7 +230,7 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 	@Test
 	@DisplayName("As a Translator I see previous content of an updated Message.")
-	void whenTranslationIsOutdated_thenGetPreviousMessageContent() throws InterruptedException {
+	void whenTranslationIsOutdated_thenGetPreviousMessageContent() {
 		// given
 		Long projectId = projectService.getAllProjects().get(0).getId();
 		MessageDTO messageDTO = random(MessageDTO.class);
@@ -169,5 +254,14 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 		// then
 		assertEquals("Witam", messageForTranslator.getPreviousMessageContent());
+	}
+
+	private List<Message> createMessagesForTests(Project project) {
+		List<Message> messages = Arrays.asList(
+				new Message("key1", "Content1", project),
+				new Message("key2", "Content2", project),
+				new Message("key3", "Content3", project)
+		);
+		return messageRepository.saveAll(messages);
 	}
 }
