@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.2.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>org.tim</groupId>
-	<artifactId>tim</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>tim</name>
-	<description>Translation &amp; Internationalization Manager</description>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.2.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>org.tim</groupId>
+    <artifactId>tim</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>tim</name>
+    <description>Translation &amp; Internationalization Manager</description>
 
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
 
-	<developers>
-		<developer>
-			<name>Marian Jureczko</name>
-			<email>marian.jureczko@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Mikołaj Banaszkiewicz</name>
-			<email>mikolaj.banaszkiewicz2@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Szymon Sakowicz</name>
-			<email>szymon@sakowi.cz</email>
-		</developer>
-		<developer>
-			<name>Wojciech Spoton</name>
-			<email>wojtek.spoton@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Alex Kostiukov</name>
-			<email>kostiukov3@gmail.com</email>
-		</developer>
-	</developers>
+    <developers>
+        <developer>
+            <name>Marian Jureczko</name>
+            <email>marian.jureczko@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Mikołaj Banaszkiewicz</name>
+            <email>mikolaj.banaszkiewicz2@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Szymon Sakowicz</name>
+            <email>szymon@sakowi.cz</email>
+        </developer>
+        <developer>
+            <name>Wojciech Spoton</name>
+            <email>wojtek.spoton@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Alex Kostiukov</name>
+            <email>kostiukov3@gmail.com</email>
+        </developer>
+    </developers>
 
-	<properties>
-		<java.version>11</java.version>
-	</properties>
+    <properties>
+        <java.version>11</java.version>
+    </properties>
 
-	<repositories>
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
-	</repositories>
-	
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.github.benas.random-beans</groupId>
@@ -158,15 +158,26 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>name.falgout.jeffrey.testing.junit5</groupId>
-            <artifactId>mockito-extension</artifactId>
-            <version>1.0.0</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>3.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.0.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>4.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.7</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
@@ -204,41 +215,41 @@
             <version>2.9.8</version>
         </dependency>
     </dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>3.0.0-M3</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.0.0-M3</version>
 
-				<configuration>
+                <configuration>
 
-					<includes>
-						<include>**/*IT.java</include>
-						<include>**/*CT.java</include>
-					</includes>
-				</configuration>
+                    <includes>
+                        <include>**/*IT.java</include>
+                        <include>**/*CT.java</include>
+                    </includes>
+                </configuration>
 
-				<executions>
-					<execution>
-						<phase>
-							test
-						</phase>
-						<goals>
-							<goal>
-								verify
-							</goal>
-							<goal>
-								integration-test
-							</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+                <executions>
+                    <execution>
+                        <phase>
+                            test
+                        </phase>
+                        <goals>
+                            <goal>
+                                verify
+                            </goal>
+                            <goal>
+                                integration-test
+                            </goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

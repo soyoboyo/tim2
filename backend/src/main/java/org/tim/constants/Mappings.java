@@ -1,6 +1,6 @@
-package org.tim.utils;
+package org.tim.constants;
 
-public class Mapping {
+public class Mappings {
 
     public static final String API_VERSION = "/api/v1";
 
@@ -15,6 +15,7 @@ public class Mapping {
 	public static final String EXPORT_CI ="/exportCI";
     public static final String LOCALES ="/locales";
     public static final String MISSING ="/missing";
+    public static final String REPORT = "/report";
 
 
     public static final String LANGUAGES = "/languages";
@@ -33,5 +34,6 @@ public class Mapping {
     public static final String SWAGGER_UI = "/swagger-ui.html";
 	public static final String ARCHIVE = "/archive/{id}";
 	public static final String AGGREGATE = "/aggregate/{id}";
+	public static final String GENERATE = "/generate/{id}";
 
 }

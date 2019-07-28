@@ -3,12 +3,13 @@ package org.tim.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.tim.exceptions.ValidationException;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-import static org.tim.utils.UserMessages.*;
+import static org.tim.constants.UserMessages.*;
 
 @Entity
 @Data
@@ -51,7 +52,7 @@ public class Project {
     final private Set<LocaleWrapper> targetLocales = new HashSet<>();
 
     public void addTargetLocale(@NotNull List<LocaleWrapper> locales) {
-		targetLocales.addAll(locales);
+        targetLocales.addAll(locales);
     }
 
     public void removeTargetLocale(@NotNull LocaleWrapper locale) {

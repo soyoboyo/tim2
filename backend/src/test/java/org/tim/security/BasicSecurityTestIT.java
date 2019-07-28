@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.tim.configuration.SpringTestsCustomExtension;
 
-import static org.tim.utils.Mapping.*;
+import static org.tim.constants.Mappings.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BasicSecurityTestIT extends SpringTestsCustomExtension {

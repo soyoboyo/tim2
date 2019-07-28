@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.tim.utils.UserMessages.LANG_NOT_FOUND_IN_PROJ;
+import static org.tim.constants.UserMessages.LANG_NOT_FOUND_IN_PROJ;
 
 @Service
 @RequiredArgsConstructor
