@@ -23,7 +23,7 @@ import java.util.Optional;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.tim.utils.UserMessages.LANG_NOT_FOUND_IN_PROJ;
+import static org.tim.constants.UserMessages.LANG_NOT_FOUND_IN_PROJ;
 
 public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 
