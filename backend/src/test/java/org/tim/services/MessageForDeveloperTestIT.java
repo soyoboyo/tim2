@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageForDeveloperTestIT extends SpringTestsCustomExtension {
 
-	private Project project;
-
 	@Autowired
 	private MessageForDeveloperService messageForDeveloperService;
+
+	private Project project;
 
 	@BeforeEach
 	void setUp() {

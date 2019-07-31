@@ -3,7 +3,6 @@ package org.tim.services;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.tim.DTOs.MessageDTO;
 import org.tim.DTOs.input.ProjectDTO;
 import org.tim.DTOs.input.TranslationCreateDTO;
@@ -13,15 +12,9 @@ import org.tim.exceptions.ValidationException;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
-
-	private ProjectDTO projectDTO;
-	private List<MessageDTO> messageDTOList;
-	private List<TranslationCreateDTO> translationCreateDTOList;
-	private static String expectedResult;
 
 	@Autowired
 	private ProjectService projectService;
@@ -31,6 +24,11 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 	private TranslationService translationService;
 	@Autowired
 	private CIExportsService ciExportsService;
+
+	private ProjectDTO projectDTO;
+	private List<MessageDTO> messageDTOList;
+	private List<TranslationCreateDTO> translationCreateDTOList;
+	private static String expectedResult;
 
 	@BeforeEach
 	public void setUp() {
@@ -54,7 +52,6 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "ci", password = "ci")
 	public void exportAllReadyTranslationsByProjectAndByLocale_throwException() {
 		// given
 		String locale = "ag_XX7d9ww";
@@ -62,9 +59,8 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 		for (int i = 0; i < messageDTOList.size(); i++) {
 			messageDTOList.get(i).setProjectId(project.getId());
 			Long messageId = messageService.createMessage(messageDTOList.get(i)).getId();
-			translationService.createTranslation(translationCreateDTOList.get(i),messageId);
+			translationService.createTranslation(translationCreateDTOList.get(i), messageId);
 		}
-
 		// then
 		assertThrows(ValidationException.class, () -> {
 			ciExportsService.exportAllReadyTranslationsByProjectAndByLocale(project.getId(), locale); // when
@@ -72,7 +68,6 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "ci", password = "ci")
 	public void exportAllReadyTranslationsByProjectAndByLocale_correctOutput() {
 		// given
 		String locale = "pl_PL";
@@ -82,16 +77,15 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 			Long messageId = messageService.createMessage(messageDTOList.get(i)).getId();
 			translationService.createTranslation(translationCreateDTOList.get(i), messageId);
 		}
-
 		// when
 		String result = ciExportsService.exportAllReadyTranslationsByProjectAndByLocale(project.getId(), locale);
-
 		// then
-		assertEquals(expectedResult, result);
+		assertAll(
+				() -> assertEquals(expectedResult, result)
+		);;
 	}
 
 	@Test
-	@WithMockUser(username = "ci", password = "ci")
 	public void exportAllReadyTranslationsByProjectAndByLocale_useReplaceableLocale() {
 		// given
 		String locale = "ar_LY";
@@ -104,9 +98,10 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 		}
 		// when
 		String result = ciExportsService.exportAllReadyTranslationsByProjectAndByLocale(project.getId(), locale);
-
 		// then
 		expectedResult = expectedResult.replace(replaceableLocale, locale);
-		assertEquals(expectedResult, result);
+		assertAll(
+				() -> assertEquals(expectedResult, result)
+		);;
 	}
 }

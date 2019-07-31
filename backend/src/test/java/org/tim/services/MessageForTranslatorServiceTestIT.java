@@ -28,18 +28,14 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 	@Autowired
 	private MessageForTranslatorService messageForTranslatorService;
-
 	@Autowired
 	private MessageService messageService;
-
 	@Autowired
 	private ProjectService projectService;
-
 	@Autowired
 	private TranslationService translationService;
 
 	private Project project;
-
 	private final ModelMapper mapper = new ModelMapper();
 
 	@BeforeEach
@@ -56,11 +52,14 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 		// when
 		List<MessageForTranslator> messages = messageForTranslatorService.getMessagesForTranslator(project.getId(), "ab_CD");
 		// then
-		assertEquals(1, messages.size());
+		assertAll(
+				() -> assertEquals(1, messages.size())
+		);
 	}
 
 	@Test
 	void whenGetMessageForTranslationWithoutLocaleThenReturnMessagesWithoutTranslationAndSubstitute() {
+		//given
 		Long projectId = projectService.getAllProjects().get(0).getId();
 		Message message = messageService.createMessage(new MessageDTO("key", "it's message", projectId));
 		TranslationCreateDTO translationCreateDTO = new TranslationCreateDTO();
@@ -68,9 +67,9 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 		String translationContent = "it's content";
 		translationCreateDTO.setContent(translationContent);
 		translationService.createTranslation(translationCreateDTO, message.getId());
-
+		//when
 		List<MessageForTranslator> messageForTranslators = messageForTranslatorService.getMessagesForTranslator(projectId);
-
+		//then
 		assertAll(
 				() -> assertNull(messageForTranslators.get(0).getTranslation()),
 				() -> assertNull(messageForTranslators.get(0).getSubstitute())
@@ -113,11 +112,12 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 	@Test
 	void whenGetMessageAndTranslationAndSubstituteNotExistThenReturnMessagesWithoutTranslationAndSubstitute() {
+		//given
 		Long projectId = projectService.getAllProjects().get(0).getId();
 		Message message = messageService.createMessage(new MessageDTO("key", "it's message", projectId));
-
+		//when
 		List<MessageForTranslator> messageForTranslators = messageForTranslatorService.getMessagesForTranslator(projectId, Locale.ENGLISH.toString());
-
+		//then
 		assertAll(
 				() -> assertNull(messageForTranslators.get(0).getTranslation()),
 				() -> assertNull(messageForTranslators.get(0).getSubstitute())
@@ -174,6 +174,7 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 	@Test
 	void whenGetMessageAndTranslationNotExistButSubstituteExistThenReturnOnlySubstitute() {
+		//given
 		Long projectId = projectService.getAllProjects().get(0).getId();
 		Message message = messageService.createMessage(new MessageDTO("key", "it's message", projectId));
 		TranslationCreateDTO translationCreateDTO = new TranslationCreateDTO();
@@ -181,9 +182,9 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 		String translationContent = "it's content";
 		translationCreateDTO.setContent(translationContent);
 		translationService.createTranslation(translationCreateDTO, message.getId());
-
+		//when
 		List<MessageForTranslator> messageForTranslators = messageForTranslatorService.getMessagesForTranslator(projectId, Locale.ENGLISH.toString());
-
+		//then
 		assertAll(
 				() -> assertNull(messageForTranslators.get(0).getTranslation()),
 				() -> assertEquals(Locale.UK.toString(), messageForTranslators.get(0).getSubstitute().getLocale()),
@@ -194,6 +195,7 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 	@Test
 	void whenGetMessageAndTranslationNotExistAndSubstituteExistOnSecondLevelReturnSubstitute() {
+		//given
 		Long projectId = projectService.getAllProjects().get(0).getId();
 		Message message = messageService.createMessage(new MessageDTO("key", "it's message", projectId));
 		TranslationCreateDTO translationCreateDTO = new TranslationCreateDTO();
@@ -201,19 +203,20 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 		String translationContent = "it's content";
 		translationCreateDTO.setContent(translationContent);
 		translationService.createTranslation(translationCreateDTO, message.getId());
+		//when
 		List<MessageForTranslator> messageForTranslators = messageForTranslatorService.getMessagesForTranslator(projectId, Locale.ENGLISH.toString());
-
+		//then
 		assertAll(
 				() -> assertNull(messageForTranslators.get(0).getTranslation()),
 				() -> assertEquals(Locale.UK.toString(), messageForTranslators.get(0).getSubstitute().getLocale()),
 				() -> assertEquals(translationContent, messageForTranslators.get(0).getSubstitute().getContent()),
 				() -> assertEquals("key", messageForTranslators.get(0).getKey())
 		);
-
 	}
 
 	@Test
 	void whenGetMessageAndLocaleSetWithWrongFormatThrowValidationException() {
+		//given
 		Long projectId = projectService.getAllProjects().get(0).getId();
 		Message message = messageService.createMessage(new MessageDTO("key", "it's message", projectId));
 		TranslationCreateDTO translationCreateDTO = new TranslationCreateDTO();
@@ -221,9 +224,10 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 		String translationContent = "it's content";
 		translationCreateDTO.setContent(translationContent);
 		translationService.createTranslation(translationCreateDTO, message.getId());
-
+		//then
 		Exception exception = assertThrows(ValidationException.class, () ->
-				messageForTranslatorService.getMessagesForTranslator(projectId, "wrong_format"));
+				messageForTranslatorService.getMessagesForTranslator(projectId, "wrong_format")); //when
+		//then
 		assertTrue(exception.getMessage().contains("Source locale: " +
 				"wrong_format was given in the wrong format."));
 	}
@@ -245,13 +249,10 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 		messageDTO.setContent("Witamy serdecznie");
 		messageService.updateMessage(messageDTO, message.getId());
-
 		messageDTO.setContent("Witam użytkownika");
 		messageService.updateMessage(messageDTO, message.getId());
-
 		// when
 		messageForTranslator.setPreviousMessageContent(messageForTranslatorService.getPreviousMessageContent(messageForTranslator));
-
 		// then
 		assertEquals("Witam", messageForTranslator.getPreviousMessageContent());
 	}
