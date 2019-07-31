@@ -1,5 +1,6 @@
 package org.tim.repositories;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tim.configuration.SpringJpaTestsCustomExtension;
@@ -16,6 +17,7 @@ public class MessageRepositoryTestsIT extends SpringJpaTestsCustomExtension {
 	private MessageRepository messageRepository;
 
 	@Test
+	@DisplayName("Check if finding message is working correct.")
 	public void testMessageRepositoryFind() {
 		//given
 		Message message = messageRepository.save(random(Message.class));
@@ -29,6 +31,7 @@ public class MessageRepositoryTestsIT extends SpringJpaTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Check if updating message is working correct.")
 	public void testMessageRepositoryUpdate() {
 		//given
 		Message message = messageRepository.save(random(Message.class));
@@ -44,6 +47,7 @@ public class MessageRepositoryTestsIT extends SpringJpaTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Check if deleting message is working correct.")
 	public void testMessageRepositoryDelete() {
 		//given
 		Message message = messageRepository.save(random(Message.class));

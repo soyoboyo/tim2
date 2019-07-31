@@ -3,6 +3,7 @@ package org.tim.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -25,19 +26,15 @@ import static org.tim.utils.Mapping.*;
 
 public class MessageControllerTestIT extends SpringTestsCustomExtension {
 
-	private MockMvc mockMvc;
-	private static ObjectMapper mapper = new ObjectMapper();
-
 	@InjectMocks
 	private MessageController messageController;
 
 	@Mock
 	private MessageService messageService;
 
-	private final String BASE_URL = "http://localhost:8081";
-
+	private MockMvc mockMvc;
+	private static ObjectMapper mapper = new ObjectMapper();
 	private Message message;
-
 	private Project project;
 
 	@BeforeEach
@@ -49,6 +46,7 @@ public class MessageControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Allow to create valid message.")
 	public void whenValidMessageIsGivingForCreationThenMessageGoesToService() throws Exception {
 		//given
 		MessageDTO messageDTO = new MessageDTO();
@@ -67,6 +65,7 @@ public class MessageControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Return validation error when try to create invalid message.")
 	public void whenInvalidMessageIsGivingForCreationThenBadRequestIsReturned() throws Exception {
 		//given
 		MessageDTO messageDTO = new MessageDTO();
@@ -79,8 +78,8 @@ public class MessageControllerTestIT extends SpringTestsCustomExtension {
 				.andExpect(status().isBadRequest());
 	}
 
-
 	@Test
+	@DisplayName("Allow to update valid message.")
 	public void whenValidMessageIsGivingForUpdateThenMessageGoesToService() throws Exception {
 		//given
 		MessageDTO messageDTO = new MessageDTO();
@@ -100,6 +99,7 @@ public class MessageControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Return validation error when try to update invalid message.")
 	public void whenInvalidMessageIsGivingForUpdateThenBadRequestIsReturned() throws Exception {
 		//given
 		MessageDTO messageDTO = new MessageDTO();
@@ -114,6 +114,7 @@ public class MessageControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Allow to remove message.")
 	public void whenMessageIsGivingForRemovalThenItGoesToService() throws Exception {
 		//given
 		Long messageId = 1L;

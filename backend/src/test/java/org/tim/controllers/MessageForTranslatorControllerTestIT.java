@@ -2,6 +2,7 @@ package org.tim.controllers;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,16 +28,13 @@ import static org.tim.utils.Mapping.*;
 
 public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExtension {
 
-	private MockMvc mockMvc;
-
 	@InjectMocks
 	private MessageForTranslatorController messageForTranslatorController;
 
 	@Mock
 	private MessageForTranslatorService messageForTranslatorService;
 
-	private final String BASE_URL = "http://localhost:8081";
-
+	private MockMvc mockMvc;
 	private List<MessageForTranslator> messageForTranslatorList;
 
 	@BeforeEach
@@ -51,6 +49,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
 	}
 
 	@Test
+	@DisplayName("Return messages without translation when locale is not given.")
 	void whenGetMessageForTranslationWithoutLocaleThenReturnMessagesWithoutTranslationAndSubstitute() throws Exception {
 		when(messageForTranslatorService.getMessagesForTranslator(any())).thenReturn(messageForTranslatorList);
 		mockMvc.perform(get(BASE_URL + API_VERSION + MESSAGE + TRANSLATOR + "/getByProject/1")
@@ -65,6 +64,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
 	}
 
 	@Test
+	@DisplayName("Return messages with translation and substitute both null when translation and substitute not exists.")
 	void whenGetMessageAndTranslationAndSubstituteNotExistThenReturnMessagesWithoutTranslationAndSubstitute() throws Exception {
 		when(messageForTranslatorService.getMessagesForTranslator(any(), any())).thenReturn(messageForTranslatorList);
 		mockMvc.perform(get(BASE_URL + API_VERSION + MESSAGE + TRANSLATOR + "/getByLocale/1")
@@ -80,6 +80,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
 	}
 
 	@Test
+	@DisplayName("Return messages with nulls as translation and correct substitutes when exists.")
 	void whenGetMessageAndTranslationNotExistButSubstituteExistThenReturnOnlySubstitute() throws Exception {
 		TranslationForTranslator translationForTranslator = new TranslationForTranslator();
 		translationForTranslator.setId(1L);
@@ -108,6 +109,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
 	}
 
 	@Test
+	@DisplayName("Return messages with translation and substitutes when exists.")
 	void whenGetMessageAndTranslationExistAndSubstituteExistThenReturnTranslationAdnSubstitute() throws Exception {
 		TranslationForTranslator translationForTranslator = new TranslationForTranslator();
 		translationForTranslator.setId(1L);
@@ -151,6 +153,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
 	}
 
 	@Test
+	@DisplayName("Return validation error when locale were get in wrong format.")
 	void whenGetMessageAndLocaleSetWithWrongFormatThrowValidationException() throws Exception {
 		String wrongLocale = "wrong_format";
 		when(messageForTranslatorService.getMessagesForTranslator(any(), any())).thenThrow(

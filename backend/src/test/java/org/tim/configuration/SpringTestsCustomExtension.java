@@ -38,6 +38,8 @@ public abstract class SpringTestsCustomExtension {
 	@Autowired
 	protected MessageVersionRepository messageVersionRepository;
 
+	protected final String BASE_URL = "http://localhost:8081";
+
 	@BeforeEach
 	public void prepareDatabaseForTests() {
 		clear();

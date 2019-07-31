@@ -1,6 +1,7 @@
 package org.tim.services;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tim.DTOs.MessageDTO;
@@ -52,7 +53,8 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	public void exportAllReadyTranslationsByProjectAndByLocale_throwException() {
+	@DisplayName("Throw validation error during exporting translation when locale were sent in wrong format.")
+	public void whenExportAllReadyTranslationsByProjectAndByLocaleAndLocaleInWrongFormatThenThrowException() {
 		// given
 		String locale = "ag_XX7d9ww";
 		Project project = projectService.createProject(projectDTO);
@@ -68,7 +70,8 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	public void exportAllReadyTranslationsByProjectAndByLocale_correctOutput() {
+	@DisplayName("Export all ready translations when all input data validated.")
+	public void whenExportAllReadyTranslationsByProjectAndByLocaleThenReturnCorrectOutput() {
 		// given
 		String locale = "pl_PL";
 		Project project = projectService.createProject(projectDTO);
@@ -86,7 +89,8 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	public void exportAllReadyTranslationsByProjectAndByLocale_useReplaceableLocale() {
+	@DisplayName("Export all ready translations using replaceable locales when all input data validate.")
+	public void exportAllReadyTranslationsByProjectAndByLocaleAndUseReplaceableLocale() {
 		// given
 		String locale = "ar_LY";
 		String replaceableLocale = "pl_PL";

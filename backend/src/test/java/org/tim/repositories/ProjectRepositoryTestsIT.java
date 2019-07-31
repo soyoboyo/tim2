@@ -1,5 +1,6 @@
 package org.tim.repositories;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tim.configuration.SpringJpaTestsCustomExtension;
@@ -17,6 +18,7 @@ public class ProjectRepositoryTestsIT extends SpringJpaTestsCustomExtension {
 	private ProjectRepository projectRepository;
 
 	@Test
+	@DisplayName("Check if finding projects is working correct.")
 	public void testProjectRepositoryFind() {
 		//given
 		Project project = projectRepository.save(random(Project.class));
@@ -30,6 +32,7 @@ public class ProjectRepositoryTestsIT extends SpringJpaTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Check if updating projects is working correct.")
 	public void testProjectRepositoryUpdate() {
 		//given
 		Project project = projectRepository.save(random(Project.class));
@@ -45,6 +48,7 @@ public class ProjectRepositoryTestsIT extends SpringJpaTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Check if deleting projects is working correct.")
 	public void testProjectRepositoryDelete() {
 		//given
 		Project project = projectRepository.save(random(Project.class));

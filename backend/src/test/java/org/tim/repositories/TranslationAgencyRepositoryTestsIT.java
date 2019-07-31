@@ -1,6 +1,7 @@
 package org.tim.repositories;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tim.configuration.SpringJpaTestsCustomExtension;
@@ -25,6 +26,7 @@ public class TranslationAgencyRepositoryTestsIT extends SpringJpaTestsCustomExte
 	}
 
 	@Test
+	@DisplayName("Check if finding translation agency is working correct.")
 	public void testTranslationAgencyRepositoryFind() {
 		//given
 		TranslationAgency translationAgency = translationAgencyRepository.save(randomTranslationAgency);
@@ -38,6 +40,7 @@ public class TranslationAgencyRepositoryTestsIT extends SpringJpaTestsCustomExte
 	}
 
 	@Test
+	@DisplayName("Check if updating translation agency is working correct.")
 	public void testTranslationAgencyRepositoryUpdate() {
 		//given
 		TranslationAgency translationAgency = translationAgencyRepository.save(randomTranslationAgency);
@@ -53,6 +56,7 @@ public class TranslationAgencyRepositoryTestsIT extends SpringJpaTestsCustomExte
 	}
 
 	@Test
+	@DisplayName("Check if deleting translation agency is working correct.")
 	public void testTranslationAgencyRepositoryDelete() {
 		//given
 		TranslationAgency translationAgency = translationAgencyRepository.save(randomTranslationAgency);

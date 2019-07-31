@@ -1,5 +1,6 @@
 package org.tim.repositories;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -20,7 +21,7 @@ public class TranslationRepositoryTestsIT extends SpringJpaTestsCustomExtension 
 	private MessageRepository messageRepository;
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
+	@DisplayName("Check if finding translation is working correct.")
 	public void testTranslationRepositoryFind() {
 		//given
 		Translation t = random(Translation.class);
@@ -36,7 +37,7 @@ public class TranslationRepositoryTestsIT extends SpringJpaTestsCustomExtension 
 	}
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
+	@DisplayName("Check if updating translation is working correct.")
 	public void testTranslationRepositoryUpdate() {
 		//given
 		Translation t = random(Translation.class);
@@ -54,7 +55,7 @@ public class TranslationRepositoryTestsIT extends SpringJpaTestsCustomExtension 
 	}
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
+	@DisplayName("Check if deleting translation is working correct.")
 	public void testTranslationRepositoryDelete() {
 		//given
 		Translation t = random(Translation.class);
@@ -70,7 +71,7 @@ public class TranslationRepositoryTestsIT extends SpringJpaTestsCustomExtension 
 	}
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
+	@DisplayName("Check translation repository is working correct.")
 	void testTranslationRepository() {
 		//given
 		Translation t = random(Translation.class);

@@ -44,6 +44,7 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 	}
 
 	@Test
+	@DisplayName("Return all existing message for translator.")
 	void whenGettingMessageForTranslatorThenReturnMessagesForTranslator() {
 		// given
 		MessageDTO messageDTO = random(MessageDTO.class);
@@ -58,6 +59,7 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 	}
 
 	@Test
+	@DisplayName("Return all existing translation without translation and substitude when locale not sent.")
 	void whenGetMessageForTranslationWithoutLocaleThenReturnMessagesWithoutTranslationAndSubstitute() {
 		//given
 		Long projectId = projectService.getAllProjects().get(0).getId();
@@ -111,6 +113,7 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 	}
 
 	@Test
+	@DisplayName("Return message without translation and substitute when both not exists.")
 	void whenGetMessageAndTranslationAndSubstituteNotExistThenReturnMessagesWithoutTranslationAndSubstitute() {
 		//given
 		Long projectId = projectService.getAllProjects().get(0).getId();
@@ -173,6 +176,7 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 	}
 
 	@Test
+	@DisplayName("Return message with substitute when translation not exists.")
 	void whenGetMessageAndTranslationNotExistButSubstituteExistThenReturnOnlySubstitute() {
 		//given
 		Long projectId = projectService.getAllProjects().get(0).getId();
@@ -194,6 +198,7 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 	}
 
 	@Test
+	@DisplayName("Return message with substitute second level when translation not exists.")
 	void whenGetMessageAndTranslationNotExistAndSubstituteExistOnSecondLevelReturnSubstitute() {
 		//given
 		Long projectId = projectService.getAllProjects().get(0).getId();
@@ -215,6 +220,7 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 	}
 
 	@Test
+	@DisplayName("Throw validation error when locale sent in wrong format when calling get translations.")
 	void whenGetMessageAndLocaleSetWithWrongFormatThrowValidationException() {
 		//given
 		Long projectId = projectService.getAllProjects().get(0).getId();

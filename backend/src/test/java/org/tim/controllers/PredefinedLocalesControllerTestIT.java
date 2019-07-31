@@ -3,6 +3,7 @@ package org.tim.controllers;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.tim.configuration.SpringTestsCustomExtension;
 import org.tim.services.PredefinedLocalesService;
 
 import java.util.TreeSet;
@@ -23,15 +25,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.tim.utils.Mapping.*;
 
 @ExtendWith({SpringExtension.class})
-public class PredefinedLocalesControllerTestIT {
+public class PredefinedLocalesControllerTestIT extends SpringTestsCustomExtension {
 
 	private MockMvc mockMvc;
 	private static TreeSet<String> expectedPredefinedLanguages;
 	private static String[] expectedLanguages;
 	private static TreeSet<String> expectedPredefinedCountries;
 	private static String[] expectedCountries;
-
-	private final String BASE_URL = "http://localhost:8081";
 
 	@Mock
 	private PredefinedLocalesService predefinedLocalesService;
@@ -61,6 +61,7 @@ public class PredefinedLocalesControllerTestIT {
 	}
 
 	@Test
+	@DisplayName("Return all correct predefined languages.")
 	void whenGetAllPredefinedLanguagesThenReturnOkAndListOfLanguages() throws Exception {
 		when(predefinedLocalesService.getPredefinedLanguages()).thenReturn(expectedPredefinedLanguages);
 		mockMvc.perform(get(BASE_URL + API_VERSION + LOCALES + LANGUAGES + GET_ALL)
@@ -72,6 +73,7 @@ public class PredefinedLocalesControllerTestIT {
 	}
 
 	@Test
+	@DisplayName("Return all correct predefined countries.")
 	void whenGetAllPredefinedCountriesThenReturnOkAndListOfCountries() throws Exception {
 		when(predefinedLocalesService.getPredefinedCounties()).thenReturn(expectedPredefinedCountries);
 		mockMvc.perform(get(BASE_URL + API_VERSION + LOCALES + COUNTRIES + GET_ALL)

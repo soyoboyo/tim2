@@ -1,5 +1,6 @@
 package org.tim.repositories;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tim.configuration.SpringJpaTestsCustomExtension;
@@ -16,6 +17,7 @@ public class LocaleWrapperRepositoryTestsIT extends SpringJpaTestsCustomExtensio
 	private LocaleWrapperRepository localeWrapperRepository;
 
 	@Test
+	@DisplayName("Check if finding locale wrapper is working correct.")
 	public void testLocaleWrapperRepositoryFind() {
 		//given
 		LocaleWrapper locale = localeWrapperRepository.save(random(LocaleWrapper.class));
@@ -29,6 +31,7 @@ public class LocaleWrapperRepositoryTestsIT extends SpringJpaTestsCustomExtensio
 	}
 
 	@Test
+	@DisplayName("Check if deleting locale wrapper is working correct.")
 	public void testLocaleWrapperRepositoryDelete() {
 		//given
 		LocaleWrapper locale = localeWrapperRepository.save(random(LocaleWrapper.class));
