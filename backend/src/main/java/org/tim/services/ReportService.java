@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.constants.TranslationStatus;
 import org.tim.constants.UserMessages;
-import org.tim.entities.Message;
-import org.tim.entities.ReportDataRow;
-import org.tim.entities.Translation;
+import org.tim.entities.*;
 import org.tim.exceptions.EntityNotFoundException;
 import org.tim.exceptions.ValidationException;
 import org.tim.repositories.MessageRepository;
@@ -21,13 +19,10 @@ import org.tim.repositories.TranslationRepository;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.tim.constants.CSVFileConstants.CSV_FILE_NAME;
-import static org.tim.constants.CSVFileConstants.HEADERS;
+import static org.tim.constants.CSVFileConstants.STD_HEADERS;
 import static org.tim.constants.UserMessages.*;
 
 
@@ -42,75 +37,126 @@ public class ReportService {
 
 
     public String generateCSVReport(Long projectId, String[] localesForReport) {
-        projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
+        var project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
         var messages = new LinkedList<>(messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId));
-        var reportData = new ArrayList<>(gatherReportData(localesForReport, messages));
+        var reportData = new ArrayList<>(gatherReportData(localesForReport, messages, project));
 
         createCSVFile(reportData);
         return CSV_FILE_NAME;
     }
 
-    private List<ReportDataRow> gatherReportData(String[] localesForReport, LinkedList<Message> messages) {
+    private List<ReportDataRow> gatherReportData(String[] localesForReport, LinkedList<Message> messages, Project project) {
         var reportDataRows = new LinkedList<ReportDataRow>();
-        for (var locale : localesForReport) {
-            for (var message : messages) {
+        for (var message : messages) {
+
+            for (var localeString : localesForReport) {
                 var row = new ReportDataRow();
-                row.setMessage(message.getContent());
+                Locale locale;
+                try {
+                    locale = LocaleUtils.toLocale(localeString);
+                } catch (IllegalArgumentException ex) {
+                    throw new ValidationException(UserMessages.formatMessage(LCL_INVALID, localeString));
+                }
+                row.setMessage(message);
                 row.setLocale(locale);
                 Optional<Translation> translation;
-                try {
-                    translation = translationRepository.findTranslationsByLocaleAndMessage(LocaleUtils.toLocale(locale), message);
-                } catch (IllegalArgumentException ex) {
-                    throw new ValidationException(UserMessages.formatMessage(LCL_INVALID, locale));
+                translation = translationRepository.findTranslationsByLocaleAndMessage(locale, message);
+                setTranslationStatus(message, row, translation);
+                if (row.getStatus() == TranslationStatus.Missing) {
+                    SetSubstituteTranslation(project, message, locale, row);
                 }
-
-                reportDataRows.add(setTranslationStatus(message, row, translation));
+                reportDataRows.add(row);
             }
         }
 
         return reportDataRows;
     }
 
-    private ReportDataRow setTranslationStatus(Message message, ReportDataRow row, Optional<Translation> translation) {
+    private void SetSubstituteTranslation(Project project, Message message, Locale locale, ReportDataRow row) {
+
+        while (true) {
+            var subLocale = project.getSubstituteLocale(new LocaleWrapper(locale));
+            Optional<Translation> subTranslation;
+            if (subLocale.isPresent()) {
+                subTranslation = translationRepository.findTranslationsByLocaleAndMessage(subLocale.get().getLocale(), message);
+                locale = subLocale.get().getLocale();
+                if (subTranslation.isPresent()) {
+                    row.setSubstituteLocale(subLocale.get().getLocale());
+                    row.setSubstituteTranslation(subTranslation.get().getContent());
+                    return;
+                }
+            } else {
+                return;
+            }
+
+        }
+
+    }
+
+    private void setTranslationStatus(Message message, ReportDataRow row, Optional<Translation> translation) {
         if (!translation.isPresent()) {
             row.setStatus(TranslationStatus.Missing);
             row.setTranslation(StringUtils.EMPTY);
-            return row;
+            return;
         }
 
         if (message.isTranslationOutdated(translation.get())) {
             row.setStatus(TranslationStatus.Outdated);
             row.setTranslation(translation.get().getContent());
-            return row;
+            return;
         }
 
         if (!translation.get().getIsValid()) {
             row.setStatus(TranslationStatus.Invalid);
             row.setTranslation(translation.get().getContent());
-            return row;
+            return;
         }
 
         row.setStatus(TranslationStatus.Valid);
         row.setTranslation(translation.get().getContent());
-        return row;
+        return;
     }
 
 
     private void createCSVFile(List<ReportDataRow> reportData) {
         try {
-            CSVPrinter printer = new CSVPrinter(new FileWriter(CSV_FILE_NAME), CSVFormat.DEFAULT.withHeader(HEADERS));
-            reportData.forEach(row -> {
-                try {
-                    printer.printRecord(row.Locale, row.Message, row.Status.name(), row.Translation);
-                } catch (IOException ex) {
-                    throw new InvalidOperationException(CSV_WRITER_FAIL);
+            Message currentMessage = null;
+            CSVPrinter printer = new CSVPrinter(new FileWriter(CSV_FILE_NAME), CSVFormat.DEFAULT);
+
+            try {
+                for (var row : reportData) {
+                    if (!row.getMessage().equals(currentMessage)) {
+                        currentMessage = row.getMessage();
+                        printMessageHeader(printer, row.getMessage());
+                    }
+                    if (row.getStatus() == TranslationStatus.Valid) {
+                        continue;
+                    }
+                    if (row.getStatus() == TranslationStatus.Missing) {
+                        printer.printRecord(row.Locale, row.Status.name(), "-", row.getSubstituteLocale(), row.getSubstituteTranslation());
+                    } else {
+                        printer.printRecord(row.Locale, row.Status.name(), row.Translation, "-", "-");
+                    }
+
+                    printer.printRecord("New Translation", "-");
                 }
-            });
+                printer.printRecord("");
+            } catch (IOException ex) {
+                throw new InvalidOperationException(CSV_WRITER_FAIL);
+            }
+
             printer.close(true);
         } catch (IOException ex) {
             throw new InvalidOperationException(FILE_WRITER_FAIL);
         }
+    }
 
+    private void printMessageHeader(CSVPrinter printer, Message message) throws IOException {
+
+        printer.printRecord("", "Message Key", message.getKey());
+        printer.printRecord("", "Message Content", message.getContent());
+        printer.printRecord("", "Message Description", message.getDescription());
+        printer.printRecord((Object[]) STD_HEADERS);
     }
 }
 

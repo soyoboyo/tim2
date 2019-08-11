@@ -78,7 +78,7 @@ public class Project {
             throw new ValidationException(formatMessage(LCL_NOT_IN_TARGET, replaceableLocale.getLocale().toString()));
         }
         if (!targetLocales.contains(substituteLocale)) {
-            throw new ValidationException(formatMessage(LCL_NOT_IN_TARGET, replaceableLocale.getLocale().toString()));
+            throw new ValidationException(formatMessage(LCL_NOT_IN_TARGET, substituteLocale.getLocale().toString()));
         }
         if (checkIfGraphHasCycles(replaceableLocale, substituteLocale)) {
             throw new ValidationException(LCL_CYCLES);
