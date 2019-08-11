@@ -3,27 +3,32 @@ package org.tim.services;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.lang.LocaleUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidOperationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.constants.TranslationStatus;
+import org.tim.constants.UserMessages;
 import org.tim.entities.Message;
 import org.tim.entities.ReportDataRow;
 import org.tim.entities.Translation;
 import org.tim.exceptions.EntityNotFoundException;
+import org.tim.exceptions.ValidationException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.tim.constants.CSVFileConstants.CSV_FILE_NAME;
 import static org.tim.constants.CSVFileConstants.HEADERS;
-import static org.tim.constants.UserMessages.CSV_WRITER_FAIL;
-import static org.tim.constants.UserMessages.FILE_WRITER_FAIL;
+import static org.tim.constants.UserMessages.*;
 
 
 @Service
@@ -52,7 +57,13 @@ public class ReportService {
                 var row = new ReportDataRow();
                 row.setMessage(message.getContent());
                 row.setLocale(locale);
-                var translation = translationRepository.findTranslationsByLocaleAndMessage(new Locale(locale), message);
+                Optional<Translation> translation;
+                try {
+                    translation = translationRepository.findTranslationsByLocaleAndMessage(LocaleUtils.toLocale(locale), message);
+                } catch (IllegalArgumentException ex) {
+                    throw new ValidationException(UserMessages.formatMessage(LCL_INVALID, locale));
+                }
+
                 reportDataRows.add(setTranslationStatus(message, row, translation));
             }
         }

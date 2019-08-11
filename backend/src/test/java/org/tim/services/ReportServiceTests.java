@@ -71,50 +71,50 @@ public class ReportServiceTests {
             var parser = new CSVParser(reader, CSVFormat.DEFAULT);
             var records = parser.getRecords();
             //Locales
-            assertEquals("Locale", records.get(0).get(0));
-            assertEquals("pl", records.get(1).get(0));
-            assertEquals("pl", records.get(2).get(0));
-            assertEquals("us", records.get(3).get(0));
-            assertEquals("us", records.get(4).get(0));
-            assertEquals("uk", records.get(5).get(0));
-            assertEquals("uk", records.get(6).get(0));
-            assertEquals("rus", records.get(7).get(0));
-            assertEquals("rus", records.get(8).get(0));
-            //Message content
-            assertEquals("Message", records.get(0).get(1));
-            assertEquals("Message1", records.get(1).get(1));
-            assertEquals("Message2", records.get(2).get(1));
-            assertEquals("Message1", records.get(3).get(1));
-            assertEquals("Message2", records.get(4).get(1));
-            assertEquals("Message1", records.get(5).get(1));
-            assertEquals("Message2", records.get(6).get(1));
-            assertEquals("Message1", records.get(7).get(1));
-            assertEquals("Message2", records.get(8).get(1));
-            //Translation Status
-            assertEquals("Translation Status", records.get(0).get(2));
-            assertEquals("Valid", records.get(1).get(2));
-            assertEquals("Valid", records.get(2).get(2));
-            assertEquals("Invalid", records.get(3).get(2));
-            assertEquals("Invalid", records.get(4).get(2));
-            assertEquals("Outdated", records.get(5).get(2));
-            assertEquals("Outdated", records.get(6).get(2));
-            assertEquals("Missing", records.get(7).get(2));
-            assertEquals("Missing", records.get(8).get(2));
-            //Translation
-            assertEquals("Translation", records.get(0).get(3));
-            assertEquals("Message1TranslationPL", records.get(1).get(3));
-            assertEquals("Message2TranslationPL", records.get(2).get(3));
-            assertEquals("Message1TranslationUS", records.get(3).get(3));
-            assertEquals("Message2TranslationUS", records.get(4).get(3));
-            assertEquals("Message1TranslationUK", records.get(5).get(3));
-            assertEquals("Message2TranslationUK", records.get(6).get(3));
-            assertEquals(StringUtils.EMPTY, records.get(7).get(3));
-            assertEquals(StringUtils.EMPTY, records.get(8).get(3));
+            assertAll(
+                    () -> assertEquals("Locale", records.get(0).get(0)),
+                    () -> assertEquals("pl", records.get(1).get(0)),
+                    () -> assertEquals("pl", records.get(2).get(0)),
+                    () -> assertEquals("us", records.get(3).get(0)),
+                    () -> assertEquals("us", records.get(4).get(0)),
+                    () -> assertEquals("uk", records.get(5).get(0)),
+                    () -> assertEquals("uk", records.get(6).get(0)),
+                    () -> assertEquals("rus", records.get(7).get(0)),
+                    () -> assertEquals("rus", records.get(8).get(0)),
+                    //Message content
+                    () -> assertEquals("Message", records.get(0).get(1)),
+                    () -> assertEquals("Message1", records.get(1).get(1)),
+                    () -> assertEquals("Message2", records.get(2).get(1)),
+                    () -> assertEquals("Message1", records.get(3).get(1)),
+                    () -> assertEquals("Message2", records.get(4).get(1)),
+                    () -> assertEquals("Message1", records.get(5).get(1)),
+                    () -> assertEquals("Message2", records.get(6).get(1)),
+                    () -> assertEquals("Message1", records.get(7).get(1)),
+                    () -> assertEquals("Message2", records.get(8).get(1)),
+                    //Translation Status
+                    () -> assertEquals("Translation Status", records.get(0).get(2)),
+                    () -> assertEquals("Valid", records.get(1).get(2)),
+                    () -> assertEquals("Valid", records.get(2).get(2)),
+                    () -> assertEquals("Invalid", records.get(3).get(2)),
+                    () -> assertEquals("Invalid", records.get(4).get(2)),
+                    () -> assertEquals("Outdated", records.get(5).get(2)),
+                    () -> assertEquals("Outdated", records.get(6).get(2)),
+                    () -> assertEquals("Missing", records.get(7).get(2)),
+                    () -> assertEquals("Missing", records.get(8).get(2)),
+                    //Translation
+                    () -> assertEquals("Translation", records.get(0).get(3)),
+                    () -> assertEquals("Message1TranslationPL", records.get(1).get(3)),
+                    () -> assertEquals("Message2TranslationPL", records.get(2).get(3)),
+                    () -> assertEquals("Message1TranslationUS", records.get(3).get(3)),
+                    () -> assertEquals("Message2TranslationUS", records.get(4).get(3)),
+                    () -> assertEquals("Message1TranslationUK", records.get(5).get(3)),
+                    () -> assertEquals("Message2TranslationUK", records.get(6).get(3)),
+                    () -> assertEquals(StringUtils.EMPTY, records.get(7).get(3)),
+                    () -> assertEquals(StringUtils.EMPTY, records.get(8).get(3))
+            );
         } catch (IOException ex) {
             fail();
         }
-
-
     }
 
     private void testInitialize() {
@@ -184,6 +184,5 @@ public class ReportServiceTests {
         Mockito.when(message2.isTranslationOutdated(translationPLToMessage2)).thenReturn(false);
         Mockito.when(message2.isTranslationOutdated(translationUSToMessage2)).thenReturn(false);
         Mockito.when(message2.isTranslationOutdated(translationUKToMessage2)).thenReturn(true);
-
     }
 }

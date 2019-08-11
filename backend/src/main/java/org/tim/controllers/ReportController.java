@@ -13,9 +13,8 @@ import static org.tim.constants.Mappings.*;
 public class ReportController {
 
     private final ReportService reportService;
-//TODO: Do i get locales as strings here or Locale objects?
-    @GetMapping(path = GENERATE)
-    public ResponseEntity<FileSystemResource> generateExcelReport(@PathVariable Long projectId, @RequestParam String[] locales) {
-        return ResponseEntity.ok(new FileSystemResource(reportService.generateCSVReport(projectId, locales)));
+    @GetMapping(GENERATE)
+    public ResponseEntity<FileSystemResource> generateExcelReport(@PathVariable Long id, @RequestParam String[] locales) {
+        return ResponseEntity.ok(new FileSystemResource(reportService.generateCSVReport(id, locales)));
     }
 }

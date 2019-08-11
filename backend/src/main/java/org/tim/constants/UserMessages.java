@@ -9,6 +9,7 @@ public class UserMessages {
     public static final String LANG_NOT_FOUND_IN_PROJ = "Sorry, but the language of this translation does not match the expected language";
     public static final String FILE_WRITER_FAIL = "IOException during file writer creation.";
     public static final String CSV_WRITER_FAIL = "IOException during csv file creation.";
+    public static final String LCL_INVALID = "Specified locale couldn't be parsed: {0}";
 
     public static String formatMessage(String messageString, Object arg0) {
         Object[] args = new Object[1];
