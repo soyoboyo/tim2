@@ -133,12 +133,12 @@ public class ReportService {
                         continue;
                     }
                     if (row.getStatus() == TranslationStatus.Missing) {
-                        printer.printRecord(row.Locale, row.Status.name(), "-", row.getSubstituteLocale(), row.getSubstituteTranslation());
+                        printer.printRecord(row.Locale, row.status.name(), "-", row.getSubstituteLocale(), row.getSubstituteTranslation());
                     } else {
-                        printer.printRecord(row.Locale, row.Status.name(), row.Translation, "-", "-");
+                        printer.printRecord(row.Locale, row.status.name(), row.translation, "-", "-");
                     }
 
-                    printer.printRecord("New Translation", "-");
+                    printer.printRecord("New translation", "-");
                 }
                 printer.printRecord("");
             } catch (IOException ex) {
@@ -153,9 +153,9 @@ public class ReportService {
 
     private void printMessageHeader(CSVPrinter printer, Message message) throws IOException {
 
-        printer.printRecord("", "Message Key", message.getKey());
-        printer.printRecord("", "Message Content", message.getContent());
-        printer.printRecord("", "Message Description", message.getDescription());
+        printer.printRecord("", "message Key", message.getKey());
+        printer.printRecord("", "message Content", message.getContent());
+        printer.printRecord("", "message Description", message.getDescription());
         printer.printRecord((Object[]) STD_HEADERS);
     }
 }

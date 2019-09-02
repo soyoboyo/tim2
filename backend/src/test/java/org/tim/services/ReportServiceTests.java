@@ -72,15 +72,15 @@ public class ReportServiceTests {
             var parser = new CSVParser(reader, CSVFormat.DEFAULT);
             var records = parser.getRecords();
             assertAll(
-                    //Message Header 1
+                    //message Header 1
                     () -> assertEquals("", records.get(0).get(0)),
-                    () -> assertEquals("Message Key", records.get(0).get(1)),
+                    () -> assertEquals("message Key", records.get(0).get(1)),
                     () -> assertEquals("", records.get(0).get(2)),
                     () -> assertEquals("", records.get(1).get(0)),
-                    () -> assertEquals("Message Content", records.get(1).get(1)),
+                    () -> assertEquals("message Content", records.get(1).get(1)),
                     () -> assertEquals("Message1", records.get(1).get(2)),
                     () -> assertEquals("", records.get(2).get(0)),
-                    () -> assertEquals("Message Description", records.get(2).get(1)),
+                    () -> assertEquals("message Description", records.get(2).get(1)),
                     () -> assertEquals("", records.get(2).get(2)),
                     //Cell Headers
                     () -> assertEquals(STD_HEADERS[0], records.get(3).get(0)),
@@ -94,7 +94,7 @@ public class ReportServiceTests {
                     () -> assertEquals("Message1TranslationUS", records.get(4).get(2)),
                     () -> assertEquals("-", records.get(4).get(3)),
                     () -> assertEquals("-", records.get(4).get(4)),
-                    () -> assertEquals("New Translation", records.get(5).get(0)),
+                    () -> assertEquals("New translation", records.get(5).get(0)),
                     () -> assertEquals("-", records.get(5).get(1)),
                     //Message1 TranslationUK
                     () -> assertEquals(testLocale3, records.get(6).get(0)),
@@ -102,7 +102,7 @@ public class ReportServiceTests {
                     () -> assertEquals("Message1TranslationUK", records.get(6).get(2)),
                     () -> assertEquals("-", records.get(6).get(3)),
                     () -> assertEquals("-", records.get(6).get(4)),
-                    () -> assertEquals("New Translation", records.get(7).get(0)),
+                    () -> assertEquals("New translation", records.get(7).get(0)),
                     () -> assertEquals("-", records.get(7).get(1)),
                     //Message1 TranslationHR
                     () -> assertEquals(testLocale5, records.get(8).get(0)),
@@ -110,17 +110,17 @@ public class ReportServiceTests {
                     () -> assertEquals("-", records.get(8).get(2)),
                     () -> assertEquals("ru", records.get(8).get(3)),
                     () -> assertEquals("Message1TranslationRU", records.get(8).get(4)),
-                    () -> assertEquals("New Translation", records.get(9).get(0)),
+                    () -> assertEquals("New translation", records.get(9).get(0)),
                     () -> assertEquals("-", records.get(9).get(1)),
-                    //Message Header 2
+                    //message Header 2
                     () -> assertEquals("", records.get(10).get(0)),
-                    () -> assertEquals("Message Key", records.get(10).get(1)),
+                    () -> assertEquals("message Key", records.get(10).get(1)),
                     () -> assertEquals("", records.get(10).get(2)),
                     () -> assertEquals("", records.get(11).get(0)),
-                    () -> assertEquals("Message Content", records.get(11).get(1)),
+                    () -> assertEquals("message Content", records.get(11).get(1)),
                     () -> assertEquals("Message2", records.get(11).get(2)),
                     () -> assertEquals("", records.get(12).get(0)),
-                    () -> assertEquals("Message Description", records.get(12).get(1)),
+                    () -> assertEquals("message Description", records.get(12).get(1)),
                     () -> assertEquals("", records.get(12).get(2)),
                     //Cell Headers
                     () -> assertEquals(STD_HEADERS[0], records.get(13).get(0)),
@@ -134,7 +134,7 @@ public class ReportServiceTests {
                     () -> assertEquals("Message2TranslationUS", records.get(14).get(2)),
                     () -> assertEquals("-", records.get(14).get(3)),
                     () -> assertEquals("-", records.get(14).get(4)),
-                    () -> assertEquals("New Translation", records.get(15).get(0)),
+                    () -> assertEquals("New translation", records.get(15).get(0)),
                     () -> assertEquals("-", records.get(15).get(1)),
                     //Message2 TranslationUK
                     () -> assertEquals(testLocale3, records.get(16).get(0)),
@@ -142,7 +142,7 @@ public class ReportServiceTests {
                     () -> assertEquals("Message2TranslationUK", records.get(16).get(2)),
                     () -> assertEquals("-", records.get(16).get(3)),
                     () -> assertEquals("-", records.get(16).get(4)),
-                    () -> assertEquals("New Translation", records.get(17).get(0)),
+                    () -> assertEquals("New translation", records.get(17).get(0)),
                     () -> assertEquals("-", records.get(17).get(1)),
                     //Message2 TranslationHR
                     () -> assertEquals(testLocale5, records.get(18).get(0)),
@@ -150,7 +150,7 @@ public class ReportServiceTests {
                     () -> assertEquals("-", records.get(18).get(2)),
                     () -> assertEquals("ru", records.get(18).get(3)),
                     () -> assertEquals("Message2TranslationRU", records.get(18).get(4)),
-                    () -> assertEquals("New Translation", records.get(19).get(0)),
+                    () -> assertEquals("New translation", records.get(19).get(0)),
                     () -> assertEquals("-", records.get(19).get(1))
 
 

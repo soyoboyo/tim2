@@ -4,29 +4,27 @@ import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.tim.constants.TranslationStatus;
 
-import java.util.Locale;
-
 
 @Data
 public class ReportDataRow {
 
     public java.util.Locale Locale;
-    public Message Message;
-    public String Translation;
-    public TranslationStatus Status;
-    public String SubstituteTranslation;
-    public java.util.Locale SubstituteLocale;
+    public Message message;
+    public String translation;
+    public TranslationStatus status;
+    public String substituteTranslation;
+    public java.util.Locale substituteLocale;
 
     public String getSubstituteTranslation(){
-        if(SubstituteTranslation == null){
+        if(substituteTranslation == null){
             return StringUtils.EMPTY;
         }
-        return SubstituteTranslation;
+        return substituteTranslation;
     }
     public String getSubstituteLocale(){
-        if(SubstituteLocale == null){
+        if(substituteLocale == null){
             return StringUtils.EMPTY;
         }
-        return SubstituteLocale.toString();
+        return substituteLocale.toString();
     }
 }
