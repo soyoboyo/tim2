@@ -15,4 +15,4 @@ spring:
         ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect
 server:
-  port: 8081
+  port: 8080

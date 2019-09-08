@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tim.entities.*;
 import org.tim.repositories.*;
@@ -14,30 +15,31 @@ import java.util.Locale;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 
+@ActiveProfiles("tests")
 @ExtendWith({SpringExtension.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public abstract class SpringTestsCustomExtension {
 
     @Autowired
-    private ProjectRepository projectRepository;
+    protected ProjectRepository projectRepository;
 
     @Autowired
-    private MessageRepository messageRepository;
+    protected MessageRepository messageRepository;
 
     @Autowired
-    private TranslationAgencyRepository translationAgencyRepository;
+    protected TranslationAgencyRepository translationAgencyRepository;
 
     @Autowired
-    private TranslationRepository translationRepository;
+    protected TranslationRepository translationRepository;
 
     @Autowired
-    private LocaleWrapperRepository localeWrapperRepository;
+    protected LocaleWrapperRepository localeWrapperRepository;
 
     @Autowired
-    private TranslationVersionRepository translationVersionRepository;
+    protected TranslationVersionRepository translationVersionRepository;
 
     @Autowired
-	private MessageVersionRepository messageVersionRepository;
+    protected MessageVersionRepository messageVersionRepository;
 
     @BeforeEach
     public void prepareDatabaseForTests() {
