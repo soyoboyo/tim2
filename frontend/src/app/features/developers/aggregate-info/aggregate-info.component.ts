@@ -43,11 +43,11 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 		}
 	}
 
-	private parseData(aggregatedInfo: any){
+	private parseData(aggregatedInfo: any) {
 		this.labels = [];
 		this.dataCorrect = [];
 		this.dataIncorrect = [];
-		Object.keys(aggregatedInfo).forEach((key) =>{
+		Object.keys(aggregatedInfo).forEach((key) => {
 			this.labels.push(key);
 			this.dataCorrect.push(aggregatedInfo[key].correct);
 			const incorrect = aggregatedInfo[key].missing + aggregatedInfo[key].incorrect;
@@ -58,7 +58,8 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 		console.log(this.dataCorrect);
 		console.log(this.dataIncorrect);
 
-		this.generateChart();}
+		this.generateChart();
+	}
 
 	ngAfterViewInit(): void {
 		this.summaryChartElement = document.getElementById(this.summaryChartId);
@@ -72,25 +73,13 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 			data: {
 				labels: this.labels,
 				datasets: [{
-					label: this.labels,
+					label: 'Correct',
 					data: this.dataCorrect,
-					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(255, 206, 86, 0.2)',
-						'rgba(75, 192, 192, 0.2)',
-						'rgba(153, 102, 255, 0.2)',
-						'rgba(255, 159, 64, 0.2)'
-					],
-					borderColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
-					borderWidth: 1
+					backgroundColor: 'rgba(0, 255, 0, 1)'
+				}, {
+					label: 'Incorrect',
+					data: this.dataIncorrect,
+					backgroundColor: 'rgba(255, 0, 0, 1)'
 				}]
 			},
 			options: {
@@ -122,7 +111,6 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	showElement(element: any) {
 		element.style.display = 'block';
 	}
-
 
 
 	// generateChart() {
