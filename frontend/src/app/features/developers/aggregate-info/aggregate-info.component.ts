@@ -18,16 +18,14 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	summaryChartElement;
 	summaryChart;
 	summaryChartId = 'summaryChart';
-	labels: any = [];
-	dataCorrect: any = [];
-	dataIncorrect: any = [];
+	labels: string[] = [];
+	dataCorrect: number[] = [];
+	dataIncorrect: number[] = [];
 
 	constructor(private http: RestService) {
 	}
 
 	ngOnInit() {
-		this.labels = ['label', 'srabel'];
-		this.dataCorrect = [10, 20];
 
 	}
 
@@ -39,13 +37,32 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 		if (this.selectedProjectId !== null) {
 			const response = await this.http.getAll('project/developer/aggregate/' + this.selectedProjectId);
 			this.aggregatedInfo = response;
+			console.log(response);
 			this.aggregatedInfoList = response.translationStatusesByLocale;
+			this.parseData(response['translationStatusesByLocale']);
 		}
 	}
 
+	private parseData(aggregatedInfo: any){
+		this.labels = [];
+		this.dataCorrect = [];
+		this.dataIncorrect = [];
+		Object.keys(aggregatedInfo).forEach((key) =>{
+			this.labels.push(key);
+			this.dataCorrect.push(aggregatedInfo[key].correct);
+			const incorrect = aggregatedInfo[key].missing + aggregatedInfo[key].incorrect;
+			this.dataIncorrect.push(incorrect);
+		});
+		this.generateChart();
+		console.log(this.labels);
+		console.log(this.dataCorrect);
+		console.log(this.dataIncorrect);
+
+		this.generateChart();}
+
 	ngAfterViewInit(): void {
 		this.summaryChartElement = document.getElementById(this.summaryChartId);
-		this.generateChart();
+
 	}
 
 	generateChart() {
@@ -53,7 +70,7 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 		this.summaryChart = new Chart(this.summaryChartElement, {
 			type: 'bar',
 			data: {
-				labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+				labels: this.labels,
 				datasets: [{
 					label: this.labels,
 					data: this.dataCorrect,
