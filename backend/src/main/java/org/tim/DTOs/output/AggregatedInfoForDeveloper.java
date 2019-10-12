@@ -1,4 +1,4 @@
-package org.tim.entities;
+package org.tim.DTOs.output;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

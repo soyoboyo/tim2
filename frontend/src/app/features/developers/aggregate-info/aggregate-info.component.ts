@@ -21,6 +21,7 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	labels: string[] = [];
 	dataCorrect: number[] = [];
 	dataIncorrect: number[] = [];
+	private dataMissing: number[] = [];
 
 	constructor(private http: RestService) {
 	}
@@ -39,7 +40,7 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 			this.aggregatedInfo = response;
 			console.log(response);
 			this.aggregatedInfoList = response.translationStatusesByLocale;
-			this.parseData(response['translationStatusesByLocale']);
+			this.parseData(response.translationStatusesByLocale);
 		}
 	}
 
@@ -47,11 +48,12 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 		this.labels = [];
 		this.dataCorrect = [];
 		this.dataIncorrect = [];
+		this.dataMissing = [];
 		Object.keys(aggregatedInfo).forEach((key) => {
 			this.labels.push(key);
 			this.dataCorrect.push(aggregatedInfo[key].correct);
-			const incorrect = aggregatedInfo[key].missing + aggregatedInfo[key].incorrect;
-			this.dataIncorrect.push(incorrect);
+			this.dataIncorrect.push(aggregatedInfo[key].incorrect);
+			this.dataMissing.push(aggregatedInfo[key].missing);
 		});
 		this.generateChart();
 		console.log(this.labels);
@@ -63,11 +65,10 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 
 	ngAfterViewInit(): void {
 		this.summaryChartElement = document.getElementById(this.summaryChartId);
-
 	}
 
 	generateChart() {
-		console.log('generage chart');
+		console.log('generate chart');
 		this.summaryChart = new Chart(this.summaryChartElement, {
 			type: 'bar',
 			data: {
@@ -75,16 +76,24 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 				datasets: [{
 					label: 'Correct',
 					data: this.dataCorrect,
-					backgroundColor: 'rgba(0, 255, 0, 1)'
+					backgroundColor: 'rgba(30, 204, 79, 1)'
 				}, {
 					label: 'Incorrect',
 					data: this.dataIncorrect,
-					backgroundColor: 'rgba(255, 0, 0, 1)'
+					backgroundColor: 'rgba(204, 207, 38, 1)'
+				}, {
+					label: 'Missing',
+					data: this.dataMissing,
+					backgroundColor: 'rgba(204, 41, 30, 1)'
 				}]
 			},
 			options: {
 				scales: {
+					xAxes: [{
+						stacked: true
+					}],
 					yAxes: [{
+						stacked: true,
 						ticks: {
 							beginAtZero: true
 						}
@@ -101,6 +110,7 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 		} else {
 			element.style.display = 'none';
 		}
+
 	}
 
 	hideElement(element: any) {
@@ -111,41 +121,4 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	showElement(element: any) {
 		element.style.display = 'block';
 	}
-
-
-	// generateChart() {
-	// 	this.summaryChart = new Chart(this.summaryChartElement, {
-	// 		type: 'bar',
-	// 		data: {
-	// 			labels: this.labels,
-	// 			datasets: [{
-	// 				label: 'Data',
-	// 				data: this.histogramValues,
-	// 				backgroundColor: 'rgba(0, 0, 160, 1)',
-	// 				borderColor: 'rgba(0, 0, 160, 1)',
-	// 				borderWidth: 1,
-	// 				fill: false,
-	// 				pointRadius: 1,
-	// 				pointBorderWidth: 1
-	// 			}]
-	// 		},
-	// 		options: {
-	// 			scales: {
-	// 				yAxes: [{
-	// 					ticks: {
-	// 						beginAtZero: true
-	// 					}
-	// 				}]
-	// 			},
-	// 			spanGaps: false,
-	// 			elements: {
-	// 				line: {
-	// 					skipNull: true,
-	// 					drawNull: false,
-	// 				}
-	// 			}
-	// 		}
-	// 	});
-	// 	this.showElement(this.summaryChartElement);
-	// }
 }
