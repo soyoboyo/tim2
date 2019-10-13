@@ -2,6 +2,7 @@ import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } fro
 import { RestService } from '../../../shared/services/rest/rest.service';
 
 import { Chart } from 'chart.js';
+import { AggregatedLocale } from './AggregatedLocale';
 
 
 @Component({
@@ -12,7 +13,6 @@ import { Chart } from 'chart.js';
 export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
 	@Input() selectedProjectId: number;
-	aggregatedInfoList: any;
 	aggregatedInfo: any = null;
 
 	summaryChartElement;
@@ -39,26 +39,21 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 			const response = await this.http.getAll('project/developer/aggregate/' + this.selectedProjectId);
 			this.aggregatedInfo = response;
 			console.log(response);
-			this.aggregatedInfoList = response.translationStatusesByLocale;
-			this.parseData(response.translationStatusesByLocale);
+			this.parseData(response.aggregatedLocales);
 		}
 	}
 
-	private parseData(aggregatedInfo: any) {
+	private parseData(aggregatedInfo: AggregatedLocale[]) {
 		this.labels = [];
 		this.dataCorrect = [];
 		this.dataIncorrect = [];
 		this.dataMissing = [];
-		Object.keys(aggregatedInfo).forEach((key) => {
-			this.labels.push(key);
-			this.dataCorrect.push(aggregatedInfo[key].correct);
-			this.dataIncorrect.push(aggregatedInfo[key].incorrect);
-			this.dataMissing.push(aggregatedInfo[key].missing);
+		aggregatedInfo.forEach((aggregatedLocale) => {
+			this.labels.push(aggregatedLocale.locale);
+			this.dataCorrect.push(aggregatedLocale.correct);
+			this.dataIncorrect.push(aggregatedLocale.incorrect);
+			this.dataMissing.push(aggregatedLocale.missing);
 		});
-		this.generateChart();
-		console.log(this.labels);
-		console.log(this.dataCorrect);
-		console.log(this.dataIncorrect);
 
 		this.generateChart();
 	}

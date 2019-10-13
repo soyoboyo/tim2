@@ -1,5 +1,10 @@
 package org.tim.DTOs.output;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
 public class AggregatedLocale {
 	private String locale;
 	private Integer correct;
@@ -16,5 +21,12 @@ public class AggregatedLocale {
 		this.outdated = outdated;
 		this.missing = missing;
 		this.incorrect = invalid + outdated;
+	}
+
+	public AggregatedLocale(String locale, Integer correct, Integer incorrect, Integer missing) {
+		this.locale = locale;
+		this.correct = correct;
+		this.incorrect = incorrect;
+		this.missing = missing;
 	}
 }

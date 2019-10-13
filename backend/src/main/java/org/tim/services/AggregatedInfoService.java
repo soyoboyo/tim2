@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.output.AggregatedInfoForDeveloper;
+import org.tim.DTOs.output.AggregatedLocale;
 import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
@@ -24,10 +25,9 @@ public class AggregatedInfoService {
 	private final MessageRepository messageRepository;
 	private final TranslationRepository translationRepository;
 
-	String correct = "correct";
-	String incorrect = "incorrect";
-	String missing = "missing";
-
+	private String correct = "correct";
+	private String incorrect = "incorrect";
+	private String missing = "missing";
 
 	public AggregatedInfoForDeveloper getAggregatedInfoForDeveloper(Long projectId) {
 		AggregatedInfoForDeveloper aggregatedInfo = new AggregatedInfoForDeveloper();
@@ -60,14 +60,26 @@ public class AggregatedInfoService {
 
 		}
 
-		aggregatedInfo.setTranslationStatusesByLocale(translationStatusesByLocale);
 		aggregatedInfo.setMessagesTotal(messages.size());
 
 		for (Map.Entry<String, Map<String, Integer>> locale : translationStatusesByLocale.entrySet()) {
 			locale.getValue().put("coverage", locale.getValue().get("correct") * 100 / messages.size());
 		}
-
+		aggregatedInfo.setAggregatedLocales(parseData(translationStatusesByLocale));
 		return aggregatedInfo;
+	}
+
+	private List<AggregatedLocale> parseData(Map<String, Map<String, Integer>> translationStatusesByLocale) {
+		List<AggregatedLocale> aggregatedLocales = new ArrayList<>();
+		for (Map.Entry<String, Map<String, Integer>> locale : translationStatusesByLocale.entrySet()) {
+			aggregatedLocales.add(new AggregatedLocale(
+					locale.getKey(),
+					locale.getValue().get(correct),
+					locale.getValue().get(incorrect),
+					locale.getValue().get(missing)));
+		}
+		aggregatedLocales.sort((o1, o2) -> o2.getCorrect().compareTo(o1.getCorrect()));
+		return aggregatedLocales;
 	}
 
 	private void updateValuesOfCorrectOrIncorrectTranslations(
