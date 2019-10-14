@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { RestService } from '../../../shared/services/rest/rest.service';
 
 import { Chart } from 'chart.js';
@@ -10,7 +10,7 @@ import { AggregatedLocale } from './AggregatedLocale';
 	templateUrl: './aggregate-info.component.html',
 	styleUrls: ['./aggregate-info.component.scss']
 })
-export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit {
+export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
 	@Input() selectedProjectId: number;
 	aggregatedInfo: any = null;
@@ -18,9 +18,9 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	summaryChartElement;
 	summaryChart;
 	summaryChartId = 'summaryChart';
-	labels: string[] = [];
-	dataCorrect: number[] = [];
-	dataIncorrect: number[] = [];
+	private labels: string[] = [];
+	private dataCorrect: number[] = [];
+	private dataIncorrect: number[] = [];
 	private dataMissing: number[] = [];
 
 	constructor(private http: RestService) {
@@ -29,8 +29,12 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	ngOnInit() {
 
 	}
+    ngOnDestroy(): void {
+		console.log('on destory');
+    }
 
 	ngOnChanges(changes: SimpleChanges): void {
+		console.log(changes);
 		this.getAggregatedInfo();
 	}
 
@@ -54,8 +58,17 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 			this.dataIncorrect.push(aggregatedLocale.incorrect);
 			this.dataMissing.push(aggregatedLocale.missing);
 		});
-
+		// TODO: update/remove chart instead of creating new ones all the time
 		this.generateChart();
+	}
+
+	removeData(chart) {
+		// https://www.chartjs.org/docs/latest/developers/updates.html
+		chart.data.labels.pop();
+		chart.data.datasets.forEach((dataset) => {
+			dataset.data.pop();
+		});
+		chart.update();
 	}
 
 	ngAfterViewInit(): void {
@@ -68,19 +81,20 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 			type: 'bar',
 			data: {
 				labels: this.labels,
-				datasets: [{
-					label: 'Correct',
-					data: this.dataCorrect,
-					backgroundColor: 'rgba(30, 204, 79, 1)'
-				}, {
-					label: 'Incorrect',
-					data: this.dataIncorrect,
-					backgroundColor: 'rgba(204, 207, 38, 1)'
-				}, {
-					label: 'Missing',
-					data: this.dataMissing,
-					backgroundColor: 'rgba(204, 41, 30, 1)'
-				}]
+				datasets: [
+					{ label: '# of Votes' }, {
+						label: 'Correct',
+						data: this.dataCorrect,
+						backgroundColor: 'rgba(30, 204, 79, 1)'
+					}, {
+						label: 'Incorrect',
+						data: this.dataIncorrect,
+						backgroundColor: 'rgba(204, 207, 38, 1)'
+					}, {
+						label: 'Missing',
+						data: this.dataMissing,
+						backgroundColor: 'rgba(204, 41, 30, 1)'
+					}]
 			},
 			options: {
 				scales: {
@@ -105,7 +119,6 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 		} else {
 			element.style.display = 'none';
 		}
-
 	}
 
 	hideElement(element: any) {

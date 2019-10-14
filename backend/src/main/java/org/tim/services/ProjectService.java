@@ -152,6 +152,7 @@ public class ProjectService {
 				String targetLocale = lw.getLocale().toString();
 				newTargetLocales.add(targetLocale);
 			}
+			// TODO: sort target locales alphabetically
 			projectForDeveloper.setTargetLocales(newTargetLocales);
 
 			TreeSet<String> availableReplacements = new TreeSet<>(newTargetLocales);
