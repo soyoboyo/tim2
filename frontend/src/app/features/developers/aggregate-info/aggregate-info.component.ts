@@ -3,6 +3,7 @@ import { RestService } from '../../../shared/services/rest/rest.service';
 
 import { Chart } from 'chart.js';
 import { AggregatedLocale } from './AggregatedLocale';
+import { UtilsService } from '../../../shared/services/utils-service/utils.service';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit,
 	private dataIncorrect: number[] = [];
 	private dataMissing: number[] = [];
 
-	constructor(private http: RestService) {
+	constructor(private http: RestService, private utilsService: UtilsService) {
 	}
 
 	ngOnInit() {
@@ -121,23 +122,7 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit,
 				}
 			}
 		});
-		this.showElement(this.summaryChartElement);
+		this.utilsService.showElement(this.summaryChartElement);
 	}
 
-	switchOpenHideElement(element: any) {
-		if (element.style.display === 'none') {
-			element.style.display = 'block';
-		} else {
-			element.style.display = 'none';
-		}
-	}
-
-	hideElement(element: any) {
-		element.style.display = 'none';
-
-	}
-
-	showElement(element: any) {
-		element.style.display = 'block';
-	}
 }

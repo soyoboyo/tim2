@@ -5,6 +5,7 @@ import { Project } from '../../../../shared/types/entities/Project';
 import { AuditTranslationService } from '../../dev-history-translations/audit-translation/audit-translation.service';
 import { AuditMessageService } from '../../dev-history-messages/audit-message/audit-message.service';
 import { MessageForDeveloper } from '../../../../shared/types/DTOs/output/MessageForDeveloper';
+import { UtilsService } from '../../../../shared/services/utils-service/utils.service';
 
 @Component({
 	selector: 'app-dev-messages-table',
@@ -45,7 +46,8 @@ export class DevMessagesTableComponent implements OnInit, OnChanges, AfterViewIn
 	sortAndPaginatorElement: any;
 
 	constructor(private auditTranslationService: AuditTranslationService,
-				private auditMessageService: AuditMessageService) {
+				private auditMessageService: AuditMessageService,
+				private utilsService: UtilsService) {
 	}
 
 	ngOnInit() {
@@ -69,7 +71,7 @@ export class DevMessagesTableComponent implements OnInit, OnChanges, AfterViewIn
 		this.dataSource.sort = this.sort;
 		this.isLoadingResults = false;
 		if (this.sortAndPaginatorElement != undefined) {
-			this.showElement(this.sortAndPaginatorElement);
+			this.utilsService.showElement(this.sortAndPaginatorElement);
 		}
 	}
 
@@ -99,26 +101,9 @@ export class DevMessagesTableComponent implements OnInit, OnChanges, AfterViewIn
 		this.auditMessageService.auditedMessage = message;
 	}
 
-
 	ngAfterViewInit(): void {
 		this.sortAndPaginatorElement = document.getElementById(this.sortAndPaginatorId);
-		this.hideElement(this.sortAndPaginatorElement);
+		this.utilsService.hideElement(this.sortAndPaginatorElement);
 	}
 
-	switchOpenHideElement(element: any) {
-		if (element.style.display === 'none') {
-			element.style.display = 'block';
-		} else {
-			element.style.display = 'none';
-		}
-	}
-
-	hideElement(element: any) {
-		element.style.display = 'none';
-
-	}
-
-	showElement(element: any) {
-		element.style.display = 'block';
-	}
 }

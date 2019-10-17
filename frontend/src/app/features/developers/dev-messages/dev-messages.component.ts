@@ -1,18 +1,18 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RestService } from '../../../shared/services/rest/rest.service';
 import { MessageDTO } from '../../../shared/types/DTOs/input/MessageDTO';
 import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
-import { UtilsService } from '../../../shared/services/utils-service/utils.service';
 import { ConfirmationDialogService } from '../../../shared/services/confirmation-dialog/confirmation-dialog.service';
 import { ProjectsStoreService } from '../../../stores/projects-store/projects-store.service';
+import { UtilsService } from '../../../shared/services/utils-service/utils.service';
 
 @Component({
 	selector: 'app-dev-messages',
 	templateUrl: './dev-messages.component.html',
 	styleUrls: ['./dev-messages.component.scss']
 })
-export class DevMessagesComponent implements OnInit {
+export class DevMessagesComponent implements OnInit, AfterViewInit {
 
 	messageParams: FormGroup;
 	formMode = 'Add';
@@ -27,6 +27,10 @@ export class DevMessagesComponent implements OnInit {
 
 	selectedProject = null;
 	selectedProjectId = null;
+	aggregateInfoElement: any;
+	messagesTableElement: any;
+	aggregateInfoId = 'aggregateInfoId';
+	messagesTableId = 'messagesTable';
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
@@ -34,11 +38,13 @@ export class DevMessagesComponent implements OnInit {
 				private snackbar: SnackbarService,
 				private projectsStore: ProjectsStoreService,
 				private confirmService: ConfirmationDialogService,
-				private projectStoreService: ProjectsStoreService) {
+				private projectStoreService: ProjectsStoreService,
+				private utilsService: UtilsService) {
 		this.selectedProject = this.projectStoreService.getSelectedProject();
 	}
 
 	ngOnInit() {
+
 		this.initProjectForm();
 		this.getProjects();
 		this.getMessages();
@@ -107,6 +113,9 @@ export class DevMessagesComponent implements OnInit {
 		this.projectStoreService.setSelectedProject(value);
 		console.log(this.selectedProject);
 		this.getMessages();
+		// TODO: add boolean variable to check if any projects are loaded
+		this.utilsService.showElement(this.aggregateInfoElement);
+		this.utilsService.showElement(this.messagesTableElement);
 	}
 
 	async getProjects() {
@@ -186,6 +195,15 @@ export class DevMessagesComponent implements OnInit {
 			return false;
 		} else {
 			return o1.name === o2.name;
+		}
+	}
+
+	ngAfterViewInit(): void {
+		this.aggregateInfoElement = document.getElementById(this.aggregateInfoId);
+		this.messagesTableElement = document.getElementById(this.messagesTableId);
+		if (this.selectedProjectId == null) {
+			this.utilsService.hideElement(this.aggregateInfoElement);
+			this.utilsService.hideElement(this.messagesTableElement);
 		}
 	}
 }
