@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Project } from '../../../../shared/types/entities/Project';
@@ -21,7 +21,7 @@ import { MessageForDeveloper } from '../../../../shared/types/DTOs/output/Messag
 		])
 	]
 })
-export class DevMessagesTableComponent implements OnInit, OnChanges {
+export class DevMessagesTableComponent implements OnInit, OnChanges, AfterViewInit {
 
 	@Input() selectedRowIndex = -1;
 	@Input() selectedProject: Project;
@@ -32,7 +32,7 @@ export class DevMessagesTableComponent implements OnInit, OnChanges {
 
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-	dataSource = new MatTableDataSource<MessageForDeveloper>();
+	dataSource = new MatTableDataSource<MessageForDeveloper>([]);
 	displayedColumns: string[] = ['key', 'content', 'translations', 'actions'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	isLoadingResults = false;
@@ -41,17 +41,23 @@ export class DevMessagesTableComponent implements OnInit, OnChanges {
 	auditedTranslation = null;
 	auditedMessage = null;
 
+	sortAndPaginatorId = 'sortAndPaginator';
+	sortAndPaginatorElement: any;
+
 	constructor(private auditTranslationService: AuditTranslationService,
 				private auditMessageService: AuditMessageService) {
 	}
 
 	ngOnInit() {
+
+
 		this.getMessages();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		this.getMessages();
 	}
+
 
 	async getMessages() {
 		this.isLoadingResults = true;
@@ -62,6 +68,9 @@ export class DevMessagesTableComponent implements OnInit, OnChanges {
 		};
 		this.dataSource.sort = this.sort;
 		this.isLoadingResults = false;
+		if (this.sortAndPaginatorElement != undefined) {
+			this.showElement(this.sortAndPaginatorElement);
+		}
 	}
 
 	archiveMessage(id: any) {
@@ -90,4 +99,26 @@ export class DevMessagesTableComponent implements OnInit, OnChanges {
 		this.auditMessageService.auditedMessage = message;
 	}
 
+
+	ngAfterViewInit(): void {
+		this.sortAndPaginatorElement = document.getElementById(this.sortAndPaginatorId);
+		this.hideElement(this.sortAndPaginatorElement);
+	}
+
+	switchOpenHideElement(element: any) {
+		if (element.style.display === 'none') {
+			element.style.display = 'block';
+		} else {
+			element.style.display = 'none';
+		}
+	}
+
+	hideElement(element: any) {
+		element.style.display = 'none';
+
+	}
+
+	showElement(element: any) {
+		element.style.display = 'block';
+	}
 }

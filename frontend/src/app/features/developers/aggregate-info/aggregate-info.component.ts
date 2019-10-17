@@ -27,15 +27,20 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit,
 	}
 
 	ngOnInit() {
-
 	}
-    ngOnDestroy(): void {
+
+	ngOnDestroy(): void {
 		console.log('on destory');
-    }
+	}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		console.log(changes);
 		this.getAggregatedInfo();
+	}
+
+	ngAfterViewInit(): void {
+		this.summaryChartElement = document.getElementById(this.summaryChartId);
+		this.generateChart();
 	}
 
 	public async getAggregatedInfo() {
@@ -58,21 +63,27 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit,
 			this.dataIncorrect.push(aggregatedLocale.incorrect);
 			this.dataMissing.push(aggregatedLocale.missing);
 		});
-		// TODO: update/remove chart instead of creating new ones all the time
-		this.generateChart();
+		this.updateChart();
 	}
 
-	removeData(chart) {
-		// https://www.chartjs.org/docs/latest/developers/updates.html
-		chart.data.labels.pop();
-		chart.data.datasets.forEach((dataset) => {
-			dataset.data.pop();
-		});
-		chart.update();
-	}
-
-	ngAfterViewInit(): void {
-		this.summaryChartElement = document.getElementById(this.summaryChartId);
+	private updateChart() {
+		console.log('update chart');
+		this.summaryChart.data.labels = this.labels;
+		this.summaryChart.data.datasets = [
+			{
+				label: 'Correct',
+				data: this.dataCorrect,
+				backgroundColor: 'rgba(30, 204, 79, 1)'
+			}, {
+				label: 'Incorrect',
+				data: this.dataIncorrect,
+				backgroundColor: 'rgba(204, 207, 38, 1)'
+			}, {
+				label: 'Missing',
+				data: this.dataMissing,
+				backgroundColor: 'rgba(204, 41, 30, 1)'
+			}];
+		this.summaryChart.update();
 	}
 
 	generateChart() {
@@ -82,7 +93,7 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit,
 			data: {
 				labels: this.labels,
 				datasets: [
-					{ label: '# of Votes' }, {
+					{
 						label: 'Correct',
 						data: this.dataCorrect,
 						backgroundColor: 'rgba(30, 204, 79, 1)'

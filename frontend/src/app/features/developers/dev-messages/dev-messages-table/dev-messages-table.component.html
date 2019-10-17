@@ -1,12 +1,14 @@
-<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" *ngIf="selectedProject">
-	<div>
-		<mat-form-field>
-			<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-		</mat-form-field>
-	</div>
-	<span class="spacer"></span>
-	<div>
-		<mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+<div [id]=sortAndPaginatorId>
+	<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+		<div>
+			<mat-form-field>
+				<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+			</mat-form-field>
+		</div>
+		<span class="spacer"></span>
+		<div>
+			<mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons></mat-paginator>
+		</div>
 	</div>
 </div>
 <div class="table-container mat-elevation-z8">
