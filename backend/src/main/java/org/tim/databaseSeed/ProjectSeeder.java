@@ -33,6 +33,17 @@ public class ProjectSeeder {
         projectP2.addTargetLocale(Arrays.asList(locales.get("en_US"), locales.get("en_GB"), locales.get("de_DE"), locales.get("ko_KR"), locales.get("ar_LY")));
         projects.put("projectP2", projectRepository.save(projectP2));
 
+        Project projectP3 = new Project("Project with a lot of locales", new Locale("en_US"));
+        projectP3.addTargetLocale(Arrays.asList(
+        		locales.get("pl_PL"), locales.get("en_GB"), locales.get("af_NA"), locales.get("af_ZA"),
+				locales.get("ak_GH"), locales.get("sq_AL"), locales.get("hy_AM"), locales.get("ar_DZ"),
+				locales.get("ar_SD"), locales.get("de_DE"), locales.get("ar_EG"), locales.get("bn_IN"),
+				locales.get("bs_BA"), locales.get("bg_BG"), locales.get("my_MM"), locales.get("ca_ES"),
+				locales.get("kw_GB"), locales.get("da_DK"), locales.get("en_AS"), locales.get("en_AU"),
+				locales.get("en_VI"), locales.get("en_ZA"), locales.get("fr_MG"), locales.get("fr_MC"),
+				locales.get("fr_BL"), locales.get("ko_KR"), locales.get("ar_LY"), locales.get("gu_IN")));
+        projects.put("projectP3", projectRepository.save(projectP3));
+
         return projects;
     }
 }

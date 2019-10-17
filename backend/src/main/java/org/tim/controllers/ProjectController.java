@@ -6,7 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.tim.DTOs.input.ProjectDTO;
 import org.tim.DTOs.output.ProjectForDeveloper;
-import org.tim.entities.AggregatedInfoForDeveloper;
+import org.tim.DTOs.output.AggregatedInfoForDeveloper;
 import org.tim.entities.Project;
 import org.tim.services.AggregatedInfoService;
 import org.tim.services.ProjectService;

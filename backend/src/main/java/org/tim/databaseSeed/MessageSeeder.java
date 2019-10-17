@@ -172,6 +172,14 @@ public class MessageSeeder {
         messageM4.setDescription("Pierwsza strona prezentująca przedsiębiorstwo.");
         messages.put("messageM4", messageRepository.save(messageM4));
 
+
+        Message message1ForManyLocales = new Message("message1", "Short one.", projects.get("projectP3"));
+		messageM4.setDescription("M is short.");
+		messages.put("message1ForManyLocales", messageRepository.save(message1ForManyLocales));
+        Message message2ForManyLocales = new Message("message2", "Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong one.", projects.get("projectP3"));
+		messageM4.setDescription("Message is long.");
+		messages.put("message2ForManyLocales", messageRepository.save(message2ForManyLocales));
+
         return messages;
     }
 }

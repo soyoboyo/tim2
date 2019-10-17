@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Project } from '../../../../shared/types/entities/Project';
 import { AuditTranslationService } from '../../dev-history-translations/audit-translation/audit-translation.service';
 import { AuditMessageService } from '../../dev-history-messages/audit-message/audit-message.service';
 import { MessageForDeveloper } from '../../../../shared/types/DTOs/output/MessageForDeveloper';
+import { UtilsService } from '../../../../shared/services/utils-service/utils.service';
 
 @Component({
 	selector: 'app-dev-messages-table',
@@ -21,7 +22,7 @@ import { MessageForDeveloper } from '../../../../shared/types/DTOs/output/Messag
 		])
 	]
 })
-export class DevMessagesTableComponent implements OnInit, OnChanges {
+export class DevMessagesTableComponent implements OnInit, OnChanges, AfterViewInit {
 
 	@Input() selectedRowIndex = -1;
 	@Input() selectedProject: Project;
@@ -32,7 +33,7 @@ export class DevMessagesTableComponent implements OnInit, OnChanges {
 
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-	dataSource = new MatTableDataSource<MessageForDeveloper>();
+	dataSource = new MatTableDataSource<MessageForDeveloper>([]);
 	displayedColumns: string[] = ['key', 'content', 'translations', 'actions'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	isLoadingResults = false;
@@ -41,17 +42,24 @@ export class DevMessagesTableComponent implements OnInit, OnChanges {
 	auditedTranslation = null;
 	auditedMessage = null;
 
+	sortAndPaginatorId = 'sortAndPaginator';
+	sortAndPaginatorElement: any;
+
 	constructor(private auditTranslationService: AuditTranslationService,
-				private auditMessageService: AuditMessageService) {
+				private auditMessageService: AuditMessageService,
+				private utilsService: UtilsService) {
 	}
 
 	ngOnInit() {
+
+
 		this.getMessages();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		this.getMessages();
 	}
+
 
 	async getMessages() {
 		this.isLoadingResults = true;
@@ -62,6 +70,9 @@ export class DevMessagesTableComponent implements OnInit, OnChanges {
 		};
 		this.dataSource.sort = this.sort;
 		this.isLoadingResults = false;
+		if (this.sortAndPaginatorElement != undefined) {
+			this.utilsService.showElement(this.sortAndPaginatorElement);
+		}
 	}
 
 	archiveMessage(id: any) {
@@ -88,6 +99,11 @@ export class DevMessagesTableComponent implements OnInit, OnChanges {
 
 	auditMessage(message: any) {
 		this.auditMessageService.auditedMessage = message;
+	}
+
+	ngAfterViewInit(): void {
+		this.sortAndPaginatorElement = document.getElementById(this.sortAndPaginatorId);
+		this.utilsService.hideElement(this.sortAndPaginatorElement);
 	}
 
 }
