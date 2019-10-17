@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleCh
 import { RestService } from '../../../shared/services/rest/rest.service';
 
 import { Chart } from 'chart.js';
-import { AggregatedLocale } from './AggregatedLocale';
+import { AggregatedLocale } from './types/AggregatedLocale';
 import { UtilsService } from '../../../shared/services/utils-service/utils.service';
 
 
@@ -11,7 +11,7 @@ import { UtilsService } from '../../../shared/services/utils-service/utils.servi
 	templateUrl: './aggregate-info.component.html',
 	styleUrls: ['./aggregate-info.component.scss']
 })
-export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit {
 
 	@Input() selectedProjectId: number;
 	aggregatedInfo: any = null;
@@ -23,6 +23,7 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit,
 	private dataCorrect: number[] = [];
 	private dataIncorrect: number[] = [];
 	private dataMissing: number[] = [];
+	private messagesTotal = 0;
 
 	constructor(private http: RestService, private utilsService: UtilsService) {
 	}
@@ -30,11 +31,8 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit,
 	ngOnInit() {
 	}
 
-	ngOnDestroy(): void {
-		console.log('on destory');
-	}
-
 	ngOnChanges(changes: SimpleChanges): void {
+		console.log('aggregate info changes');
 		console.log(changes);
 		this.getAggregatedInfo();
 	}
@@ -48,7 +46,9 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit,
 		if (this.selectedProjectId !== null) {
 			const response = await this.http.getAll('project/developer/aggregate/' + this.selectedProjectId);
 			this.aggregatedInfo = response;
+			console.log('aggregate info response');
 			console.log(response);
+			this.messagesTotal = response.messagesTotal;
 			this.parseData(response.aggregatedLocales);
 		}
 	}
@@ -84,6 +84,7 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit,
 				data: this.dataMissing,
 				backgroundColor: 'rgba(204, 41, 30, 1)'
 			}];
+		this.summaryChart.options.scales.yAxes[0].ticks.max = this.messagesTotal;
 		this.summaryChart.update();
 	}
 
@@ -116,7 +117,9 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit,
 					yAxes: [{
 						stacked: true,
 						ticks: {
-							beginAtZero: true
+							beginAtZero: true,
+							min: 0,
+							max: this.messagesTotal
 						}
 					}]
 				}

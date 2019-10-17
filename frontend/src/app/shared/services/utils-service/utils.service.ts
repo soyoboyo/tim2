@@ -18,7 +18,6 @@ export class UtilsService {
 
 	hideElement(element: any) {
 		element.style.display = 'none';
-
 	}
 
 	showElement(element: any) {

@@ -31,6 +31,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	messagesTableElement: any;
 	aggregateInfoId = 'aggregateInfoId';
 	messagesTableId = 'messagesTable';
+	targetLocales: string[] = [];
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
@@ -44,7 +45,6 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	}
 
 	ngOnInit() {
-
 		this.initProjectForm();
 		this.getProjects();
 		this.getMessages();
@@ -109,8 +109,14 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	changeProject(value) {
 		this.cancelUpdate();
 		this.selectedProject = value;
+		this.targetLocales = [];
+		value.targetLocales.forEach((locale) => {
+			this.targetLocales.push(locale.locale);
+		});
+		this.targetLocales.sort();
 		this.selectedProjectId = value.id;
 		this.projectStoreService.setSelectedProject(value);
+		console.log('selected project');
 		console.log(this.selectedProject);
 		this.getMessages();
 		// TODO: add boolean variable to check if any projects are loaded
@@ -129,7 +135,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 			this.isLoadingResults = true;
 			const response = await this.http.getAll('message/developer/getByProject/' + this.selectedProject.id);
 			this.messages = [].concat(response);
-			this.selectedProjectId = new Number(this.selectedProject.id);
+			this.selectedProjectId = this.selectedProject.id;
 			this.isLoadingResults = false;
 		}
 	}

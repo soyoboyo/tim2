@@ -15,7 +15,7 @@
 	<mat-form-field>
 		<mat-label>Locales</mat-label>
 		<mat-select multiple>
-			<mat-option *ngFor="let locale of selectedProject.targetLocales.sort()" [value]="locale.locale">{{locale.locale}}</mat-option>
+			<mat-option *ngFor="let locale of targetLocales" [value]="locale">{{locale}}</mat-option>
 		</mat-select>
 	</mat-form-field>
 	<div>
