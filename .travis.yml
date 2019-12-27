@@ -55,6 +55,11 @@ jobs:
           - docker build -t registry.heroku.com/studentproject-tim-backend/web -f Dockerfile.prod .
           - docker push registry.heroku.com/studentproject-tim-backend/web
           - /usr/local/bin/heroku container:release web -a studentproject-tim-backend
+          - cd ../auth_server
+          - mvn package -Dmaven.test.skip=true
+          - docker build -t registry.heroku.com/studentproject-tim-oauth/web -f Dockerfile .
+          - docker push registry.heroku.com/studentproject-tim-oauth/web
+          - /usr/local/bin/heroku container:release web -a studentproject-tim-oauth
           - cd ../frontend
           - npm install
           - npm install @types/node --save-dev
