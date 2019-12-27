@@ -33,6 +33,9 @@ jobs:
           - cd backend
           - mvn package -Dmaven.test.skip=true
           - docker build -t studentproject/ocado-tim-backend:latest .
+          - cd ../auth_server
+          - mvn package -Dmaven.test.skip=true
+          - docker build -t studentproject/ocado-tim-oauth:latest .
           - cd ../frontend
           - npm install -f
           - node -v
@@ -42,6 +45,7 @@ jobs:
           - docker login -u "studentproject" -p "$DOCKER_PASSWORD"
           - docker push studentproject/ocado-tim-frontend:latest
           - docker push studentproject/ocado-tim-backend:latest
+          - docker push studentproject/ocado-tim-oauth:latest
       - stage: deploy
         script:
           - curl https://cli-assets.heroku.com/install-standalone.sh | sh
