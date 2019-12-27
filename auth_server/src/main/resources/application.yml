@@ -12,8 +12,3 @@ spring:
     open-in-view: false
   profiles:
     active: h2
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
