@@ -98,14 +98,14 @@ public abstract class SpringTestsCustomExtension {
 
     public Message createRandomMessage(Project project){
         Message message = random(Message.class);
-        message.setProject(project);
+        message.setProjectId(project.getId());
         return messageRepository.save(message);
     }
 
     public void createTenRandomMessages(Project project) {
         for(int i = 0; i < 10; i++){
             Message message = random(Message.class);
-            message.setProject(project);
+            message.setProjectId(project.getId());
             messageRepository.save(message);
         }
     }

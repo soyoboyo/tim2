@@ -5,15 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.tim.DTOs.MessageDTO;
+import org.tim.DTOs.NewMessageRequest;
+import org.tim.configurations.ToDo;
 import org.tim.entities.Message;
 import org.tim.entities.MessageVersion;
 import org.tim.entities.Project;
+import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.MessageVersionRepository;
 import org.tim.repositories.ProjectRepository;
-
-import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -25,43 +25,55 @@ public class MessageService {
 	private final MessageVersionRepository messageVersionRepository;
 	private final ModelMapper mapper = new ModelMapper();
 
-	public Message createMessage(MessageDTO messageDTO) {
-		Project project = checkIfProjectExists(messageDTO.getProjectId());
-		final Message message = mapper.map(messageDTO, Message.class);
-		message.setProject(project);
+	@ToDo("Who created this message")
+	public Message createMessage(NewMessageRequest messageRequest) {
+		getAndValidateProjectById(messageRequest.getProjectId());
+
+		Message message = new Message();
+		mapRequestToMessage(messageRequest, message);
+
 		return messageRepository.save(message);
 	}
 
-	public Message updateMessage(MessageDTO messageDTO, String messageId) {
-		Project project = checkIfProjectExists(messageDTO.getProjectId());
-		Message message = checkIfMessageExists(messageId, messageDTO.getKey());
+	@ToDo("Who created this message")
+	public Message updateMessage(NewMessageRequest messageRequest, String messageId) {
+		getAndValidateProjectById(messageRequest.getProjectId());
+		Message message = getAndValidateMessageById(messageId);
 		saveMessageVersion(message);
-		if (!message.isArchived()) {
-			message.setContent(messageDTO.getContent());
-			message.setKey(messageDTO.getKey());
-			message.setDescription(messageDTO.getDescription());
-			message.setProject(project);
-			return messageRepository.save(message);
-		} else {
-			throw new NoSuchElementException(String.format("Message with id %s is not found, message key - %s", messageId, messageDTO.getKey()));
+
+		if (message.isArchived()) {
+			throw new EntityNotFoundException("message");
 		}
+
+		mapRequestToMessage(messageRequest, message);
+
+		return messageRepository.save(message);
 	}
 
-	public Message archiveMessage(String id) {
-		Message message = checkIfMessageExists(id, "");
+	private Project getAndValidateProjectById(String projectId) {
+		return projectRepository.findById(projectId)
+				.orElseThrow(() -> new EntityNotFoundException("project"));
+	}
+
+	private Message mapRequestToMessage(NewMessageRequest messageRequest, Message message) {
+		message.setKey(messageRequest.getKey());
+		message.setContent(messageRequest.getContent());
+		//message.setCreatedBy("");
+		message.setDescription(messageRequest.getDescription());
+		message.setProjectId(messageRequest.getProjectId());
+		return message;
+	}
+
+	public Message archiveMessage(String messageId) {
+		Message message =getAndValidateMessageById(messageId);
 		saveMessageVersion(message);
 		message.setArchived(true);
 		return messageRepository.save(message);
 	}
 
-	private Message checkIfMessageExists(String id, String key) {
-		return messageRepository.findById(id).orElseThrow(() ->
-				new NoSuchElementException(String.format("Message with id %s is not found, message key - %s", id, key)));
-	}
-
-	private Project checkIfProjectExists(String id) {
-		return projectRepository.findById(id).orElseThrow(() ->
-				new NoSuchElementException(String.format("Project with id %s not found", id)));
+	private Message getAndValidateMessageById(String messageId) {
+		return messageRepository.findById(messageId)
+				.orElseThrow(() -> new EntityNotFoundException("message"));
 	}
 
 	private void saveMessageVersion(Message message) {
@@ -69,4 +81,5 @@ public class MessageService {
 		messageVersion.setMessageId(message.getId());
 		messageVersionRepository.save(messageVersion);
 	}
+
 }

@@ -33,8 +33,9 @@ public class Message {
 	private Date updateDate = new Date();
 
 	@NonNull
-	private Project project;
+	private String projectId;
 
+	@NotNull
 	private boolean isArchived = false;
 
 	private String createdBy;

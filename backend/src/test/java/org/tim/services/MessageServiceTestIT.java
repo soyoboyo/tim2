@@ -1,22 +1,6 @@
 package org.tim.services;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.tim.DTOs.MessageDTO;
 import org.tim.configuration.SpringTestsCustomExtension;
-import org.tim.entities.Message;
-import org.tim.entities.MessageVersion;
-import org.tim.entities.Project;
-import org.tim.repositories.MessageRepository;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageServiceTestIT extends SpringTestsCustomExtension {
 

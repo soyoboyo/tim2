@@ -80,9 +80,9 @@ public class MessageForDeveloperTestIT extends SpringTestsCustomExtension {
 
 	private List<Message> createMessagesForTests(Project project) {
 		List<Message> messages = Arrays.asList(
-				new Message("key1", "Content1", project),
-				new Message("key2", "Content2", project),
-				new Message("key3", "Content3", project)
+				new Message("key1", "Content1", project.getId()),
+				new Message("key2", "Content2", project.getId()),
+				new Message("key3", "Content3", project.getId())
 		);
 		return StreamSupport
 				.stream(messageRepository.saveAll(messages).spliterator(), false)

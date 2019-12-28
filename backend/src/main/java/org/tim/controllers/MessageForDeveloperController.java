@@ -17,7 +17,7 @@ import static org.tim.utils.Mapping.*;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ROLE_DEVELOPER')")
+//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 @RequestMapping(API_VERSION + MESSAGE + DEVELOPER)
 public class MessageForDeveloperController {
 

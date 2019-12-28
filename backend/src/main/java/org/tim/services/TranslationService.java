@@ -36,7 +36,8 @@ public class TranslationService {
 		checkIfTranslationAlreadyExists(translationCreateDTO.getLocale(), messageId);
 		Message message = checkIfMessageExists(messageId);
 
-		Set<Locale> projectTargetLocales = message.getProject().getTargetLocales();
+		Set<Locale> projectTargetLocales = null;
+				//message.getProject().getTargetLocales();
 		Locale translationLocale = LocaleUtils.toLocale(translationCreateDTO.getLocale());
 		boolean existInProject = false;
 		for (Locale localeWrapper : projectTargetLocales) {
