@@ -33,6 +33,7 @@ public class Translation {
 
 	@NotNull
 	@NonNull
+	//to remove
 	private Message message;
 
 	private Boolean isValid = true;

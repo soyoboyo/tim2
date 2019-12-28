@@ -33,11 +33,9 @@ public class Message {
 	private Date updateDate = new Date();
 
 	@NonNull
-	@JsonIgnore
 	private Project project;
 
-	@NotNull
-	private Boolean isArchived = false;
+	private boolean isArchived = false;
 
 	private String createdBy;
 

@@ -97,7 +97,7 @@ public class MessageForTranslatorService {
 
 		String previousMessageContent = "SOMETHING IS WRONG";
 		if (!translationVersions.isEmpty()) {
-			LocalDateTime lowerBound = translationVersions.get(0).getUpdateDate();
+			Date lowerBound = translationVersions.get(0).getUpdateDate();
 			List<MessageVersion> versions = messageVersionService.getMessageVersionsByMessageIdAndUpdateDateBetween(message.getId(), upperBound, lowerBound);
 			if (!versions.isEmpty()) {
 				previousMessageContent = versions.get(0).getContent();

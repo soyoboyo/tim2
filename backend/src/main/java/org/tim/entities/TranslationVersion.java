@@ -1,40 +1,42 @@
 package org.tim.entities;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Locale;
 
 @Document(indexName = "translation-version")
 @Data
-@NoArgsConstructor
 public class TranslationVersion {
 
-    @Id
-    @Setter(AccessLevel.NONE)
-    private String id;
+	@Id
+	@Setter(AccessLevel.NONE)
+	private String id;
 
-    @NotNull
-    private String content;
+	public TranslationVersion() {
+		updateDate = new Date();
+	}
 
-    @NotNull
-    @NonNull
-    private Locale locale;
+	@NotNull
+	private String content;
 
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime updateDate;
+	@NotNull
+	private Locale locale;
 
-    private Boolean isValid;
+	private Date updateDate;
 
-    private String createdBy;
+	private Boolean isValid;
 
-    private Boolean isArchived;
+	private String createdBy;
 
-    @NotNull
-    private String translationId;
+	private Boolean isArchived;
+
+	@NotNull
+	private String translationId;
 }

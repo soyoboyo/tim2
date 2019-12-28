@@ -7,6 +7,7 @@ import org.tim.entities.MessageVersion;
 import org.tim.repositories.MessageVersionRepository;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -24,7 +25,7 @@ public class MessageVersionService {
 		return messageVersionRepository.findAllByMessageIdAndUpdateDateBeforeOrderByUpdateDateDesc(messageId, updateDate);
 	}
 
-	public List<MessageVersion> getMessageVersionsByMessageIdAndUpdateDateBetween(Long messageId, LocalDateTime upperBound, LocalDateTime lowerBound) {
+	public List<MessageVersion> getMessageVersionsByMessageIdAndUpdateDateBetween(Long messageId, LocalDateTime upperBound, Date lowerBound) {
 		return messageVersionRepository.findAllByMessageIdAndUpdateDateBeforeAndUpdateDateAfterOrderByUpdateDateDesc(messageId, upperBound, lowerBound);
 	}
 }

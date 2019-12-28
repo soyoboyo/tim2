@@ -9,6 +9,10 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends ElasticsearchRepository<Message, String> {
 
-    List<Message> findMessagesByProjectIdAndIsArchivedFalse(String projectId);
+	List<Message> findMessagesByProjectIdAndIsArchivedFalse(String projectId);
+
+	default List<Message> findActiveMessagesByProject(String projectId) {
+		return findMessagesByProjectIdAndIsArchivedFalse(projectId);
+	}
 
 }
