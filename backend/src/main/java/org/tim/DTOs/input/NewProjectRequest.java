@@ -14,9 +14,9 @@ import java.util.Map;
 @AllArgsConstructor
 @Setter
 @Getter
-public class ProjectDTO {
+public class NewProjectRequest {
 
-    public ProjectDTO() {
+    public NewProjectRequest() {
         this.targetLocales = new ArrayList<>();
         this.replaceableLocaleToItsSubstitute = new HashMap<>();
     }

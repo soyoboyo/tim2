@@ -3,13 +3,14 @@ package org.tim.services;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.LocaleUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.tim.DTOs.input.ProjectDTO;
+import org.tim.DTOs.input.NewProjectRequest;
 import org.tim.DTOs.output.ProjectForDeveloper;
+import org.tim.configurations.Done;
 import org.tim.entities.Project;
 import org.tim.exceptions.EntityNotFoundException;
 import org.tim.exceptions.ValidationException;
 import org.tim.repositories.ProjectRepository;
+import org.tim.translators.LocaleTranslator;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,47 +20,50 @@ import static org.tim.utils.UserMessages.LCL_NOT_FOUND;
 import static org.tim.utils.UserMessages.formatMessage;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ProjectService {
 
 	private final ProjectRepository projectRepository;
+	private final LocaleTranslator localeTranslator;
 
 	public List<Project> getAllProjects() {
 		Iterable<Project> p = projectRepository.findAll();
 		return StreamSupport.stream(p.spliterator(), false).collect(Collectors.toList());
 	}
 
-	public Project createProject(ProjectDTO projectDTO) throws IllegalArgumentException {
+	@Done
+	public Project createProject(NewProjectRequest projectRequest) throws IllegalArgumentException {
+		validateProjectNameUniqueness(projectRequest.getName());
+
 		Project project = new Project();
-		validateLocales(projectDTO);
-		project.setSourceLocale(LocaleUtils.toLocale(projectDTO.getSourceLocale()));
-		if (!projectRepository.existsByName(projectDTO.getName())) {
-			project = projectRepository.save(mapProjectDTOIntoProject(project, projectDTO));
-		} else {
-			throw new ValidationException("Project name must be unique");
+		project.setName(projectRequest.getName());
+		project.setSourceLocale(localeTranslator.execute(projectRequest.getSourceLocale()));
+		project.addTargetLocale(
+				projectRequest.getTargetLocales()
+						.parallelStream()
+						.map(locale -> localeTranslator.execute(locale))
+						.collect(Collectors.toList()));
+		for (Map.Entry<String, String> r : projectRequest.getReplaceableLocaleToItsSubstitute().entrySet()) {
+			project.updateSubstituteLocale(
+					localeTranslator.execute(r.getKey()),
+					localeTranslator.execute(r.getValue()));
 		}
-		return project;
+
+		return projectRepository.save(project);
 	}
 
-	public Project updateProject(ProjectDTO projectDTO, String id) {
-		Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("project"));
-		validateLocales(projectDTO);
-		project.getReplaceableLocaleToItsSubstitute().clear();
-		project.getTargetLocales().clear();
-		if (!projectRepository.existsByName(projectDTO.getName()) || (project.getName().equals(projectDTO.getName()))) {
-			project = projectRepository.save(mapProjectDTOIntoProject(project, projectDTO));
-		} else {
-			throw new ValidationException("Project name must be unique");
+	@Done
+	private void validateProjectNameUniqueness(String projectName) {
+		if (projectRepository.findByName(projectName).isPresent()) {
+			throw new ValidationException("Project name must be unique. Please choose other name.");
 		}
-		return project;
 	}
 
-	private Project mapProjectDTOIntoProject(Project project, ProjectDTO projectDTO) {
-		project.setName(projectDTO.getName());
-		project.setSourceLocale(LocaleUtils.toLocale(projectDTO.getSourceLocale()));
+	private Project mapProjectDTOIntoProject(Project project, NewProjectRequest projectRequest) {
+		project.setName(projectRequest.getName());
+		project.setSourceLocale(LocaleUtils.toLocale(projectRequest.getSourceLocale()));
 		List<Locale> locales = new LinkedList<>();
-		projectDTO.getTargetLocales().forEach(locale -> {
+		projectRequest.getTargetLocales().forEach(locale -> {
 			locales.add(LocaleUtils.toLocale(locale));
 		});
 //		persistentLocaleWrappers.forEach(localeWrapper -> {
@@ -76,53 +80,68 @@ public class ProjectService {
 		project.getTargetLocales().forEach(targetLocal -> {
 			targetLocales.put(targetLocal, targetLocal);
 		});
-		projectDTO.getReplaceableLocaleToItsSubstitute().forEach((locale1, locale2) -> {
+		projectRequest.getReplaceableLocaleToItsSubstitute().forEach((locale1, locale2) -> {
 			project.updateSubstituteLocale(getLocaleWrapperByLocale(locale1, targetLocales),
 					getLocaleWrapperByLocale(locale2, targetLocales));
 		});
 		return project;
 	}
 
-	private void validateLocales(ProjectDTO projectDTO) {
-		String msg = "";
-		boolean isSourceLocaleValid = true;
-		try {
-			LocaleUtils.toLocale(projectDTO.getSourceLocale());
-		} catch (IllegalArgumentException e) {
-			msg += "Source locale: " + projectDTO.getSourceLocale() + " was given in the wrong format. \n";
-			isSourceLocaleValid = false;
+	public Project updateProject(NewProjectRequest projectRequest, String id) {
+		Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("project"));
+		//validateLocales(projectRequest);
+		project.getReplaceableLocaleToItsSubstitute().clear();
+		project.getTargetLocales().clear();
+		if (!projectRepository.existsByName(projectRequest.getName()) || (project.getName().equals(projectRequest.getName()))) {
+			project = projectRepository.save(mapProjectDTOIntoProject(project, projectRequest));
+		} else {
+			throw new ValidationException("Project name must be unique");
 		}
-		String msg2 = "Target locales: ";
-		boolean areTargetLocalesValid = true;
-		for (String locale : projectDTO.getTargetLocales()) {
-			try {
-				LocaleUtils.toLocale(locale);
-			} catch (IllegalArgumentException e) {
-				msg2 += locale + " ";
-				areTargetLocalesValid = false;
-			}
-		}
-		if (!areTargetLocalesValid) {
-			msg += msg2 + "was given in the wrong format. \n";
-		}
-		String msg3 = "Replaceable locale to it's substitute as: ";
-		boolean areReplaceableLocalesValid = true;
-		for (Map.Entry<String, String> entry : projectDTO.getReplaceableLocaleToItsSubstitute().entrySet()) {
-			try {
-				LocaleUtils.toLocale(entry.getKey());
-				LocaleUtils.toLocale(entry.getValue());
-			} catch (IllegalArgumentException e) {
-				msg3 += entry.getKey() + "->" + entry.getValue() + " ";
-				areReplaceableLocalesValid = false;
-			}
-		}
-		if (!areReplaceableLocalesValid) {
-			msg += msg3 + "was given in the wrong format. \n";
-		}
-		if (!isSourceLocaleValid || !areReplaceableLocalesValid || !areTargetLocalesValid) {
-			throw new ValidationException(msg);
-		}
+		return project;
 	}
+
+
+	//TODO Probably to remove
+//	private void validateLocales(NewProjectRequest projectRequest) {
+//		String msg = "";
+//		boolean isSourceLocaleValid = true;
+//		try {
+//			LocaleUtils.toLocale(projectRequest.getSourceLocale());
+//		} catch (IllegalArgumentException e) {
+//			msg += "Source locale: " + projectRequest.getSourceLocale() + " was given in the wrong format. \n";
+//			isSourceLocaleValid = false;
+//		}
+//		String msg2 = "Target locales: ";
+//		boolean areTargetLocalesValid = true;
+//		for (String locale : projectRequest.getTargetLocales()) {
+//			try {
+//				LocaleUtils.toLocale(locale);
+//			} catch (IllegalArgumentException e) {
+//				msg2 += locale + " ";
+//				areTargetLocalesValid = false;
+//			}
+//		}
+//		if (!areTargetLocalesValid) {
+//			msg += msg2 + "was given in the wrong format. \n";
+//		}
+//		String msg3 = "Replaceable locale to it's substitute as: ";
+//		boolean areReplaceableLocalesValid = true;
+//		for (Map.Entry<String, String> entry : projectRequest.getReplaceableLocaleToItsSubstitute().entrySet()) {
+//			try {
+//				LocaleUtils.toLocale(entry.getKey());
+//				LocaleUtils.toLocale(entry.getValue());
+//			} catch (IllegalArgumentException e) {
+//				msg3 += entry.getKey() + "->" + entry.getValue() + " ";
+//				areReplaceableLocalesValid = false;
+//			}
+//		}
+//		if (!areReplaceableLocalesValid) {
+//			msg += msg3 + "was given in the wrong format. \n";
+//		}
+//		if (!isSourceLocaleValid || !areReplaceableLocalesValid || !areTargetLocalesValid) {
+//			throw new ValidationException(msg);
+//		}
+//	}
 
 	private Locale getLocaleWrapperByLocale(String localeAsString, Map<Locale, Locale> targetLocales) {
 		Locale localeWrapper = targetLocales.get(LocaleUtils.toLocale(localeAsString));
@@ -159,7 +178,7 @@ public class ProjectService {
 
 			HashMap<String, String> substitutes = new HashMap<>(p.getReplaceableLocaleToItsSubstitute().size());
 
-			for (Map.Entry<Locale, Locale> entry : p.getReplaceableLocaleToItsSubstitute().entrySet()){
+			for (Map.Entry<Locale, Locale> entry : p.getReplaceableLocaleToItsSubstitute().entrySet()) {
 				String replaced = entry.getKey().toString().split("=")[2].substring(0, 6 - 1);
 				String replacement = entry.getValue().toString().split("=")[2].substring(0, 6 - 1);
 

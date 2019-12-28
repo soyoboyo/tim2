@@ -1,4 +1,4 @@
-package org.tim.services;
+package org.tim.translators;
 
 import org.apache.commons.lang.LocaleUtils;
 import org.springframework.stereotype.Service;

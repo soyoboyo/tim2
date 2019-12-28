@@ -6,13 +6,12 @@ import org.tim.DTOs.output.LocaleResponse;
 import org.tim.configurations.Done;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
-import org.tim.entities.Translation;
 import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
+import org.tim.translators.LocaleTranslator;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;

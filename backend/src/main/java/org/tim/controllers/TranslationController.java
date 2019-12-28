@@ -11,7 +11,7 @@ import org.tim.entities.Translation;
 import org.tim.entities.TranslationVersion;
 import org.tim.services.TranslationService;
 import org.tim.services.TranslationVersionService;
-import org.tim.validators.DTOValidator;
+import org.tim.validators.RequestsValidator;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -31,7 +31,7 @@ public class TranslationController {
 	public ResponseEntity<Translation> createTranslation(@RequestBody @Valid TranslationCreateDTO translationCreateDTO,
 														 @RequestParam String messageId,
 														 BindingResult bindingResult) {
-		DTOValidator.validate(bindingResult);
+		RequestsValidator.validate(bindingResult);
 		return ResponseEntity.ok(translationService.createTranslation(translationCreateDTO, messageId));
 	}
 
@@ -40,7 +40,7 @@ public class TranslationController {
 														 @PathVariable("id") String translationId,
 														 @RequestParam String messageId,
 														 BindingResult bindingResult) {
-		DTOValidator.validate(bindingResult);
+		RequestsValidator.validate(bindingResult);
 		return ResponseEntity.ok(translationService.updateTranslation(translationUpdateDTO, translationId, messageId));
 	}
 
