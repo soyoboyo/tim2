@@ -41,14 +41,14 @@ public class MessageTranslationService {
 		List<MessageWithWarningsDTO> messageWithWarningsDTOS = new ArrayList<>();
 		for (Message m : messages) {
 			WarningDTO warningDTO = new WarningDTO();
-			Optional<Translation> originTranslation = translationRepository.findTranslationsByLocaleAndMessage(sourceLocale, m);
+			Optional<Translation> originTranslation = translationRepository.findTranslationsByLocaleAndMessageId(sourceLocale, m.getId());
 
 			if (originTranslation.isPresent() && m.isTranslationOutdated(originTranslation.get()))
 				warningDTO.setOutdatedTranslationContent(originTranslation.get().getContent());
 			Optional<Translation> substituteTranslation;
 			if (substituteLocale.isPresent()) {
 				do {
-					substituteTranslation = translationRepository.findTranslationsByLocaleAndMessage(substituteLocale.get(), m);
+					substituteTranslation = translationRepository.findTranslationsByLocaleAndMessageId(substituteLocale.get(), m.getId());
 					substituteLocale = project.getSubstituteLocale(substituteLocale.get());
 				} while (substituteTranslation.isEmpty() && substituteLocale.isPresent());
 				if (substituteTranslation.isPresent()) {
@@ -72,10 +72,10 @@ public class MessageTranslationService {
 		for (Message m : messages)
 			messageMap.put(m.getId(), m);
 
-		List<Translation> translations = translationRepository.findTranslationsByLocaleAndMessage_ProjectIdAndIsValidTrue(locale, projectId);
+		List<Translation> translations = null;//translationRepository.findTranslationsByLocaleAndProjectIdAndIsValidTrue(locale, projectId);
 		for (Translation t : translations) {
-			if (messageMap.containsKey(t.getMessage().getId())) {
-				Message message = messageMap.get(t.getMessage().getId());
+			if (messageMap.containsKey(t.getMessageId())) {
+				Message message = messageMap.get(t.getMessageId());
 				if (!message.isTranslationOutdated(t)) {
 					messages.remove(message);
 				}

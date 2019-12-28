@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.NewMessageRequest;
+import org.tim.configurations.Done;
 import org.tim.configurations.ToDo;
 import org.tim.entities.Message;
 import org.tim.entities.MessageVersion;
@@ -15,6 +16,9 @@ import org.tim.repositories.MessageRepository;
 import org.tim.repositories.MessageVersionRepository;
 import org.tim.repositories.ProjectRepository;
 
+import java.util.Date;
+
+@Done
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -46,6 +50,7 @@ public class MessageService {
 		}
 
 		mapRequestToMessage(messageRequest, message);
+		message.setUpdateDate(new Date());
 
 		return messageRepository.save(message);
 	}
@@ -65,7 +70,7 @@ public class MessageService {
 	}
 
 	public Message archiveMessage(String messageId) {
-		Message message =getAndValidateMessageById(messageId);
+		Message message = getAndValidateMessageById(messageId);
 		saveMessageVersion(message);
 		message.setArchived(true);
 		return messageRepository.save(message);

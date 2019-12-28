@@ -36,7 +36,7 @@ public class MessageForDeveloperService {
 		for (Message m : messages) {
 			MessageForDeveloper mForDeveloper = mapper.map(m, MessageForDeveloper.class);
 			mForDeveloper.setProjectId(projectId);
-			List<Translation> translations = translationRepository.findAllByMessageAndIsArchivedFalseOrderByLocale(m);
+			List<Translation> translations = translationRepository.findAllByMessageIdOrderByLocale(m.getId());
 
 			mForDeveloper.setTranslations(getTranslationsForDeveloper(translations));
 
@@ -67,7 +67,7 @@ public class MessageForDeveloperService {
 		List<TranslationForDeveloper> translationsForDeveloper = new LinkedList<>();
 		for (Translation t : translations) {
 			TranslationForDeveloper tForDeveloper = mapper.map(t, TranslationForDeveloper.class);
-			tForDeveloper.setMessageId(t.getMessage().getId());
+			tForDeveloper.setMessageId(t.getMessageId());
 			translationsForDeveloper.add(tForDeveloper);
 		}
 		return translationsForDeveloper;

@@ -17,13 +17,13 @@ public interface TranslationRepository extends ElasticsearchRepository<Translati
 //			"WHERE T.LOCALE ILIKE ?1 AND M.PROJECT_ID = ?2 ;", nativeQuery = true)
 //	List<Translation> findTranslationsByLocaleAndProjectId(Locale locale, Long projectId);
 
-    List<Translation> findTranslationsByLocaleAndMessage_ProjectIdAndIsValidTrue(Locale locale, String projectId);
+    //List<Translation> findTranslationsByLocaleAndProjectIdAndIsValidTrue(Locale locale, String projectId);
 
-    Optional<Translation> findTranslationsByLocaleAndMessage(Locale locale, Message message);
+    Optional<Translation> findTranslationsByLocaleAndMessageId(Locale locale, String messageId);
 
-	Translation findTranslationByLocaleAndMessageId(Locale locale, String message_id);
+	Optional<Translation> findTranslationByLocaleAndMessageId(Locale locale, String messageId);
 
-	List<Translation> findTranslationsByMessageIdAndIsArchivedFalse(String messageId);
+	List<Translation> findTranslationsByMessageId(String messageId);
 
-	List<Translation> findAllByMessageAndIsArchivedFalseOrderByLocale(Message message);
+	List<Translation> findAllByMessageIdOrderByLocale(String messageId);
 }

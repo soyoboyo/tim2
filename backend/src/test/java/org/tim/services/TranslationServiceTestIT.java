@@ -1,28 +1,6 @@
 package org.tim.services;
 
-import org.apache.commons.lang.LocaleUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.tim.DTOs.input.TranslationCreateDTO;
-import org.tim.DTOs.input.TranslationUpdateDTO;
 import org.tim.configuration.SpringTestsCustomExtension;
-import org.tim.entities.*;
-import org.tim.exceptions.EntityNotFoundException;
-import org.tim.exceptions.ValidationException;
-import org.tim.repositories.MessageRepository;
-import org.tim.repositories.ProjectRepository;
-import org.tim.repositories.TranslationRepository;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.tim.utils.UserMessages.LANG_NOT_FOUND_IN_PROJ;
 
 public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 

@@ -34,8 +34,6 @@ public class TranslationVersion {
 
 	private String createdBy;
 
-	private Boolean isArchived;
-
 	@NotNull
 	private String translationId;
 }

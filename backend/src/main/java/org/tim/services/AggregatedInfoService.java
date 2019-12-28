@@ -42,7 +42,7 @@ public class AggregatedInfoService {
 		for (Message m : messages) {
 
 			// get all translations for message
-			List<Translation> translations = translationRepository.findTranslationsByMessageIdAndIsArchivedFalse(m.getId());
+			List<Translation> translations = translationRepository.findTranslationsByMessageId(m.getId());
 
 			// all translations for each locale are considered missing, unless proven otherwise
 			Set<String> missingLocales = new HashSet<>(targetLocales);

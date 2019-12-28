@@ -15,7 +15,7 @@ public class TranslationVersionService {
 
     private final TranslationVersionRepository translationVersionRepository;
 
-    public List<TranslationVersion> getTranslationVersionsByOriginal(Long originalId){
+    public List<TranslationVersion> getTranslationVersionsByOriginal(String originalId){
         return translationVersionRepository.findAllByTranslationIdOrderByUpdateDateDesc(originalId);
     }
 }

@@ -10,8 +10,8 @@ import java.util.List;
 
 @Repository
 public interface MessageVersionRepository extends ElasticsearchRepository<MessageVersion, String> {
-	List<MessageVersion> findAllByMessageIdOrderByUpdateDateDesc(Long originalMessageId);
+	List<MessageVersion> findAllByMessageIdOrderByUpdateDateDesc(String originalMessageId);
 
-	List<MessageVersion> findAllByMessageIdAndUpdateDateBeforeOrderByUpdateDateDesc(Long messageId, LocalDateTime updateDate);
-	List<MessageVersion> findAllByMessageIdAndUpdateDateBeforeAndUpdateDateAfterOrderByUpdateDateDesc(Long messageId, LocalDateTime upperBound, Date lowerBound);
+	List<MessageVersion> findAllByMessageIdAndUpdateDateBeforeOrderByUpdateDateDesc(String messageId, LocalDateTime updateDate);
+	List<MessageVersion> findAllByMessageIdAndUpdateDateBeforeAndUpdateDateAfterOrderByUpdateDateDesc(String messageId, LocalDateTime upperBound, Date lowerBound);
 }

@@ -39,16 +39,16 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
 
     private List<MessageForTranslator> messageForTranslatorList;
 
-    @BeforeEach
-    public void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(messageForTranslatorController).build();
-        messageForTranslatorList = new ArrayList<>();
-        MessageForTranslator messageForTranslator = new MessageForTranslator();
-        messageForTranslator.setId(1L);
-        messageForTranslator.setKey("key");
-        messageForTranslator.setContent("content");
-        messageForTranslatorList.add(messageForTranslator);
-    }
+//    @BeforeEach
+//    public void setUp() {
+//        mockMvc = MockMvcBuilders.standaloneSetup(messageForTranslatorController).build();
+//        messageForTranslatorList = new ArrayList<>();
+//        MessageForTranslator messageForTranslator = new MessageForTranslator();
+//        messageForTranslator.setId(1L);
+//        messageForTranslator.setKey("key");
+//        messageForTranslator.setContent("content");
+//        messageForTranslatorList.add(messageForTranslator);
+//    }
 
     @Test
     void whenGetMessageForTranslationWithoutLocaleThenReturnMessagesWithoutTranslationAndSubstitute() throws Exception {
@@ -82,7 +82,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
     @Test
     void whenGetMessageAndTranslationNotExistButSubstituteExistThenReturnOnlySubstitute() throws Exception {
         TranslationForTranslator translationForTranslator = new TranslationForTranslator();
-        translationForTranslator.setId(1L);
+        //translationForTranslator.setId(1L);
         translationForTranslator.setContent("content");
         translationForTranslator.setIsValid(true);
         translationForTranslator.setLocale("en_US");
@@ -110,7 +110,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
     @Test
     void whenGetMessageAndTranslationExistAndSubstituteExistThenReturnTranslationAdnSubstitute() throws Exception {
         TranslationForTranslator translationForTranslator = new TranslationForTranslator();
-        translationForTranslator.setId(1L);
+       // translationForTranslator.setId(1L);
         translationForTranslator.setContent("content");
         translationForTranslator.setIsValid(true);
         translationForTranslator.setLocale("en_US");
@@ -118,7 +118,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
         messageForTranslatorList.get(0).setSubstitute(translationForTranslator);
 
         translationForTranslator = new TranslationForTranslator();
-        translationForTranslator.setId(2L);
+       // translationForTranslator.setId(2L);
         translationForTranslator.setContent("org_content");
         translationForTranslator.setIsValid(true);
         translationForTranslator.setLocale("en_UK");

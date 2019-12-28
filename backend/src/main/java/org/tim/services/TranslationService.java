@@ -1,23 +1,27 @@
 package org.tim.services;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.LocaleUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.tim.DTOs.input.TranslationCreateDTO;
-import org.tim.DTOs.input.TranslationUpdateDTO;
+import org.tim.DTOs.input.CreateTranslationRequest;
+import org.tim.DTOs.input.UpdateTranslationRequest;
+import org.tim.configurations.Done;
+import org.tim.configurations.ToDo;
 import org.tim.entities.Message;
+import org.tim.entities.Project;
 import org.tim.entities.Translation;
 import org.tim.entities.TranslationVersion;
 import org.tim.exceptions.EntityAlreadyExistException;
 import org.tim.exceptions.EntityNotFoundException;
 import org.tim.exceptions.ValidationException;
 import org.tim.repositories.MessageRepository;
+import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 import org.tim.repositories.TranslationVersionRepository;
+import org.tim.translators.LocaleTranslator;
 
+import java.util.Date;
 import java.util.Locale;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.tim.utils.UserMessages.LANG_NOT_FOUND_IN_PROJ;
@@ -29,50 +33,73 @@ public class TranslationService {
 	private final TranslationRepository translationRepository;
 	private final TranslationVersionRepository translationVersionRepository;
 	private final MessageRepository messageRepository;
+	private final ProjectRepository projectRepository;
+	private final LocaleTranslator localeTranslator;
 
 	private final ModelMapper mapper = new ModelMapper();
 
-	public Translation createTranslation(TranslationCreateDTO translationCreateDTO, String messageId) {
-		checkIfTranslationAlreadyExists(translationCreateDTO.getLocale(), messageId);
-		Message message = checkIfMessageExists(messageId);
+	@Done
+	@ToDo("Who created this translation")
+	public Translation createTranslation(CreateTranslationRequest translationRequest, String messageId) {
+		Locale translatedLocale = localeTranslator.execute(translationRequest.getLocale());
 
-		Set<Locale> projectTargetLocales = null;
-				//message.getProject().getTargetLocales();
-		Locale translationLocale = LocaleUtils.toLocale(translationCreateDTO.getLocale());
-		boolean existInProject = false;
-		for (Locale localeWrapper : projectTargetLocales) {
-			if (localeWrapper.equals(translationLocale)) {
-				existInProject = true;
-			}
-		}
-		if (!existInProject) {
+		validateIfTranslationNotExists(translatedLocale, messageId);
+
+		Message message = getAndValidateMessage(messageId);
+		Project project = getAndValidateProject(message.getProjectId());
+
+		if (project.getTargetLocales()
+				.parallelStream()
+				.noneMatch(locale -> locale.equals(translatedLocale))) {
 			throw new ValidationException(LANG_NOT_FOUND_IN_PROJ
 					+ ". The project supports only "
-					+ projectTargetLocales.stream().map(it -> it.toString()).collect(Collectors.joining(", "))
+					+ project.getTargetLocales()
+					.stream()
+					.map(it -> it.toString())
+					.collect(Collectors.joining(", "))
 					+ " whereas translation is assigned to "
-					+ translationCreateDTO.getLocale());
+					+ translationRequest.getLocale());
 		}
 		Translation translation = new Translation();
-		translation.setContent(translationCreateDTO.getContent());
-		translation.setMessage(message);
-		translation.setLocale(translationLocale);
+		translation.setContent(translationRequest.getContent());
+		translation.setMessageId(messageId);
+		translation.setLocale(translatedLocale);
+		//translation.setCreatedBy();
 		return translationRepository.save(translation);
 	}
 
-	public Translation updateTranslation(TranslationUpdateDTO translationUpdateDTO, String translationId, String messageId) {
-		Translation translation = checkIfTranslationExists(translationId);
-		checkIfMessageExists(messageId);
+	private void validateIfTranslationNotExists(Locale translatedLocale, String messageId) {
+		if (translationRepository.findTranslationByLocaleAndMessageId(translatedLocale, messageId).isPresent()) {
+			throw new EntityAlreadyExistException("translation");
+		}
+	}
 
+	private Project getAndValidateProject(String projectId) {
+		return projectRepository.findById(projectId)
+				.orElseThrow(() -> new EntityNotFoundException("project"));
+	}
+
+	@Done
+	public Translation updateTranslation(UpdateTranslationRequest translationRequest, String translationId, String messageId) {
+		Translation translation = getAndValidateTranslation(translationId);
+
+		getAndValidateMessage(messageId);
 		saveTranslationVersion(translation);
 
-		translation.setContent(translationUpdateDTO.getContent());
+		translation.setContent(translationRequest.getContent());
 		translation.setIsValid(true);
+		translation.setUpdateDate(new Date());
+		//translation.setCreatedBy();
+
 		return translationRepository.save(translation);
 	}
 
 	public Translation invalidateTranslation(String translationId, String messageId) {
-		Translation translation = checkIfTranslationExists(translationId);
-		checkIfMessageExists(messageId);
+		Translation translation = getAndValidateTranslation(translationId);
+		getAndValidateMessage(messageId);
+		if (translation.getMessageId() != messageId) {
+			throw new ValidationException("Inconsistent data");
+		}
 
 		saveTranslationVersion(translation);
 
@@ -80,13 +107,9 @@ public class TranslationService {
 		return translationRepository.save(translation);
 	}
 
-	public Translation archiveTranslation(String id) {
-		Translation translation = checkIfTranslationExists(id);
-
-		saveTranslationVersion(translation);
-
-		translation.setIsArchived(true);
-		return translationRepository.save(translation);
+	private Message getAndValidateMessage(String messageId) {
+		return messageRepository.findById(messageId).orElseThrow(() ->
+				new EntityNotFoundException("message"));
 	}
 
 	private void saveTranslationVersion(Translation translation) {
@@ -95,22 +118,9 @@ public class TranslationService {
 		translationVersionRepository.save(translationVersion);
 	}
 
-	private Translation checkIfTranslationExists(String translationId) {
+	private Translation getAndValidateTranslation(String translationId) {
 		return translationRepository.findById(translationId).orElseThrow(() ->
 				new EntityNotFoundException("translation"));
 	}
-
-	private Message checkIfMessageExists(String messageId) {
-		return messageRepository.findById(messageId).orElseThrow(() ->
-				new EntityNotFoundException("message"));
-	}
-
-	private void checkIfTranslationAlreadyExists(String locale, String messageId) {
-		Translation translation = translationRepository.findTranslationByLocaleAndMessageId(LocaleUtils.toLocale(locale), messageId);
-		if (translation != null) {
-			throw new EntityAlreadyExistException("translation");
-		}
-	}
-
 
 }

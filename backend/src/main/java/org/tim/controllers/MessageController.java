@@ -46,7 +46,7 @@ public class MessageController {
 	@Done
 	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	@GetMapping(VERSION)
-	public ResponseEntity<List<MessageVersion>> getMessageVersionsByOriginalId(@PathVariable Long originalId) {
+	public ResponseEntity<List<MessageVersion>> getMessageVersionsByOriginalId(@PathVariable String originalId) {
 		return ResponseEntity.ok(messageVersionService.getMessageVersionsByOriginalId(originalId));
 	}
 

@@ -49,7 +49,7 @@ public class MessageForTranslatorService {
 
 		for (Message m : messages) {
 			MessageForTranslator mForTranslator = mapper.map(m, MessageForTranslator.class);
-			Translation translation = translationRepository.findTranslationByLocaleAndMessageId(locale, m.getId());
+			Translation translation = translationRepository.findTranslationByLocaleAndMessageId(locale, m.getId()).orElseThrow();
 			mForTranslator.setTranslation(null);
 			if (translation != null) {
 				getTranslationForTranslator(mForTranslator, translation);
@@ -89,8 +89,8 @@ public class MessageForTranslatorService {
 		message.setTranslation(tForTranslator);
 	}
 
-	public String getPreviousMessageContent(MessageForTranslator message) {
-		List<TranslationVersion> translationVersions = translationVersionRepository.findAllByTranslationIdOrderByUpdateDateDesc(message.getTranslation().getId());
+	private String getPreviousMessageContent(MessageForTranslator message) {
+		List<TranslationVersion> translationVersions = translationVersionRepository.findAllByTranslationIdSorted(message.getTranslation().getId());
 
 
 		LocalDateTime upperBound = message.getTranslation().getUpdateDate();
@@ -119,7 +119,7 @@ public class MessageForTranslatorService {
 		do {
 			replaceableLocale = replaceableLocaleToItsSubstitute.get(replaceableLocale);
 			if (replaceableLocale != null) {
-				sub = translationRepository.findTranslationByLocaleAndMessageId(replaceableLocale, messageId);
+				sub = translationRepository.findTranslationByLocaleAndMessageId(replaceableLocale, messageId).orElseThrow();
 				if (sub != null && sub.getIsValid())
 					return mapper.map(sub, TranslationForTranslator.class);
 				continue;

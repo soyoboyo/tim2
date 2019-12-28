@@ -119,7 +119,7 @@ public abstract class SpringTestsCustomExtension {
             translation.setIsValid(true);
             translation.setLocale(Locale.ENGLISH);
             translation.setContent("content");
-            translation.setMessage(message);
+            //translation.setMessage(message);
             translationRepository.save(translation);
         }
     }

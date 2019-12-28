@@ -14,7 +14,7 @@ public class TranslationForTranslator {
 
 	@NotNull
 	@NonNull
-	private Long id;
+	private String id;
 
 	@NotNull
 	@NonNull

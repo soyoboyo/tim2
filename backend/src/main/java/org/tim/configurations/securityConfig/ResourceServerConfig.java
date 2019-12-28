@@ -19,8 +19,7 @@ import org.tim.utils.Mapping;
 import java.io.IOException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.tim.utils.Mapping.API_VERSION;
-import static org.tim.utils.Mapping.MESSAGE;
+import static org.tim.utils.Mapping.*;
 
 @Configuration
 @EnableResourceServer
@@ -44,6 +43,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //                .antMatchers(HttpMethod.PUT, ROOT_PATTERN).access("#oauth2.hasScope('write')")
 //                .antMatchers(HttpMethod.DELETE, ROOT_PATTERN).access("#oauth2.hasScope('write')")
                 .and().authorizeRequests().antMatchers(
+                        Mapping.API_VERSION + Mapping.TRANSLATION + "/**",
                 Mapping.API_VERSION + Mapping.MESSAGE + "/**",
                         Mapping.SWAGGER_UI, Mapping.API_VERSION + Mapping.EXPORT_CI + "/**",
                         Mapping.API_VERSION + Mapping.PROJECT + "/**"

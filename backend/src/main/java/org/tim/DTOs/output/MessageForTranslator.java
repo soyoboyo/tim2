@@ -16,7 +16,7 @@ public class MessageForTranslator implements Comparable<MessageForTranslator> {
 
 	@NotNull
 	@NonNull
-	private Long id;
+	private String id;
 
 	@NotBlank
 	@NonNull

@@ -29,7 +29,6 @@ public class Message {
 
 	private String description;
 
-	@Setter(AccessLevel.NONE)
 	private Date updateDate = new Date();
 
 	@NonNull
