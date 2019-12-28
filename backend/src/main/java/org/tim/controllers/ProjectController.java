@@ -6,7 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.tim.DTOs.input.NewProjectRequest;
 import org.tim.DTOs.output.AggregatedInfoForDeveloper;
-import org.tim.DTOs.output.ProjectForDeveloper;
+import org.tim.DTOs.output.ProjectForDeveloperResponse;
 import org.tim.configurations.Done;
 import org.tim.entities.Project;
 import org.tim.services.AggregatedInfoService;
@@ -65,7 +65,7 @@ public class ProjectController {
 
 	@GetMapping(DEVELOPER + GET_ALL)
 	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
-	public List<ProjectForDeveloper> getAllProjectsForDeveloper() {
+	public List<ProjectForDeveloperResponse> getAllProjectsForDeveloper() {
 		return projectService.getAllProjectsForDeveloper();
 	}
 

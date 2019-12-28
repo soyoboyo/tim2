@@ -1,10 +1,9 @@
 package org.tim.services;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.LocaleUtils;
 import org.springframework.stereotype.Service;
 import org.tim.DTOs.input.NewProjectRequest;
-import org.tim.DTOs.output.ProjectForDeveloper;
+import org.tim.DTOs.output.ProjectForDeveloperResponse;
 import org.tim.configurations.Done;
 import org.tim.configurations.ToDo;
 import org.tim.entities.Project;
@@ -16,9 +15,6 @@ import org.tim.translators.LocaleTranslator;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import static org.tim.utils.UserMessages.LCL_NOT_FOUND;
-import static org.tim.utils.UserMessages.formatMessage;
 
 @Service
 @RequiredArgsConstructor
@@ -85,37 +81,38 @@ public class ProjectService {
 		}
 	}
 
-	public List<ProjectForDeveloper> getAllProjectsForDeveloper() {
+	public List<ProjectForDeveloperResponse> getAllProjectsForDeveloper() {
 		List<Project> originalProjects = StreamSupport
 				.stream(projectRepository.findAll().spliterator(), false)
 				.collect(Collectors.toList());
-		List<ProjectForDeveloper> projects = new ArrayList<>(originalProjects.size());
-		for (Project p : originalProjects) {
-			ProjectForDeveloper projectForDeveloper = new ProjectForDeveloper();
-			projectForDeveloper.setId(p.getId());
-			projectForDeveloper.setName(p.getName());
-			String[] sources = p.getSourceLocale().toString().split("_");
-			projectForDeveloper.setSourceLanguage(sources[0]);
-			projectForDeveloper.setSourceCountry(sources[1]);
 
-			TreeSet<String> newTargetLocales = new TreeSet<>();
-			for (Locale lw : p.getTargetLocales()) {
-				String targetLocale = lw.toString();
-				newTargetLocales.add(targetLocale);
-			}
-			// TODO: sort target locales alphabetically
+		List<ProjectForDeveloperResponse> projects = new ArrayList<>(originalProjects.size());
+
+		for (Project p : originalProjects) {
+			ProjectForDeveloperResponse projectForDeveloper = new ProjectForDeveloperResponse();
+
+			projectForDeveloper.setId(p.getId());
+
+			projectForDeveloper.setName(p.getName());
+
+			projectForDeveloper.setSourceLanguage(p.getSourceLocale().getLanguage());
+			projectForDeveloper.setSourceCountry(p.getSourceLocale().getCountry());
+
+			Set<String> newTargetLocales = p.getTargetLocales()
+					.stream()
+					.map(l -> l.toString())
+					.collect(Collectors.toSet());
 			projectForDeveloper.setTargetLocales(newTargetLocales);
 
-			TreeSet<String> availableReplacements = new TreeSet<>(newTargetLocales);
+			Set<String> availableReplacements = new TreeSet<>(newTargetLocales);
 			availableReplacements.add(p.getSourceLocale().toString());
 			projectForDeveloper.setAvailableReplacements(availableReplacements);
 
-			HashMap<String, String> substitutes = new HashMap<>(p.getReplaceableLocaleToItsSubstitute().size());
+			Map<String, String> substitutes = new HashMap<>(p.getReplaceableLocaleToItsSubstitute().size());
 
 			for (Map.Entry<Locale, Locale> entry : p.getReplaceableLocaleToItsSubstitute().entrySet()) {
-				String replaced = entry.getKey().toString().split("=")[2].substring(0, 6 - 1);
-				String replacement = entry.getValue().toString().split("=")[2].substring(0, 6 - 1);
-
+				String replaced = entry.getKey().toString();
+				String replacement = entry.getValue().toString();
 				substitutes.put(replaced, replacement);
 			}
 			projectForDeveloper.setSubstitutes(substitutes);

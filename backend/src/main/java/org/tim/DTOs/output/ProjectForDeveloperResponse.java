@@ -10,7 +10,7 @@ import java.util.TreeSet;
 
 @Data
 @NoArgsConstructor
-public class ProjectForDeveloper {
+public class ProjectForDeveloperResponse {
 
 	private String id;
 
