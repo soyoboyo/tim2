@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.output.AggregatedInfoForDeveloper;
 import org.tim.DTOs.output.AggregatedLocale;
-import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
@@ -29,7 +28,7 @@ public class AggregatedInfoService {
 	private String incorrect = "incorrect";
 	private String missing = "missing";
 
-	public AggregatedInfoForDeveloper getAggregatedInfoForDeveloper(Long projectId) {
+	public AggregatedInfoForDeveloper getAggregatedInfoForDeveloper(String projectId) {
 		AggregatedInfoForDeveloper aggregatedInfo = new AggregatedInfoForDeveloper();
 		aggregatedInfo.setProjectId(projectId);
 
@@ -109,16 +108,16 @@ public class AggregatedInfoService {
 		}
 	}
 
-	private Set<String> initEmptyLocaleMaps(Long projectId, Map<String, Map<String, Integer>> translationStatusesByLocale) {
+	private Set<String> initEmptyLocaleMaps(String projectId, Map<String, Map<String, Integer>> translationStatusesByLocale) {
 		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
 		Set<String> targetLocales = new HashSet<>();
-		for (LocaleWrapper lw : project.getTargetLocales()) {
+		for (Locale lw : project.getTargetLocales()) {
 			Map<String, Integer> details = new HashMap<>();
 			details.put(correct, 0);
 			details.put(incorrect, 0);
 			details.put(missing, 0);
-			translationStatusesByLocale.put(lw.getLocale().toString(), details);
-			targetLocales.add(lw.getLocale().toString());
+			translationStatusesByLocale.put(lw.toString(), details);
+			targetLocales.add(lw.toString());
 		}
 		return targetLocales;
 	}

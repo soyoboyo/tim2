@@ -35,7 +35,7 @@ public class MessageForDeveloper {
 
 	private String createdBy;
 
-	private Long projectId;
+	private String projectId;
 
 	private List<TranslationForDeveloper> translations;
 

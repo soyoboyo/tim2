@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.tim.entities.*;
+import org.tim.entities.Message;
+import org.tim.entities.Project;
+import org.tim.entities.Translation;
 import org.tim.repositories.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 
@@ -33,9 +37,6 @@ public abstract class SpringTestsCustomExtension {
     protected TranslationRepository translationRepository;
 
     @Autowired
-    protected LocaleWrapperRepository localeWrapperRepository;
-
-    @Autowired
     protected TranslationVersionRepository translationVersionRepository;
 
     @Autowired
@@ -53,46 +54,45 @@ public abstract class SpringTestsCustomExtension {
         messageRepository.deleteAll();
         translationAgencyRepository.deleteAll();
         projectRepository.deleteAll();
-        localeWrapperRepository.deleteAll();
     }
 
     public Project createEmptyGermanToEnglishAndFrenchProject(){
         Project project = random(Project.class);
         project.setSourceLocale(Locale.GERMAN);
-        LocaleWrapper localeWrapperEN = new LocaleWrapper(Locale.ENGLISH);
-        LocaleWrapper localeWrapperFR = new LocaleWrapper(Locale.FRENCH);
-        project.addTargetLocale(Arrays.asList(localeWrapperEN, localeWrapperFR));
+//        LocaleWrapper localeWrapperEN = new LocaleWrapper(Locale.ENGLISH);
+//        LocaleWrapper localeWrapperFR = new LocaleWrapper(Locale.FRENCH);
+//        project.addTargetLocale(Arrays.asList(localeWrapperEN, localeWrapperFR));
         return projectRepository.save(project);
     }
 
     public Project createEmptyGermanToEnglishProject(){
         Project project = random(Project.class);
         project.setSourceLocale(Locale.GERMAN);
-        LocaleWrapper localeWrapperEN = new LocaleWrapper(Locale.ENGLISH);
-        project.addTargetLocale(Arrays.asList(localeWrapperEN));
+//        LocaleWrapper localeWrapperEN = new LocaleWrapper(Locale.ENGLISH);
+//        project.addTargetLocale(Arrays.asList(localeWrapperEN));
         return projectRepository.save(project);
     }
 
     public Project createEmptyGermanToEnglishProjectWithSubstituteLocales(){
-        LocaleWrapper localeWrapperEN = localeWrapperRepository.save(new LocaleWrapper(Locale.ENGLISH));
-        LocaleWrapper localeWrapperUK = localeWrapperRepository.save(new LocaleWrapper(Locale.UK));
+//        LocaleWrapper localeWrapperEN = localeWrapperRepository.save(new LocaleWrapper(Locale.ENGLISH));
+//        LocaleWrapper localeWrapperUK = localeWrapperRepository.save(new LocaleWrapper(Locale.UK));
         Project project = random(Project.class);
         project.setSourceLocale(Locale.GERMAN);
-        project.addTargetLocale(Arrays.asList(localeWrapperEN));
-        project.getReplaceableLocaleToItsSubstitute().put(localeWrapperEN, localeWrapperUK);
+//        project.addTargetLocale(Arrays.asList(localeWrapperEN));
+//        project.getReplaceableLocaleToItsSubstitute().put(localeWrapperEN, localeWrapperUK);
         return projectRepository.save(project);
     }
     public Project createEmptyGermanToEnglishProjectWithTwoSubstituteLocales() {
-        LocaleWrapper localeWrapperEN = localeWrapperRepository.save(new LocaleWrapper(Locale.ENGLISH));
-        LocaleWrapper localeWrapperUS = localeWrapperRepository.save(new LocaleWrapper(Locale.US));
-        LocaleWrapper localeWrapperUK = localeWrapperRepository.save(new LocaleWrapper(Locale.UK));
+//        LocaleWrapper localeWrapperEN = localeWrapperRepository.save(new LocaleWrapper(Locale.ENGLISH));
+//        LocaleWrapper localeWrapperUS = localeWrapperRepository.save(new LocaleWrapper(Locale.US));
+//        LocaleWrapper localeWrapperUK = localeWrapperRepository.save(new LocaleWrapper(Locale.UK));
         Project project = random(Project.class);
         project.setSourceLocale(Locale.GERMAN);
-        project.addTargetLocale(Arrays.asList(localeWrapperEN));
-        project.addTargetLocale(Arrays.asList(localeWrapperUS));
-        project.addTargetLocale(Arrays.asList(localeWrapperUK));
-        project.getReplaceableLocaleToItsSubstitute().put(localeWrapperEN, localeWrapperUS);
-        project.getReplaceableLocaleToItsSubstitute().put(localeWrapperUS, localeWrapperUK);
+//        project.addTargetLocale(Arrays.asList(localeWrapperEN));
+//        project.addTargetLocale(Arrays.asList(localeWrapperUS));
+//        project.addTargetLocale(Arrays.asList(localeWrapperUK));
+//        project.getReplaceableLocaleToItsSubstitute().put(localeWrapperEN, localeWrapperUS);
+//        project.getReplaceableLocaleToItsSubstitute().put(localeWrapperUS, localeWrapperUK);
         return projectRepository.save(project);
     }
 
@@ -111,7 +111,9 @@ public abstract class SpringTestsCustomExtension {
     }
 
     public void createTranslationsForMessages(){
-        List<Message> messages = messageRepository.findAll();
+        List<Message> messages = StreamSupport
+                .stream(messageRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
         for(Message message : messages){
             Translation translation = new Translation();
             translation.setIsValid(true);
@@ -123,6 +125,8 @@ public abstract class SpringTestsCustomExtension {
     }
 
     public int getMessagesCount(){
-       return messageRepository.findAll().size();
+       return StreamSupport
+               .stream(messageRepository.findAll().spliterator(), false)
+               .collect(Collectors.toList()).size();
     }
 }

@@ -28,7 +28,7 @@ public class TranslationForDeveloper {
 
 	@NotNull
 	@NonNull
-	private Long messageId;
+	private String messageId;
 
 	private Boolean isValid;
 

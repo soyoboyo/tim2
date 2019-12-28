@@ -27,7 +27,7 @@ public class MessageController {
 
 
 	@DeleteMapping(value = ARCHIVE)
-	public ResponseEntity archiveMessage(@PathVariable Long id) {
+	public ResponseEntity archiveMessage(@PathVariable String id) {
 		return messageService.archiveMessage(id) != null ? ResponseEntity.ok("") : ResponseEntity.badRequest().body("");
 	}
 
@@ -38,7 +38,7 @@ public class MessageController {
 	}
 
 	@PostMapping(value = UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Message> updateMessage(@RequestBody @Valid MessageDTO messageDTO, @PathVariable Long id) {
+	public ResponseEntity<Message> updateMessage(@RequestBody @Valid MessageDTO messageDTO, @PathVariable String id) {
 		Message updatedMessage = messageService.updateMessage(messageDTO, id);
 		return updatedMessage != null ? ResponseEntity.ok(updatedMessage) : ResponseEntity.badRequest().body(null);
 	}

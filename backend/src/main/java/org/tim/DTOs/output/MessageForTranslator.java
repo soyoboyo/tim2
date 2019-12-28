@@ -6,11 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 
 @Data
 @NoArgsConstructor
@@ -30,7 +28,6 @@ public class MessageForTranslator implements Comparable<MessageForTranslator> {
 
 	private String description;
 
-	@Version
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	private LocalDateTime updateDate;
 

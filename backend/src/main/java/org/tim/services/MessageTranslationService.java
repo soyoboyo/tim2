@@ -1,16 +1,15 @@
 package org.tim.services;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.LocaleUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.output.MessageWithWarningsDTO;
 import org.tim.DTOs.output.WarningDTO;
-import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
-import org.tim.repositories.LocaleWrapperRepository;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
@@ -25,20 +24,19 @@ public class MessageTranslationService {
 	private final MessageRepository messageRepository;
 	private final ProjectRepository projectRepository;
 	private final TranslationRepository translationRepository;
-	private final LocaleWrapperRepository localeWrapperRepository;
 	private final ModelMapper mapper = new ModelMapper();
 
 
-	public List<MessageWithWarningsDTO> getMissingTranslation(Long projectId, String loc) {
+	public List<MessageWithWarningsDTO> getMissingTranslation(String projectId, String loc) {
 		Locale locale = new Locale(loc);
 		Project project = projectRepository.findById(projectId).orElseThrow(NoSuchElementException::new);
-		Optional<LocaleWrapper> substituteLocale = getSubstituteLocaleByLocale(project, locale);
+		Optional<Locale> substituteLocale = getSubstituteLocaleByLocale(project, locale);
 		List<Message> messages = getMessagesWithoutValidTranslations(projectId, locale);
 		return setWarnings(messages, locale, project, substituteLocale);
 
 	}
 
-	private List<MessageWithWarningsDTO> setWarnings(List<Message> messages, Locale sourceLocale, Project project, Optional<LocaleWrapper> substituteLocale) {
+	private List<MessageWithWarningsDTO> setWarnings(List<Message> messages, Locale sourceLocale, Project project, Optional<Locale> substituteLocale) {
 
 		List<MessageWithWarningsDTO> messageWithWarningsDTOS = new ArrayList<>();
 		for (Message m : messages) {
@@ -50,7 +48,7 @@ public class MessageTranslationService {
 			Optional<Translation> substituteTranslation;
 			if (substituteLocale.isPresent()) {
 				do {
-					substituteTranslation = translationRepository.findTranslationsByLocaleAndMessage(substituteLocale.get().getLocale(), m);
+					substituteTranslation = translationRepository.findTranslationsByLocaleAndMessage(substituteLocale.get(), m);
 					substituteLocale = project.getSubstituteLocale(substituteLocale.get());
 				} while (substituteTranslation.isEmpty() && substituteLocale.isPresent());
 				if (substituteTranslation.isPresent()) {
@@ -67,9 +65,9 @@ public class MessageTranslationService {
 		return messageWithWarningsDTOS;
 	}
 
-	private List<Message> getMessagesWithoutValidTranslations(Long projectId, Locale locale) {
+	private List<Message> getMessagesWithoutValidTranslations(String projectId, Locale locale) {
 		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
-		Map<Long, Message> messageMap = new HashMap<>();
+		Map<String, Message> messageMap = new HashMap<>();
 
 		for (Message m : messages)
 			messageMap.put(m.getId(), m);
@@ -86,8 +84,9 @@ public class MessageTranslationService {
 		return messages;
 	}
 
-	private Optional<LocaleWrapper> getSubstituteLocaleByLocale(Project project, Locale sourceLocale) {
-		return project.getSubstituteLocale(localeWrapperRepository.findByLocale(sourceLocale));
+	private Optional<Locale> getSubstituteLocaleByLocale(Project project, Locale sourceLocale) {
+		//return project.getSubstituteLocale(localeWrapperRepository.findByLocale(sourceLocale));
+		return Optional.of(LocaleUtils.toLocale( "pl_PL"));
 	}
 
 }

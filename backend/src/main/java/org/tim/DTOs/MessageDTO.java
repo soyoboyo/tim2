@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.tim.entities.Translation;
 
 import javax.validation.constraints.NotBlank;
@@ -30,13 +29,12 @@ public class MessageDTO {
     private String content;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@UpdateTimestamp
 	private LocalDateTime updateDate;
 
     private String description;
 
     @NonNull
-    private Long projectId;
+    private String projectId;
 
     private List<Translation> translations;
 }

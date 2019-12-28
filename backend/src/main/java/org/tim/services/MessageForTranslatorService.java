@@ -30,15 +30,15 @@ public class MessageForTranslatorService {
 	private final MessageVersionService messageVersionService;
 	private final ModelMapper mapper = new ModelMapper();
 
-	public List<MessageForTranslator> getMessagesForTranslator(Long projectId, String loc) {
+	public List<MessageForTranslator> getMessagesForTranslator(String projectId, String loc) {
 		List<MessageForTranslator> messagesForTranslator = new ArrayList<>();
 		Project project = projectRepository.findById(projectId).orElseThrow(() ->
 				new NoSuchElementException(String.format("Project with id %s not found", projectId)));
 		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
 
 		Map<Locale, Locale> replaceableLocaleToItsSubstitute = new HashMap<>();
-		for (Map.Entry<LocaleWrapper, LocaleWrapper> pair : project.getReplaceableLocaleToItsSubstitute().entrySet()) {
-			replaceableLocaleToItsSubstitute.put(pair.getKey().getLocale(), pair.getValue().getLocale());
+		for (Map.Entry<Locale, Locale> pair : project.getReplaceableLocaleToItsSubstitute().entrySet()) {
+			replaceableLocaleToItsSubstitute.put(pair.getKey(), pair.getValue());
 		}
 		Locale locale;
 		try {
@@ -68,7 +68,7 @@ public class MessageForTranslatorService {
 		return messagesForTranslator;
 	}
 
-	public List<MessageForTranslator> getMessagesForTranslator(Long projectId) {
+	public List<MessageForTranslator> getMessagesForTranslator(String projectId) {
 		List<MessageForTranslator> messagesForTranslator = new ArrayList<>();
 		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
 
@@ -114,7 +114,7 @@ public class MessageForTranslatorService {
 		return previousMessageContent;
 	}
 
-	private TranslationForTranslator getSubstituteForTranslator(Map<Locale, Locale> replaceableLocaleToItsSubstitute, Locale replaceableLocale, Long messageId) {
+	private TranslationForTranslator getSubstituteForTranslator(Map<Locale, Locale> replaceableLocaleToItsSubstitute, Locale replaceableLocale, String messageId) {
 		Translation sub;
 		do {
 			replaceableLocale = replaceableLocaleToItsSubstitute.get(replaceableLocale);

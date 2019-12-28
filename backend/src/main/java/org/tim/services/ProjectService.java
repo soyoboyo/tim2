@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.input.ProjectDTO;
 import org.tim.DTOs.output.ProjectForDeveloper;
-import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Project;
 import org.tim.exceptions.EntityNotFoundException;
 import org.tim.exceptions.ValidationException;
-import org.tim.repositories.LocaleWrapperRepository;
 import org.tim.repositories.ProjectRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.tim.utils.UserMessages.LCL_NOT_FOUND;
 import static org.tim.utils.UserMessages.formatMessage;
@@ -24,10 +24,10 @@ import static org.tim.utils.UserMessages.formatMessage;
 public class ProjectService {
 
 	private final ProjectRepository projectRepository;
-	private final LocaleWrapperRepository localeWrapperRepository;
 
 	public List<Project> getAllProjects() {
-		return projectRepository.findAll();
+		Iterable<Project> p = projectRepository.findAll();
+		return StreamSupport.stream(p.spliterator(), false).collect(Collectors.toList());
 	}
 
 	public Project createProject(ProjectDTO projectDTO) throws IllegalArgumentException {
@@ -42,7 +42,7 @@ public class ProjectService {
 		return project;
 	}
 
-	public Project updateProject(ProjectDTO projectDTO, Long id) {
+	public Project updateProject(ProjectDTO projectDTO, String id) {
 		Project project = projectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("project"));
 		validateLocales(projectDTO);
 		project.getReplaceableLocaleToItsSubstitute().clear();
@@ -62,23 +62,19 @@ public class ProjectService {
 		projectDTO.getTargetLocales().forEach(locale -> {
 			locales.add(LocaleUtils.toLocale(locale));
 		});
-		List<LocaleWrapper> persistentLocaleWrappers = localeWrapperRepository.findAllByLocaleIn(locales);
-		List<LocaleWrapper> localeWrappersToSave = new LinkedList<>();
-		Map<Locale, LocaleWrapper> persistentLocaleWrappersMap = new HashMap<>();
-		persistentLocaleWrappers.forEach(localeWrapper -> {
-			persistentLocaleWrappersMap.put(localeWrapper.getLocale(), localeWrapper);
-		});
-		projectDTO.getTargetLocales().forEach(locale -> {
-			Locale localeToSave = LocaleUtils.toLocale(locale);
-			if (persistentLocaleWrappersMap.get(localeToSave) == null) {
-				localeWrappersToSave.add(new LocaleWrapper(localeToSave));
-			}
-		});
-		project.addTargetLocale(localeWrapperRepository.saveAll(localeWrappersToSave));
-		project.addTargetLocale(persistentLocaleWrappers);
-		Map<Locale, LocaleWrapper> targetLocales = new HashMap<>();
+//		persistentLocaleWrappers.forEach(localeWrapper -> {
+//			persistentLocaleWrappersMap.put(localeWrapper.getLocale(), localeWrapper);
+//		});
+//		projectDTO.getTargetLocales().forEach(locale -> {
+//			Locale localeToSave = LocaleUtils.toLocale(locale);
+//			if (persistentLocaleWrappersMap.get(localeToSave) == null) {
+//				localeWrappersToSave.add(new LocaleWrapper(localeToSave));
+//			}
+//		});
+		//project.addTargetLocale(StreamSupport.stream(p.spliterator(), false).collect(Collectors.toList()));
+		Map<Locale, Locale> targetLocales = new HashMap<>();
 		project.getTargetLocales().forEach(targetLocal -> {
-			targetLocales.put(targetLocal.getLocale(), targetLocal);
+			targetLocales.put(targetLocal, targetLocal);
 		});
 		projectDTO.getReplaceableLocaleToItsSubstitute().forEach((locale1, locale2) -> {
 			project.updateSubstituteLocale(getLocaleWrapperByLocale(locale1, targetLocales),
@@ -128,8 +124,8 @@ public class ProjectService {
 		}
 	}
 
-	private LocaleWrapper getLocaleWrapperByLocale(String localeAsString, Map<Locale, LocaleWrapper> targetLocales) {
-		LocaleWrapper localeWrapper = targetLocales.get(LocaleUtils.toLocale(localeAsString));
+	private Locale getLocaleWrapperByLocale(String localeAsString, Map<Locale, Locale> targetLocales) {
+		Locale localeWrapper = targetLocales.get(LocaleUtils.toLocale(localeAsString));
 		if (localeWrapper != null) {
 			return localeWrapper;
 		}
@@ -137,7 +133,9 @@ public class ProjectService {
 	}
 
 	public List<ProjectForDeveloper> getAllProjectsForDeveloper() {
-		List<Project> originalProjects = projectRepository.findAll();
+		List<Project> originalProjects = StreamSupport
+				.stream(projectRepository.findAll().spliterator(), false)
+				.collect(Collectors.toList());
 		List<ProjectForDeveloper> projects = new ArrayList<>(originalProjects.size());
 		for (Project p : originalProjects) {
 			ProjectForDeveloper projectForDeveloper = new ProjectForDeveloper();
@@ -148,8 +146,8 @@ public class ProjectService {
 			projectForDeveloper.setSourceCountry(sources[1]);
 
 			TreeSet<String> newTargetLocales = new TreeSet<>();
-			for (LocaleWrapper lw : p.getTargetLocales()) {
-				String targetLocale = lw.getLocale().toString();
+			for (Locale lw : p.getTargetLocales()) {
+				String targetLocale = lw.toString();
 				newTargetLocales.add(targetLocale);
 			}
 			// TODO: sort target locales alphabetically
@@ -161,7 +159,7 @@ public class ProjectService {
 
 			HashMap<String, String> substitutes = new HashMap<>(p.getReplaceableLocaleToItsSubstitute().size());
 
-			for (Map.Entry<LocaleWrapper, LocaleWrapper> entry : p.getReplaceableLocaleToItsSubstitute().entrySet()){
+			for (Map.Entry<Locale, Locale> entry : p.getReplaceableLocaleToItsSubstitute().entrySet()){
 				String replaced = entry.getKey().toString().split("=")[2].substring(0, 6 - 1);
 				String replacement = entry.getValue().toString().split("=")[2].substring(0, 6 - 1);
 

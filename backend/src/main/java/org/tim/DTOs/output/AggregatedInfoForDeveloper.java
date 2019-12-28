@@ -9,7 +9,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AggregatedInfoForDeveloper {
 
-	private Long projectId;
+	private String projectId;
 
 	private List<AggregatedLocale> aggregatedLocales;
 

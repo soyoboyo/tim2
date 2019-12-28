@@ -21,12 +21,12 @@ public class MessageForTranslatorController {
 	private final MessageForTranslatorService messageForTranslatorService;
 
 	@GetMapping(path = GET_BY_LOCALE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<MessageForTranslator>> getMessagesForTranslator(@PathVariable Long projectId, @RequestParam String locale) {
+	public ResponseEntity<List<MessageForTranslator>> getMessagesForTranslator(@PathVariable String projectId, @RequestParam String locale) {
 		return ResponseEntity.ok(messageForTranslatorService.getMessagesForTranslator(projectId, locale));
 	}
 
 	@GetMapping(path = GET_BY_PROJECT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<MessageForTranslator>> getMessagesForTranslator(@PathVariable Long projectId) {
+	public ResponseEntity<List<MessageForTranslator>> getMessagesForTranslator(@PathVariable String projectId) {
 		return ResponseEntity.ok(messageForTranslatorService.getMessagesForTranslator(projectId));
 	}
 

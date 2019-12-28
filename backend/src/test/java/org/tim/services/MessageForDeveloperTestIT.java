@@ -11,6 +11,8 @@ import org.tim.entities.Project;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -82,6 +84,8 @@ public class MessageForDeveloperTestIT extends SpringTestsCustomExtension {
 				new Message("key2", "Content2", project),
 				new Message("key3", "Content3", project)
 		);
-		return messageRepository.saveAll(messages);
+		return StreamSupport
+				.stream(messageRepository.saveAll(messages).spliterator(), false)
+				.collect(Collectors.toList());
 	}
 }

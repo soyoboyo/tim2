@@ -1,33 +1,25 @@
 package org.tim.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.boot.actuate.audit.listener.AuditListener;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Locale;
 
-@Entity
-@EntityListeners(AuditListener.class)
+@Document(indexName = "translation")
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Translation {
 
 	@Id
 	@Setter(AccessLevel.NONE)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String id;
 
 	@NotNull
 	private String content;
@@ -37,15 +29,10 @@ public class Translation {
 	private Locale locale;
 
 	@Setter(AccessLevel.NONE)
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@UpdateTimestamp
-	private LocalDateTime updateDate;
+	private Date updateDate;
 
 	@NotNull
 	@NonNull
-	@ManyToOne(cascade = {
-			CascadeType.MERGE})
-	@JoinColumn(name = "message_id")
 	private Message message;
 
 	private Boolean isValid = true;
@@ -54,7 +41,6 @@ public class Translation {
 
 	private String createdBy;
 
-	@PrePersist
 	public void prePersist() {
 		String username = "Seeder";
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

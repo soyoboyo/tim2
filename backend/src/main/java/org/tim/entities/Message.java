@@ -1,31 +1,23 @@
 package org.tim.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.Date;
 
-@Entity
+@Document(indexName = "message")
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Message {
 
 	@Id
 	@Setter(AccessLevel.NONE)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String id;
 
 	@NotBlank
 	@NonNull
@@ -37,15 +29,9 @@ public class Message {
 
 	private String description;
 
-	@Version
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@Setter(AccessLevel.NONE)
-	@UpdateTimestamp
-	private LocalDateTime updateDate;
+	private Date updateDate = new Date();
 
-	@ManyToOne(cascade = {
-			CascadeType.MERGE})
-	@JoinColumn(name = "project_id")
 	@NonNull
 	@JsonIgnore
 	private Project project;
@@ -55,17 +41,7 @@ public class Message {
 
 	private String createdBy;
 
-	public Boolean isTranslationOutdated(Translation translation) {
-		return !translation.getUpdateDate().isAfter(this.getUpdateDate());
-	}
-
-	@PrePersist
-	public void prePersist() {
-		String username = "Seeder";
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
-			username = authentication.getName();
-		}
-		this.createdBy = username;
+	public boolean isTranslationOutdated(Translation translation) {
+		return !translation.getUpdateDate().after(this.getUpdateDate());
 	}
 }

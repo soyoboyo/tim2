@@ -27,7 +27,7 @@ public class MessageWithWarningsDTO {
     private String description;
 
     @NonNull
-    private Long projectId;
+    private String projectId;
 
     WarningDTO warnings;
 

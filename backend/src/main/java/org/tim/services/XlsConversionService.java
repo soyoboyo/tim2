@@ -5,7 +5,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.tim.DTOs.output.MessageWithWarningsDTO;
-import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Project;
 import org.tim.repositories.ProjectRepository;
 
@@ -27,12 +26,12 @@ public class XlsConversionService {
     private static final  String[] columns = {"Key", "Content", "Outdated Translation Content",
             "Substitute Locale", "Substitute Content"};
 
-    public InputStream getXlsForMessageWithWarnings(Long projectId) throws IOException {
+    public InputStream getXlsForMessageWithWarnings(String projectId) throws IOException {
         Project project = projectRepository.findById(projectId).orElseThrow(()->
                 new NoSuchElementException(String.format("Project with id %s is not found", projectId)));
         List<Locale> locales = new ArrayList<>();
-        for(LocaleWrapper localeWrapper : project.getTargetLocales()){
-            locales.add(localeWrapper.getLocale());
+        for(Locale localeWrapper : project.getTargetLocales()){
+            locales.add(localeWrapper);
         }
 
         Workbook workbook = new XSSFWorkbook();

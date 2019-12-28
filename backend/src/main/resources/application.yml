@@ -1,9 +1,11 @@
 security:
   jwt:
-    public-key: classpath:public.txt
-    clientId: timApp
-    clientSecret: OcadoProject
-    tokenEndpoint: http://localhost:9090/oauth/token
+    key: classpath:public.txt
+    client-id: timApp
+    client-secret: OcadoProject
+    token-endpoint: http://localhost:9090/oauth/token
 spring:
   profiles:
-    active: h2
+    active: develop
+  main:
+    allow-bean-definition-overriding: true

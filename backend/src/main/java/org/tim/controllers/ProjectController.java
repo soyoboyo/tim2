@@ -34,7 +34,7 @@ public class ProjectController {
     }
 
     @PostMapping(UPDATE)
-    public Project updateProject(@RequestBody @Valid ProjectDTO projectDTO, @PathVariable Long id, BindingResult bindingResult) {
+    public Project updateProject(@RequestBody @Valid ProjectDTO projectDTO, @PathVariable String id, BindingResult bindingResult) {
         DTOValidator.validate(bindingResult);
         return projectService.updateProject(projectDTO, id);
     }
@@ -51,7 +51,7 @@ public class ProjectController {
 	}
 
 	@GetMapping(DEVELOPER + AGGREGATE)
-	public AggregatedInfoForDeveloper getAggregatedInfoAboutTranslationsInProject( @PathVariable Long id){
+	public AggregatedInfoForDeveloper getAggregatedInfoAboutTranslationsInProject( @PathVariable String id){
 		return aggregatedInfoService.getAggregatedInfoForDeveloper(id);
 	}
 

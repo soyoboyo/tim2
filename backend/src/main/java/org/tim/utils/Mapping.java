@@ -21,7 +21,6 @@ public class Mapping {
     public static final String COUNTRIES = "/countries";
     public static final String VERSION ="/version/{originalId}";
 
-    public static final String GET_BY_MESSAGE = "/getByMessage/{messageId}";
     public static final String GET_BY_LOCALE = "/getByLocale/{projectId}";
     public static final String GET_BY_PROJECT = "/getByProject/{projectId}";
     public static final String GET_ALL = "/getAll";

@@ -4,24 +4,22 @@ package org.tim.entities;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Date;
 
+@Document(indexName = "message-version")
 @Data
-@Entity
 @NoArgsConstructor
 public class MessageVersion {
 
 	@Id
 	@Setter(AccessLevel.NONE)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String id;
 
 	@NotBlank
 	@NonNull
@@ -33,8 +31,7 @@ public class MessageVersion {
 
 	private String description;
 
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	private LocalDateTime updateDate;
+	private Date updateDate;
 
 	private String createdBy;
 
@@ -42,5 +39,5 @@ public class MessageVersion {
 	private Boolean isArchived;
 
 	@NotNull
-	Long messageId;
+	String messageId;
 }

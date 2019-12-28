@@ -21,7 +21,7 @@ public class ExportController {
     private final XlsConversionService xlsConversionService;
 
     @GetMapping(value = MESSAGE + EXPORT + GET_BY_PROJECT, produces = MediaType.APPLICATION_XML_VALUE)
-    public @ResponseBody byte[] getXlsForMissingTranslations(@PathVariable Long projectId) throws IOException {
+    public @ResponseBody byte[] getXlsForMissingTranslations(@PathVariable String projectId) throws IOException {
         final InputStream inputXStream = xlsConversionService.getXlsForMessageWithWarnings(projectId);
         return IOUtils.toByteArray(inputXStream);
     }

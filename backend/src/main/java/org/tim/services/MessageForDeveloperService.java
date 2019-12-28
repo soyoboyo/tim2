@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.output.MessageForDeveloper;
 import org.tim.DTOs.output.TranslationForDeveloper;
-import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
@@ -26,7 +25,7 @@ public class MessageForDeveloperService {
 	private final TranslationRepository translationRepository;
 	private final ModelMapper mapper = new ModelMapper();
 
-	public List<MessageForDeveloper> getMessagesForDeveloper(Long projectId) {
+	public List<MessageForDeveloper> getMessagesForDeveloper(String projectId) {
 		List<MessageForDeveloper> messagesForDeveloper = new ArrayList<>();
 		Project project = projectRepository.findById(projectId).orElseThrow(() ->
 				new NoSuchElementException(String.format("Project with id %s not found", projectId)));
@@ -76,18 +75,18 @@ public class MessageForDeveloperService {
 
 	private List<String> getMissingLocales(Project project, List<Translation> translations) {
 		List<String> missingLocales = new LinkedList<>();
-		Set<LocaleWrapper> targetLocales = new HashSet<>(project.getTargetLocales());
+		Set<Locale> targetLocales = new HashSet<>(project.getTargetLocales());
 		for (Translation t : translations) {
 			Locale locale = t.getLocale();
-			for (LocaleWrapper target : targetLocales) {
-				if (target.getLocale().equals(locale)) {
+			for (Locale target : targetLocales) {
+				if (target.equals(locale)) {
 					targetLocales.remove(target);
 					break;
 				}
 			}
 		}
-		for (LocaleWrapper locale : targetLocales) {
-			missingLocales.add(locale.getLocale().toString());
+		for (Locale locale : targetLocales) {
+			missingLocales.add(locale.toString());
 		}
 		Collections.sort(missingLocales);
 		return missingLocales;

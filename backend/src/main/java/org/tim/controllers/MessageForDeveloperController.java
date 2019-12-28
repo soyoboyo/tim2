@@ -24,7 +24,7 @@ public class MessageForDeveloperController {
 	private final MessageForDeveloperService messageForDeveloperService;
 
 	@GetMapping(path = GET_BY_PROJECT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<MessageForDeveloper>> getMessagesForDeveloper(@PathVariable Long projectId) {
+	public ResponseEntity<List<MessageForDeveloper>> getMessagesForDeveloper(@PathVariable String projectId) {
 		return ResponseEntity.ok(messageForDeveloperService.getMessagesForDeveloper(projectId));
 	}
 

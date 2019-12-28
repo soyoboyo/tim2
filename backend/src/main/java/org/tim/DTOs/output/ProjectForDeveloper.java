@@ -10,7 +10,7 @@ import java.util.TreeSet;
 @NoArgsConstructor
 public class ProjectForDeveloper {
 
-	private Long id;
+	private String id;
 
 	private String name;
 

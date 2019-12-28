@@ -32,7 +32,7 @@ public class MessageService {
 		return messageRepository.save(message);
 	}
 
-	public Message updateMessage(MessageDTO messageDTO, Long messageId) {
+	public Message updateMessage(MessageDTO messageDTO, String messageId) {
 		Project project = checkIfProjectExists(messageDTO.getProjectId());
 		Message message = checkIfMessageExists(messageId, messageDTO.getKey());
 		saveMessageVersion(message);
@@ -47,19 +47,19 @@ public class MessageService {
 		}
 	}
 
-	public Message archiveMessage(Long id) {
+	public Message archiveMessage(String id) {
 		Message message = checkIfMessageExists(id, "");
 		saveMessageVersion(message);
 		message.setIsArchived(true);
 		return messageRepository.save(message);
 	}
 
-	private Message checkIfMessageExists(Long id, String key) {
+	private Message checkIfMessageExists(String id, String key) {
 		return messageRepository.findById(id).orElseThrow(() ->
 				new NoSuchElementException(String.format("Message with id %s is not found, message key - %s", id, key)));
 	}
 
-	private Project checkIfProjectExists(Long id) {
+	private Project checkIfProjectExists(String id) {
 		return projectRepository.findById(id).orElseThrow(() ->
 				new NoSuchElementException(String.format("Project with id %s not found", id)));
 	}

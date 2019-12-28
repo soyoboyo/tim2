@@ -29,7 +29,7 @@ public class TranslationController {
 
 	@PostMapping(CREATE)
 	public ResponseEntity<Translation> createTranslation(@RequestBody @Valid TranslationCreateDTO translationCreateDTO,
-														 @RequestParam Long messageId,
+														 @RequestParam String messageId,
 														 BindingResult bindingResult) {
 		DTOValidator.validate(bindingResult);
 		return ResponseEntity.ok(translationService.createTranslation(translationCreateDTO, messageId));
@@ -37,16 +37,16 @@ public class TranslationController {
 
 	@PostMapping(UPDATE)
 	public ResponseEntity<Translation> updateTranslation(@RequestBody @Valid TranslationUpdateDTO translationUpdateDTO,
-														 @PathVariable("id") Long translationId,
-														 @RequestParam Long messageId,
+														 @PathVariable("id") String translationId,
+														 @RequestParam String messageId,
 														 BindingResult bindingResult) {
 		DTOValidator.validate(bindingResult);
 		return ResponseEntity.ok(translationService.updateTranslation(translationUpdateDTO, translationId, messageId));
 	}
 
 	@PostMapping(INVALIDATE)
-	public ResponseEntity<Translation> invalidateTranslation(@PathVariable("id") Long translationId,
-															 @RequestParam Long messageId) {
+	public ResponseEntity<Translation> invalidateTranslation(@PathVariable("id") String translationId,
+															 @RequestParam String messageId) {
 		return ResponseEntity.ok(translationService.invalidateTranslation(translationId, messageId));
 	}
 

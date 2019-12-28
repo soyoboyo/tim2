@@ -6,7 +6,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.tim.DTOs.input.TranslationCreateDTO;
 import org.tim.DTOs.input.TranslationUpdateDTO;
-import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
 import org.tim.entities.Translation;
 import org.tim.entities.TranslationVersion;
@@ -17,7 +16,6 @@ import org.tim.repositories.MessageRepository;
 import org.tim.repositories.TranslationRepository;
 import org.tim.repositories.TranslationVersionRepository;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,22 +32,22 @@ public class TranslationService {
 
 	private final ModelMapper mapper = new ModelMapper();
 
-	public Translation createTranslation(TranslationCreateDTO translationCreateDTO, Long messageId) {
+	public Translation createTranslation(TranslationCreateDTO translationCreateDTO, String messageId) {
 		checkIfTranslationAlreadyExists(translationCreateDTO.getLocale(), messageId);
 		Message message = checkIfMessageExists(messageId);
 
-		Set<LocaleWrapper> projectTargetLocales = message.getProject().getTargetLocales();
+		Set<Locale> projectTargetLocales = message.getProject().getTargetLocales();
 		Locale translationLocale = LocaleUtils.toLocale(translationCreateDTO.getLocale());
 		boolean existInProject = false;
-		for (LocaleWrapper localeWrapper : projectTargetLocales) {
-			if (localeWrapper.getLocale().equals(translationLocale)) {
+		for (Locale localeWrapper : projectTargetLocales) {
+			if (localeWrapper.equals(translationLocale)) {
 				existInProject = true;
 			}
 		}
 		if (!existInProject) {
 			throw new ValidationException(LANG_NOT_FOUND_IN_PROJ
 					+ ". The project supports only "
-					+ projectTargetLocales.stream().map(it -> it.getLocale().toString()).collect(Collectors.joining(", "))
+					+ projectTargetLocales.stream().map(it -> it.toString()).collect(Collectors.joining(", "))
 					+ " whereas translation is assigned to "
 					+ translationCreateDTO.getLocale());
 		}
@@ -60,7 +58,7 @@ public class TranslationService {
 		return translationRepository.save(translation);
 	}
 
-	public Translation updateTranslation(TranslationUpdateDTO translationUpdateDTO, Long translationId, Long messageId) {
+	public Translation updateTranslation(TranslationUpdateDTO translationUpdateDTO, String translationId, String messageId) {
 		Translation translation = checkIfTranslationExists(translationId);
 		checkIfMessageExists(messageId);
 
@@ -71,7 +69,7 @@ public class TranslationService {
 		return translationRepository.save(translation);
 	}
 
-	public Translation invalidateTranslation(Long translationId, Long messageId) {
+	public Translation invalidateTranslation(String translationId, String messageId) {
 		Translation translation = checkIfTranslationExists(translationId);
 		checkIfMessageExists(messageId);
 
@@ -81,7 +79,7 @@ public class TranslationService {
 		return translationRepository.save(translation);
 	}
 
-	public Translation archiveTranslation(Long id) {
+	public Translation archiveTranslation(String id) {
 		Translation translation = checkIfTranslationExists(id);
 
 		saveTranslationVersion(translation);
@@ -96,17 +94,17 @@ public class TranslationService {
 		translationVersionRepository.save(translationVersion);
 	}
 
-	private Translation checkIfTranslationExists(Long translationId) {
+	private Translation checkIfTranslationExists(String translationId) {
 		return translationRepository.findById(translationId).orElseThrow(() ->
 				new EntityNotFoundException("translation"));
 	}
 
-	private Message checkIfMessageExists(Long messageId) {
+	private Message checkIfMessageExists(String messageId) {
 		return messageRepository.findById(messageId).orElseThrow(() ->
 				new EntityNotFoundException("message"));
 	}
 
-	private void checkIfTranslationAlreadyExists(String locale, Long messageId) {
+	private void checkIfTranslationAlreadyExists(String locale, String messageId) {
 		Translation translation = translationRepository.findTranslationByLocaleAndMessageId(LocaleUtils.toLocale(locale), messageId);
 		if (translation != null) {
 			throw new EntityAlreadyExistException("translation");
