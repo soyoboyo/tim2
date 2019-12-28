@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.tim.DTOs.output.MessageForDeveloper;
+import org.tim.DTOs.output.MessageForDeveloperResponse;
 import org.tim.configuration.SpringTestsCustomExtension;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
@@ -35,7 +35,7 @@ public class MessageForDeveloperTestIT extends SpringTestsCustomExtension {
 		createTenRandomMessages(project);
 		createTranslationsForMessages();
 		//when
-		List<MessageForDeveloper> messages = messageForDeveloperService.getMessagesForDeveloper(project.getId());
+		List<MessageForDeveloperResponse> messages = messageForDeveloperService.getMessagesForDeveloper(project.getId());
 		//then
 		assertAll(
 				() -> assertFalse(messages.isEmpty()),
@@ -51,7 +51,7 @@ public class MessageForDeveloperTestIT extends SpringTestsCustomExtension {
 		Project project = createEmptyGermanToEnglishProject();
 		List<Message> messages = createMessagesForTests(project);
 		//when
-		List<MessageForDeveloper> messagesForDeveloper = messageForDeveloperService.getMessagesForDeveloper(project.getId());
+		List<MessageForDeveloperResponse> messagesForDeveloper = messageForDeveloperService.getMessagesForDeveloper(project.getId());
 		//then
 		assertAll(
 				() -> assertEquals(messagesForDeveloper.get(0).getKey(), messages.get(2).getKey()),
@@ -69,7 +69,7 @@ public class MessageForDeveloperTestIT extends SpringTestsCustomExtension {
 		messages.get(1).setContent("New content");
 		messageRepository.saveAll(messages);
 		//when
-		List<MessageForDeveloper> messagesForDeveloper = messageForDeveloperService.getMessagesForDeveloper(project.getId());
+		List<MessageForDeveloperResponse> messagesForDeveloper = messageForDeveloperService.getMessagesForDeveloper(project.getId());
 		//then
 		assertAll(
 				() -> assertEquals(messagesForDeveloper.get(0).getKey(), messages.get(1).getKey()),

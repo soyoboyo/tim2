@@ -25,5 +25,9 @@ public interface TranslationRepository extends ElasticsearchRepository<Translati
 
 	List<Translation> findTranslationsByMessageId(String messageId);
 
-	List<Translation> findAllByMessageIdOrderByLocale(String messageId);
+	default List<Translation> findAllByMessageIdOrderByLocale(String messageId) {
+		return findAllByMessageId(messageId);
+	}
+
+	List<Translation> findAllByMessageId(String messageId);
 }

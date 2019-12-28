@@ -66,7 +66,7 @@ public class MessageTranslationService {
 	}
 
 	private List<Message> getMessagesWithoutValidTranslations(String projectId, Locale locale) {
-		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
+		List<Message> messages = messageRepository.findActiveMessagesByProject(projectId);
 		Map<String, Message> messageMap = new HashMap<>();
 
 		for (Message m : messages)

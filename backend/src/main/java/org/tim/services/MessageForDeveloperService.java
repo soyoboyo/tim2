@@ -4,16 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.tim.DTOs.output.MessageForDeveloper;
+import org.tim.DTOs.output.MessageForDeveloperResponse;
 import org.tim.DTOs.output.TranslationForDeveloper;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
+import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -23,19 +25,22 @@ public class MessageForDeveloperService {
 	private final MessageRepository messageRepository;
 	private final ProjectRepository projectRepository;
 	private final TranslationRepository translationRepository;
-	private final ModelMapper mapper = new ModelMapper();
 
-	public List<MessageForDeveloper> getMessagesForDeveloper(String projectId) {
-		List<MessageForDeveloper> messagesForDeveloper = new ArrayList<>();
-		Project project = projectRepository.findById(projectId).orElseThrow(() ->
-				new NoSuchElementException(String.format("Project with id %s not found", projectId)));
-		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
 
-		messages.sort(Comparator.comparing(Message::getUpdateDate, Comparator.reverseOrder()));
+	public List<MessageForDeveloperResponse> getMessagesForDeveloper(String projectId) {
+		Project project = getAndValidateProject(projectId);
+
+		List<MessageForDeveloperResponse> messagesForDeveloper = new ArrayList<>();
+
+		//TODO polaczyc w zapytaniu
+		List<Message> messages = messageRepository.findActiveMessagesByProject(projectId);
+		//messages.sort(Comparator.comparing(Message::getUpdateDate, Comparator.reverseOrder()));
+
+		ModelMapper mapper = new ModelMapper();
 
 		for (Message m : messages) {
-			MessageForDeveloper mForDeveloper = mapper.map(m, MessageForDeveloper.class);
-			mForDeveloper.setProjectId(projectId);
+			MessageForDeveloperResponse mForDeveloper = mapper.map(m, MessageForDeveloperResponse.class);
+
 			List<Translation> translations = translationRepository.findAllByMessageIdOrderByLocale(m.getId());
 
 			mForDeveloper.setTranslations(getTranslationsForDeveloper(translations));
@@ -63,14 +68,17 @@ public class MessageForDeveloperService {
 		return messagesForDeveloper;
 	}
 
+	private Project getAndValidateProject(String projectId) {
+		return projectRepository.findById(projectId)
+				.orElseThrow(() -> new EntityNotFoundException("project"));
+	}
+
 	private List<TranslationForDeveloper> getTranslationsForDeveloper(List<Translation> translations) {
-		List<TranslationForDeveloper> translationsForDeveloper = new LinkedList<>();
-		for (Translation t : translations) {
-			TranslationForDeveloper tForDeveloper = mapper.map(t, TranslationForDeveloper.class);
-			tForDeveloper.setMessageId(t.getMessageId());
-			translationsForDeveloper.add(tForDeveloper);
-		}
-		return translationsForDeveloper;
+		ModelMapper mapper = new ModelMapper();
+		return translations
+				.parallelStream()
+				.map(translation -> mapper.map(translation, TranslationForDeveloper.class))
+				.collect(Collectors.toList());
 	}
 
 	private List<String> getMissingLocales(Project project, List<Translation> translations) {

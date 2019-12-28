@@ -6,6 +6,7 @@ import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +14,7 @@ public class TranslationForDeveloper {
 
 	@NotNull
 	@NonNull
-	private Long id;
+	private String id;
 
 	@NotNull
 	private String content;
@@ -24,7 +25,7 @@ public class TranslationForDeveloper {
 
 	@NotNull
 	@NonNull
-	private LocalDateTime updateDate;
+	private Date updateDate;
 
 	@NotNull
 	@NonNull

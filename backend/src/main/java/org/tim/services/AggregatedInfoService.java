@@ -36,7 +36,7 @@ public class AggregatedInfoService {
 		Set<String> targetLocales = initEmptyLocaleMaps(projectId, translationStatusesByLocale);
 
 		// get all messages for project
-		List<Message> messages = new LinkedList<>(messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId));
+		List<Message> messages = new LinkedList<>(messageRepository.findActiveMessagesByProject(projectId));
 
 		// iterate over all messages
 		for (Message m : messages) {
