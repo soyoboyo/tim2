@@ -24,9 +24,9 @@ public class AggregatedInfoService {
 	private final MessageRepository messageRepository;
 	private final TranslationRepository translationRepository;
 
-	private String correct = "correct";
-	private String incorrect = "incorrect";
-	private String missing = "missing";
+	private final String correct = "correct";
+	private final String incorrect = "incorrect";
+	private final String missing = "missing";
 
 	public AggregatedInfoForDeveloper getAggregatedInfoForDeveloper(String projectId) {
 		AggregatedInfoForDeveloper aggregatedInfo = new AggregatedInfoForDeveloper();

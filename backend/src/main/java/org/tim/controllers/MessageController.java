@@ -3,12 +3,15 @@ package org.tim.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.tim.DTOs.NewMessageRequest;
+import org.tim.configurations.Done;
 import org.tim.entities.Message;
 import org.tim.entities.MessageVersion;
 import org.tim.services.MessageService;
 import org.tim.services.MessageVersionService;
+import org.tim.validators.RequestsValidator;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,27 +25,32 @@ public class MessageController {
 
 	private final MessageService messageService;
 	private final MessageVersionService messageVersionService;
+	private final RequestsValidator requestsValidator;
 
+	@Done
 	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
-	@PostMapping(value = CREATE)
-	public ResponseEntity<Message> createMessage(@RequestBody @Valid NewMessageRequest messageRequest) {
-		Message createdMessage = messageService.createMessage(messageRequest);
-		return createdMessage != null ? ResponseEntity.ok(createdMessage) : ResponseEntity.badRequest().body(null);
+	@PostMapping(CREATE)
+	public ResponseEntity<Message> createMessage(@RequestBody @Valid NewMessageRequest messageRequest, BindingResult bindingResult) {
+		requestsValidator.execute(bindingResult);
+		return ResponseEntity.ok(messageService.createMessage(messageRequest));
 	}
 
+	@Done
 	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
-	@PostMapping(value = UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Message> updateMessage(@RequestBody @Valid NewMessageRequest messageRequest, @PathVariable String id) {
-		Message updatedMessage = messageService.updateMessage(messageRequest, id);
-		return updatedMessage != null ? ResponseEntity.ok(updatedMessage) : ResponseEntity.badRequest().body(null);
+	@PostMapping(UPDATE)
+	public ResponseEntity<Message> updateMessage(@RequestBody @Valid NewMessageRequest messageRequest, @PathVariable String id, BindingResult bindingResult) {
+		requestsValidator.execute(bindingResult);
+		return ResponseEntity.ok(messageService.updateMessage(messageRequest, id));
 	}
 
+	@Done
 	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	@GetMapping(VERSION)
 	public ResponseEntity<List<MessageVersion>> getMessageVersionsByOriginalId(@PathVariable Long originalId) {
 		return ResponseEntity.ok(messageVersionService.getMessageVersionsByOriginalId(originalId));
 	}
 
+	@Done
 	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	@DeleteMapping(value = ARCHIVE)
 	public ResponseEntity archiveMessage(@PathVariable String id) {
