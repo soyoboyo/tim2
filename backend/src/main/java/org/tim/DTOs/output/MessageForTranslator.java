@@ -1,14 +1,12 @@
 package org.tim.DTOs.output;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -28,8 +26,7 @@ public class MessageForTranslator implements Comparable<MessageForTranslator> {
 
 	private String description;
 
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	private LocalDateTime updateDate;
+	private Date updateDate;
 
 	private TranslationForTranslator translation;
 

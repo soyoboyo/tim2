@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.output.MessageForTranslator;
 import org.tim.DTOs.output.TranslationForTranslator;
 import org.tim.entities.*;
+import org.tim.exceptions.EntityNotFoundException;
 import org.tim.exceptions.ValidationException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 import org.tim.repositories.TranslationVersionRepository;
+import org.tim.translators.LocaleTranslator;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -28,36 +30,29 @@ public class MessageForTranslatorService {
 	private final TranslationRepository translationRepository;
 	private final TranslationVersionRepository translationVersionRepository;
 	private final MessageVersionService messageVersionService;
-	private final ModelMapper mapper = new ModelMapper();
+	private final LocaleTranslator localeTranslator;
 
 	public List<MessageForTranslator> getMessagesForTranslator(String projectId, String loc) {
-		List<MessageForTranslator> messagesForTranslator = new ArrayList<>();
-		Project project = projectRepository.findById(projectId).orElseThrow(() ->
-				new NoSuchElementException(String.format("Project with id %s not found", projectId)));
+		Project project = projectRepository.findById(projectId)
+				.orElseThrow(() -> new EntityNotFoundException("project"));
+
 		List<Message> messages = messageRepository.findActiveMessagesByProject(projectId);
 
-		Map<Locale, Locale> replaceableLocaleToItsSubstitute = new HashMap<>();
-		for (Map.Entry<Locale, Locale> pair : project.getReplaceableLocaleToItsSubstitute().entrySet()) {
-			replaceableLocaleToItsSubstitute.put(pair.getKey(), pair.getValue());
-		}
-		Locale locale;
-		try {
-			locale = LocaleUtils.toLocale(loc);
-		} catch (IllegalArgumentException e) {
-			throw new ValidationException("Source locale: " + loc + " was given in the wrong format.");
-		}
+		Locale locale = localeTranslator.execute(loc);
 
+		List<MessageForTranslator> messagesForTranslator = new ArrayList<>();
+		ModelMapper mapper = new ModelMapper();
 		for (Message m : messages) {
 			MessageForTranslator mForTranslator = mapper.map(m, MessageForTranslator.class);
-			Translation translation = translationRepository.findTranslationByLocaleAndMessageId(locale, m.getId()).orElseThrow();
-			mForTranslator.setTranslation(null);
-			if (translation != null) {
-				getTranslationForTranslator(mForTranslator, translation);
-				if (m.isTranslationOutdated(translation)) {
+
+			Optional<Translation> translation = translationRepository.findTranslationByLocaleAndMessageId(locale, m.getId());
+			if (translation.isPresent()) {
+				getTranslationForTranslator(mForTranslator, translation.get());
+				if (m.isTranslationOutdated(translation.get())) {
 					getPreviousMessageContent(mForTranslator);
 				}
 			} else {
-				mForTranslator.setSubstitute(getSubstituteForTranslator(replaceableLocaleToItsSubstitute, locale, m.getId()));
+				mForTranslator.setSubstitute(getSubstituteForTranslator(project.getReplaceableLocaleToItsSubstitute(), locale, m.getId()));
 			}
 
 			messagesForTranslator.add(mForTranslator);
@@ -71,7 +66,7 @@ public class MessageForTranslatorService {
 	public List<MessageForTranslator> getMessagesForTranslator(String projectId) {
 		List<MessageForTranslator> messagesForTranslator = new ArrayList<>();
 		List<Message> messages = messageRepository.findActiveMessagesByProject(projectId);
-
+		ModelMapper mapper = new ModelMapper();
 		for (Message m : messages) {
 			MessageForTranslator mForTranslator = mapper.map(m, MessageForTranslator.class);
 			mForTranslator.setTranslation(null);
@@ -85,6 +80,7 @@ public class MessageForTranslatorService {
 	}
 
 	private void getTranslationForTranslator(MessageForTranslator message, Translation translation) {
+		ModelMapper mapper = new ModelMapper();
 		TranslationForTranslator tForTranslator = mapper.map(translation, TranslationForTranslator.class);
 		message.setTranslation(tForTranslator);
 	}
@@ -93,7 +89,7 @@ public class MessageForTranslatorService {
 		List<TranslationVersion> translationVersions = translationVersionRepository.findAllByTranslationIdSorted(message.getTranslation().getId());
 
 
-		LocalDateTime upperBound = message.getTranslation().getUpdateDate();
+		Date upperBound = message.getTranslation().getUpdateDate();
 
 		String previousMessageContent = "SOMETHING IS WRONG";
 		if (!translationVersions.isEmpty()) {
@@ -116,6 +112,7 @@ public class MessageForTranslatorService {
 
 	private TranslationForTranslator getSubstituteForTranslator(Map<Locale, Locale> replaceableLocaleToItsSubstitute, Locale replaceableLocale, String messageId) {
 		Translation sub;
+		ModelMapper mapper = new ModelMapper();
 		do {
 			replaceableLocale = replaceableLocaleToItsSubstitute.get(replaceableLocale);
 			if (replaceableLocale != null) {

@@ -21,11 +21,11 @@ public class MessageVersionService {
 		return messageVersionRepository.findAllByMessageIdOrderByUpdateDateDesc(originalId);
 	}
 
-	public List<MessageVersion> getMessageVersionsByMessageIdAndUpdateDate(String messageId, LocalDateTime updateDate) {
+	public List<MessageVersion> getMessageVersionsByMessageIdAndUpdateDate(String messageId, Date updateDate) {
 		return messageVersionRepository.findAllByMessageIdAndUpdateDateBeforeOrderByUpdateDateDesc(messageId, updateDate);
 	}
 
-	public List<MessageVersion> getMessageVersionsByMessageIdAndUpdateDateBetween(String messageId, LocalDateTime upperBound, Date lowerBound) {
+	public List<MessageVersion> getMessageVersionsByMessageIdAndUpdateDateBetween(String messageId, Date upperBound, Date lowerBound) {
 		return messageVersionRepository.findAllByMessageIdAndUpdateDateBeforeAndUpdateDateAfterOrderByUpdateDateDesc(messageId, upperBound, lowerBound);
 	}
 }

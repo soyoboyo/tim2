@@ -14,18 +14,19 @@ import static org.tim.utils.Mapping.*;
 
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ROLE_TRANSLATOR')")
 @RequestMapping(API_VERSION + MESSAGE + TRANSLATOR)
 public class MessageForTranslatorController {
 
 	private final MessageForTranslatorService messageForTranslatorService;
 
-	@GetMapping(path = GET_BY_LOCALE, produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ROLE_TRANSLATOR')")
+	@GetMapping(path = GET_BY_LOCALE)
 	public ResponseEntity<List<MessageForTranslator>> getMessagesForTranslator(@PathVariable String projectId, @RequestParam String locale) {
 		return ResponseEntity.ok(messageForTranslatorService.getMessagesForTranslator(projectId, locale));
 	}
 
-	@GetMapping(path = GET_BY_PROJECT, produces = MediaType.APPLICATION_JSON_VALUE)
+	//@PreAuthorize("hasRole('ROLE_TRANSLATOR')")
+	@GetMapping(path = GET_BY_PROJECT)
 	public ResponseEntity<List<MessageForTranslator>> getMessagesForTranslator(@PathVariable String projectId) {
 		return ResponseEntity.ok(messageForTranslatorService.getMessagesForTranslator(projectId));
 	}

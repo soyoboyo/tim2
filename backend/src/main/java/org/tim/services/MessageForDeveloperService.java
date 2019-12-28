@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.output.MessageForDeveloperResponse;
 import org.tim.DTOs.output.TranslationForDeveloper;
+import org.tim.configurations.Done;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
@@ -27,21 +28,20 @@ public class MessageForDeveloperService {
 	private final TranslationRepository translationRepository;
 
 
+	@Done
 	public List<MessageForDeveloperResponse> getMessagesForDeveloper(String projectId) {
 		Project project = getAndValidateProject(projectId);
 
 		List<MessageForDeveloperResponse> messagesForDeveloper = new ArrayList<>();
 
-		//TODO polaczyc w zapytaniu
 		List<Message> messages = messageRepository.findActiveMessagesByProject(projectId);
-		//messages.sort(Comparator.comparing(Message::getUpdateDate, Comparator.reverseOrder()));
 
 		ModelMapper mapper = new ModelMapper();
 
 		for (Message m : messages) {
 			MessageForDeveloperResponse mForDeveloper = mapper.map(m, MessageForDeveloperResponse.class);
 
-			List<Translation> translations = translationRepository.findAllByMessageIdOrderByLocale(m.getId());
+			List<Translation> translations = translationRepository.findAllByMessageId(m.getId());
 
 			mForDeveloper.setTranslations(getTranslationsForDeveloper(translations));
 
@@ -65,6 +65,7 @@ public class MessageForDeveloperService {
 			messagesForDeveloper.add(mForDeveloper);
 		}
 
+		Collections.sort(messagesForDeveloper, Comparator.comparing(m -> m.getUpdateDate().getTime()));
 		return messagesForDeveloper;
 	}
 

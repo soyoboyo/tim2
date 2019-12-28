@@ -5,9 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.tim.entities.Message;
 import org.tim.entities.Translation;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public interface TranslationRepository extends ElasticsearchRepository<Translation, String> {
@@ -24,10 +22,6 @@ public interface TranslationRepository extends ElasticsearchRepository<Translati
 	Optional<Translation> findTranslationByLocaleAndMessageId(Locale locale, String messageId);
 
 	List<Translation> findTranslationsByMessageId(String messageId);
-
-	default List<Translation> findAllByMessageIdOrderByLocale(String messageId) {
-		return findAllByMessageId(messageId);
-	}
 
 	List<Translation> findAllByMessageId(String messageId);
 }

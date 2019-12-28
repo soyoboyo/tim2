@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tim.DTOs.output.MessageForDeveloperResponse;
+import org.tim.configurations.Done;
 import org.tim.services.MessageForDeveloperService;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class MessageForDeveloperController {
 
 	private final MessageForDeveloperService messageForDeveloperService;
 
+	@Done
 	@GetMapping(GET_BY_PROJECT)
 	public ResponseEntity<List<MessageForDeveloperResponse>> getMessagesForDeveloper(@PathVariable String projectId) {
 		return ResponseEntity.ok(messageForDeveloperService.getMessagesForDeveloper(projectId));

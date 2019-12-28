@@ -7,6 +7,7 @@ import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -26,11 +27,11 @@ public class TranslationForTranslator {
 
 	@NotNull
 	@NonNull
-	private LocalDateTime updateDate;
+	private Date updateDate;
 
 	@NotNull
 	@NonNull
-	private Long messageId;
+	private String messageId;
 
 	private Boolean isValid;
 

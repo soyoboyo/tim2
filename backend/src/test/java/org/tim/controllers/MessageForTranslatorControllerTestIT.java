@@ -86,7 +86,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
         translationForTranslator.setContent("content");
         translationForTranslator.setIsValid(true);
         translationForTranslator.setLocale("en_US");
-        translationForTranslator.setMessageId(1L);
+        //translationForTranslator.setMessageId(1L);
         messageForTranslatorList.get(0).setSubstitute(translationForTranslator);
         when(messageForTranslatorService.getMessagesForTranslator(any(), any())).thenReturn(messageForTranslatorList);
         mockMvc.perform(get(BASE_URL + API_VERSION + MESSAGE + TRANSLATOR + "/getByLocale/1")
@@ -114,7 +114,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
         translationForTranslator.setContent("content");
         translationForTranslator.setIsValid(true);
         translationForTranslator.setLocale("en_US");
-        translationForTranslator.setMessageId(1L);
+        //translationForTranslator.setMessageId(1L);
         messageForTranslatorList.get(0).setSubstitute(translationForTranslator);
 
         translationForTranslator = new TranslationForTranslator();
@@ -122,7 +122,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
         translationForTranslator.setContent("org_content");
         translationForTranslator.setIsValid(true);
         translationForTranslator.setLocale("en_UK");
-        translationForTranslator.setMessageId(1L);
+        //translationForTranslator.setMessageId(1L);
         messageForTranslatorList.get(0).setTranslation(translationForTranslator);
 
         when(messageForTranslatorService.getMessagesForTranslator(any(), any())).thenReturn(messageForTranslatorList);
