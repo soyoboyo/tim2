@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 @Data
@@ -18,9 +20,9 @@ public class ProjectForDeveloper {
 
 	private String sourceCountry;
 
-	private TreeSet<String> targetLocales;
+	private Set<String> targetLocales;
 
-	private TreeSet<String> availableReplacements;
+	private Set<String> availableReplacements;
 
-	private HashMap<String, String> substitutes;
+	private Map<String, String> substitutes;
 }

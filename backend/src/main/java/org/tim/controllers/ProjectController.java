@@ -20,7 +20,6 @@ import static org.tim.utils.Mapping.*;
 
 @RestController
 @RequiredArgsConstructor
-//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 @RequestMapping(API_VERSION + PROJECT)
 public class ProjectController {
 
@@ -39,17 +38,25 @@ public class ProjectController {
 					"substitute locale is unavailable then translation to replaceable locale can be used. (Because languages " +
 					"with this locales are similar). All chosen locales need to be available in targetLocales. Cannot contain cycles.")
 	@PostMapping(CREATE)
+	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	public Project createProject(@RequestBody @Valid NewProjectRequest projectRequest, BindingResult bindingResult) {
 		requestsValidator.execute(bindingResult);
 		return projectService.createProject(projectRequest);
 	}
 
+	@Done
+	@ApiOperation(
+			value = "Update project",
+			notes = "Please using the same params as during creation")
 	@PostMapping(UPDATE)
+	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	public Project updateProject(@RequestBody @Valid NewProjectRequest projectRequest, @PathVariable String id, BindingResult bindingResult) {
 		RequestsValidator.validate(bindingResult);
 		return projectService.updateProject(projectRequest, id);
 	}
 
+	@Done
+	@ApiOperation("Get all available project")
 	@GetMapping(GET_ALL)
 	//@PreAuthorize("hasAnyRole('ROLE_TRANSLATOR', 'ROLE_DEVELOPER')")
 	public List<Project> getAllProjects() {
@@ -57,11 +64,13 @@ public class ProjectController {
 	}
 
 	@GetMapping(DEVELOPER + GET_ALL)
+	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	public List<ProjectForDeveloper> getAllProjectsForDeveloper() {
 		return projectService.getAllProjectsForDeveloper();
 	}
 
 	@GetMapping(DEVELOPER + AGGREGATE)
+	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	public AggregatedInfoForDeveloper getAggregatedInfoAboutTranslationsInProject(@PathVariable String id) {
 		return aggregatedInfoService.getAggregatedInfoForDeveloper(id);
 	}
