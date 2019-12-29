@@ -21,7 +21,7 @@ public class CIExportsController {
 	private final CIExportsService ciExportsService;
 
 
-	@GetMapping(path = MESSAGE + GET_BY_LOCALE, produces = MediaType.TEXT_PLAIN_VALUE)
+	@GetMapping(path = MESSAGE + GET_BY_LOCALE)
 	public ResponseEntity<String> exportAllReadyTranslationsByProjectAndByLocale(@PathVariable String projectId, @RequestParam String locale) {
 		return ResponseEntity.ok(ciExportsService.exportAllReadyTranslationsByProjectAndByLocale(projectId, locale));
 	}
@@ -30,7 +30,7 @@ public class CIExportsController {
 	@ApiOperation(
 			value = "Get project locales",
 			notes = "Returns a list of all locales for the project with the given id.")
-	@GetMapping(path = LOCALES + GET_BY_PROJECT, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = LOCALES + GET_BY_PROJECT)
 	public ResponseEntity<List<LocaleResponse>> getAllSupportedLocalesInProject(@PathVariable String projectId) {
 		return ResponseEntity.ok(ciExportsService.getAllSupportedLocalesInProject(projectId));
 	}

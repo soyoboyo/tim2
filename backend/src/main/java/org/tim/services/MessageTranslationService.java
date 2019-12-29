@@ -15,6 +15,7 @@ import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -65,14 +66,20 @@ public class MessageTranslationService {
 		return messageWithWarningsDTOS;
 	}
 
+	//TODO wywalic te parallerStream (konieczne teraz bo kolekcje sa immutable)
 	private List<Message> getMessagesWithoutValidTranslations(String projectId, Locale locale) {
-		List<Message> messages = messageRepository.findActiveMessagesByProject(projectId);
+		List<Message> messages = messageRepository.findActiveMessagesByProject(projectId)
+				.parallelStream()
+				.collect(Collectors.toList());
 		Map<String, Message> messageMap = new HashMap<>();
 
 		for (Message m : messages)
 			messageMap.put(m.getId(), m);
 
-		List<Translation> translations = null;//translationRepository.findTranslationsByLocaleAndProjectIdAndIsValidTrue(locale, projectId);
+		List<Translation> translations =
+				translationRepository.findTranslationsByLocaleAndProjectIdAndIsValidTrue(locale, projectId)
+				.parallelStream()
+				.collect(Collectors.toList());
 		for (Translation t : translations) {
 			if (messageMap.containsKey(t.getMessageId())) {
 				Message message = messageMap.get(t.getMessageId());
@@ -85,8 +92,7 @@ public class MessageTranslationService {
 	}
 
 	private Optional<Locale> getSubstituteLocaleByLocale(Project project, Locale sourceLocale) {
-		//return project.getSubstituteLocale(localeWrapperRepository.findByLocale(sourceLocale));
-		return Optional.of(LocaleUtils.toLocale( "pl_PL"));
+		return project.getSubstituteLocale(sourceLocale);
 	}
 
 }

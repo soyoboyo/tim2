@@ -31,6 +31,10 @@ public class Translation {
 	@NonNull
 	private String messageId;
 
+	@NonNull
+	@NotNull
+	private String projectId;
+
 	private Boolean isValid = true;
 
 	private String createdBy;

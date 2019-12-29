@@ -15,11 +15,11 @@ import static org.tim.utils.Mapping.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(API_VERSION)
-@PreAuthorize("hasAnyRole('ROLE_DEVELOPER', 'ROLE_TRANSLATOR')")
 public class ExportController {
 
     private final XlsConversionService xlsConversionService;
 
+    //@PreAuthorize("hasAnyRole('ROLE_DEVELOPER', 'ROLE_TRANSLATOR')")
     @GetMapping(value = MESSAGE + EXPORT + GET_BY_PROJECT, produces = MediaType.APPLICATION_XML_VALUE)
     public @ResponseBody byte[] getXlsForMissingTranslations(@PathVariable String projectId) throws IOException {
         final InputStream inputXStream = xlsConversionService.getXlsForMessageWithWarnings(projectId);

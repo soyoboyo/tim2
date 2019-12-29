@@ -25,6 +25,6 @@ public class MainSeeder {
         translationAgencySeeder.initTransactionAgencies();
         Map<String, Project> projects = projectSeeder.initProjects();
         Map<String, Message> messages = messageSeeder.initMessages(projects);
-        translationSeeder.initTranslations(messages);
+        translationSeeder.initTranslations(messages, projects);
     }
 }

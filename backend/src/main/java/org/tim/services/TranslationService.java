@@ -64,6 +64,7 @@ public class TranslationService {
 		translation.setContent(translationRequest.getContent());
 		translation.setMessageId(messageId);
 		translation.setLocale(translatedLocale);
+		translation.setProjectId(message.getProjectId());
 		//translation.setCreatedBy();
 		return translationRepository.save(translation);
 	}
@@ -83,12 +84,13 @@ public class TranslationService {
 	public Translation updateTranslation(UpdateTranslationRequest translationRequest, String translationId, String messageId) {
 		Translation translation = getAndValidateTranslation(translationId);
 
-		getAndValidateMessage(messageId);
+		Message message = getAndValidateMessage(messageId);
 		saveTranslationVersion(translation);
 
 		translation.setContent(translationRequest.getContent());
 		translation.setIsValid(true);
 		translation.setUpdateDate(new Date());
+		translation.setProjectId(message.getProjectId());
 		//translation.setCreatedBy();
 
 		return translationRepository.save(translation);

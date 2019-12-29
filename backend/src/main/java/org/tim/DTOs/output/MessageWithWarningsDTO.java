@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class MessageWithWarningsDTO {
 
     @NotNull
-    private Long id;
+    private String id;
 
     @NotBlank
     @NonNull
