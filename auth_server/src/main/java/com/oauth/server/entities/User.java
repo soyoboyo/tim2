@@ -12,21 +12,22 @@ import java.io.Serializable;
 @Table(name = "\"user\"")
 public class User implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Setter(AccessLevel.NONE)
+	private Integer id;
 
-    @NonNull
-    @Column(unique = true)
-    private String email;
+	@NonNull
+	@Column(unique = true)
+	private String email;
 
-    @NonNull
-    private String password;
+	@NonNull
+	private String password;
 
-    @NonNull
-    @OneToOne(cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "users_principal")
-    private Principal principal;
+	@NonNull
+	@OneToOne(cascade = CascadeType.MERGE,
+			fetch = FetchType.EAGER)
+	@JoinColumn(name = "users_principal")
+	private Principal principal;
+
 }

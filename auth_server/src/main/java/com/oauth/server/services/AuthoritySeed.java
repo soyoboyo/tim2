@@ -16,25 +16,25 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class AuthoritySeed {
 
-    private final OauthClientDetailsRepository oauthClientDetailsRepository;
-    private final PrincipalRepository principalRepository;
-    private final UserRepository userRepository;
-    private final PasswordEncoder bCryptPasswordEncoder;
+	private final OauthClientDetailsRepository oauthClientDetailsRepository;
+	private final PrincipalRepository principalRepository;
+	private final UserRepository userRepository;
+	private final PasswordEncoder bCryptPasswordEncoder;
 
-    @PostConstruct
-    public void addUsers() {
-        Principal roleUser = principalRepository.save(new Principal("ROLE_DEVELOPER"));
-        Principal roleGuest = principalRepository.save(new Principal("ROLE_TRANSLATOR"));
+	@PostConstruct
+	public void addUsers() {
+		Principal roleUser = principalRepository.save(new Principal("ROLE_DEVELOPER"));
+		Principal roleGuest = principalRepository.save(new Principal("ROLE_TRANSLATOR"));
 
-        userRepository.save(new User("prog", bCryptPasswordEncoder.encode("prog"), roleUser));
-        userRepository.save(new User("tran", bCryptPasswordEncoder.encode("tran"), roleGuest));
-    }
+		userRepository.save(new User("prog", bCryptPasswordEncoder.encode("prog"), roleUser));
+		userRepository.save(new User("tran", bCryptPasswordEncoder.encode("tran"), roleGuest));
+	}
 
-    @PostConstruct
-    public void addOAuthClients() {
-        oauthClientDetailsRepository.save(new OauthClientDetails("timApp",
-                bCryptPasswordEncoder.encode("OcadoProject"), "read,write",
-                "password,refresh_token,client_credentials",
-                "ROLE_CLIENT", 8 * 60));
-    }
+	@PostConstruct
+	public void addOAuthClients() {
+		oauthClientDetailsRepository.save(new OauthClientDetails("timApp",
+				bCryptPasswordEncoder.encode("OcadoProject"), "read,write",
+				"password,refresh_token",
+				"ROLE_CLIENT", 8 * 60, 10 * 60));
+	}
 }

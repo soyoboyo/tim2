@@ -18,71 +18,73 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+
 import javax.sql.DataSource;
 import java.security.KeyPair;
 
 @Configuration
-@EnableAuthorizationServer
 @RequiredArgsConstructor
+@EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-    private final DataSource dataSource;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
-    private final SecurityProperties securityProperties;
-    private final UserService userService;
-    private JwtAccessTokenConverter jwtAccessTokenConverter;
+	private final UserService userService;
+	private final DataSource dataSource;
+	private final PasswordEncoder passwordEncoder;
+	private final SecurityProperties securityProperties;
+	private final AuthenticationManager authenticationManager;
 
-    @Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
-    }
+	private JwtAccessTokenConverter jwtAccessTokenConverter;
 
-    @Bean
-    public DefaultTokenServices tokenServices(TokenStore tokenStore,
-                                              ClientDetailsService clientDetailsService) {
-        DefaultTokenServices tokenServices = new DefaultTokenServices();
-        tokenServices.setSupportRefreshToken(true);
-        tokenServices.setTokenStore(tokenStore);
-        tokenServices.setClientDetailsService(clientDetailsService);
-        tokenServices.setAuthenticationManager(authenticationManager);
-        return tokenServices;
-    }
+	@Bean
+	public TokenStore tokenStore() {
+		return new JwtTokenStore(jwtAccessTokenConverter());
+	}
 
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        jwtAccessTokenConverter.setKeyPair(keyPair());
-        return jwtAccessTokenConverter;
-    }
+	@Bean
+	public DefaultTokenServices tokenServices(TokenStore tokenStore, ClientDetailsService clientDetailsService) {
+		DefaultTokenServices tokenServices = new DefaultTokenServices();
+		tokenServices.setSupportRefreshToken(true);
+		tokenServices.setTokenStore(tokenStore);
+		tokenServices.setClientDetailsService(clientDetailsService);
+		tokenServices.setAuthenticationManager(authenticationManager);
+		return tokenServices;
+	}
 
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-       clients.jdbc(dataSource);
-    }
+	@Bean
+	public JwtAccessTokenConverter jwtAccessTokenConverter() {
+		jwtAccessTokenConverter = new JwtAccessTokenConverter();
+		jwtAccessTokenConverter.setKeyPair(keyPair());
+		return jwtAccessTokenConverter;
+	}
 
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.authenticationManager(authenticationManager)
-                .accessTokenConverter(jwtAccessTokenConverter())
-                .tokenStore(tokenStore());
-        endpoints.userDetailsService(userService);
-    }
+	@Override
+	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+		clients.jdbc(dataSource);
+	}
 
-    @Override
-    public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-        oauthServer.passwordEncoder(passwordEncoder)
-                .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()");
-    }
+	@Override
+	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+		endpoints.authenticationManager(authenticationManager)
+				.accessTokenConverter(jwtAccessTokenConverter())
+				.tokenStore(tokenStore());
+		endpoints.userDetailsService(userService);
+	}
 
-    private KeyPair keyPair() {
-        return keyStoreKeyFactory().getKeyPair(securityProperties.getKeyPairAlias(),
-                securityProperties.getKeyPairPassword().toCharArray());
-    }
+	@Override
+	public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
+		oauthServer.passwordEncoder(passwordEncoder)
+				.tokenKeyAccess("permitAll()")
+				.checkTokenAccess("isAuthenticated()");
+	}
 
-    private KeyStoreKeyFactory keyStoreKeyFactory() {
-        return new KeyStoreKeyFactory(securityProperties.getKeyStore(),
-                securityProperties.getKeyStorePassword().toCharArray());
-    }
+	private KeyPair keyPair() {
+		return keyStoreKeyFactory().getKeyPair(securityProperties.getKeyPairAlias(),
+				securityProperties.getKeyPairPassword().toCharArray());
+	}
+
+	private KeyStoreKeyFactory keyStoreKeyFactory() {
+		return new KeyStoreKeyFactory(securityProperties.getKeyStore(),
+				securityProperties.getKeyStorePassword().toCharArray());
+	}
+
 }

@@ -15,23 +15,25 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 public class OauthClientDetails {
 
-    @Id
-    @NonNull
-    private String clientId;
-    private String resourceIds;
-    @NotNull
-    @NonNull
-    private String clientSecret;
-    @NonNull
-    private String scope;
-    @NonNull
-    private String authorizedGrantTypes;
-    private String webServerRedirectUri;
-    @NonNull
-    private String authorities;
-    @NonNull
-    private Integer accessTokenValidity;
-    private Integer refreshTokenValidity;
-    private String additionalInformation;
-    private String autoapprove;
+	@Id
+	@NonNull
+	private String clientId;
+	private String resourceIds;
+	@NotNull
+	@NonNull
+	private String clientSecret;
+	@NonNull
+	private String scope;
+	@NonNull
+	private String authorizedGrantTypes;
+	private String webServerRedirectUri;
+	@NonNull
+	private String authorities;
+	@NonNull
+	private Integer accessTokenValidity;
+	@NonNull
+	private Integer refreshTokenValidity;
+	private String additionalInformation;
+	private String autoapprove;
+
 }
