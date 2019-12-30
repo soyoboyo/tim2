@@ -109,10 +109,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	changeProject(value) {
 		this.cancelUpdate();
 		this.selectedProject = value;
-		this.targetLocales = [];
-		value.targetLocales.forEach((locale) => {
-			this.targetLocales.push(locale.locale);
-		});
+		this.targetLocales = value.targetLocales;
 		this.targetLocales.sort();
 		this.selectedProjectId = value.id;
 		this.projectStoreService.setSelectedProject(value);

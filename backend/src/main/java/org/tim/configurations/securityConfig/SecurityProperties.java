@@ -1,4 +1,4 @@
-package org.tim.configurations;
+package org.tim.configurations.securityConfig;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

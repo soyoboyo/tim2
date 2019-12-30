@@ -13,8 +13,8 @@
 		<mat-form-field>
 			<mat-label>Select locale</mat-label>
 			<mat-select (selectionChange)="selectLocale($event.value)">
-				<mat-option *ngFor="let locale of selectedProject.targetLocales" [value]="locale.locale">
-					{{locale.locale}}
+				<mat-option *ngFor="let locale of selectedProject.targetLocales" [value]="locale">
+					{{locale}}
 				</mat-option>
 			</mat-select>
 		</mat-form-field>
@@ -28,7 +28,7 @@
 	<mat-form-field>
 		<mat-label>Locales</mat-label>
 		<mat-select multiple>
-			<mat-option *ngFor="let locale of selectedProject.targetLocales" [value]="locale.locale">{{locale.locale}}</mat-option>
+			<mat-option *ngFor="let locale of selectedProject.targetLocales" [value]="locale">{{locale}}</mat-option>
 		</mat-select>
 	</mat-form-field>
 	<div>

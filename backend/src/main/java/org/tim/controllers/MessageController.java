@@ -1,12 +1,11 @@
 package org.tim.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.tim.DTOs.NewMessageRequest;
-import org.tim.configurations.Done;
+import org.tim.annotations.Done;
 import org.tim.entities.Message;
 import org.tim.entities.MessageVersion;
 import org.tim.services.MessageService;

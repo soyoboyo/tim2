@@ -3,7 +3,7 @@ package org.tim.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tim.DTOs.output.LocaleResponse;
-import org.tim.configurations.Done;
+import org.tim.annotations.Done;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;

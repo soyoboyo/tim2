@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.output.MessageForDeveloperResponse;
 import org.tim.DTOs.output.TranslationForDeveloper;
-import org.tim.configurations.Done;
+import org.tim.annotations.Done;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;

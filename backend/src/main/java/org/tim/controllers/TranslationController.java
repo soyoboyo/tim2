@@ -6,7 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.tim.DTOs.input.CreateTranslationRequest;
 import org.tim.DTOs.input.UpdateTranslationRequest;
-import org.tim.configurations.Done;
+import org.tim.annotations.Done;
 import org.tim.entities.Translation;
 import org.tim.entities.TranslationVersion;
 import org.tim.services.TranslationService;

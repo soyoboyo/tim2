@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.tim.DTOs.input.NewProjectRequest;
 import org.tim.DTOs.output.AggregatedInfoForDeveloper;
 import org.tim.DTOs.output.ProjectForDeveloperResponse;
-import org.tim.configurations.Done;
+import org.tim.annotations.Done;
 import org.tim.entities.Project;
 import org.tim.services.AggregatedInfoService;
 import org.tim.services.ProjectService;

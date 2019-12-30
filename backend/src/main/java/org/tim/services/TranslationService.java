@@ -5,8 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.tim.DTOs.input.CreateTranslationRequest;
 import org.tim.DTOs.input.UpdateTranslationRequest;
-import org.tim.configurations.Done;
-import org.tim.configurations.ToDo;
+import org.tim.annotations.Done;
+import org.tim.annotations.ToDo;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
@@ -99,9 +99,10 @@ public class TranslationService {
 	public Translation invalidateTranslation(String translationId, String messageId) {
 		Translation translation = getAndValidateTranslation(translationId);
 		getAndValidateMessage(messageId);
-		if (translation.getMessageId() != messageId) {
-			throw new ValidationException("Inconsistent data");
-		}
+//		TODO LOL
+//		if (translation.getMessageId() != messageId) {
+//			throw new ValidationException("Inconsistent data");
+//		}
 
 		saveTranslationVersion(translation);
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tim.DTOs.output.MessageForDeveloperResponse;
-import org.tim.configurations.Done;
+import org.tim.annotations.Done;
 import org.tim.services.MessageForDeveloperService;
 
 import java.util.List;

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.tim.configurations.Done;
+import org.tim.annotations.Done;
 import org.tim.services.XlsConversionService;
 
 import java.io.IOException;
