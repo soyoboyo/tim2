@@ -116,7 +116,7 @@ public class MessageForTranslatorService {
 		do {
 			replaceableLocale = replaceableLocaleToItsSubstitute.get(replaceableLocale);
 			if (replaceableLocale != null) {
-				sub = translationRepository.findTranslationByLocaleAndMessageId(replaceableLocale, messageId).orElseThrow();
+				sub = translationRepository.findTranslationByLocaleAndMessageId(replaceableLocale, messageId).orElse(null);
 				if (sub != null && sub.getIsValid())
 					return mapper.map(sub, TranslationForTranslator.class);
 				continue;

@@ -63,12 +63,14 @@ public class ProjectController {
 		return projectService.getAllProjects();
 	}
 
+	@Done
 	@GetMapping(DEVELOPER + GET_ALL)
 	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	public List<ProjectForDeveloperResponse> getAllProjectsForDeveloper() {
 		return projectService.getAllProjectsForDeveloper();
 	}
 
+	@Done
 	@GetMapping(DEVELOPER + AGGREGATE)
 	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	public AggregatedInfoForDeveloper getAggregatedInfoAboutTranslationsInProject(@PathVariable String id) {

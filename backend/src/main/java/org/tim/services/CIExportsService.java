@@ -28,6 +28,7 @@ public class CIExportsService {
 	private final ProjectRepository projectRepository;
 	private final LocaleTranslator localeTranslator;
 
+	@Done
 	public String exportAllReadyTranslationsByProjectAndByLocale(String projectId, String locale) {
 		Locale orderedLocale = localeTranslator.execute(locale);
 

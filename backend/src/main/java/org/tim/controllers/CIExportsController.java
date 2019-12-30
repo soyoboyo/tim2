@@ -21,6 +21,12 @@ public class CIExportsController {
 	private final CIExportsService ciExportsService;
 
 
+	@Done
+	@ApiOperation(
+			value = "Get messages with translations",
+			notes = "Returns available messages with translations. When translation not exists" +
+					" then return translations from replaceable locales. Returned format is compatible" +
+					" with standards Spring properties file.")
 	@GetMapping(path = MESSAGE + GET_BY_LOCALE)
 	public ResponseEntity<String> exportAllReadyTranslationsByProjectAndByLocale(@PathVariable String projectId, @RequestParam String locale) {
 		return ResponseEntity.ok(ciExportsService.exportAllReadyTranslationsByProjectAndByLocale(projectId, locale));
