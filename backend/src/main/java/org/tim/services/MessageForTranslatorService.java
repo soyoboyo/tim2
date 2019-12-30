@@ -2,7 +2,6 @@ package org.tim.services;
 
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.LocaleUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,14 +9,12 @@ import org.tim.DTOs.output.MessageForTranslator;
 import org.tim.DTOs.output.TranslationForTranslator;
 import org.tim.entities.*;
 import org.tim.exceptions.EntityNotFoundException;
-import org.tim.exceptions.ValidationException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 import org.tim.repositories.TranslationVersionRepository;
 import org.tim.translators.LocaleTranslator;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -94,13 +91,13 @@ public class MessageForTranslatorService {
 		String previousMessageContent = "SOMETHING IS WRONG";
 		if (!translationVersions.isEmpty()) {
 			Date lowerBound = translationVersions.get(0).getUpdateDate();
-			List<MessageVersion> versions = messageVersionService.getMessageVersionsByMessageIdAndUpdateDateBetween(message.getId(), upperBound, lowerBound);
+			List<MessageHistory> versions = messageVersionService.getMessageVersionsByMessageIdAndUpdateDateBetween(message.getId(), upperBound, lowerBound);
 			if (!versions.isEmpty()) {
 				previousMessageContent = versions.get(0).getContent();
 			}
 			message.setPreviousMessageContent(previousMessageContent);
 		} else {
-			List<MessageVersion> versions = messageVersionService.getMessageVersionsByMessageIdAndUpdateDate(message.getId(), upperBound);
+			List<MessageHistory> versions = messageVersionService.getMessageVersionsByMessageIdAndUpdateDate(message.getId(), upperBound);
 			if (!versions.isEmpty()) {
 				previousMessageContent = versions.get(versions.size() - 1).getContent();
 			}

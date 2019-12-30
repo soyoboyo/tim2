@@ -11,7 +11,6 @@ import org.tim.entities.Project;
 import org.tim.entities.Translation;
 import org.tim.repositories.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public abstract class SpringTestsCustomExtension {
     protected TranslationVersionRepository translationVersionRepository;
 
     @Autowired
-    protected MessageVersionRepository messageVersionRepository;
+    protected MessageHistoryRepository messageHistoryRepository;
 
     @BeforeEach
     public void prepareDatabaseForTests() {
@@ -49,7 +48,7 @@ public abstract class SpringTestsCustomExtension {
 
     public void clear() {
         translationVersionRepository.deleteAll();
-		messageVersionRepository.deleteAll();
+		messageHistoryRepository.deleteAll();
         translationRepository.deleteAll();
         messageRepository.deleteAll();
         translationAgencyRepository.deleteAll();

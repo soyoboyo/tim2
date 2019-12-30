@@ -2,23 +2,20 @@ package org.tim.services;
 
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.tim.DTOs.NewMessageRequest;
-import org.tim.annotations.Done;
-import org.tim.annotations.ToDo;
+import org.tim.DTOs.CreateMessageRequest;
 import org.tim.entities.Message;
-import org.tim.entities.MessageVersion;
+import org.tim.entities.MessageHistory;
 import org.tim.entities.Project;
 import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageRepository;
-import org.tim.repositories.MessageVersionRepository;
+import org.tim.repositories.MessageHistoryRepository;
 import org.tim.repositories.ProjectRepository;
 
 import java.util.Date;
+import java.util.List;
 
-@Done
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -26,30 +23,28 @@ public class MessageService {
 
 	private final MessageRepository messageRepository;
 	private final ProjectRepository projectRepository;
-	private final MessageVersionRepository messageVersionRepository;
-	private final ModelMapper mapper = new ModelMapper();
+	private final MessageHistoryRepository messageHistoryRepository;
 
-	@ToDo("Who created this message")
-	public Message createMessage(NewMessageRequest messageRequest) {
+	public Message createMessage(CreateMessageRequest messageRequest, String createdBy) {
 		getAndValidateProjectById(messageRequest.getProjectId());
 
 		Message message = new Message();
-		mapRequestToMessage(messageRequest, message);
+		mapRequestToMessage(messageRequest, message, createdBy);
 
 		return messageRepository.save(message);
 	}
 
-	@ToDo("Who created this message")
-	public Message updateMessage(NewMessageRequest messageRequest, String messageId) {
+	public Message updateMessage(CreateMessageRequest messageRequest, String messageId, String updatedBy) {
 		getAndValidateProjectById(messageRequest.getProjectId());
 		Message message = getAndValidateMessageById(messageId);
-		saveMessageVersion(message);
+
+		saveMessageToHistory(message);
 
 		if (message.isArchived()) {
 			throw new EntityNotFoundException("message");
 		}
 
-		mapRequestToMessage(messageRequest, message);
+		mapRequestToMessage(messageRequest, message, updatedBy);
 		message.setUpdateDate(new Date());
 
 		return messageRepository.save(message);
@@ -60,10 +55,10 @@ public class MessageService {
 				.orElseThrow(() -> new EntityNotFoundException("project"));
 	}
 
-	private Message mapRequestToMessage(NewMessageRequest messageRequest, Message message) {
+	private Message mapRequestToMessage(CreateMessageRequest messageRequest, Message message, String createdBy) {
 		message.setKey(messageRequest.getKey());
 		message.setContent(messageRequest.getContent());
-		//message.setCreatedBy("");
+		message.setCreatedBy(createdBy);
 		message.setDescription(messageRequest.getDescription());
 		message.setProjectId(messageRequest.getProjectId());
 		return message;
@@ -71,8 +66,10 @@ public class MessageService {
 
 	public Message archiveMessage(String messageId) {
 		Message message = getAndValidateMessageById(messageId);
-		saveMessageVersion(message);
+
+		saveMessageToHistory(message);
 		message.setArchived(true);
+
 		return messageRepository.save(message);
 	}
 
@@ -81,10 +78,19 @@ public class MessageService {
 				.orElseThrow(() -> new EntityNotFoundException("message"));
 	}
 
-	private void saveMessageVersion(Message message) {
-		MessageVersion messageVersion = mapper.map(message, MessageVersion.class);
-		messageVersion.setMessageId(message.getId());
-		messageVersionRepository.save(messageVersion);
+	private void saveMessageToHistory(Message message) {
+		MessageHistory messageHistory = new MessageHistory();
+		messageHistory.setKey(message.getKey());
+		messageHistory.setContent(message.getContent());
+		messageHistory.setDescription(message.getDescription());
+		messageHistory.setUpdateDate(message.getUpdateDate());
+		messageHistory.setCreatedBy(message.getCreatedBy());
+		messageHistory.setMessageId(message.getId());
+		messageHistoryRepository.save(messageHistory);
+	}
+
+	public List<MessageHistory> getMessageHistoryByOriginalId(String originalId) {
+		return messageHistoryRepository.findAllByMessageIdOrderByUpdateDateDesc(originalId);
 	}
 
 }

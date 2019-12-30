@@ -27,7 +27,7 @@ public class CIExportsController {
 					" with standards Spring properties file.")
 	@GetMapping(path = MESSAGE + GET_BY_LOCALE)
 	public ResponseEntity<String> exportAllReadyTranslationsByProjectAndByLocale(@PathVariable String projectId, @RequestParam String locale) {
-		return ResponseEntity.ok(ciExportsService.exportAllReadyTranslationsByProjectAndByLocale(projectId, locale));
+		return ResponseEntity.ok(ciExportsService.exportAllReadyTranslations(projectId, locale));
 	}
 
 	@Done

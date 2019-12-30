@@ -11,7 +11,7 @@ import javax.annotation.PreDestroy;
 public class DatabaseDestructor {
 
 	private final MessageRepository messageRepository;
-	private final MessageVersionRepository messageVersionRepository;
+	private final MessageHistoryRepository messageHistoryRepository;
 	private final ProjectRepository projectRepository;
 	private final TranslationAgencyRepository translationAgencyRepository;
 	private final TranslationRepository translationRepository;
@@ -20,7 +20,7 @@ public class DatabaseDestructor {
 	@PreDestroy
 	public void destroyDatabase() {
 		messageRepository.deleteAll();
-		messageVersionRepository.deleteAll();
+		messageHistoryRepository.deleteAll();
 		projectRepository.deleteAll();
 		translationAgencyRepository.deleteAll();
 		translationRepository.deleteAll();

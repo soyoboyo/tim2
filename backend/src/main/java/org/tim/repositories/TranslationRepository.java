@@ -12,9 +12,9 @@ import java.util.Set;
 @Repository
 public interface TranslationRepository extends ElasticsearchRepository<Translation, String> {
 
-	List<Translation> findTranslationsByLocaleAndProjectIdAndIsValidTrue(Locale locale, String projectId);
-
 	List<Translation> findTranslationsByLocaleInAndProjectIdAndMessageIdIn(Set<Locale> locale, String projectId, Set<String> messageId);
+
+	List<Translation> findTranslationsByLocaleAndProjectIdAndIsValidTrue(Locale locale, String projectId);
 
 	Optional<Translation> findTranslationsByLocaleAndMessageId(Locale locale, String messageId);
 
@@ -23,4 +23,8 @@ public interface TranslationRepository extends ElasticsearchRepository<Translati
 	List<Translation> findTranslationsByMessageId(String messageId);
 
 	List<Translation> findAllByMessageId(String messageId);
+
+	default List<Translation> findTranslationsToMessages(String projectId, Set<String> messageId, Set<Locale> locale) {
+		return findTranslationsByLocaleInAndProjectIdAndMessageIdIn(locale, projectId, messageId);
+	}
 }

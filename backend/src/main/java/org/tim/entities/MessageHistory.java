@@ -1,21 +1,18 @@
 
 package org.tim.entities;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.Date;
 
-@Document(indexName = "message-version")
+@Document(indexName = "message-history")
 @Data
 @NoArgsConstructor
-public class MessageVersion {
+public class MessageHistory {
 
 	@Id
 	@Setter(AccessLevel.NONE)
@@ -36,8 +33,6 @@ public class MessageVersion {
 	private String createdBy;
 
 	@NotNull
-	private Boolean isArchived;
-
-	@NotNull
 	String messageId;
+
 }

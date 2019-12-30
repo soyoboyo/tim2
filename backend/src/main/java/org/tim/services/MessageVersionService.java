@@ -3,10 +3,9 @@ package org.tim.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.tim.entities.MessageVersion;
-import org.tim.repositories.MessageVersionRepository;
+import org.tim.entities.MessageHistory;
+import org.tim.repositories.MessageHistoryRepository;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,17 +14,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageVersionService {
 
-	private final MessageVersionRepository messageVersionRepository;
 
-	public List<MessageVersion> getMessageVersionsByOriginalId(String originalId) {
-		return messageVersionRepository.findAllByMessageIdOrderByUpdateDateDesc(originalId);
+	//TODO DO WYWALENIA !!!
+
+
+	private final MessageHistoryRepository messageHistoryRepository;
+
+	public List<MessageHistory> getMessageVersionsByMessageIdAndUpdateDate(String messageId, Date updateDate) {
+		return messageHistoryRepository.findAllByMessageIdAndUpdateDateBeforeOrderByUpdateDateDesc(messageId, updateDate);
 	}
 
-	public List<MessageVersion> getMessageVersionsByMessageIdAndUpdateDate(String messageId, Date updateDate) {
-		return messageVersionRepository.findAllByMessageIdAndUpdateDateBeforeOrderByUpdateDateDesc(messageId, updateDate);
-	}
-
-	public List<MessageVersion> getMessageVersionsByMessageIdAndUpdateDateBetween(String messageId, Date upperBound, Date lowerBound) {
-		return messageVersionRepository.findAllByMessageIdAndUpdateDateBeforeAndUpdateDateAfterOrderByUpdateDateDesc(messageId, upperBound, lowerBound);
+	public List<MessageHistory> getMessageVersionsByMessageIdAndUpdateDateBetween(String messageId, Date upperBound, Date lowerBound) {
+		return messageHistoryRepository.findAllByMessageIdAndUpdateDateBeforeAndUpdateDateAfterOrderByUpdateDateDesc(messageId, upperBound, lowerBound);
 	}
 }

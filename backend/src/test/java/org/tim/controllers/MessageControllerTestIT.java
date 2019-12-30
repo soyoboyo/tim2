@@ -2,21 +2,18 @@ package org.tim.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.tim.DTOs.NewMessageRequest;
+import org.tim.DTOs.CreateMessageRequest;
 import org.tim.configuration.SpringTestsCustomExtension;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.services.MessageService;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -51,12 +48,12 @@ public class MessageControllerTestIT extends SpringTestsCustomExtension {
     @Test
     public void whenValidMessageIsGivingForCreationThenMessageGoesToService() throws Exception {
         //given
-        NewMessageRequest messageRequest = new NewMessageRequest();
+        CreateMessageRequest messageRequest = new CreateMessageRequest();
         messageRequest.setProjectId(project.getId());
         messageRequest.setContent("content");
         messageRequest.setKey("key");
         String jsonRequest = mapper.writeValueAsString(messageRequest);
-        when(messageService.createMessage(messageRequest)).thenReturn(message);
+        //when(messageService.createMessage(messageRequest)).thenReturn(message);
         //when
         mockMvc.perform(post(BASE_URL + API_VERSION + MESSAGE + CREATE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -69,7 +66,7 @@ public class MessageControllerTestIT extends SpringTestsCustomExtension {
     @Test
     public void whenInvalidMessageIsGivingForCreationThenBadRequestIsReturned() throws Exception {
         //given
-        NewMessageRequest messageRequest = new NewMessageRequest();
+        CreateMessageRequest messageRequest = new CreateMessageRequest();
         String jsonRequest = mapper.writeValueAsString(messageRequest);
         //when
         mockMvc.perform(post(BASE_URL + API_VERSION + MESSAGE + CREATE)
@@ -83,13 +80,13 @@ public class MessageControllerTestIT extends SpringTestsCustomExtension {
     @Test
     public void whenValidMessageIsGivingForUpdateThenMessageGoesToService() throws Exception {
         //given
-        NewMessageRequest messageRequest = new NewMessageRequest();
+        CreateMessageRequest messageRequest = new CreateMessageRequest();
         messageRequest.setProjectId(project.getId());
         messageRequest.setContent("content");
         messageRequest.setKey("key");
         String jsonRequest = mapper.writeValueAsString(messageRequest);
         message.setContent("updated_content");
-        when(messageService.updateMessage(messageRequest, message.getId())).thenReturn(message);
+       // when(messageService.updateMessage(messageRequest, message.getId())).thenReturn(message);
         //when
         mockMvc.perform(post(BASE_URL + API_VERSION + MESSAGE + "/update/" + message.getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -102,9 +99,9 @@ public class MessageControllerTestIT extends SpringTestsCustomExtension {
     @Test
     public void whenInvalidMessageIsGivingForUpdateThenBadRequestIsReturned() throws Exception {
         //given
-        NewMessageRequest messageRequest = new NewMessageRequest();
+        CreateMessageRequest messageRequest = new CreateMessageRequest();
         String jsonRequest = mapper.writeValueAsString(messageRequest);
-        when(messageService.updateMessage(messageRequest, message.getId())).thenReturn(message);
+       // when(messageService.updateMessage(messageRequest, message.getId())).thenReturn(message);
         //when
         mockMvc.perform(post(BASE_URL + API_VERSION + MESSAGE + "/update/" + message.getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

@@ -25,9 +25,8 @@ public class CIExportsService {
 	private final ProjectRepository projectRepository;
 	private final LocaleTranslator localeTranslator;
 
-	public String exportAllReadyTranslationsByProjectAndByLocale(String projectId, String locale) {
-		Project project = projectRepository.findById(projectId)
-				.orElseThrow(() -> new EntityNotFoundException("project"));
+	public String exportAllReadyTranslations(String projectId, String locale) {
+		Project project = getAndValidateProjectById(projectId);
 		List<Message> messages = messageRepository.findAllByProjectId(projectId);
 
 		Locale orderedLocale = getAndValidateLocale(project, locale);
@@ -62,6 +61,11 @@ public class CIExportsService {
 		return sb.toString();
 	}
 
+	private Project getAndValidateProjectById(String projectId) {
+		return projectRepository.findById(projectId)
+				.orElseThrow(() -> new EntityNotFoundException("project"));
+	}
+
 	private Locale getAndValidateLocale(Project project, String localeAsStr) {
 		Locale locale = localeTranslator.execute(localeAsStr);
 		if (project.getTargetLocales().contains(locale)) {
@@ -84,7 +88,7 @@ public class CIExportsService {
 	}
 
 	private Map<String, String> findTranslationsToMessages(Set<String> messagesIds, Set<Locale> locales, String projectId) {
-		List<Translation> translations = translationRepository.findTranslationsByLocaleInAndProjectIdAndMessageIdIn(locales, projectId, messagesIds);
+		List<Translation> translations = translationRepository.findTranslationsToMessages(projectId, messagesIds, locales);
 		return translations
 				.parallelStream()
 				.collect(Collectors.toMap(Translation::getMessageId, Translation::getContent));
