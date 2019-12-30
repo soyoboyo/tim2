@@ -3,20 +3,17 @@ package org.tim.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tim.DTOs.output.LocaleResponse;
-import org.tim.annotations.Done;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
 import org.tim.exceptions.EntityNotFoundException;
+import org.tim.exceptions.ValidationException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 import org.tim.translators.LocaleTranslator;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,29 +25,91 @@ public class CIExportsService {
 	private final ProjectRepository projectRepository;
 	private final LocaleTranslator localeTranslator;
 
-	@Done
 	public String exportAllReadyTranslationsByProjectAndByLocale(String projectId, String locale) {
-		Locale orderedLocale = localeTranslator.execute(locale);
-
 		Project project = projectRepository.findById(projectId)
 				.orElseThrow(() -> new EntityNotFoundException("project"));
+		List<Message> messages = messageRepository.findAllByProjectId(projectId);
 
-		List<Message> messages = messageRepository.findActiveMessagesByProject(projectId);
+		Locale orderedLocale = getAndValidateLocale(project, locale);
+		Map<String, Message> messagesMappedWithId = mapMessagesWithIds(messages);
+		Set<String> massagesWithMissingTranslations = getAllMessagesIds(messages);
 
-		Map<Locale, Locale> replaceableLocaleToItsSubstitute = project.getReplaceableLocaleToItsSubstitute();
+		Set<Locale> replaceableLocales = new HashSet<>(Arrays.asList(orderedLocale));
+		Map<String, String> messagesWithTranslations = new HashMap<>();
 
-		List<Translation> translations = translationRepository.findTranslationsByLocaleAndProjectId(orderedLocale, projectId);
-		if (translations.isEmpty()) {
-			for (Map.Entry<Locale, Locale> entry : replaceableLocaleToItsSubstitute.entrySet()) {
-				if (entry.getKey().equals(orderedLocale))
-					translations = translationRepository.findTranslationsByLocaleAndProjectId(
-							entry.getValue(), projectId);
+		Map<String, String> result = findTranslationsToMessages(massagesWithMissingTranslations, replaceableLocales, projectId);
+		while (result.size() > 0) {
+			Set<String> missingTranslations = massagesWithMissingTranslations;
+			massagesWithMissingTranslations = new TreeSet<>();
+
+			for (String messageId : missingTranslations) {
+				if (result.get(messageId) != null) {
+					messagesWithTranslations.put(messagesMappedWithId.get(messageId).getKey(), result.get(messageId));
+				} else {
+					massagesWithMissingTranslations.add(messageId);
+				}
 			}
+
+			replaceableLocales = getNexLayerOfReplaceableLocales(project, replaceableLocales);
+			if (massagesWithMissingTranslations.isEmpty() || replaceableLocales.isEmpty()) {
+				break;
+			}
+
+			result = findTranslationsToMessages(massagesWithMissingTranslations, replaceableLocales, projectId);
 		}
-		return getAllAvailableTranslationToMessage(translations, messages, orderedLocale);
+
+		StringBuilder sb = buildPropertiesFile(locale, messagesWithTranslations);
+		return sb.toString();
 	}
 
-	@Done
+	private Locale getAndValidateLocale(Project project, String localeAsStr) {
+		Locale locale = localeTranslator.execute(localeAsStr);
+		if (project.getTargetLocales().contains(locale)) {
+			return locale;
+		}
+		throw new ValidationException("Given locale not exists in project's target locales");
+	}
+
+	private Map<String, Message> mapMessagesWithIds(List<Message> messages) {
+		return messages
+				.parallelStream()
+				.collect(Collectors.toMap(Message::getId, m -> m));
+	}
+
+	private Set<String> getAllMessagesIds(List<Message> messages) {
+		return messages
+				.parallelStream()
+				.map(Message::getId)
+				.collect(Collectors.toSet());
+	}
+
+	private Map<String, String> findTranslationsToMessages(Set<String> messagesIds, Set<Locale> locales, String projectId) {
+		List<Translation> translations = translationRepository.findTranslationsByLocaleInAndProjectIdAndMessageIdIn(locales, projectId, messagesIds);
+		return translations
+				.parallelStream()
+				.collect(Collectors.toMap(Translation::getMessageId, Translation::getContent));
+	}
+
+	private Set<Locale> getNexLayerOfReplaceableLocales(Project project, Set<Locale> substituteLocales) {
+		Set<Locale> replaceableLocales = new HashSet<>();
+		for (Locale locale : substituteLocales) {
+			if (project.getSubstituteLocale(locale).isPresent()) {
+				replaceableLocales.add(project.getSubstituteLocale(locale).get());
+			}
+		}
+		return replaceableLocales;
+	}
+
+	private StringBuilder buildPropertiesFile(String locale, Map<String, String> messagesWithTranslations) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("#Messages for locale: " + locale + "\n");
+		sb.append("#" + java.time.LocalDate.now() + "\n");
+		for (Map.Entry<String, String> translation : messagesWithTranslations.entrySet()) {
+			sb.append(translation.getKey() + "=" + translation.getValue() + "\n");
+		}
+		return sb;
+	}
+
 	public List<LocaleResponse> getAllSupportedLocalesInProject(String projectId) {
 		Project project = projectRepository.findById(projectId)
 				.orElseThrow(() -> new EntityNotFoundException("project"));
@@ -64,36 +123,4 @@ public class CIExportsService {
 				.collect(Collectors.toList());
 	}
 
-	private String getAllAvailableTranslationToMessage(List<Translation> translations,
-													   List<Message> messages,
-													   Locale locale) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("#Messages for locale: " + locale + "\n");
-		sb.append("#" + java.time.LocalDate.now() + "\n");
-
-		Map<String, Message> existingMessages = new HashMap<>();
-		for (Message m : messages) {
-			existingMessages.put(m.getId(), m);
-		}
-		for (Translation t : translations) {
-
-			//TODO pobieranie messagow jest juz wykonane w poprzednim kroku. Do optymalizacji w przyszlosci!
-			Message message = messageRepository.findById(t.getMessageId())
-					.orElseThrow(() -> new EntityNotFoundException("message"));
-			if (existingMessages.containsKey(t.getMessageId())) {
-				String value = "";
-				if (message.isTranslationOutdated(t)) {
-					value = message.getContent();
-				} else {
-					value = t.getContent();
-				}
-				sb.append(message.getKey() + "=" + value + "\n");
-				existingMessages.remove(message.getId());
-			}
-		}
-		for (Message m : existingMessages.values()) {
-			sb.append(m.getKey() + "=" + m.getContent() + "\n");
-		}
-		return sb.toString();
-	}
 }

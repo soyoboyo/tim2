@@ -3,6 +3,7 @@ package org.tim.repositories;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 import org.tim.entities.Message;
+import org.tim.entities.Project;
 
 import java.util.List;
 

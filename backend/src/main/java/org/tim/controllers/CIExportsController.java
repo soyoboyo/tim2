@@ -19,7 +19,6 @@ public class CIExportsController {
 
 	private final CIExportsService ciExportsService;
 
-
 	@Done
 	@ApiOperation(
 			value = "Get messages with translations",
