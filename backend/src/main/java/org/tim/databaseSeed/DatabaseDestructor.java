@@ -15,7 +15,7 @@ public class DatabaseDestructor {
 	private final ProjectRepository projectRepository;
 	private final TranslationAgencyRepository translationAgencyRepository;
 	private final TranslationRepository translationRepository;
-	private final TranslationVersionRepository translationVersionRepository;
+	private final TranslationHistoryRepository translationHistoryRepository;
 
 	@PreDestroy
 	public void destroyDatabase() {
@@ -24,6 +24,6 @@ public class DatabaseDestructor {
 		projectRepository.deleteAll();
 		translationAgencyRepository.deleteAll();
 		translationRepository.deleteAll();
-		translationVersionRepository.deleteAll();
+		translationHistoryRepository.deleteAll();
 	}
 }

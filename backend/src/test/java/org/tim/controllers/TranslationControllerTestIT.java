@@ -61,7 +61,7 @@ public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 
 	@Test
 	public void createNewTranslation_DataCorrect_Success() throws Exception {
-		when(translationService.createTranslation(any(), any())).thenReturn(expectedTranslation);
+		//when(translationService.createTranslation(any(), any())).thenReturn(expectedTranslation);
 		String jsonRequest = mapper.writeValueAsString(translationDTO);
 		mockMvc.perform(post(BASE_URL + TRANSLATION + CREATE)
 				.contentType(MediaType.APPLICATION_JSON)

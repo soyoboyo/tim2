@@ -10,15 +10,15 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Locale;
 
-@Document(indexName = "translation-version")
+@Document(indexName = "translation-history")
 @Data
-public class TranslationVersion {
+public class TranslationHistory {
 
 	@Id
 	@Setter(AccessLevel.NONE)
 	private String id;
 
-	public TranslationVersion() {
+	public TranslationHistory() {
 		updateDate = new Date();
 	}
 

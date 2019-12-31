@@ -36,7 +36,7 @@ public abstract class SpringTestsCustomExtension {
     protected TranslationRepository translationRepository;
 
     @Autowired
-    protected TranslationVersionRepository translationVersionRepository;
+    protected TranslationHistoryRepository translationHistoryRepository;
 
     @Autowired
     protected MessageHistoryRepository messageHistoryRepository;
@@ -47,7 +47,7 @@ public abstract class SpringTestsCustomExtension {
     }
 
     public void clear() {
-        translationVersionRepository.deleteAll();
+        translationHistoryRepository.deleteAll();
 		messageHistoryRepository.deleteAll();
         translationRepository.deleteAll();
         messageRepository.deleteAll();
@@ -115,7 +115,7 @@ public abstract class SpringTestsCustomExtension {
                 .collect(Collectors.toList());
         for(Message message : messages){
             Translation translation = new Translation();
-            translation.setIsValid(true);
+            translation.setValid(true);
             translation.setLocale(Locale.ENGLISH);
             translation.setContent("content");
             //translation.setMessage(message);

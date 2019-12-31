@@ -12,7 +12,7 @@ import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
-import org.tim.repositories.TranslationVersionRepository;
+import org.tim.repositories.TranslationHistoryRepository;
 import org.tim.translators.LocaleTranslator;
 
 import java.util.*;
@@ -25,7 +25,7 @@ public class MessageForTranslatorService {
 	private final MessageRepository messageRepository;
 	private final ProjectRepository projectRepository;
 	private final TranslationRepository translationRepository;
-	private final TranslationVersionRepository translationVersionRepository;
+	private final TranslationHistoryRepository translationHistoryRepository;
 	private final MessageVersionService messageVersionService;
 	private final LocaleTranslator localeTranslator;
 
@@ -83,14 +83,14 @@ public class MessageForTranslatorService {
 	}
 
 	private String getPreviousMessageContent(MessageForTranslator message) {
-		List<TranslationVersion> translationVersions = translationVersionRepository.findAllByTranslationIdSorted(message.getTranslation().getId());
+		List<TranslationHistory> translationHistories = translationHistoryRepository.findAllByTranslationIdSorted(message.getTranslation().getId());
 
 
 		Date upperBound = message.getTranslation().getUpdateDate();
 
 		String previousMessageContent = "SOMETHING IS WRONG";
-		if (!translationVersions.isEmpty()) {
-			Date lowerBound = translationVersions.get(0).getUpdateDate();
+		if (!translationHistories.isEmpty()) {
+			Date lowerBound = translationHistories.get(0).getUpdateDate();
 			List<MessageHistory> versions = messageVersionService.getMessageVersionsByMessageIdAndUpdateDateBetween(message.getId(), upperBound, lowerBound);
 			if (!versions.isEmpty()) {
 				previousMessageContent = versions.get(0).getContent();
@@ -114,7 +114,7 @@ public class MessageForTranslatorService {
 			replaceableLocale = replaceableLocaleToItsSubstitute.get(replaceableLocale);
 			if (replaceableLocale != null) {
 				sub = translationRepository.findTranslationByLocaleAndMessageId(replaceableLocale, messageId).orElse(null);
-				if (sub != null && sub.getIsValid())
+				if (sub != null && sub.isValid())
 					return mapper.map(sub, TranslationForTranslator.class);
 				continue;
 			}

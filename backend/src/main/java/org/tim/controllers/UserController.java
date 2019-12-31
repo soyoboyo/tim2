@@ -7,13 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tim.DTOs.UserPrincipal;
 import org.tim.services.UserService;
-import org.tim.utils.Mapping;
 
 import java.security.Principal;
 
+import static org.tim.utils.Mapping.GET;
+import static org.tim.utils.Mapping.USER;
+
 
 @RestController
-@RequestMapping(Mapping.USER)
+@RequestMapping(USER)
 @RequiredArgsConstructor
 public class UserController {
 
@@ -25,7 +27,7 @@ public class UserController {
 					"* username -> unique user name used to authenticate\n" +
 					"* role -> user role (ROLE_DEVELOPER or ROLE_TRANSLATOR).\n" +
 					"If user is not logged in then returns null.")
-	@GetMapping(Mapping.GET)
+	@GetMapping(GET)
 	public UserPrincipal getPrincipal(Principal principal) {
 		return userService.getUserPrincipal(principal);
 	}

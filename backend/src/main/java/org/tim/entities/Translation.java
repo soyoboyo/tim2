@@ -35,7 +35,7 @@ public class Translation {
 	@NotNull
 	private String projectId;
 
-	private Boolean isValid = true;
+	private boolean isValid = true;
 
 	private String createdBy;
 
