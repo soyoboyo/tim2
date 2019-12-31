@@ -1,6 +1,6 @@
 package org.tim.repositories;
 
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.tim.entities.Translation;
 
@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface TranslationRepository extends ElasticsearchRepository<Translation, String> {
+public interface TranslationRepository extends CrudRepository<Translation, String> {
 
 	List<Translation> findTranslationsByLocaleInAndProjectIdAndMessageIdIn(Set<Locale> locale, String projectId, Set<String> messageId);
 

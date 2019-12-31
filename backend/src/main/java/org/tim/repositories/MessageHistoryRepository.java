@@ -1,6 +1,6 @@
 package org.tim.repositories;
 
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.tim.entities.MessageHistory;
 
@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface MessageHistoryRepository extends ElasticsearchRepository<MessageHistory, String> {
+public interface MessageHistoryRepository extends CrudRepository<MessageHistory, String> {
 
 	List<MessageHistory> findAllByMessageIdOrderByUpdateDateDesc(String originalMessageId);
 
