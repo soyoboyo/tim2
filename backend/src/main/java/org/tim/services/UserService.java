@@ -10,12 +10,14 @@ import java.security.Principal;
 @Service
 public class UserService {
 
-    public UserPrincipal getUserPrincipal(Principal principal) {
-        if (principal == null)
-            return null;
+	public UserPrincipal getUserPrincipal(Principal principal) {
+		if (principal == null)
+			return null;
 
-        String currentUserName = principal.getName();
-        String currentUserRole = ((GrantedAuthority)((Authentication)principal).getAuthorities().toArray()[0]).getAuthority();
-        return new UserPrincipal(currentUserName, currentUserRole);
-    }
+		String currentUserName = principal.getName();
+		String currentUserRole = ((GrantedAuthority) ((Authentication) principal).getAuthorities().toArray()[0]).getAuthority();
+
+		return new UserPrincipal(currentUserName, currentUserRole);
+	}
+
 }

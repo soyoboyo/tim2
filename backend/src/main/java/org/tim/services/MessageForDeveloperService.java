@@ -34,6 +34,7 @@ public class MessageForDeveloperService {
 
 		List<MessageForDeveloperResponse> messagesForDeveloper = new ArrayList<>();
 
+		//TODO ACTIVE -> czyli chyba nie archived -> true
 		List<Message> messages = messageRepository.findActiveMessagesByProject(projectId);
 
 		ModelMapper mapper = new ModelMapper();

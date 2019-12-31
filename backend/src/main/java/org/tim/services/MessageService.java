@@ -3,21 +3,19 @@ package org.tim.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.CreateMessageRequest;
 import org.tim.entities.Message;
 import org.tim.entities.MessageHistory;
 import org.tim.entities.Project;
 import org.tim.exceptions.EntityNotFoundException;
-import org.tim.repositories.MessageRepository;
 import org.tim.repositories.MessageHistoryRepository;
+import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 
 import java.util.Date;
 import java.util.List;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class MessageService {
 
