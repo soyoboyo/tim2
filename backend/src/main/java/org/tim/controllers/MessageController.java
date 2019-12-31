@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.tim.DTOs.CreateMessageRequest;
+import org.tim.DTOs.input.CreateMessageRequest;
 import org.tim.entities.Message;
 import org.tim.entities.MessageHistory;
 import org.tim.services.MessageService;

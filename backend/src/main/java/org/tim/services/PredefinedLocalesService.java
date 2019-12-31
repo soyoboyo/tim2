@@ -2,14 +2,16 @@ package org.tim.services;
 
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 public class PredefinedLocalesService {
 
-	public TreeSet<String> getPredefinedLanguages() {
+	public Set<String> getPredefinedLanguages() {
 		Locale locales[] = Locale.getAvailableLocales();
-		TreeSet<String> languages = new TreeSet<>();
+		Set<String> languages = new TreeSet<>();
 		for (int i = 0; i < locales.length; i++) {
 			if (!(locales[i].getLanguage().isEmpty() || locales[i].getCountry().isEmpty())) {
 				if (locales[i].getLanguage().length() == 2) {
@@ -20,9 +22,9 @@ public class PredefinedLocalesService {
 		return languages;
 	}
 
-	public TreeSet<String> getPredefinedCounties() {
+	public Set<String> getPredefinedCounties() {
 		Locale locales[] = Locale.getAvailableLocales();
-		TreeSet<String> countries = new TreeSet<>();
+		Set<String> countries = new TreeSet<>();
 		for (int i = 0; i < locales.length; i++) {
 			if (!(locales[i].getLanguage().isEmpty() || locales[i].getCountry().isEmpty())) {
 				if (locales[i].getCountry().length() == 2) {
@@ -32,4 +34,5 @@ public class PredefinedLocalesService {
 		}
 		return countries;
 	}
+
 }

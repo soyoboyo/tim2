@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.tim.DTOs.CreateMessageRequest;
+import org.tim.DTOs.input.CreateMessageRequest;
 import org.tim.configuration.SpringTestsCustomExtension;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
