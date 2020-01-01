@@ -72,16 +72,18 @@ public class ProjectController {
 	@ApiOperation(
 			value = "Get projects for developer",
 			notes = "Endpoint works almost the same as -> get all projects.\n" +
-					"Information are easier readable on frontend layer")
+					"Information are easier to read on frontend layer")
 	@GetMapping(DEVELOPER + GET_ALL)
 	@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	public List<ProjectForDeveloperResponse> getAllProjectsForDeveloper() {
 		return projectService.getAllProjectsForDeveloper();
 	}
 
-	@Done
+	@ApiOperation(
+			value = "",
+			notes = "")
 	@GetMapping(DEVELOPER + AGGREGATE)
-	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
+	@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	public AggregatedInfoForDeveloper getAggregatedInfoAboutTranslationsInProject(@PathVariable String id) {
 		return aggregatedInfoService.getAggregatedInfoForDeveloper(id);
 	}
