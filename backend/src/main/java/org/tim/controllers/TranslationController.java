@@ -88,7 +88,7 @@ public class TranslationController {
 			notes = "Return history of change for translation of given originalId")
 	@PreAuthorize("hasRole('ROLE_TRANSLATOR')")
 	@GetMapping(VERSION)
-	public ResponseEntity<List<TranslationHistory>> getTranslationVersionsByOriginal(@PathVariable String originalId) {
+	public ResponseEntity<List<TranslationHistory>> getTranslationHistoryByOriginal(@PathVariable String originalId) {
 
 		return ResponseEntity.ok(translationService.getTranslationHistoryByParent(originalId));
 	}

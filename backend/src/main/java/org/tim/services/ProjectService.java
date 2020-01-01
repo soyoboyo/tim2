@@ -40,7 +40,6 @@ public class ProjectService {
 		return projectRepository.save(project);
 	}
 
-	@Done
 	@ToDo("Has developer access to project??," +
 			"What should happen to the translations when locale will be removed??")
 	public Project updateProject(NewProjectRequest projectRequest, String id) {
@@ -56,7 +55,6 @@ public class ProjectService {
 		return projectRepository.save(project);
 	}
 
-	@Done
 	private void mapProjectRequestToProject(NewProjectRequest projectRequest, Project project) {
 		project.setName(projectRequest.getName());
 		project.setSourceLocale(localeTranslator.execute(projectRequest.getSourceLocale()));
@@ -72,7 +70,6 @@ public class ProjectService {
 		}
 	}
 
-	@Done
 	private void validateProjectNameUniqueness(String projectName, Optional<String> actualName) {
 		Optional<Project> searchedProject = projectRepository.findByName(projectName);
 		if (searchedProject.isPresent() && (
@@ -82,45 +79,39 @@ public class ProjectService {
 	}
 
 	public List<ProjectForDeveloperResponse> getAllProjectsForDeveloper() {
-		List<Project> originalProjects = StreamSupport
-				.stream(projectRepository.findAll().spliterator(), false)
+		Iterable<Project> originalProjects = projectRepository.findAll();
+
+		return StreamSupport.stream(originalProjects.spliterator(), false)
+				.map(project -> mapProjectForDeveloper(project))
 				.collect(Collectors.toList());
+	}
 
-		List<ProjectForDeveloperResponse> projects = new ArrayList<>(originalProjects.size());
+	private ProjectForDeveloperResponse mapProjectForDeveloper(Project project) {
+		ProjectForDeveloperResponse projectForDeveloper = new ProjectForDeveloperResponse();
 
-		for (Project p : originalProjects) {
-			ProjectForDeveloperResponse projectForDeveloper = new ProjectForDeveloperResponse();
+		projectForDeveloper.setId(project.getId());
+		projectForDeveloper.setName(project.getName());
+		projectForDeveloper.setSourceLanguage(project.getSourceLocale().getLanguage());
+		projectForDeveloper.setSourceCountry(project.getSourceLocale().getCountry());
 
-			projectForDeveloper.setId(p.getId());
+		Set<String> newTargetLocales = project.getTargetLocales()
+				.stream()
+				.map(l -> l.toString())
+				.collect(Collectors.toSet());
+		projectForDeveloper.setTargetLocales(newTargetLocales);
+		Set<String> availableReplacements = new TreeSet<>(newTargetLocales);
+		availableReplacements.add(project.getSourceLocale().toString());
+		projectForDeveloper.setAvailableReplacements(availableReplacements);
 
-			projectForDeveloper.setName(p.getName());
-
-			projectForDeveloper.setSourceLanguage(p.getSourceLocale().getLanguage());
-			projectForDeveloper.setSourceCountry(p.getSourceLocale().getCountry());
-
-			Set<String> newTargetLocales = p.getTargetLocales()
-					.stream()
-					.map(l -> l.toString())
-					.collect(Collectors.toSet());
-			projectForDeveloper.setTargetLocales(newTargetLocales);
-
-			Set<String> availableReplacements = new TreeSet<>(newTargetLocales);
-			availableReplacements.add(p.getSourceLocale().toString());
-			projectForDeveloper.setAvailableReplacements(availableReplacements);
-
-			Map<String, String> substitutes = new HashMap<>(p.getReplaceableLocaleToItsSubstitute().size());
-
-			for (Map.Entry<Locale, Locale> entry : p.getReplaceableLocaleToItsSubstitute().entrySet()) {
-				String replaced = entry.getKey().toString();
-				String replacement = entry.getValue().toString();
-				substitutes.put(replaced, replacement);
-			}
-			projectForDeveloper.setSubstitutes(substitutes);
-
-			projects.add(projectForDeveloper);
+		Map<String, String> substitutes = new HashMap<>(project.getReplaceableLocaleToItsSubstitute().size());
+		for (Map.Entry<Locale, Locale> entry : project.getReplaceableLocaleToItsSubstitute().entrySet()) {
+			String replaced = entry.getKey().toString();
+			String replacement = entry.getValue().toString();
+			substitutes.put(replaced, replacement);
 		}
+		projectForDeveloper.setSubstitutes(substitutes);
 
-		return projects;
+		return projectForDeveloper;
 	}
 
 }

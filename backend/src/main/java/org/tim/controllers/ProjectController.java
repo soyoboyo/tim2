@@ -69,9 +69,12 @@ public class ProjectController {
 		return projectService.getAllProjects();
 	}
 
-	@Done
+	@ApiOperation(
+			value = "Get projects for developer",
+			notes = "Endpoint works almost the same as -> get all projects.\n" +
+					"Information are easier readable on frontend layer")
 	@GetMapping(DEVELOPER + GET_ALL)
-	//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
+	@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	public List<ProjectForDeveloperResponse> getAllProjectsForDeveloper() {
 		return projectService.getAllProjectsForDeveloper();
 	}

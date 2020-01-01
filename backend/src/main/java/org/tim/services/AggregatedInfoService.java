@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.output.AggregatedInfoForDeveloper;
 import org.tim.DTOs.output.AggregatedLocale;
+import org.tim.DTOs.output.LocaleResponse;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
@@ -32,8 +33,9 @@ public class AggregatedInfoService {
 		AggregatedInfoForDeveloper aggregatedInfo = new AggregatedInfoForDeveloper();
 		aggregatedInfo.setProjectId(projectId);
 
-		Map<String, Map<String, Integer>> translationStatusesByLocale = new HashMap<>();
-		Set<String> targetLocales = initEmptyLocaleMaps(projectId, translationStatusesByLocale);
+		Project project = getAndValidateProject(projectId);
+
+		Map<Locale, Map<String, Integer>> translationStatusesByLocale = initEmptyLocaleMaps(project );
 
 		// get all messages for project
 		List<Message> messages = new LinkedList<>(messageRepository.findActiveMessagesByProject(projectId));
@@ -45,12 +47,12 @@ public class AggregatedInfoService {
 			List<Translation> translations = translationRepository.findTranslationsByMessageId(m.getId());
 
 			// all translations for each locale are considered missing, unless proven otherwise
-			Set<String> missingLocales = new HashSet<>(targetLocales);
+			Set<Locale> missingLocales = new HashSet<>(project.getTargetLocales());
 
 			// for each translation check if it correct or (outdated or invalid)
 			// then remove it from missing, because it exists
 			for (Translation t : translations) {
-				String locale = t.getLocale().toString();
+				Locale locale = t.getLocale();
 				updateValuesOfCorrectOrIncorrectTranslations(m, t, locale, translationStatusesByLocale);
 				missingLocales.remove(locale);
 			}
@@ -61,7 +63,7 @@ public class AggregatedInfoService {
 
 		aggregatedInfo.setMessagesTotal(messages.size());
 
-		for (Map.Entry<String, Map<String, Integer>> locale : translationStatusesByLocale.entrySet()) {
+		for (Map.Entry<Locale, Map<String, Integer>> locale : translationStatusesByLocale.entrySet()) {
 			if (messages.size() > 0)
 				locale.getValue().put("coverage", locale.getValue().get("correct") * 100 / messages.size());
 			else
@@ -71,11 +73,11 @@ public class AggregatedInfoService {
 		return aggregatedInfo;
 	}
 
-	private List<AggregatedLocale> parseData(Map<String, Map<String, Integer>> translationStatusesByLocale) {
+	private List<AggregatedLocale> parseData(Map<Locale, Map<String, Integer>> translationStatusesByLocale) {
 		List<AggregatedLocale> aggregatedLocales = new ArrayList<>();
-		for (Map.Entry<String, Map<String, Integer>> locale : translationStatusesByLocale.entrySet()) {
+		for (Map.Entry<Locale, Map<String, Integer>> locale : translationStatusesByLocale.entrySet()) {
 			aggregatedLocales.add(new AggregatedLocale(
-					locale.getKey(),
+					locale.getKey().toString(),
 					locale.getValue().get(correct),
 					locale.getValue().get(incorrect),
 					locale.getValue().get(missing)));
@@ -87,7 +89,7 @@ public class AggregatedInfoService {
 	private void updateValuesOfCorrectOrIncorrectTranslations(
 			Message message,
 			Translation translation,
-			String locale, Map<String,
+			Locale locale, Map<Locale,
 			Map<String, Integer>> translationStatusesByLocale) {
 		if (message.isTranslationOutdated(translation) || !translation.isValid()) {
 			translationStatusesByLocale.get(locale).put(
@@ -102,8 +104,8 @@ public class AggregatedInfoService {
 		}
 	}
 
-	private void updateValuesOfMissingTranslations(Set<String> missingLocales, Map<String, Map<String, Integer>> translationStatusesByLocale) {
-		for (String missingLocale : missingLocales) {
+	private void updateValuesOfMissingTranslations(Set<Locale> missingLocales, Map<Locale, Map<String, Integer>> translationStatusesByLocale) {
+		for (Locale missingLocale : missingLocales) {
 			translationStatusesByLocale.get(missingLocale).put(
 					missing,
 					(translationStatusesByLocale.get(missingLocale).get(missing) + 1)
@@ -111,17 +113,21 @@ public class AggregatedInfoService {
 		}
 	}
 
-	private Set<String> initEmptyLocaleMaps(String projectId, Map<String, Map<String, Integer>> translationStatusesByLocale) {
-		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
-		Set<String> targetLocales = new HashSet<>();
-		for (Locale lw : project.getTargetLocales()) {
+	private Map<Locale, Map<String, Integer>> initEmptyLocaleMaps(Project project) {
+		Map<Locale, Map<String, Integer>> translationStatusesByLocale = new HashMap<>();
+		project.getTargetLocales().stream().forEach(targetLocale -> {
 			Map<String, Integer> details = new HashMap<>();
 			details.put(correct, 0);
 			details.put(incorrect, 0);
 			details.put(missing, 0);
-			translationStatusesByLocale.put(lw.toString(), details);
-			targetLocales.add(lw.toString());
-		}
-		return targetLocales;
+			translationStatusesByLocale.put(targetLocale, details);
+		});
+
+		return translationStatusesByLocale;
+	}
+
+	private Project getAndValidateProject(String projectId) {
+		return projectRepository.findById(projectId)
+				.orElseThrow(() -> new EntityNotFoundException("project"));
 	}
 }
