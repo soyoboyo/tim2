@@ -219,16 +219,10 @@
 				</configuration>
 				<executions>
 					<execution>
-						<phase>
-							test
-						</phase>
+						<phase>test</phase>
 						<goals>
-							<goal>
-								verify
-							</goal>
-							<goal>
-								integration-test
-							</goal>
+							<goal>verify</goal>
+							<goal>integration-test</goal>
 						</goals>
 					</execution>
 				</executions>

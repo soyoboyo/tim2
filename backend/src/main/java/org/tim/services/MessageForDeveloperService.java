@@ -54,7 +54,7 @@ public class MessageForDeveloperService {
 
 			Integer incorrectCount = 0;
 			for (TranslationForDeveloper t : mForDeveloper.getTranslations()) {
-				if (!t.getIsValid() || mForDeveloper.isTranslationOutdated(t)) {
+				if (!t.isValid() || mForDeveloper.isTranslationOutdated(t)) {
 					incorrectCount++;
 				}
 			}

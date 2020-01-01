@@ -31,7 +31,7 @@ public class TranslationForDeveloper {
 	@NonNull
 	private String messageId;
 
-	private Boolean isValid;
+	private boolean isValid;
 
 	private String createdBy;
 }
