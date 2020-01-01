@@ -1,5 +1,7 @@
 package org.tim.configuration;
 
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
 import org.tim.repositories.*;
+import pl.allegro.tech.embeddedelasticsearch.EmbeddedElastic;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +25,9 @@ import static io.github.benas.randombeans.api.EnhancedRandom.random;
 @ExtendWith({SpringExtension.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public abstract class SpringTestsCustomExtension {
+
+    @Autowired
+    protected EmbeddedElastic embeddedElastic;
 
     @Autowired
     protected ProjectRepository projectRepository;

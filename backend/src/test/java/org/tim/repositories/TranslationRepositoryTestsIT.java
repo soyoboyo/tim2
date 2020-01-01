@@ -2,7 +2,6 @@ package org.tim.repositories;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.tim.configuration.SpringJpaTestsCustomExtension;
 import org.tim.entities.Message;
 import org.tim.entities.Translation;
@@ -19,7 +18,6 @@ public class TranslationRepositoryTestsIT extends SpringJpaTestsCustomExtension 
     private MessageRepository messageRepository;
 
     @Test
-    @WithMockUser(username = "tran", password = "tran")
     public void testTranslationRepositoryFind() {
         //given
         Translation t = random(Translation.class);
@@ -33,7 +31,6 @@ public class TranslationRepositoryTestsIT extends SpringJpaTestsCustomExtension 
     }
 
     @Test
-    @WithMockUser(username = "tran", password = "tran")
     public void testTranslationRepositoryUpdate() {
         //given
         Translation t = random(Translation.class);
@@ -49,7 +46,6 @@ public class TranslationRepositoryTestsIT extends SpringJpaTestsCustomExtension 
     }
 
     @Test
-    @WithMockUser(username = "tran", password = "tran")
     public void testTranslationRepositoryDelete() {
         //given
         Translation t = random(Translation.class);
@@ -63,7 +59,6 @@ public class TranslationRepositoryTestsIT extends SpringJpaTestsCustomExtension 
     }
 
     @Test
-    @WithMockUser(username = "tran", password = "tran")
     void testTranslationRepository(){
         //given
         Translation t = random(Translation.class);

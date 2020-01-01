@@ -30,14 +30,21 @@ public class Project {
 	@NonNull
 	private Locale sourceLocale;
 
-	@Setter(AccessLevel.NONE)
-	final private Map<Locale, Locale> replaceableLocaleToItsSubstitute = new HashMap<>();
+	//@Setter(AccessLevel.NONE)
+	private Map<Locale, Locale> replaceableLocaleToItsSubstitute = new HashMap<>();
 
-	@Setter(AccessLevel.NONE)
-	final private Set<Locale> targetLocales = new HashSet<>();
+	//@Setter(AccessLevel.NONE)
+	private Set<Locale> targetLocales = new HashSet<>();
 
 	public void addTargetLocale(@NotNull List<Locale> locales) {
 		targetLocales.addAll(locales);
+	}
+
+	public void setReplaceableLocaleToItsSubstitute(Map<Locale, Locale> test) {
+		this.replaceableLocaleToItsSubstitute = test;
+	}
+	public void setTargetLocales(Set<Locale> test) {
+		this.targetLocales = test;
 	}
 
 	public void removeTargetLocale(@NotNull Locale locale) {
