@@ -14,6 +14,7 @@ import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
+import org.tim.utils.Pages;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ public class MessageForDeveloperService {
 		for (Message m : messages) {
 			MessageForDeveloperResponse mForDeveloper = mapper.map(m, MessageForDeveloperResponse.class);
 
-			List<Translation> translations = translationRepository.findAllByMessageId(m.getId());
+			List<Translation> translations = translationRepository.findAllByMessageId(m.getId(), Pages.all());
 
 			mForDeveloper.setTranslations(getTranslationsForDeveloper(translations));
 

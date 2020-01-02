@@ -11,6 +11,7 @@ import org.tim.exceptions.EntityNotFoundException;
 import org.tim.exceptions.ValidationException;
 import org.tim.repositories.ProjectRepository;
 import org.tim.translators.LocaleTranslator;
+import org.tim.utils.Pages;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,9 +26,7 @@ public class ProjectService {
 
 	@Done
 	public List<Project> getAllProjects() {
-		return StreamSupport.
-				stream(projectRepository.findAll().spliterator(), false)
-				.collect(Collectors.toList());
+		return projectRepository.findAll(Pages.all()).getContent();
 	}
 
 	@Done
@@ -79,9 +78,10 @@ public class ProjectService {
 	}
 
 	public List<ProjectForDeveloperResponse> getAllProjectsForDeveloper() {
-		Iterable<Project> originalProjects = projectRepository.findAll();
+		;
 
-		return StreamSupport.stream(originalProjects.spliterator(), false)
+		return projectRepository.findAll(Pages.all()).getContent()
+				.stream()
 				.map(project -> mapProjectForDeveloper(project))
 				.collect(Collectors.toList());
 	}

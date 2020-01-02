@@ -29,6 +29,7 @@ public class UserController {
 					"If user is not logged in then returns null.")
 	@GetMapping(GET)
 	public UserPrincipal getPrincipal(Principal principal) {
+
 		return userService.getUserPrincipal(principal);
 	}
 

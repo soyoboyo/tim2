@@ -11,6 +11,7 @@ import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageHistoryRepository;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
+import org.tim.utils.Pages;
 
 import java.util.Date;
 import java.util.List;
@@ -88,7 +89,7 @@ public class MessageService {
 	}
 
 	public List<MessageHistory> getMessageHistoryByOriginalId(String originalId) {
-		return messageHistoryRepository.findAllByMessageIdOrderByUpdateDateDesc(originalId);
+		return messageHistoryRepository.findAllByMessageIdOrderByUpdateDateDesc(originalId, Pages.all());
 	}
 
 }

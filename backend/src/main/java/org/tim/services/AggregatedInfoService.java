@@ -13,6 +13,7 @@ import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
+import org.tim.utils.Pages;
 
 import java.util.*;
 
@@ -44,7 +45,7 @@ public class AggregatedInfoService {
 		for (Message m : messages) {
 
 			// get all translations for message
-			List<Translation> translations = translationRepository.findTranslationsByMessageId(m.getId());
+			List<Translation> translations = translationRepository.findTranslationsByMessageId(m.getId(), Pages.all());
 
 			// all translations for each locale are considered missing, unless proven otherwise
 			Set<Locale> missingLocales = new HashSet<>(project.getTargetLocales());

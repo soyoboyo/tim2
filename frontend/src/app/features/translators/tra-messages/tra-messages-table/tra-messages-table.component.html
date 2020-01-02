@@ -48,8 +48,8 @@
 			<th mat-header-cell *matHeaderCellDef>Valid</th>
 			<td mat-cell *matCellDef="let message">
 				<p *ngIf="message.translation">
-					<mat-icon color="accent" *ngIf="message.translation.isValid">check_circle_outline</mat-icon>
-					<mat-icon color="warn" *ngIf="!message.translation.isValid">highlight_off</mat-icon>
+					<mat-icon color="accent" *ngIf="message.translation.valid">check_circle_outline</mat-icon>
+					<mat-icon color="warn" *ngIf="!message.translation.valid">highlight_off</mat-icon>
 				</p>
 				<p *ngIf="!message.translation">
 					-
@@ -83,7 +83,7 @@
 						<mat-icon>update</mat-icon>
 						Update
 					</button>
-					<button mat-button color="warn" (click)="invalidateTranslation(message)" *ngIf="selectedLocale && message.translation && message.translation.isValid" matTooltip="Invalidate translation if it's incorrect" matTooltipClass="tooltip-font">
+					<button mat-button color="warn" (click)="invalidateTranslation(message)" *ngIf="selectedLocale && message.translation && message.translation.valid" matTooltip="Invalidate translation if it's incorrect" matTooltipClass="tooltip-font">
 						<mat-icon>highlight_off</mat-icon>
 						Invalidate
 					</button>
@@ -112,7 +112,7 @@
 
 						<hr>
 
-						<div *ngIf="row.translation !== null && !row.translation.isValid">
+						<div *ngIf="row.translation !== null && !row.translation.valid">
 							<p class="warning">
 								Translation has been invalidated.
 							</p>

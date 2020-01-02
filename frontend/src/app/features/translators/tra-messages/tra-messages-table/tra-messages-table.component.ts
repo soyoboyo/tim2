@@ -110,7 +110,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 			return true;
 		} else {
 			if (row.translation !== null) {
-				if (row.translation.isValid === false) {
+				if (row.translation.valid === false) {
 					return true;
 				}
 			}

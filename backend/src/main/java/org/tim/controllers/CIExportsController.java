@@ -26,7 +26,10 @@ public class CIExportsController {
 					" then return translations from replaceable locales. Returned format is compatible" +
 					" with standards Spring properties file.")
 	@GetMapping(path = MESSAGE + GET_BY_LOCALE)
-	public ResponseEntity<String> exportAllReadyTranslationsByProjectAndByLocale(@PathVariable String projectId, @RequestParam String locale) {
+	public ResponseEntity<String> exportAllReadyTranslationsByProjectAndByLocale(
+			@PathVariable String projectId,
+			@RequestParam String locale) {
+
 		return ResponseEntity.ok(ciExportsService.exportAllReadyTranslations(projectId, locale));
 	}
 
@@ -35,7 +38,9 @@ public class CIExportsController {
 			value = "Get project locales",
 			notes = "Returns a list of all locales for the project with the given id.")
 	@GetMapping(path = LOCALES + GET_BY_PROJECT)
-	public ResponseEntity<List<LocaleResponse>> getAllSupportedLocalesInProject(@PathVariable String projectId) {
+	public ResponseEntity<List<LocaleResponse>> getAllSupportedLocalesInProject(
+			@PathVariable String projectId) {
+
 		return ResponseEntity.ok(ciExportsService.getAllSupportedLocalesInProject(projectId));
 	}
 

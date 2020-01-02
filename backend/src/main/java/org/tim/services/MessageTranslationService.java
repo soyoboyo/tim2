@@ -13,6 +13,7 @@ import org.tim.entities.Translation;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
+import org.tim.utils.Pages;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -77,7 +78,7 @@ public class MessageTranslationService {
 			messageMap.put(m.getId(), m);
 
 		List<Translation> translations =
-				translationRepository.findTranslationsByLocaleAndProjectIdAndIsValidTrue(locale, projectId)
+				translationRepository.findTranslationsByLocaleAndProjectIdAndIsValidTrue(locale, projectId, Pages.all())
 				.parallelStream()
 				.collect(Collectors.toList());
 		for (Translation t : translations) {

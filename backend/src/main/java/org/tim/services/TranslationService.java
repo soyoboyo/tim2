@@ -17,6 +17,7 @@ import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationHistoryRepository;
 import org.tim.repositories.TranslationRepository;
 import org.tim.translators.LocaleTranslator;
+import org.tim.utils.Pages;
 
 import java.util.Date;
 import java.util.List;
@@ -121,7 +122,7 @@ public class TranslationService {
 	}
 
 	public List<TranslationHistory> getTranslationHistoryByParent(String parentId) {
-		return translationHistoryRepository.findAllByTranslationIdOrderByUpdateDateDesc(parentId);
+		return translationHistoryRepository.findAllByTranslationIdSorted(parentId);
 	}
 
 }

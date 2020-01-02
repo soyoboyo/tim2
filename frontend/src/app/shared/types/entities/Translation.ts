@@ -4,7 +4,7 @@ export class Translation {
 	content: string;
 	locale: string;
 	updateDate: Date;
-	isValid: boolean;
+	valid: boolean;
 
 	messageId: number;
 
