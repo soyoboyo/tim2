@@ -35,6 +35,10 @@ public class Message {
 
 	@NotNull
 	private boolean isArchived = false;
+	// Format required by ElasticSearch
+	public boolean getIsArchived() {
+		return isArchived;
+	}
 
 	private String createdBy;
 

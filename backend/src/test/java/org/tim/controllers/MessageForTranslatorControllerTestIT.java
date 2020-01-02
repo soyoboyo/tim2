@@ -84,7 +84,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
         TranslationForTranslator translationForTranslator = new TranslationForTranslator();
         //translationForTranslator.setId(1L);
         translationForTranslator.setContent("content");
-        translationForTranslator.setIsValid(true);
+        translationForTranslator.setValid(true);
         translationForTranslator.setLocale("en_US");
         //translationForTranslator.setMessageId(1L);
         messageForTranslatorList.get(0).setSubstitute(translationForTranslator);
@@ -112,7 +112,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
         TranslationForTranslator translationForTranslator = new TranslationForTranslator();
        // translationForTranslator.setId(1L);
         translationForTranslator.setContent("content");
-        translationForTranslator.setIsValid(true);
+        translationForTranslator.setValid(true);
         translationForTranslator.setLocale("en_US");
         //translationForTranslator.setMessageId(1L);
         messageForTranslatorList.get(0).setSubstitute(translationForTranslator);
@@ -120,7 +120,7 @@ public class MessageForTranslatorControllerTestIT extends SpringTestsCustomExten
         translationForTranslator = new TranslationForTranslator();
        // translationForTranslator.setId(2L);
         translationForTranslator.setContent("org_content");
-        translationForTranslator.setIsValid(true);
+        translationForTranslator.setValid(true);
         translationForTranslator.setLocale("en_UK");
         //translationForTranslator.setMessageId(1L);
         messageForTranslatorList.get(0).setTranslation(translationForTranslator);

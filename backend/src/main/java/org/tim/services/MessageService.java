@@ -38,7 +38,7 @@ public class MessageService {
 
 		saveMessageToHistory(message);
 
-		if (message.isArchived()) {
+		if (message.getIsArchived()) {
 			throw new EntityNotFoundException("message");
 		}
 

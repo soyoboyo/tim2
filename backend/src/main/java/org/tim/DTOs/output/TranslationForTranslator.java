@@ -33,6 +33,6 @@ public class TranslationForTranslator {
 	@NonNull
 	private String messageId;
 
-	private Boolean isValid;
+	private boolean isValid;
 
 }

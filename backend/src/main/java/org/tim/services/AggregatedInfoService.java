@@ -91,7 +91,8 @@ public class AggregatedInfoService {
 			Translation translation,
 			Locale locale, Map<Locale,
 			Map<String, Integer>> translationStatusesByLocale) {
-		if (message.isTranslationOutdated(translation) || !translation.isValid()) {
+
+		if (message.isTranslationOutdated(translation) || !translation.getIsValid()) {
 			translationStatusesByLocale.get(locale).put(
 					incorrect,
 					(translationStatusesByLocale.get(locale).get(incorrect) + 1)

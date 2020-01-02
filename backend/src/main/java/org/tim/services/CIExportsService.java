@@ -27,7 +27,7 @@ public class CIExportsService {
 
 	public String exportAllReadyTranslations(String projectId, String locale) {
 		Project project = getAndValidateProjectById(projectId);
-		List<Message> messages = messageRepository.findAllByProjectId(projectId);
+		List<Message> messages = messageRepository.findActiveMessagesByProject(projectId);
 
 		Locale orderedLocale = getAndValidateLocale(project, locale);
 		Map<String, Message> messagesMappedWithId = mapMessagesWithIds(messages);

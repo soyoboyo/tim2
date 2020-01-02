@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.tim.DTOs.input.NewProjectRequest;
 import org.tim.DTOs.output.AggregatedInfoForDeveloper;
 import org.tim.DTOs.output.ProjectForDeveloperResponse;
-import org.tim.annotations.Done;
 import org.tim.entities.Project;
 import org.tim.services.AggregatedInfoService;
 import org.tim.services.ProjectService;
@@ -76,15 +75,18 @@ public class ProjectController {
 	@GetMapping(DEVELOPER + GET_ALL)
 	@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	public List<ProjectForDeveloperResponse> getAllProjectsForDeveloper() {
+
 		return projectService.getAllProjectsForDeveloper();
 	}
 
 	@ApiOperation(
-			value = "",
-			notes = "")
+			value = "Get aggregated information about translations",
+			notes = "Get information about correct, incorrect, invalid, " +
+					"outdated and missing translations to project with given Id.")
 	@GetMapping(DEVELOPER + AGGREGATE)
 	@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	public AggregatedInfoForDeveloper getAggregatedInfoAboutTranslationsInProject(@PathVariable String id) {
+
 		return aggregatedInfoService.getAggregatedInfoForDeveloper(id);
 	}
 
