@@ -24,7 +24,7 @@ public interface TranslationRepository extends CrudRepository<Translation, Strin
 
 	List<Translation> findTranslationsByMessageId(String messageId, Pageable pageable);
 
-	List<Translation> findAllByMessageId(String messageId, Pageable pageable);
+	List<Translation> findAllByProjectIdAndMessageIdIn(String projectId, Set<String> messageId, Pageable pageable);
 
 	default List<Translation> findTranslationsToMessages(String projectId, Set<String> messageId, Set<Locale> locale) {
 		return findTranslationsByLocaleInAndProjectIdAndMessageIdIn(locale, projectId, messageId, Pages.all());

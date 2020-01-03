@@ -1,12 +1,9 @@
 package org.tim.services;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.output.MessageForDeveloperResponse;
-import org.tim.DTOs.output.TranslationForDeveloper;
-import org.tim.annotations.Done;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
@@ -28,46 +25,21 @@ public class MessageForDeveloperService {
 	private final ProjectRepository projectRepository;
 	private final TranslationRepository translationRepository;
 
-
-	@Done
 	public List<MessageForDeveloperResponse> getMessagesForDeveloper(String projectId) {
 		Project project = getAndValidateProject(projectId);
 
-		List<MessageForDeveloperResponse> messagesForDeveloper = new ArrayList<>();
-
-		//TODO ACTIVE -> czyli chyba nie archived -> true
 		List<Message> messages = messageRepository.findActiveMessagesByProject(projectId);
+		Set<String> messagesIds = mapMessagesToIds(messages);
 
-		ModelMapper mapper = new ModelMapper();
+		List<Translation> translations = translationRepository.findAllByProjectIdAndMessageIdIn(projectId, messagesIds, Pages.all());
+		Map<String, List<Translation>> linkedTranslations = linkTranslationsWithMessageId(translations);
 
-		for (Message m : messages) {
-			MessageForDeveloperResponse mForDeveloper = mapper.map(m, MessageForDeveloperResponse.class);
+		List<MessageForDeveloperResponse> messagesForDeveloper = messages
+				.stream()
+				.map(message -> translateMessageForDeveloper(message, project, linkedTranslations.get(message.getId())))
+				.sorted(Comparator.comparing(m -> m.getUpdateDate().getTime()))
+				.collect(Collectors.toList());
 
-			List<Translation> translations = translationRepository.findAllByMessageId(m.getId(), Pages.all());
-
-			mForDeveloper.setTranslations(getTranslationsForDeveloper(translations));
-
-			mForDeveloper.setMissingLocales(getMissingLocales(project, translations));
-
-			Map<String, Integer> translationStatuses = new HashMap<>();
-
-			translationStatuses.put("missing", mForDeveloper.getMissingLocales().size());
-
-			Integer incorrectCount = 0;
-			for (TranslationForDeveloper t : mForDeveloper.getTranslations()) {
-				if (!t.isValid() || mForDeveloper.isTranslationOutdated(t)) {
-					incorrectCount++;
-				}
-			}
-			translationStatuses.put("incorrect", incorrectCount);
-			translationStatuses.put("correct", (translations.size() - incorrectCount));
-
-			mForDeveloper.setTranslationStatuses(translationStatuses);
-
-			messagesForDeveloper.add(mForDeveloper);
-		}
-
-		Collections.sort(messagesForDeveloper, Comparator.comparing(m -> m.getUpdateDate().getTime()));
 		return messagesForDeveloper;
 	}
 
@@ -76,30 +48,75 @@ public class MessageForDeveloperService {
 				.orElseThrow(() -> new EntityNotFoundException("project"));
 	}
 
-	private List<TranslationForDeveloper> getTranslationsForDeveloper(List<Translation> translations) {
-		ModelMapper mapper = new ModelMapper();
-		return translations
-				.parallelStream()
-				.map(translation -> mapper.map(translation, TranslationForDeveloper.class))
-				.collect(Collectors.toList());
+	private Set<String> mapMessagesToIds(List<Message> messages) {
+		return messages
+				.stream()
+				.map(Message::getId)
+				.collect(Collectors.toSet());
+	}
+
+	private Map<String, List<Translation>> linkTranslationsWithMessageId(List<Translation> translations) {
+		Map<String, List<Translation>> result = new HashMap<>();
+		translations.stream()
+				.forEach(translation -> {
+					if (result.get(translation.getMessageId()) == null) {
+						result.put(translation.getMessageId(), new LinkedList<>(Arrays.asList(translation)));
+					} else {
+						result.get(translation.getMessageId()).add(translation);
+					}
+				});
+		return result;
+	}
+
+	private MessageForDeveloperResponse translateMessageForDeveloper(Message message, Project project, List<Translation> translations) {
+		MessageForDeveloperResponse mForDeveloper = translateMessage(message);
+
+		if (translations == null) translations = Collections.emptyList();
+		mForDeveloper.setTranslations(translations);
+		mForDeveloper.setMissingLocales(getMissingLocales(project, translations));
+
+		Map<String, Integer> translationStatuses = new HashMap<>();
+		translationStatuses.put("missing", mForDeveloper.getMissingLocales().size());
+		Integer incorrectCount = countIncorrectTranslations(translations, message);
+		translationStatuses.put("incorrect", incorrectCount);
+		translationStatuses.put("correct", (translations.size() - incorrectCount));
+
+		mForDeveloper.setTranslationStatuses(translationStatuses);
+
+		return mForDeveloper;
+	}
+
+	private MessageForDeveloperResponse translateMessage(Message message) {
+		MessageForDeveloperResponse mfdResponse = new MessageForDeveloperResponse();
+		mfdResponse.setId(message.getId());
+		mfdResponse.setKey(message.getKey());
+		mfdResponse.setContent(message.getContent());
+		mfdResponse.setDescription(message.getDescription());
+		mfdResponse.setUpdateDate(message.getUpdateDate());
+		mfdResponse.setProjectId(message.getProjectId());
+		return mfdResponse;
 	}
 
 	private List<String> getMissingLocales(Project project, List<Translation> translations) {
-		List<String> missingLocales = new LinkedList<>();
-		Set<Locale> targetLocales = new HashSet<>(project.getTargetLocales());
-		for (Translation t : translations) {
-			Locale locale = t.getLocale();
-			for (Locale target : targetLocales) {
-				if (target.equals(locale)) {
-					targetLocales.remove(target);
-					break;
-				}
-			}
-		}
-		for (Locale locale : targetLocales) {
-			missingLocales.add(locale.toString());
-		}
-		Collections.sort(missingLocales);
-		return missingLocales;
+		Map<Locale, Translation> translationLinkedWithLocale = mapTranslationsWithLocales(translations);
+		return project.getTargetLocales()
+				.stream()
+				.filter(locale -> translationLinkedWithLocale.get(locale) == null)
+				.map(locale -> locale.toString())
+				.collect(Collectors.toList());
 	}
+
+	private Map<Locale, Translation> mapTranslationsWithLocales(List<Translation> translations) {
+		return translations
+				.stream()
+				.collect(Collectors.toMap(Translation::getLocale, t -> t));
+	}
+
+	private int countIncorrectTranslations(List<Translation> translations, Message message) {
+		return (int) translations
+				.stream()
+				.filter(translation -> !translation.getIsValid() || message.isTranslationOutdated(translation))
+				.count();
+	}
+
 }

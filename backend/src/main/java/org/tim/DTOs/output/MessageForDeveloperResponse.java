@@ -3,6 +3,7 @@ package org.tim.DTOs.output;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.tim.entities.Translation;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -33,13 +34,13 @@ public class MessageForDeveloperResponse {
 
 	private String projectId;
 
-	private List<TranslationForDeveloper> translations;
+	private List<Translation> translations;
 
 	private List<String> missingLocales;
 
 	private Map<String, Integer> translationStatuses = new HashMap<>();
 
-	public Boolean isTranslationOutdated(TranslationForDeveloper translation) {
+	public Boolean isTranslationOutdated(Translation translation) {
 		return !translation.getUpdateDate().after(this.getUpdateDate());
 	}
 }

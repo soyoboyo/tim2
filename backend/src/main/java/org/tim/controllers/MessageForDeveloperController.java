@@ -1,13 +1,14 @@
 package org.tim.controllers;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tim.DTOs.output.MessageForDeveloperResponse;
-import org.tim.annotations.Done;
 import org.tim.services.MessageForDeveloperService;
 
 import java.util.List;
@@ -16,15 +17,21 @@ import static org.tim.utils.Mapping.*;
 
 @RestController
 @RequiredArgsConstructor
-//@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 @RequestMapping(API_VERSION + MESSAGE + DEVELOPER)
 public class MessageForDeveloperController {
 
 	private final MessageForDeveloperService messageForDeveloperService;
 
-	@Done
+	@ApiOperation(
+			value = "Get messages for developer",
+			notes = "Get all messages for developer to project with given projectId." +
+					" Messages is easier to read on frontend. Additionally every message" +
+					" contain translations and information about how many translations are missing and which ones")
+	@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 	@GetMapping(GET_BY_PROJECT)
-	public ResponseEntity<List<MessageForDeveloperResponse>> getMessagesForDeveloper(@PathVariable String projectId) {
+	public ResponseEntity<List<MessageForDeveloperResponse>> getMessagesForDeveloper(
+			@PathVariable String projectId) {
+
 		return ResponseEntity.ok(messageForDeveloperService.getMessagesForDeveloper(projectId));
 	}
 
