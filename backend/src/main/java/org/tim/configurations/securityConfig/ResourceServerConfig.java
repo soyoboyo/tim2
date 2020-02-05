@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.tim.utils.Mapping;
+import org.tim.constants.Mappings;
 
 import java.io.IOException;
 
@@ -29,7 +29,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Value("${security.jwt.public-key}")
     private Resource jwtPublicKey;
 
-    private static final String ROOT_PATTERN = Mapping.API_VERSION + "/**";
+    private static final String ROOT_PATTERN = Mappings.API_VERSION + "/**";
 
     @Override
     public void configure(final ResourceServerSecurityConfigurer resources) {
@@ -44,7 +44,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, ROOT_PATTERN).access("#oauth2.hasScope('write')")
                 .antMatchers(HttpMethod.DELETE, ROOT_PATTERN).access("#oauth2.hasScope('write')")
                 .and().authorizeRequests().antMatchers(
-                        Mapping.SWAGGER_UI, Mapping.API_VERSION + Mapping.EXPORT_CI + "/**").permitAll()
+                        Mappings.SWAGGER_UI, Mappings.API_VERSION + Mappings.EXPORT_CI + "/**").permitAll()
                 .and().cors();
     }
 

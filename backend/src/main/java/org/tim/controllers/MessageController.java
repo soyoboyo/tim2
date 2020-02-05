@@ -14,7 +14,7 @@ import org.tim.services.MessageVersionService;
 import javax.validation.Valid;
 import java.util.List;
 
-import static org.tim.utils.Mapping.*;
+import static org.tim.constants.Mappings.*;
 
 @RestController
 @RequiredArgsConstructor

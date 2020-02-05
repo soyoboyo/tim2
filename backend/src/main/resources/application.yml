@@ -1,3 +1,8 @@
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
 security:
   jwt:
     public-key: classpath:public.txt

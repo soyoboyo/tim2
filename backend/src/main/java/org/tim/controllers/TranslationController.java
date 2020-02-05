@@ -16,7 +16,7 @@ import org.tim.validators.DTOValidator;
 import javax.validation.Valid;
 import java.util.List;
 
-import static org.tim.utils.Mapping.*;
+import static org.tim.constants.Mappings.*;
 
 @RestController
 @RequiredArgsConstructor
