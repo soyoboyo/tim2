@@ -1,6 +1,7 @@
 package org.tim.services;
 
-import lombok.RequiredArgsConstructor;
+import
+		lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.LocaleUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +16,9 @@ import org.tim.repositories.ProjectRepository;
 
 import java.util.*;
 
-import static org.tim.utils.UserMessages.LCL_NOT_FOUND;
-import static org.tim.utils.UserMessages.formatMessage;
+import static org.tim.constants.UserMessages.LCL_NOT_FOUND;
+import static org.tim.constants.UserMessages.formatMessage;
+
 
 @Service
 @Transactional
