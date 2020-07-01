@@ -15,7 +15,7 @@
 	<mat-form-field>
 		<mat-label>Locales</mat-label>
 		<mat-select multiple>
-			<mat-option *ngFor="let locale of selectedProject.targetLocales" [value]="locale.locale">{{locale.locale}}</mat-option>
+			<mat-option *ngFor="let locale of targetLocales" [value]="locale">{{locale}}</mat-option>
 		</mat-select>
 	</mat-form-field>
 	<div>
@@ -30,12 +30,12 @@
 		</button>
 	</div>
 </div>
-<div>
+<div [id]="aggregateInfoId">
 	<app-aggregate-info [selectedProjectId]="selectedProjectId"></app-aggregate-info>
 </div>
 
-<mat-divider></mat-divider>
-<div fxLayout="row" fxLayoutAlign="space-evenly start">
+<!--<mat-divider></mat-divider>-->
+<div [id]="messagesTableId" fxLayout="row" fxLayoutAlign="space-evenly start">
 	<div class="app-table-wrapper">
 		<app-dev-messages-table
 			[messages]="messages"

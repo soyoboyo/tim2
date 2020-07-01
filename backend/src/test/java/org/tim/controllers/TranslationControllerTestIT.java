@@ -18,13 +18,11 @@ import org.tim.entities.Translation;
 import org.tim.services.TranslationService;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.tim.utils.Mapping.API_VERSION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.tim.utils.Mapping.*;
+import static org.tim.constants.Mappings.*;
 
 public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 

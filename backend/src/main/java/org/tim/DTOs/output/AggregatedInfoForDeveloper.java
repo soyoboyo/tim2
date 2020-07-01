@@ -1,9 +1,9 @@
-package org.tim.entities;
+package org.tim.DTOs.output;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Map;
+import java.util.List;
 
 @Data
 @RequiredArgsConstructor
@@ -11,7 +11,7 @@ public class AggregatedInfoForDeveloper {
 
 	private Long projectId;
 
-	private Map<String, Map<String, Integer>> translationStatusesByLocale;
+	private List<AggregatedLocale> aggregatedLocales;
 
 	private Integer messagesTotal;
 

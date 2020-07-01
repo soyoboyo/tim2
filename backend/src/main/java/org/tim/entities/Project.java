@@ -3,12 +3,13 @@ package org.tim.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.tim.exceptions.ValidationException;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-import static org.tim.utils.UserMessages.*;
+import static org.tim.constants.UserMessages.*;
 
 @Entity
 @Data
@@ -77,7 +78,7 @@ public class Project {
             throw new ValidationException(formatMessage(LCL_NOT_IN_TARGET, replaceableLocale.getLocale().toString()));
         }
         if (!targetLocales.contains(substituteLocale)) {
-            throw new ValidationException(formatMessage(LCL_NOT_IN_TARGET, replaceableLocale.getLocale().toString()));
+			throw new ValidationException(formatMessage(LCL_NOT_IN_TARGET, substituteLocale.getLocale().toString()));
         }
         if (checkIfGraphHasCycles(replaceableLocale, substituteLocale)) {
             throw new ValidationException(LCL_CYCLES);

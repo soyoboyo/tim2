@@ -15,8 +15,9 @@ import org.tim.repositories.ProjectRepository;
 
 import java.util.*;
 
-import static org.tim.utils.UserMessages.LCL_NOT_FOUND;
-import static org.tim.utils.UserMessages.formatMessage;
+import static org.tim.constants.UserMessages.LCL_NOT_FOUND;
+import static org.tim.constants.UserMessages.formatMessage;
+
 
 @Service
 @Transactional
@@ -152,6 +153,7 @@ public class ProjectService {
 				String targetLocale = lw.getLocale().toString();
 				newTargetLocales.add(targetLocale);
 			}
+			// TODO: sort target locales alphabetically
 			projectForDeveloper.setTargetLocales(newTargetLocales);
 
 			TreeSet<String> availableReplacements = new TreeSet<>(newTargetLocales);
@@ -160,7 +162,7 @@ public class ProjectService {
 
 			HashMap<String, String> substitutes = new HashMap<>(p.getReplaceableLocaleToItsSubstitute().size());
 
-			for (Map.Entry<LocaleWrapper, LocaleWrapper> entry : p.getReplaceableLocaleToItsSubstitute().entrySet()){
+			for (Map.Entry<LocaleWrapper, LocaleWrapper> entry : p.getReplaceableLocaleToItsSubstitute().entrySet()) {
 				String replaced = entry.getKey().toString().split("=")[2].substring(0, 6 - 1);
 				String replacement = entry.getValue().toString().split("=")[2].substring(0, 6 - 1);
 

@@ -32,6 +32,8 @@ public class MessageForDeveloperService {
 				new NoSuchElementException(String.format("Project with id %s not found", projectId)));
 		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
 
+		messages.sort(Comparator.comparing(Message::getUpdateDate, Comparator.reverseOrder()));
+
 		for (Message m : messages) {
 			MessageForDeveloper mForDeveloper = mapper.map(m, MessageForDeveloper.class);
 			mForDeveloper.setProjectId(projectId);

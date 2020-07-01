@@ -6,7 +6,6 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Project } from '../../../../shared/types/entities/Project';
 import { Message } from '../../../../shared/types/entities/Message';
 import { MessageForTranslator } from '../../../../shared/types/DTOs/output/MessageForTranslator';
-import { log } from 'util';
 
 @Component({
 	selector: 'app-tra-messages-table',

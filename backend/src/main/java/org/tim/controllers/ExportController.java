@@ -10,7 +10,7 @@ import org.tim.services.XlsConversionService;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.tim.utils.Mapping.*;
+import static org.tim.constants.Mappings.*;
 
 @RequiredArgsConstructor
 @RestController
