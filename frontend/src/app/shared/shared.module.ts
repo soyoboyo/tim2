@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { routes } from '../routes';
 import { HttpClientModule } from '@angular/common/http';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { UtilsService } from './services/utils-service/utils.service';
 import { SnackbarService } from './services/snackbar-service/snackbar.service';
 import { NavbarService } from './services/navbar-service/navbar.service';

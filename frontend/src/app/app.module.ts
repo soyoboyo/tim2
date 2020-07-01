@@ -15,7 +15,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { DevMessagesComponent } from './features/developers/dev-messages/dev-messages.component';
 import { DevMessagesTableComponent } from './features/developers/dev-messages/dev-messages-table/dev-messages-table.component';
 import { SnackbarService } from './shared/services/snackbar-service/snackbar.service';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { UtilsService } from './shared/services/utils-service/utils.service';
 import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
 import { DevProjectsTableComponent } from './features/developers/dev-projects/dev-projects-table/dev-projects-table.component';
