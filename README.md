@@ -72,13 +72,8 @@ For translators:
 # 7. Installation guide (developers)
 Backend:  
 1. Install prerequisites (OpenJDK 11, maven)
-1. Run `mvn clean install`  
-1. It `target` directory run `java -jar tim-0.0.1-SNAPSHOT.jar --usersConfig=<path to config file*>`
-    * config file should be in json type like:  
-    ![Alt text](properties.png?raw=true "Title")  
-1. In main directory there is also shell script (runSpringApp) that can be use to run backend app with parameters from principals.json file (the same directory). To run, please go to `tim` directory and type in command line:  
-    * `chmod u+x runSpringApp`  
-    * `./runSpringApp`  
+1. Run `mvn clean install`  for `backend` and `aut_server` applications
+
     
 Frontend:  
 0. Install prerequisites according to this guide https://angular.io/guide/quickstart (Node.js, node package manager, Angular)

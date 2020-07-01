@@ -28,8 +28,7 @@
 							},
 							"src/styles.scss"
 						],
-						"scripts": [],
-						"es5BrowserSupport": true
+						"scripts": []
 					},
 					"configurations": {
 						"production": {
@@ -138,5 +137,8 @@
 			}
 		}
 	},
-	"defaultProject": "webapp"
+	"defaultProject": "webapp",
+	"cli": {
+		"analytics": false
+	}
 }
