@@ -12,8 +12,8 @@ stages:
   - name: build
   - name: deliver
     if: branch = develop
-  - name: deploy
-    if: branch = master
+#  - name: deploy
+#    if: branch = master
 jobs:
   include:
       - stage: test
