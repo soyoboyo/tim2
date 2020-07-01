@@ -3,17 +3,18 @@ import { Injectable, OnInit } from '@angular/core';
 @Injectable({
 	providedIn: 'root'
 })
-export class AuditTranslationService implements OnInit{
+export class AuditTranslationService implements OnInit {
 
 	auditedTranslation: any;
 
-	constructor(private auditTranslationService: AuditTranslationService) {
+	constructor(
+		// private auditTranslationService: AuditTranslationService
+	) {
 	}
 
 	ngOnInit(): void {
-		this.auditedTranslation = this.auditTranslationService.auditedTranslation;
+		// this.auditedTranslation = this.auditTranslationService.auditedTranslation;
 	}
-
 
 
 }
