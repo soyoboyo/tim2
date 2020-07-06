@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.tim.constants.Mappings.*;
 
-class ImportControllerTest extends SpringTestsCustomExtension {
+class ImportControllerTestIT extends SpringTestsCustomExtension {
 
     private MockMvc mockMvc;
 
