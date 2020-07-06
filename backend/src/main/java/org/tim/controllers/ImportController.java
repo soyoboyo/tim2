@@ -14,11 +14,20 @@ import static org.tim.constants.Mappings.*;
 @RequestMapping(API_VERSION + REPORT)
 public class ImportController {
 
-    @PostMapping(IMPORT)
-    public ResponseEntity<String> importExcelReport(MultipartFile file) {
+    @PostMapping(IMPORT + TRANSLATOR)
+    public ResponseEntity<String> importTranslatorCSVReport(MultipartFile file) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Empty file");
         }
+        return ResponseEntity.ok("success");
+    }
+
+    @PostMapping(IMPORT + DEVELOPER)
+    public ResponseEntity<String> importDeveloperCSVReport(MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("Empty file");
+        }
+
         return ResponseEntity.ok("success");
     }
 }

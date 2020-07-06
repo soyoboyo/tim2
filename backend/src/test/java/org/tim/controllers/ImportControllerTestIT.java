@@ -29,12 +29,12 @@ class ImportControllerTestIT extends SpringTestsCustomExtension {
     }
 
     @Test
-    void whenValidFileImportedThenResponseOk() throws Exception {
+    void whenValidTranslatorFileImportedThenResponseOk() throws Exception {
         //given
         MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
 
         //when
-        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT)
+        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
                 .file("file", sampleFile.getBytes()))
                 //then
                 .andExpect(status().isOk())
@@ -43,12 +43,40 @@ class ImportControllerTestIT extends SpringTestsCustomExtension {
     }
 
     @Test
-    void whenEmptyFileImportedThenResponseBadRequest() throws Exception {
+    void whenEmptyTranslatorFileImportedThenResponseBadRequest() throws Exception {
         //given
         MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "".getBytes());
 
         //when
-        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT)
+        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
+                .file("file", sampleFile.getBytes()))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Empty file"))
+                .andDo(print());
+    }
+
+    @Test
+    void whenValidDeveloperFileImportedThenResponseOk() throws Exception {
+        //given
+        MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
+
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + DEVELOPER)
+                .file("file", sampleFile.getBytes()))
+                //then
+                .andExpect(status().isOk())
+                .andExpect(content().string("success"))
+                .andDo(print());
+    }
+
+    @Test
+    void whenEmptyDeveloperFileImportedThenResponseBadRequest() throws Exception {
+        //given
+        MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "".getBytes());
+
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + DEVELOPER)
                 .file("file", sampleFile.getBytes()))
                 //then
                 .andExpect(status().isBadRequest())
