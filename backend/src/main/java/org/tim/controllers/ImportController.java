@@ -20,10 +20,12 @@ public class ImportController {
     private final ImportService importService;
 
     @PostMapping(IMPORT + TRANSLATOR)
-    public ResponseEntity<String> importTranslatorCSVReport(MultipartFile file) {
+    public ResponseEntity<String> importTranslatorCSVReport(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Empty file");
         }
+
+        importService.importTranslatorCSVFile(file);
         return ResponseEntity.ok("success");
     }
 

@@ -7,8 +7,11 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.tim.DTOs.MessageDTO;
+import org.tim.DTOs.input.TranslationCreateDTO;
+import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.exceptions.EntityNotFoundException;
+import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 
 import java.io.BufferedReader;
@@ -22,11 +25,14 @@ import java.util.Optional;
 public class ImportService {
 
     private final MessageService messageService;
+    private final TranslationService translationService;
+
     private final ProjectRepository projectRepository;
+    private final MessageRepository messageRepository;
 
     public void importDeveloperCSVMessage(MultipartFile file) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
-        String projectName = getProjectNameAndSkipLine(reader);
+        String projectName = getAndSkipLine(reader);
         Optional<Project> optionalProject = projectRepository.findByName(projectName);
 
         Project project;
@@ -44,6 +50,36 @@ public class ImportService {
 
     }
 
+    public void importTranslatorCSVFile(MultipartFile file) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+        String projectName = getAndSkipLine(reader, 2);
+        String locale = getAndSkipLine(reader, 2);
+
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
+        CSVParser csvParser = new CSVParser(reader, csvFormat);
+
+        createTranslations(csvParser.getRecords(), locale);
+    }
+
+    private void createTranslations(List<CSVRecord> records, String locale) {
+        for (CSVRecord record : records) {
+            String key = record.get("key");
+            String translation = record.get("translation");
+
+            Optional<Message> messageOptional = messageRepository.findByKey(key);
+            Message message;
+
+            if (messageOptional.isEmpty()) {
+                throw new EntityNotFoundException(key);
+            }
+
+            message = messageOptional.get();
+
+            TranslationCreateDTO translationCreateDTO = new TranslationCreateDTO(translation, locale);
+            translationService.createTranslation(translationCreateDTO, message.getId());
+        }
+    }
+
     private void saveMessages(List<CSVRecord> records, Long projectId) {
         for (CSVRecord record : records) {
             String key = record.get("key");
@@ -58,14 +94,21 @@ public class ImportService {
         }
     }
 
-    private String getProjectNameAndSkipLine(BufferedReader reader) throws IOException {
+    private String getAndSkipLine(BufferedReader reader) throws IOException {
         String projectNameRaw = reader.readLine();
-        String projectName = clearDelimiterFromProjectName(projectNameRaw);
+        String projectName = clearDelimiterFromProjectName(projectNameRaw, 1);
 
         return projectName;
     }
 
-    private String clearDelimiterFromProjectName(String projectNameRaw) {
-        return projectNameRaw.substring(0, projectNameRaw.length() - 1);
+    private String getAndSkipLine(BufferedReader reader, int delimiterLength) throws IOException {
+        String projectNameRaw = reader.readLine();
+        String projectName = clearDelimiterFromProjectName(projectNameRaw, delimiterLength);
+
+        return projectName;
+    }
+
+    private String clearDelimiterFromProjectName(String projectNameRaw, int delimiterLength) {
+        return projectNameRaw.substring(0, projectNameRaw.length() - delimiterLength);
     }
 }
