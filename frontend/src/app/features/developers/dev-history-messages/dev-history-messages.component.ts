@@ -25,7 +25,7 @@ export class DevHistoryMessagesComponent implements OnInit {
 		window.scrollTo(0, 64);
 		this.auditedMessage = this.auditedMessageService.auditedMessage;
 		this.activatedRoute.params.subscribe((params) => {
-			this.id = params['id'];
+			this.id = params.id;
 		});
 		this.getMessageVersions();
 	}

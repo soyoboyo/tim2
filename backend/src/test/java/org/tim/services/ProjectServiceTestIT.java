@@ -14,7 +14,7 @@ import org.tim.repositories.LocaleWrapperRepository;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.tim.utils.UserMessages.*;
+import static org.tim.constants.UserMessages.*;
 
 public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 

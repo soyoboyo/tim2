@@ -29,15 +29,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.tim.utils.Mapping.*;
+import static org.tim.constants.Mappings.*;
+
 
 public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 
 	private MockMvc mockMvc;
 	private static ObjectMapper mapper;
+
 	private ProjectDTO projectDTO;
 	private static Project expectedProject;
 
+	private final String BASE_URL = "http://localhost:8081";
 	private final String UPDATE_PROJECT = "/update/1";
 
 	@Mock

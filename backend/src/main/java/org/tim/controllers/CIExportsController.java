@@ -9,7 +9,7 @@ import org.tim.services.CIExportsService;
 
 import java.util.List;
 
-import static org.tim.utils.Mapping.*;
+import static org.tim.constants.Mappings.*;
 
 @RestController
 @RequiredArgsConstructor

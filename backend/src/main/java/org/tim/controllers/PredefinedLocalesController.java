@@ -9,7 +9,7 @@ import org.tim.services.PredefinedLocalesService;
 
 import java.util.TreeSet;
 
-import static org.tim.utils.Mapping.*;
+import static org.tim.constants.Mappings.*;
 
 @RestController
 @RequestMapping(API_VERSION + LOCALES)

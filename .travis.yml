@@ -10,9 +10,8 @@ before_install:
 stages:
   - name: test
   - name: build
-  - name: deliver
     if: branch = develop
-  - name: deploy
+  - name: deliver
     if: branch = master
 jobs:
   include:
@@ -26,13 +25,16 @@ jobs:
          - cd frontend
          - npm i
          - ng build --prod
-         - cd ../backend
+         - cd ..
          - mvn install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B -V
       - stage: deliver
         script:
           - cd backend
           - mvn package -Dmaven.test.skip=true
           - docker build -t studentproject/ocado-tim-backend:latest .
+          - cd ../auth_server
+          - mvn package -Dmaven.test.skip=true
+          - docker build -t studentproject/ocado-tim-oauth:latest .
           - cd ../frontend
           - npm install -f
           - node -v
@@ -42,19 +44,4 @@ jobs:
           - docker login -u "studentproject" -p "$DOCKER_PASSWORD"
           - docker push studentproject/ocado-tim-frontend:latest
           - docker push studentproject/ocado-tim-backend:latest
-      - stage: deploy
-        script:
-          - curl https://cli-assets.heroku.com/install-standalone.sh | sh
-          - docker login --username=_ --password=$HEROKU_TOKEN registry.heroku.com
-          - cd backend
-          - mvn package -Dmaven.test.skip=true
-          - docker build -t registry.heroku.com/studentproject-tim-backend/web -f Dockerfile.prod .
-          - docker push registry.heroku.com/studentproject-tim-backend/web
-          - /usr/local/bin/heroku container:release web -a studentproject-tim-backend
-          - cd ../frontend
-          - npm install
-          - npm install @types/node --save-dev
-          - ng build --prod
-          - docker build -t registry.heroku.com/studentproject-tim-frontend/web -f Dockerfile.prod .
-          - docker push registry.heroku.com/studentproject-tim-frontend/web
-          - /usr/local/bin/heroku container:release web -a studentproject-tim-frontend
+          - docker push studentproject/ocado-tim-oauth:latest

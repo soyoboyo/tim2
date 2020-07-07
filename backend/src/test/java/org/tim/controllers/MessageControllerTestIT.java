@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.tim.utils.Mapping.*;
+import static org.tim.constants.Mappings.*;
 
 public class MessageControllerTestIT extends SpringTestsCustomExtension {
 
