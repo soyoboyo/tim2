@@ -24,27 +24,24 @@ public class ImportService {
     private final MessageService messageService;
     private final ProjectRepository projectRepository;
 
-    public void importDeveloperCSVMessage(MultipartFile file) {
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
-            String projectName = getProjectNameAndSkipLine(reader);
-            Optional<Project> optionalProject = projectRepository.findByName(projectName);
-            Project project;
+    public void importDeveloperCSVMessage(MultipartFile file) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
+        String projectName = getProjectNameAndSkipLine(reader);
+        Optional<Project> optionalProject = projectRepository.findByName(projectName);
 
-            if (optionalProject.isPresent()) {
-                project = optionalProject.get();
-            } else {
-                throw new EntityNotFoundException(projectName);
-            }
+        Project project;
 
-            final CSVFormat csvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
-            CSVParser csvParser = new CSVParser(reader, csvFormat);
-
-            saveMessages(csvParser.getRecords(), project.getId());
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (optionalProject.isPresent()) {
+            project = optionalProject.get();
+        } else {
+            throw new EntityNotFoundException(projectName);
         }
+
+        final CSVFormat csvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
+        CSVParser csvParser = new CSVParser(reader, csvFormat);
+
+        saveMessages(csvParser.getRecords(), project.getId());
+
     }
 
     private void saveMessages(List<CSVRecord> records, Long projectId) {

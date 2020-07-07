@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.tim.configuration.SpringTestsCustomExtension;
 import org.tim.entities.Project;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ImportServiceTestIT extends SpringTestsCustomExtension {
@@ -27,7 +29,7 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
     }
 
     @Test
-    void whenCorrectFileImportedThenMessagesAreCreated() {
+    void whenCorrectFileImportedThenMessagesAreCreated() throws IOException {
         //given
         //when
         importService.importDeveloperCSVMessage(importExampleFile);

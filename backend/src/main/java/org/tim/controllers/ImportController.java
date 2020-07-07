@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.tim.services.ImportService;
 
+import java.io.IOException;
+
 import static org.tim.constants.Mappings.*;
 
 @RestController
@@ -26,7 +28,7 @@ public class ImportController {
     }
 
     @PostMapping(IMPORT + DEVELOPER)
-    public ResponseEntity<String> importDeveloperCSVMessage(MultipartFile file) {
+    public ResponseEntity<String> importDeveloperCSVMessage(MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Empty file");
         }
