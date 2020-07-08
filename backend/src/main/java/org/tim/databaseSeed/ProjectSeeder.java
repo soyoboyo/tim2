@@ -19,10 +19,10 @@ public class ProjectSeeder {
 
     public Map<String, Project> initProjects(Map<String, LocaleWrapper> locales) {
 
-        Map<String, Project> projects = new HashMap<>();
+		Map<String, Project> projects = new HashMap<>();
 
-        Project projectP1 = new Project("Ocado - supermarket website", new Locale("en_GB"));
-        projectP1.addTargetLocale(Arrays.asList(locales.get("en_US"), locales.get("pl_PL"), locales.get("de_DE"),
+		Project projectP1 = new Project("Ocado - supermarket website", new Locale("en_GB"));
+		projectP1.addTargetLocale(Arrays.asList(locales.get("en_US"), locales.get("pl_PL"), locales.get("de_DE"),
 				locales.get("ar_LY"), locales.get("ko_KR")));
 		projectP1 = projectRepository.save(projectP1);
 		projectP1.updateSubstituteLocale(locales.get("ar_LY"), locales.get("pl_PL"));

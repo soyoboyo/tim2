@@ -18,7 +18,7 @@ public class UserController {
 
     private final UserService userService;
 
-	@GetMapping(Mappings.GET)
+    @GetMapping(Mappings.GET)
     public UserPrincipal getPrincipal(Principal principal) {
         return userService.getUserPrincipal(principal);
     }

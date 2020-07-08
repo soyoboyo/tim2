@@ -152,14 +152,14 @@ public class MessageSeeder {
         aboutFooter1.setDescription("Footer links");
         messages.put("aboutFooter1", messageRepository.save(aboutFooter1));
         Message aboutFooter2 = new Message("aboutFooter2", "Locations", projects.get("projectP1"));
-        aboutFooter2.setDescription("Footer links");
-        messages.put("aboutFooter2", messageRepository.save(aboutFooter2));
-        Message aboutFooter3 = new Message("aboutFooter3", "Privacy", projects.get("projectP1"));
-        aboutFooter3.setDescription("Footer links");
-        messages.put("aboutFooter3", messageRepository.save(aboutFooter3));
-        Message aboutFooter4 = new Message("aboutFooter4", "Terms", projects.get("projectP1"));
-        aboutFooter4.setDescription("Footer links");
-        messages.put("aboutFooter4", messageRepository.save(aboutFooter4));
+		aboutFooter2.setDescription("Footer links");
+		messages.put("aboutFooter2", messageRepository.save(aboutFooter2));
+		Message aboutFooter3 = new Message("aboutFooter3", "Privacy", projects.get("projectP1"));
+		aboutFooter3.setDescription("Footer links");
+		messages.put("aboutFooter3", messageRepository.save(aboutFooter3));
+		Message aboutFooter4 = new Message("aboutFooter4", "Terms", projects.get("projectP1"));
+		aboutFooter4.setDescription("Footer links");
+		messages.put("aboutFooter4", messageRepository.save(aboutFooter4));
 
 
 		Message messageM3 = new Message("business1", "Opracowaliśmy i stosujemy unikalny model biznesowy, który mocno nas pozycjonuje, " +

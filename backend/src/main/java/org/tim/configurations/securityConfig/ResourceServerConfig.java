@@ -29,7 +29,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Value("${security.jwt.public-key}")
     private Resource jwtPublicKey;
 
-	private static final String ROOT_PATTERN = Mappings.API_VERSION + "/**";
+    private static final String ROOT_PATTERN = Mappings.API_VERSION + "/**";
 
     @Override
     public void configure(final ResourceServerSecurityConfigurer resources) {
@@ -45,8 +45,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.antMatchers(HttpMethod.DELETE, ROOT_PATTERN).access("#oauth2.hasScope('write')")
 				.and().authorizeRequests().antMatchers(
 				Mappings.SWAGGER_UI, Mappings.API_VERSION + Mappings.EXPORT_CI + "/**").permitAll()
-                .and().cors();
-    }
+				.and().cors();
+	}
 
     @Bean
     public DefaultTokenServices tokenServices(final TokenStore tokenStore) {

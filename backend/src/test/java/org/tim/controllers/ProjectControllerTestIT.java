@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -30,7 +29,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.tim.constants.Mappings.*;
-
 
 public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 
@@ -76,8 +74,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@DisplayName("When data are validated then allow to create project.")
-	void whenCreateNewProjectAndDataCorrectThenSuccess() throws Exception {
+	void createNewProject_DataCorrect_Success() throws Exception {
 		when(projectService.createProject(any())).thenReturn(expectedProject);
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
 		LocaleWrapper[] targetLocalesArray = expectedProject.getTargetLocales().toArray(new LocaleWrapper[0]);
@@ -96,8 +93,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@DisplayName("When data are validated then allow to update project.")
-	void whenUpdateProjectAndDataCorrectThenSuccess() throws Exception {
+	void updateProject_DataCorrect_Success() throws Exception {
 		when(projectService.updateProject(any(), any())).thenReturn(expectedProject);
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
 		LocaleWrapper[] targetLocalesArray = expectedProject.getTargetLocales().toArray(new LocaleWrapper[0]);
@@ -116,8 +112,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@DisplayName("Return validation error when project name was blank during creating process.")
-	void whenCreateNewProjectAndProjectNameBlankThenFailure() throws Exception {
+	void createNewProject_ProjectNameBlank_Failure() throws Exception {
 		projectDTO.setName("");
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
 		mockMvc.perform(post(BASE_URL + API_VERSION + PROJECT + CREATE)
@@ -128,8 +123,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@DisplayName("Return validation error when project name was blank during updating process.")
-	void whenUpdateProjectAndProjectNameBlankThenFailure() throws Exception {
+	void updateProject_ProjectNameBlank_Failure() throws Exception {
 		projectDTO.setName("");
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
 		mockMvc.perform(post(BASE_URL + API_VERSION + PROJECT + UPDATE_PROJECT)
@@ -140,8 +134,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@DisplayName("Return validation error when source locale was blank during creating process.")
-	void whenCreateNewProjectAndSourceLocaleBlankThenFailure() throws Exception {
+	void createNewProject_SourceLocaleBlank_Failure() throws Exception {
 		projectDTO.setSourceLocale("");
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
 		mockMvc.perform(post(BASE_URL + API_VERSION + PROJECT + CREATE)
@@ -152,8 +145,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@DisplayName("Return validation error when source locale was blank during updating process.")
-	void whenUpdateProjectAndSourceLocaleBlankThenFailure() throws Exception {
+	void updateProject_SourceLocaleBlank_Failure() throws Exception {
 		projectDTO.setSourceLocale("");
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
 		mockMvc.perform(post(BASE_URL + API_VERSION + PROJECT + UPDATE_PROJECT)
@@ -164,8 +156,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@DisplayName("Return validation error when replaceable locale was null during creating process.")
-	void whenCreateNewProjectAndReplaceableLocaleToItsSubstituteNullThenFailure() throws Exception {
+	void createNewProject_ReplaceableLocaleToItsSubstituteNull_Failure() throws Exception {
 		projectDTO = new ProjectDTO("name", "pl_PL",
 				Arrays.asList("pl_PL", "en_GB", "en_US", "de_DE"), null);
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
@@ -177,7 +168,6 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@DisplayName("Return validation error when replaceable locale was null during updating process.")
 	void updateProject_ReplaceableLocaleToItsSubstituteNull_Failure() throws Exception {
 		projectDTO = new ProjectDTO("name", "pl_PL",
 				Arrays.asList("pl_PL", "en_GB", "en_US", "de_DE"), null);
@@ -190,8 +180,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@DisplayName("Return validation error when target locale was null during creating process.")
-	void whenCreateNewProjectAndTargetLocalesNullThenFailure() throws Exception {
+	void createNewProject_TargetLocalesNull_Failure() throws Exception {
 		projectDTO = new ProjectDTO("name", "pl_PL",
 				null, projectDTO.getReplaceableLocaleToItsSubstitute());
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
@@ -203,8 +192,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@DisplayName("Return validation error when target locale was null during updating process.")
-	void whenUpdateProjectAndTargetLocalesNullThenFailure() throws Exception {
+	void updateProject_TargetLocalesNull_Failure() throws Exception {
 		projectDTO = new ProjectDTO("name", "pl_PL",
 				null, projectDTO.getReplaceableLocaleToItsSubstitute());
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
@@ -216,7 +204,6 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@DisplayName("Return all available projects.")
 	void getAllProjects_AllProjectsReturned() throws Exception {
 		when(projectService.getAllProjects()).thenReturn(Arrays.asList(expectedProject));
 		String jsonRequest = mapper.writeValueAsString(projectDTO);

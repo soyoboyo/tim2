@@ -52,7 +52,7 @@ public class Project {
     final private Set<LocaleWrapper> targetLocales = new HashSet<>();
 
     public void addTargetLocale(@NotNull List<LocaleWrapper> locales) {
-		targetLocales.addAll(locales);
+        targetLocales.addAll(locales);
     }
 
     public void removeTargetLocale(@NotNull LocaleWrapper locale) {
