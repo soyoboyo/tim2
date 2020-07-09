@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.tim.DTOs.MessageDTO;
 import org.tim.DTOs.input.TranslationCreateDTO;
@@ -18,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -30,7 +32,8 @@ public class ImportService {
     private final ProjectRepository projectRepository;
     private final MessageRepository messageRepository;
 
-    public void importDeveloperCSVMessage(MultipartFile file) throws IOException {
+    @Transactional
+    public void importDeveloperCSVMessage(MultipartFile file) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
         String projectName = getAndSkipLine(reader);
         Optional<Project> optionalProject = projectRepository.findByName(projectName);
@@ -47,9 +50,9 @@ public class ImportService {
         CSVParser csvParser = new CSVParser(reader, csvFormat);
 
         saveMessages(csvParser.getRecords(), project.getId());
-
     }
 
+    @Transactional
     public void importTranslatorCSVFile(MultipartFile file) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
         String projectName = getAndSkipLine(reader, 2);
@@ -61,10 +64,16 @@ public class ImportService {
         createTranslations(csvParser.getRecords(), locale);
     }
 
-    private void createTranslations(List<CSVRecord> records, String locale) {
+    private void createTranslations(List<CSVRecord> records, String locale) throws IllegalArgumentException, EntityNotFoundException {
         for (CSVRecord record : records) {
-            String key = record.get("key");
-            String translation = record.get("translation");
+            String key = null;
+            String translation = null;
+            try {
+                key = record.get("key");
+                translation = record.get("translation");
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException(e + ", or check if your delimiter is set to \",\" (comma)");
+            }
 
             Optional<Message> messageOptional = messageRepository.findByKey(key);
             Message message;
@@ -80,10 +89,16 @@ public class ImportService {
         }
     }
 
-    private void saveMessages(List<CSVRecord> records, Long projectId) {
+    private void saveMessages(List<CSVRecord> records, Long projectId) throws IllegalArgumentException, NoSuchElementException {
         for (CSVRecord record : records) {
-            String key = record.get("key");
-            String content = record.get("content");
+            String key = null;
+            String content = null;
+            try {
+                key = record.get("key");
+                content = record.get("content");
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException(e + ", or check if your delimiter is set to \",\" (comma)");
+            }
 
             MessageDTO messageDTO = new MessageDTO();
             messageDTO.setProjectId(projectId);

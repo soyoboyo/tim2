@@ -2,13 +2,12 @@ package org.tim.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.tim.services.ImportService;
-
-import java.io.IOException;
 
 import static org.tim.constants.Mappings.*;
 
@@ -20,7 +19,7 @@ public class ImportController {
     private final ImportService importService;
 
     @PostMapping(IMPORT + TRANSLATOR)
-    public ResponseEntity<String> importTranslatorCSVReport(MultipartFile file) throws IOException {
+    public ResponseEntity<String> importTranslatorCSVReport(MultipartFile file) throws Exception {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Empty file");
         }
@@ -30,12 +29,17 @@ public class ImportController {
     }
 
     @PostMapping(IMPORT + DEVELOPER)
-    public ResponseEntity<String> importDeveloperCSVMessage(MultipartFile file) throws IOException {
+    public ResponseEntity<String> importDeveloperCSVMessage(MultipartFile file) throws Exception {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Empty file");
         }
 
         importService.importDeveloperCSVMessage(file);
         return ResponseEntity.ok("success");
+    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<String> csvParsingError(Exception exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
     }
 }
