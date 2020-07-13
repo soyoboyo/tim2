@@ -19,7 +19,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -34,6 +33,10 @@ public class ImportService {
 
     @Transactional
     public void importDeveloperCSVMessage(MultipartFile file) throws Exception {
+        if (file.isEmpty()) {
+            throw new Exception("The file is empty.");
+        }
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
         String projectName = getAndSkipLine(reader);
         Optional<Project> optionalProject = projectRepository.findByName(projectName);
@@ -53,7 +56,11 @@ public class ImportService {
     }
 
     @Transactional
-    public void importTranslatorCSVFile(MultipartFile file) throws IOException {
+    public void importTranslatorCSVFile(MultipartFile file) throws Exception {
+        if (file.isEmpty()) {
+            throw new Exception("The file is empty.");
+        }
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
         String projectName = getAndSkipLine(reader, 2);
         String locale = getAndSkipLine(reader, 2);
@@ -64,7 +71,7 @@ public class ImportService {
         createTranslations(csvParser.getRecords(), locale);
     }
 
-    private void createTranslations(List<CSVRecord> records, String locale) throws IllegalArgumentException, EntityNotFoundException {
+    private void createTranslations(List<CSVRecord> records, String locale) {
         for (CSVRecord record : records) {
             String key = null;
             String translation = null;
@@ -89,7 +96,7 @@ public class ImportService {
         }
     }
 
-    private void saveMessages(List<CSVRecord> records, Long projectId) throws IllegalArgumentException, NoSuchElementException {
+    private void saveMessages(List<CSVRecord> records, Long projectId) {
         for (CSVRecord record : records) {
             String key = null;
             String content = null;

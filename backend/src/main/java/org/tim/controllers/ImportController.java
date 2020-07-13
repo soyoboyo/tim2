@@ -20,9 +20,6 @@ public class ImportController {
 
     @PostMapping(IMPORT + TRANSLATOR)
     public ResponseEntity<String> importTranslatorCSVReport(MultipartFile file) throws Exception {
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("Empty file");
-        }
 
         importService.importTranslatorCSVFile(file);
         return ResponseEntity.ok("success");
@@ -30,16 +27,13 @@ public class ImportController {
 
     @PostMapping(IMPORT + DEVELOPER)
     public ResponseEntity<String> importDeveloperCSVMessage(MultipartFile file) throws Exception {
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("Empty file");
-        }
 
         importService.importDeveloperCSVMessage(file);
         return ResponseEntity.ok("success");
     }
 
     @ExceptionHandler({Exception.class})
-    public ResponseEntity<String> csvParsingError(Exception exception) {
+    public ResponseEntity<String> csvProcessingError(Exception exception) {
         return ResponseEntity.badRequest().body(exception.getMessage());
     }
 }

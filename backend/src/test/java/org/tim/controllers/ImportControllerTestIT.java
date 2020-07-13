@@ -11,9 +11,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
 import org.tim.configuration.SpringTestsCustomExtension;
+import org.tim.exceptions.EntityNotFoundException;
 import org.tim.services.ImportService;
-
-import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -58,12 +57,14 @@ class ImportControllerTestIT extends SpringTestsCustomExtension {
         //given
         MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "".getBytes());
 
+        doThrow(new Exception("The file is empty.")).when(importService).importTranslatorCSVFile(any(MultipartFile.class));
+
         //when
         mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
                 .file("file", sampleFile.getBytes()))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Empty file"))
+                .andExpect(content().string("The file is empty."))
                 .andDo(print());
     }
 
@@ -87,11 +88,13 @@ class ImportControllerTestIT extends SpringTestsCustomExtension {
         MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "".getBytes());
 
         //when
+        doThrow(new Exception("The file is empty.")).when(importService).importDeveloperCSVMessage(any(MultipartFile.class));
+
         mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + DEVELOPER)
                 .file("file", sampleFile.getBytes()))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Empty file"))
+                .andExpect(content().string("The file is empty."))
                 .andDo(print());
     }
 
@@ -101,7 +104,7 @@ class ImportControllerTestIT extends SpringTestsCustomExtension {
         //given
         MockMultipartFile sampleFile = new MockMultipartFile("file", "asd\nasda".getBytes());
 
-        doThrow(new IOException("Test")).when(importService).importTranslatorCSVFile(any(MultipartFile.class));
+        doThrow(new IllegalArgumentException("Test")).when(importService).importTranslatorCSVFile(any(MultipartFile.class));
         //when
         mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
                 .file("file", sampleFile.getBytes()))
@@ -116,14 +119,15 @@ class ImportControllerTestIT extends SpringTestsCustomExtension {
     void whenParsingDeveloperFileExceptionThenReturnExceptionMessage() throws Exception {
         //given
         MockMultipartFile sampleFile = new MockMultipartFile("file", "asd\nasda".getBytes());
+        String exceptionMessage = "Test";
 
-        doThrow(new Exception("Test")).when(importService).importDeveloperCSVMessage(any(MultipartFile.class));
+        doThrow(new EntityNotFoundException(exceptionMessage)).when(importService).importDeveloperCSVMessage(any(MultipartFile.class));
         //when
         mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + DEVELOPER)
                 .file("file", sampleFile.getBytes()))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Test"))
+                .andExpect(content().string("Sorry, we can't find this " + exceptionMessage))
                 .andDo(print());
     }
 }
