@@ -82,7 +82,7 @@ public class ImportService {
                 key = record.get("key");
                 translation = record.get("translation");
             } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException(e + ", or check if your delimiter is set to \",\" (comma)");
+                throw new IllegalArgumentException(e.getMessage() + ", or check if your delimiter is set to \",\" (comma)");
             }
 
             Optional<Message> messageOptional = messageRepository.findByKey(key);
