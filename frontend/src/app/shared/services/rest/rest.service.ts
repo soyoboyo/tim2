@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {catchError} from 'rxjs/internal/operators';
 import {Observable, throwError} from 'rxjs';
 import {environment} from '../../../../environments/environment';
@@ -65,6 +65,7 @@ export class RestService {
     input.append("file", file);
 
     return this.http.post(this.URL + url, input, {
+      headers: new HttpHeaders({accept: 'text/plain'}),
       responseType: "text",
       withCredentials: true
     });

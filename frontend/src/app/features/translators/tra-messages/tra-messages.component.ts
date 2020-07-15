@@ -214,8 +214,7 @@ export class TraMessagesComponent implements OnInit {
           }
         },
         error => {
-          this.snackbar.snackError(error.error.message, 'OK');
-          console.log(error.error.message);
+          this.snackbar.snackError(error.error, 'OK');
         });
     }
   }
