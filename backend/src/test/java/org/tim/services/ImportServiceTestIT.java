@@ -26,7 +26,7 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 
     private Project project;
 
-    private MultipartFile importExampleDevFile = new MockMultipartFile("file.csv", "Test project name,\nkey,content\ntestKey1,testContent1\ntestKey2,testContent2".getBytes());
+    private MultipartFile importExampleDevFile = new MockMultipartFile("file.csv", "Test project name,,\nkey,content,description\ntestKey1,testContent1,comment1\ntestKey2,testContent2,comment2 with text".getBytes());
     private MultipartFile importExampleTranFile = new MockMultipartFile("file.csv", "Test project name,,\nen_US,,\nkey,content,translation\ntranKey1,Witaj,Hello\ntranKey2,Swiecie,World".getBytes());
 
 
@@ -100,7 +100,7 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
     @DisplayName("When developer file have wrong formatting, rollback transaction and return message")
     void whenWrongFormattingDeveloperCSVFileThenRollback() {
         //given
-        MultipartFile importExampleDevFile = new MockMultipartFile("file.csv", "Test project name;\nkey;content\ntestKey1;testContent1\ntestKey2;testContent2".getBytes());
+        MultipartFile importExampleDevFile = new MockMultipartFile("file.csv", "Test project name;;\nkey;content\ntestKey1;testContent1\ntestKey2;testContent2".getBytes());
 
         //when
         //then
@@ -113,7 +113,7 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
     @DisplayName("When developer file have wrong project name, rollback transaction and return message")
     void whenWrongProjectNameInDeveloperCSVFileThenRollback() {
         //given
-        MultipartFile importExampleDevFile = new MockMultipartFile("file.csv", "Wrong project name,\nkey,content\ntestKey1,testContent1\ntestKey2,testContent2".getBytes());
+        MultipartFile importExampleDevFile = new MockMultipartFile("file.csv", "Wrong project name,,\nkey,content\ntestKey1,testContent1\ntestKey2,testContent2".getBytes());
 
         //when
         //then

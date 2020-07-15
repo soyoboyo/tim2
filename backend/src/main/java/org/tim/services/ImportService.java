@@ -41,7 +41,7 @@ public class ImportService {
         }
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
-        String projectName = getAndSkipLine(reader);
+        String projectName = getAndSkipLine(reader, 2);
         Optional<Project> optionalProject = projectRepository.findByName(projectName);
 
         Project project;
@@ -108,9 +108,11 @@ public class ImportService {
         for (CSVRecord record : records) {
             String key = null;
             String content = null;
+            String description = null;
             try {
                 key = record.get("key");
                 content = record.get("content");
+                description = record.get("description");
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException(e + ", or check if your delimiter is set to \",\" (comma)");
             }
@@ -119,6 +121,7 @@ public class ImportService {
             messageDTO.setProjectId(projectId);
             messageDTO.setKey(key);
             messageDTO.setContent(content);
+            messageDTO.setDescription(description);
 
             messageService.createMessage(messageDTO);
         }
