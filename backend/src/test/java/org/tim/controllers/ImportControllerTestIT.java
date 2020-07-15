@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
 import org.tim.configuration.SpringTestsCustomExtension;
+import org.tim.exceptions.EntityAlreadyExistException;
 import org.tim.exceptions.EntityNotFoundException;
 import org.tim.services.ImportService;
 
@@ -128,6 +129,23 @@ class ImportControllerTestIT extends SpringTestsCustomExtension {
                 //then
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Sorry, we can't find this " + exceptionMessage))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("Check if exception message is returned when translation already exists")
+    void whenTranslationFromTranslatorFileAlreadyExistsThenReturnExceptionMessage() throws Exception {
+        //given
+        MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
+
+        //when
+        doThrow(new EntityAlreadyExistException("test")).when(importService).importTranslatorCSVFile(any(MultipartFile.class));
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
+                .file("file", sampleFile.getBytes()))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Sorry, test for given parameters already exists!"))
                 .andDo(print());
     }
 }

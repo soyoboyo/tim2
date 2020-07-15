@@ -11,6 +11,7 @@ import org.tim.DTOs.MessageDTO;
 import org.tim.DTOs.input.TranslationCreateDTO;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
+import org.tim.exceptions.EntityAlreadyExistException;
 import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
@@ -30,6 +31,8 @@ public class ImportService {
 
     private final ProjectRepository projectRepository;
     private final MessageRepository messageRepository;
+
+    private final int skippedLinesInDevFile = 2;
 
     @Transactional
     public void importDeveloperCSVMessage(MultipartFile file) throws Exception {
@@ -71,7 +74,7 @@ public class ImportService {
         createTranslations(csvParser.getRecords(), locale);
     }
 
-    private void createTranslations(List<CSVRecord> records, String locale) {
+    private void createTranslations(List<CSVRecord> records, String locale) throws Exception {
         for (CSVRecord record : records) {
             String key = null;
             String translation = null;
@@ -92,7 +95,12 @@ public class ImportService {
             message = messageOptional.get();
 
             TranslationCreateDTO translationCreateDTO = new TranslationCreateDTO(translation, locale);
-            translationService.createTranslation(translationCreateDTO, message.getId());
+
+            try {
+                translationService.createTranslation(translationCreateDTO, message.getId());
+            } catch (EntityAlreadyExistException e) {
+                throw new Exception(e.getMessage() + " Check line " + (record.getParser().getCurrentLineNumber() + skippedLinesInDevFile) + " in csv file.");
+            }
         }
     }
 
