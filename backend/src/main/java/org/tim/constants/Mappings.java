@@ -35,5 +35,6 @@ public class Mappings {
 	public static final String ARCHIVE = "/archive/{id}";
 	public static final String AGGREGATE = "/aggregate/{id}";
 	public static final String GENERATE = "/generate/{id}";
+	public static final String IMPORT = "/import";
 
 }

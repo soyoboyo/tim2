@@ -24,24 +24,35 @@
 <mat-divider></mat-divider>
 
 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" *ngIf="selectedProject">
-	<mat-label>Get report for selected locales:</mat-label>
-	<mat-form-field>
-		<mat-label>Locales</mat-label>
-		<mat-select multiple>
-			<mat-option *ngFor="let locale of selectedProject.targetLocales" [value]="locale.locale">{{locale.locale}}</mat-option>
-		</mat-select>
-	</mat-form-field>
-	<div>
-		<button mat-raised-button
-				color="accent"
-				matTooltip="Download report with list of missing translations"
-				matTooltipClass="tooltip-font"
-				[disabled]="!selectedProject"
-				(click)="downloadXLS()"
-		>
-			Download report
-		</button>
-	</div>
+  <mat-label>Get report for selected locales:</mat-label>
+  <mat-form-field>
+    <mat-label>Locales</mat-label>
+    <mat-select multiple>
+      <mat-option *ngFor="let locale of selectedProject.targetLocales"
+                  [value]="locale.locale">{{locale.locale}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div fxLayoutGap="10px">
+    <button mat-raised-button
+            color="accent"
+            matTooltip="Download report with list of missing translations"
+            matTooltipClass="tooltip-font"
+            [disabled]="!selectedProject"
+            (click)="downloadXLS()"
+    >
+      Download report
+    </button>
+    <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="importCSV($event)" accept=".csv"/>
+    <button mat-raised-button
+            color="primary"
+            matTooltip="Import list with translations"
+            matTooltipClass="tooltip-font"
+            [disabled]="!selectedProject"
+            (click)="csvInput.click()"
+    >
+      Import translations from CSV file
+    </button>
+  </div>
 </div>
 
 <mat-divider></mat-divider>
