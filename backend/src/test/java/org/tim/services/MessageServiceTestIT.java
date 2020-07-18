@@ -1,9 +1,9 @@
 package org.tim.services;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.tim.DTOs.MessageDTO;
 import org.tim.configuration.SpringTestsCustomExtension;
 import org.tim.entities.Message;
@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageServiceTestIT extends SpringTestsCustomExtension {
 
+	private Project project;
+
 	@Autowired
 	private MessageService messageService;
-
-	private Project project;
 
 	@Autowired
 	private MessageRepository messageRepository;
@@ -37,6 +37,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Create message when data were sent in correct form.")
 	void whenValidMessageIsGivingThenMessageIsCreated() {
 		//given
 		MessageDTO messageDTO = random(MessageDTO.class);
@@ -50,6 +51,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Throws exception when message data were sent in wrong format.")
 	void whenInvalidMessageIsGivingThenExceptionIsThrown() {
 		//given
 		MessageDTO messageDTO = random(MessageDTO.class);
@@ -59,6 +61,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Assert messages are deleted correctly.")
 	void whenDeletingExistingMessageThenMessageIsDeleted() {
 		//given
 		MessageDTO messageDTO = random(MessageDTO.class);
@@ -72,6 +75,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Throws exception when try to delete not existed messages.")
 	void whenDeletingNonExistingMessageThenExceptionIsThrown() {
 		//given
 		Long id = 1L;
@@ -81,6 +85,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Assert message updated correctly.")
 	void whenUpdateExistingNotDeletedMessageThenMessageIsUpdated() {
 		//given
 		MessageDTO messageDTO = random(MessageDTO.class);
@@ -95,6 +100,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Throws exception when user try to update deleted messages.")
 	void whenUpdateExistingDeletedMessageThenExceptionIsThrown() {
 		//given
 		MessageDTO messageDTO = random(MessageDTO.class);
@@ -108,6 +114,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("When user try update not existed messages then throw exception.")
 	void whenUpdateNonExistingNotDeletedMessageThenExceptionIsThrown() {
 		//given
 		MessageDTO messageDTO = random(MessageDTO.class);
@@ -120,7 +127,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 
 
 	@Test
-	@WithMockUser(username = "prog", password = "prog")
+	@DisplayName("Assert that new message version is created when message is updated.")
 	void whenMessageIsUpdatedThenMessageVersionIsCreated() {
 		// given
 		Project project = createEmptyGermanToEnglishProject();

@@ -104,8 +104,12 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 		expectedProject.getTargetLocales().forEach(targetLocale -> {
 			assertTrue(responseProject.getTargetLocales().contains(targetLocale));
 		});
-		assertTrue(responseProject.getTargetLocales().contains(savedLocaleWrapper));
-		assertEquals(expectedProject.getTargetLocales().size(), responseProject.getTargetLocales().size());
+
+		assertAll(
+				() -> assertTrue(responseProject.getTargetLocales().contains(savedLocaleWrapper)),
+				() -> assertEquals(expectedProject.getTargetLocales().size(), responseProject.getTargetLocales().size())
+		);
+
 		Map<Locale, Locale> responseReplaceableLocaleToItsSubstituteAsLocale = new HashMap<>();
 		responseProject.getReplaceableLocaleToItsSubstitute().forEach(
 				(replaceableLocaleWrapper, substituteLocaleWrapper) -> {
@@ -209,7 +213,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 
 	@Test
 	@DisplayName("Check if getAllProjectsForDeveloper() returns proper objects")
-	public void getAllProjectsForDeveloper_ReturnAllProjects(){
+	public void getAllProjectsForDeveloper_ReturnAllProjects() {
 
 	}
 
