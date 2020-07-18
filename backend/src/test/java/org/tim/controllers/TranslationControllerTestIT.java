@@ -5,6 +5,7 @@ import org.apache.commons.lang.LocaleUtils;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,21 +20,18 @@ import org.tim.services.TranslationService;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.tim.constants.Mappings.API_VERSION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.tim.constants.Mappings.*;
+import static org.tim.constants.Mappings.CREATE;
+import static org.tim.constants.Mappings.TRANSLATION;
 
 public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 
-	private MockMvc mockMvc;
 	private static ObjectMapper mapper;
-
-	private TranslationDTO translationDTO;
 	private static Translation expectedTranslation;
-
-	private final String BASE_URL = "http://localhost:8081" + API_VERSION;
+	private MockMvc mockMvc;
+	private TranslationDTO translationDTO;
 
 	@Mock
 	private TranslationService translationService;
@@ -60,7 +58,8 @@ public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	public void createNewTranslation_DataCorrect_Success() throws Exception {
+	@DisplayName("When data validated then allow to create translation.")
+	public void whenCreateNewTranslationAndDataCorrectThenSuccess() throws Exception {
 		when(translationService.createTranslation(any(), any())).thenReturn(expectedTranslation);
 		String jsonRequest = mapper.writeValueAsString(translationDTO);
 		mockMvc.perform(post(BASE_URL + TRANSLATION + CREATE)
@@ -74,7 +73,8 @@ public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	public void createNewTranslation_ContentBlank_Failure() throws Exception {
+	@DisplayName("Return validation error when translation content blank.")
+	public void whenCreateNewTranslationAndContentBlankThenFailure() throws Exception {
 		translationDTO.setContent("");
 		String jsonRequest = mapper.writeValueAsString(translationDTO);
 		mockMvc.perform(post(BASE_URL + TRANSLATION + CREATE)
@@ -86,7 +86,8 @@ public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	public void createNewTranslation_LocaleBlank_Failure() throws Exception {
+	@DisplayName("Return validation error when translation locale blank.")
+	public void whenCreateNewTranslationAndLocaleBlankThenFailure() throws Exception {
 		translationDTO.setLocale("");
 		String jsonRequest = mapper.writeValueAsString(translationDTO);
 		mockMvc.perform(post(BASE_URL + TRANSLATION + CREATE)
@@ -97,7 +98,8 @@ public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	public void createNewTranslation_MessageIdNull_Failure() throws Exception {
+	@DisplayName("Return validation error when message id is null.")
+	public void whenCreateNewTranslationAndMessageIdNullThenFailure() throws Exception {
 		translationDTO.setMessageId(null);
 		String jsonRequest = mapper.writeValueAsString(translationDTO);
 		mockMvc.perform(post(BASE_URL + TRANSLATION + CREATE)

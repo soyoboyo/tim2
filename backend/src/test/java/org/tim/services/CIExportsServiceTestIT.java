@@ -1,9 +1,9 @@
 package org.tim.services;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.tim.DTOs.MessageDTO;
 import org.tim.DTOs.input.ProjectDTO;
 import org.tim.DTOs.input.TranslationCreateDTO;
@@ -18,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 
+	private static String expectedResult;
 	private ProjectDTO projectDTO;
 	private List<MessageDTO> messageDTOList;
 	private List<TranslationCreateDTO> translationCreateDTOList;
-	private static String expectedResult;
 
 	@Autowired
 	private ProjectService projectService;
@@ -54,15 +54,15 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "ci", password = "ci")
-	public void exportAllReadyTranslationsByProjectAndByLocale_throwException() {
+	@DisplayName("Throw validation error during exporting translation when locale were sent in wrong format.")
+	public void whenExportAllReadyTranslationsByProjectAndByLocaleAndLocaleInWrongFormatThenThrowException() {
 		// given
 		String locale = "ag_XX7d9ww";
 		Project project = projectService.createProject(projectDTO);
 		for (int i = 0; i < messageDTOList.size(); i++) {
 			messageDTOList.get(i).setProjectId(project.getId());
 			Long messageId = messageService.createMessage(messageDTOList.get(i)).getId();
-			translationService.createTranslation(translationCreateDTOList.get(i),messageId);
+			translationService.createTranslation(translationCreateDTOList.get(i), messageId);
 		}
 
 		// then
@@ -72,8 +72,8 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "ci", password = "ci")
-	public void exportAllReadyTranslationsByProjectAndByLocale_correctOutput() {
+	@DisplayName("Export all ready translations when all input data validated.")
+	public void whenExportAllReadyTranslationsByProjectAndByLocaleThenReturnCorrectOutput() {
 		// given
 		String locale = "pl_PL";
 		Project project = projectService.createProject(projectDTO);
@@ -91,8 +91,8 @@ public class CIExportsServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "ci", password = "ci")
-	public void exportAllReadyTranslationsByProjectAndByLocale_useReplaceableLocale() {
+	@DisplayName("Export all ready translations using replaceable locales when all input data validate.")
+	public void exportAllReadyTranslationsByProjectAndByLocaleAndUseReplaceableLocale() {
 		// given
 		String locale = "ar_LY";
 		String replaceableLocale = "pl_PL";
