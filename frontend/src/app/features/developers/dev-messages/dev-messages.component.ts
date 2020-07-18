@@ -224,8 +224,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
           }
         },
         error => {
-          this.snackbar.snackError(error.error.message, 'OK');
-          console.log(error.error.message);
+          this.snackbar.snackError(error.error, 'OK');
         });
     }
   }
