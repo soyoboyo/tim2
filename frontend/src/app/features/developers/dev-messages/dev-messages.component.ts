@@ -192,10 +192,6 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 		formGroup.markAsUntouched();
 	}
 
-	downloadXLS() {
-		this.http.downloadXLS(this.selectedProject);
-	}
-
 	compareProjects(o1: any, o2: any): boolean {
 		if (o1 === null || o2 === null) {
 			return false;
