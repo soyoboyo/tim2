@@ -1,0 +1,18 @@
+<mat-toolbar>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{'ocadoTechnology' | translate}}</span>
+</mat-toolbar>
+<button mat-raised-button color="primary">{{'welcome1' | translate}}</button>
+<mat-form-field>
+  <mat-label>Select language</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let language of languages" [value]="language.value"
+                (onSelectionChange)="changeLanguage($event)">
+      {{language.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<button mat-raised-button color="primary">{{'welcome2' | translate}}</button>
+
