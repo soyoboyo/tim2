@@ -1,4 +1,7 @@
 <mat-card class="card">
+  <mat-card-title>
+    Categories
+  </mat-card-title>
   <mat-card-content>
     <mat-selection-list #categoriesList [multiple]="false">
       <mat-list-option *ngFor="let category of categories" [value]="category">
