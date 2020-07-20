@@ -1,6 +1,7 @@
 package org.tim.services;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tim.DTOs.input.ProjectDTO;
@@ -45,12 +46,14 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Check if project is created successfully")
 	void createNewProject_DataCorrect_Success() {
 		Project responseProject = projectService.createProject(projectDTO);
 		validateResponseProject(responseProject);
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void updateProject_DataCorrect_Success() {
 		Map<String, String> replaceableLocaleToItsSubstituteString = new HashMap<>();
 		replaceableLocaleToItsSubstituteString.put("en_US", "en_GB");
@@ -64,32 +67,9 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 		validateResponseProject(responseProject);
 	}
 
-	private void validateResponseProject(Project responseProject) {
-		assertTrue(responseProject.getName().equals(expectedProject.getName()));
-		expectedProject.getTargetLocales().forEach(targetLocale -> {
-			assertTrue(responseProject.getTargetLocales().contains(targetLocale));
-		});
-		assertEquals(expectedProject.getTargetLocales().size(), responseProject.getTargetLocales().size());
-		Map<Locale, Locale> responseReplaceableLocaleToItsSubstituteAsLocale = new HashMap<>();
-		responseProject.getReplaceableLocaleToItsSubstitute().forEach(
-				(replaceableLocaleWrapper, substituteLocaleWrapper) -> {
-					responseReplaceableLocaleToItsSubstituteAsLocale.put(
-							replaceableLocaleWrapper.getLocale(), substituteLocaleWrapper.getLocale());
-				});
-		Map<Locale, Locale> expectedReplaceableLocaleToItsSubstituteAsLocale = new HashMap<>();
-		expectedProject.getReplaceableLocaleToItsSubstitute().forEach(
-				(replaceableLocaleWrapper, substituteLocaleWrapper) -> {
-					expectedReplaceableLocaleToItsSubstituteAsLocale.put(
-							replaceableLocaleWrapper.getLocale(), substituteLocaleWrapper.getLocale());
-				});
-		expectedReplaceableLocaleToItsSubstituteAsLocale.forEach((replaceableLocale, substituteLocale) -> {
-			assertTrue(responseReplaceableLocaleToItsSubstituteAsLocale.get(replaceableLocale).equals(substituteLocale));
-		});
-		assertEquals(expectedProject.getReplaceableLocaleToItsSubstitute().size(),
-				responseProject.getReplaceableLocaleToItsSubstitute().size());
-	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void createNewProject_DataCorrectWithExistingDateInDatabase_Success() {
 		LocaleWrapper localeWrapperToSave = new LocaleWrapper(Locale.JAPAN);
 		LocaleWrapper savedLocaleWrapper = localeWrapperRepository.save(localeWrapperToSave);
@@ -129,6 +109,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void createNewProject_tReplaceableLocaleToItsSubstituteWithIncorrectLocaleFormat_ThrowException() {
 		projectDTO.getReplaceableLocaleToItsSubstitute().put("pl_PL", "incorrectFormat");
 		Exception exception = assertThrows(ValidationException.class, () ->
@@ -138,6 +119,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void createNewProject_TargetLocalesWithIncorrectLocaleFormat_ThrowException() {
 		ProjectDTO newProjectDTO = new ProjectDTO("name", "pl_PL",
 				Arrays.asList("incorrectFormat", "en_GB", "en_US", "de_DE"),
@@ -149,6 +131,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void createNewProject_SourceLocaleWithIncorrectLocaleFormat_ThrowException() {
 		projectDTO.setSourceLocale("incorrectFormat");
 		Exception exception = assertThrows(ValidationException.class, () ->
@@ -158,6 +141,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void createNewProject_IncorrectReplaceableLocaleToItsSubstitute_ThrowException() {
 		String incorrectLocale = "en_GB_PL";
 		projectDTO.getReplaceableLocaleToItsSubstitute().put("pl_PL", incorrectLocale);
@@ -167,6 +151,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void updateProject_IncorrectReplaceableLocaleToItsSubstitute_ThrowException() {
 		projectDTO.setName("randomName2");
 		Long projectId = projectService.createProject(projectDTO).getId();
@@ -178,6 +163,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void createNewProject_ReplaceableLocaleToItsSubstituteMakeCycle_ThrowException() {
 		projectDTO.getReplaceableLocaleToItsSubstitute().put("de_DE", "pl_PL");
 		Exception exception = assertThrows(ValidationException.class, () ->
@@ -186,6 +172,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void updateProject_ReplaceableLocaleToItsSubstituteMakeCycle_ThrowException() {
 		projectDTO.setName("randomName");
 		projectDTO.getReplaceableLocaleToItsSubstitute().put("de_DE", "pl_PL");
@@ -196,6 +183,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void getAllProjects_ReturnAllProjects() {
 		Project project1 = createEmptyGermanToEnglishProjectWithSubstituteLocales();
 		Project project2 = createEmptyGermanToEnglishAndFrenchProject();
@@ -224,4 +212,30 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 			assertEquals(p2.getReplaceableLocaleToItsSubstitute().get(entry.getKey()), entry.getValue());
 		}
 	}
+
+	private void validateResponseProject(Project responseProject) {
+		assertTrue(responseProject.getName().equals(expectedProject.getName()));
+		expectedProject.getTargetLocales().forEach(targetLocale -> {
+			assertTrue(responseProject.getTargetLocales().contains(targetLocale));
+		});
+		assertEquals(expectedProject.getTargetLocales().size(), responseProject.getTargetLocales().size());
+		Map<Locale, Locale> responseReplaceableLocaleToItsSubstituteAsLocale = new HashMap<>();
+		responseProject.getReplaceableLocaleToItsSubstitute().forEach(
+				(replaceableLocaleWrapper, substituteLocaleWrapper) -> {
+					responseReplaceableLocaleToItsSubstituteAsLocale.put(
+							replaceableLocaleWrapper.getLocale(), substituteLocaleWrapper.getLocale());
+				});
+		Map<Locale, Locale> expectedReplaceableLocaleToItsSubstituteAsLocale = new HashMap<>();
+		expectedProject.getReplaceableLocaleToItsSubstitute().forEach(
+				(replaceableLocaleWrapper, substituteLocaleWrapper) -> {
+					expectedReplaceableLocaleToItsSubstituteAsLocale.put(
+							replaceableLocaleWrapper.getLocale(), substituteLocaleWrapper.getLocale());
+				});
+		expectedReplaceableLocaleToItsSubstituteAsLocale.forEach((replaceableLocale, substituteLocale) -> {
+			assertTrue(responseReplaceableLocaleToItsSubstituteAsLocale.get(replaceableLocale).equals(substituteLocale));
+		});
+		assertEquals(expectedProject.getReplaceableLocaleToItsSubstitute().size(),
+				responseProject.getReplaceableLocaleToItsSubstitute().size());
+	}
+
 }

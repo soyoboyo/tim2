@@ -3,6 +3,7 @@ package org.tim.services;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.lang.LocaleUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -46,7 +47,8 @@ public class ExportServiceTestIT {
     private String testLocale4 = "ru";
     private String testLocale5 = "hr";
 
-    @Test
+	@Test
+	@DisplayName("Throw exception if project doesn't exists")
     void generateExcelReport_projectNotFound_exception() {
         //given
         Mockito.lenient().when(projectRepository.findById(1L)).thenReturn(Optional.empty());
@@ -58,7 +60,8 @@ public class ExportServiceTestIT {
     }
 
 
-    @Test
+	@Test
+	@DisplayName("Check if correct report is generated")
     void generateExcelReport_validCall_correctCSVFileProduced() {
         //given
         testInitialize();
@@ -151,11 +154,7 @@ public class ExportServiceTestIT {
                     () -> assertEquals("Message2TranslationRU", records.get(18).get(4)),
                     () -> assertEquals("New translation", records.get(19).get(0)),
                     () -> assertEquals("-", records.get(19).get(1))
-
-
-
             );
-
         } catch (IOException ex) {
             fail();
         }

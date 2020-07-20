@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProjectTestsCT {
 
 	@Test
+		// TODO: Add @DisplayName
 	void updateSubstituteLocale_NoCyclesAndBothLocalesInTargetLocales_Success() {
 		//given
 		Project project = random(Project.class);
@@ -32,6 +33,7 @@ class ProjectTestsCT {
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void whenUpdateSubstituteLocaleAndLocalesIsMissingInTargetLocalesThenFailure() {
 		//given
 		Project project = random(Project.class);
@@ -49,6 +51,7 @@ class ProjectTestsCT {
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void whenUpdateSubstituteLocaleAndGraphHasCyclesThenFailure() {
 		//given
 		Project project = random(Project.class);
@@ -71,6 +74,7 @@ class ProjectTestsCT {
 	}
 
 	@Test
+		// TODO: Add @DisplayName
 	void removeTargetLocale_RemovedLocaleIsPresentInReplacementMapAsKey_ReplacementMapEntryIsRemoved() {
 		//given
 		Project project = random(Project.class);
@@ -87,6 +91,7 @@ class ProjectTestsCT {
 
 
 	@Test
+		// TODO: Add @DisplayName
 	void whenRemoveTargetLocaleAndRemovedLocaleIsPresentInReplacementMapAsValueThenReplacementMapEntriesAreRemoved() {
 		//given
 		Project project = random(Project.class);

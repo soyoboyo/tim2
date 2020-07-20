@@ -136,6 +136,7 @@ public class ProjectControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Return bad request for project with blank source locale")
 	void createNewProject_SourceLocaleBlank_Failure() throws Exception {
 		projectDTO.setSourceLocale("");
 		String jsonRequest = mapper.writeValueAsString(projectDTO);
