@@ -1,7 +1,6 @@
 package org.tim.services;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tim.DTOs.input.ProjectDTO;
@@ -208,13 +207,6 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 			else if (project.getId() == project2.getId())
 				compareProjects(project, project2);
 		}
-	}
-
-
-	@Test
-	@DisplayName("Check if getAllProjectsForDeveloper() returns proper objects")
-	public void getAllProjectsForDeveloper_ReturnAllProjects() {
-
 	}
 
 	private void compareProjects(Project p1, Project p2) {

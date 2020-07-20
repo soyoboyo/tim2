@@ -23,8 +23,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.tim.constants.Mappings.CREATE;
-import static org.tim.constants.Mappings.TRANSLATION;
+import static org.tim.constants.Mappings.*;
 
 public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 
@@ -32,6 +31,8 @@ public class TranslationControllerTestIT extends SpringTestsCustomExtension {
 	private static Translation expectedTranslation;
 	private MockMvc mockMvc;
 	private TranslationDTO translationDTO;
+
+	private final String BASE_URL = "http://localhost:8081" + API_VERSION;
 
 	@Mock
 	private TranslationService translationService;

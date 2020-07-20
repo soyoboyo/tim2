@@ -3,7 +3,6 @@ package org.tim.services;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.lang.LocaleUtils;
-import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -28,17 +27,17 @@ import static org.tim.constants.CSVFileConstants.CSV_FILE_NAME;
 import static org.tim.constants.CSVFileConstants.STD_HEADERS;
 
 @ExtendWith(MockitoExtension.class)
-public class ReportServiceTests {
+public class ExportServiceTestIT {
 
-    @Mock
-    ProjectRepository projectRepository;
-    @Mock
-    MessageRepository messageRepository;
-    @Mock
-    TranslationRepository translationRepository;
-    @Mock
-    Message message1;
-    @Mock
+	@Mock
+	ProjectRepository projectRepository;
+	@Mock
+	MessageRepository messageRepository;
+	@Mock
+	TranslationRepository translationRepository;
+	@Mock
+	Message message1;
+	@Mock
     Message message2;
 
     private String testLocale1 = "pl";
@@ -51,7 +50,7 @@ public class ReportServiceTests {
     void generateExcelReport_projectNotFound_exception() {
         //given
         Mockito.lenient().when(projectRepository.findById(1L)).thenReturn(Optional.empty());
-        var reportService = new ReportService(projectRepository, messageRepository, translationRepository);
+		var reportService = new ExportService(projectRepository, messageRepository, translationRepository);
         //when, then
         assertThrows(EntityNotFoundException.class, () -> {
             reportService.generateCSVReport(1L, new String[]{});
@@ -63,7 +62,7 @@ public class ReportServiceTests {
     void generateExcelReport_validCall_correctCSVFileProduced() {
         //given
         testInitialize();
-        var reportService = new ReportService(projectRepository, messageRepository, translationRepository);
+		var reportService = new ExportService(projectRepository, messageRepository, translationRepository);
         //when
         reportService.generateCSVReport(0L, new String[]{testLocale1, testLocale2, testLocale3, testLocale5});
         //then
