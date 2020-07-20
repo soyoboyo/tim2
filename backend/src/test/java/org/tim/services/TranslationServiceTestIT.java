@@ -2,9 +2,9 @@ package org.tim.services;
 
 import org.apache.commons.lang.LocaleUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.tim.DTOs.input.TranslationCreateDTO;
 import org.tim.DTOs.input.TranslationUpdateDTO;
 import org.tim.configuration.SpringTestsCustomExtension;
@@ -62,7 +62,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
+	// TODO: Add @DisplayName
 	public void createNewTranslation_DataCorrect_Success() {
 		Long messageId = messageRepository.findAll().get(0).getId();
 		Translation responseTranslation = translationService.createTranslation(translationCreateDTO, messageId);
@@ -73,8 +73,8 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
-	public void createNewTranslation_TranslationLanguageNotExistInProjectTargetLocales_ThrowException() {
+		// TODO: Add @DisplayName
+	void createNewTranslation_TranslationLanguageNotExistInProjectTargetLocales_ThrowException() {
 		Long messageId = messageRepository.findAll().get(0).getId();
 		translationCreateDTO.setLocale("pl_DE");
 		Exception exception = assertThrows(ValidationException.class, () ->
@@ -83,16 +83,16 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
-	public void createNewTranslation_MessageNotExist_ThrowException() {
+		// TODO: Add @DisplayName
+	void createNewTranslation_MessageNotExist_ThrowException() {
 		Exception exception = assertThrows(EntityNotFoundException.class, () ->
 				translationService.createTranslation(translationCreateDTO, 100L));
 		assertEquals(exception.getMessage(), "Sorry, we can't find this message");
 	}
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
-	public void createMessage_createTranslation__MessageTimeIsBefore() throws InterruptedException {
+		// TODO: Add @DisplayName
+	void createMessage_createTranslation__MessageTimeIsBefore() throws InterruptedException {
 		Message message = messageRepository.findAll().get(0);
 		message.setContent("testContent");
 		message = messageRepository.save(message);
@@ -102,8 +102,8 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
-	public void createTranslation_UpdateMessage__MessageTimeIsAfter() throws InterruptedException {
+		// TODO: Add @DisplayName
+	void createTranslation_UpdateMessage__MessageTimeIsAfter() throws InterruptedException {
 		Message message = messageRepository.findAll().get(0);
 		Translation translation = translationService.createTranslation(translationCreateDTO, message.getId());
 		message.setContent("newContext");
@@ -112,8 +112,8 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
-	public void createNewTranslation__DataCorrectWithExistingDateInDatabase_Success() {
+		// TODO: Add @DisplayName
+	void createNewTranslation__DataCorrectWithExistingDateInDatabase_Success() {
 		Project project = new Project();
 		project.setName("ProjectForTest");
 		LocaleWrapper localeWrapper = localeWrapperRepository.save(new LocaleWrapper(Locale.ENGLISH));
@@ -134,7 +134,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
+	@DisplayName("Return updated translation after updating")
 	void whenTranslationIsUpdatedThenUpdatedVersionIsReturned() {
 		// given
 		Project project = createEmptyGermanToEnglishProject();
@@ -149,7 +149,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	@WithMockUser(username = "tran", password = "tran")
+	@DisplayName("Check if new translation version in history is created properly")
 	void whenTranslationIsUpdatedThenTranslationVersionIsCreated() {
 		// given
 		Project project = createEmptyGermanToEnglishProject();
@@ -175,6 +175,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 
 
 	@Test
+	@DisplayName("Check if archiving message works properly")
 	void whenArchivingExistingTranslationThenTranslationIsArchived() {
 		//given
 		Project project = createEmptyGermanToEnglishProject();

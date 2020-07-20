@@ -24,7 +24,7 @@ export class UtilsService {
 		element.style.display = 'block';
 	}
 
-	public sortByProperty<T>(array: T[], propName: keyof T, order: 'ASC' | 'DESC'): void {
+	public sortByProperty<T>(array: T[], propName: keyof T, order?: 'ASC' | 'DESC'): void {
 		array.sort((a, b) => {
 			if (a[propName] < b[propName]) {
 				return -1;

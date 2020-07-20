@@ -1,38 +1,39 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {RestService} from '../../../shared/services/rest/rest.service';
-import {SnackbarService} from '../../../shared/services/snackbar-service/snackbar.service';
-import {UtilsService} from '../../../shared/services/utils-service/utils.service';
-import {ProjectsStoreService} from '../../../stores/projects-store/projects-store.service';
-import {ConfirmationDialogService} from '../../../shared/services/confirmation-dialog/confirmation-dialog.service';
-import {Message} from '../../../shared/types/entities/Message';
-import {Project} from '../../../shared/types/entities/Project';
-import {MessageForTranslator} from '../../../shared/types/DTOs/output/MessageForTranslator';
-import {TranslationUpdateDTO} from '../../../shared/types/DTOs/input/TranslationUpdateDTO';
-import {TranslationCreateDTO} from '../../../shared/types/DTOs/input/TranslationCreateDTO';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { RestService } from '../../../shared/services/rest/rest.service';
+import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
+import { UtilsService } from '../../../shared/services/utils-service/utils.service';
+import { ProjectsStoreService } from '../../../stores/projects-store/projects-store.service';
+import { ConfirmationDialogService } from '../../../shared/services/confirmation-dialog/confirmation-dialog.service';
+import { Message } from '../../../shared/types/entities/Message';
+import { Project } from '../../../shared/types/entities/Project';
+import { MessageForTranslator } from '../../../shared/types/DTOs/output/MessageForTranslator';
+import { TranslationUpdateDTO } from '../../../shared/types/DTOs/input/TranslationUpdateDTO';
+import { TranslationCreateDTO } from '../../../shared/types/DTOs/input/TranslationCreateDTO';
 
 @Component({
-  selector: 'app-tra-messages',
-  templateUrl: './tra-messages.component.html',
-  styleUrls: ['./tra-messages.component.scss']
+	selector: 'app-tra-messages',
+	templateUrl: './tra-messages.component.html',
+	styleUrls: ['./tra-messages.component.scss']
 })
 export class TraMessagesComponent implements OnInit {
 
-  messageParams: FormGroup;
-  formMode = 'Add';
-  toUpdate: any = null;
-  showForm = false;
+	messageParams: FormGroup;
+	formMode = 'Add';
+	toUpdate: any = null;
+	showForm = false;
 
-  isLoadingResults = true;
-  selectedRowIndex = -1;
+	isLoadingResults = true;
+	selectedRowIndex = -1;
 
-  projects: Project[] = [];
-  messages: Message[] = [];
+	projects: Project[] = [];
+	messages: Message[] = [];
 
-  selectedProject = null;
+	selectedProject = null;
 	selectedLocale: string = null;
 	selectedMessage = null;
 	availableLocales: any[] = [];
+	selectedLocales = new FormControl();
 	private selectedTranslationId: number;
 
 	constructor(private formBuilder: FormBuilder,
@@ -93,7 +94,7 @@ export class TraMessagesComponent implements OnInit {
 	}
 
 	async addTranslation(body) {
-		await this.http.save('translation/create' + '?messageId=' + this.selectedMessage.id, body).subscribe((response) => {
+		this.http.save('translation/create' + '?messageId=' + this.selectedMessage.id, body).subscribe((response) => {
 			if (response !== null) {
 				this.getMessagesForTranslator();
 				this.snackbar.snackSuccess('Success!', 'OK');
@@ -108,7 +109,8 @@ export class TraMessagesComponent implements OnInit {
 	}
 
 	async updateTranslation(body) {
-		await this.http.update('translation/update/' + this.selectedTranslationId + '?messageId=' + this.selectedMessage.id, body).subscribe((response) => {
+		const url = 'translation/update/' + this.selectedTranslationId + '?messageId=' + this.selectedMessage.id;
+		this.http.update(url, body).subscribe((response) => {
 			if (response !== null) {
 				this.toUpdate = null;
 				this.getMessagesForTranslator();
@@ -138,10 +140,12 @@ export class TraMessagesComponent implements OnInit {
 		this.projectStoreService.setSelectedProject(value);
 		this.getMessagesForTranslator();
 		this.availableLocales = this.selectedProject.targetLocales;
+		this.utils.sortByProperty(this.availableLocales, 'locale');
 	}
 
-	downloadXLS() {
-		this.http.downloadXLS(this.selectedProject);
+	downloadReport() {
+		console.log(this.selectedLocales);
+		this.http.downloadReport(this.selectedProject, this.selectedLocales.value);
 	}
 
 	async getMessagesForTranslator() {
@@ -187,35 +191,35 @@ export class TraMessagesComponent implements OnInit {
 		}
 	}
 
-  cancelUpdate() {
-    this.selectedMessage = null;
-    this.toUpdate = null;
-    this.selectedRowIndex = -1;
-    this.formMode = 'Add';
-    this.showForm = false;
-    this.clearForm();
-  }
+	cancelUpdate() {
+		this.selectedMessage = null;
+		this.toUpdate = null;
+		this.selectedRowIndex = -1;
+		this.formMode = 'Add';
+		this.showForm = false;
+		this.clearForm();
+	}
 
-  clearForm() {
-    this.messageParams.reset();
-    this.messageParams.markAsPristine();
-    this.messageParams.markAsUntouched();
-    this.cd.markForCheck();
-  }
+	clearForm() {
+		this.messageParams.reset();
+		this.messageParams.markAsPristine();
+		this.messageParams.markAsUntouched();
+		this.cd.markForCheck();
+	}
 
-  importCSV($event: any) {
-    if ($event.target.files[0]) {
-      const url = 'report/import/translator';
+	importCSV($event: any) {
+		if ($event.target.files[0]) {
+			const url = 'report/import/translator';
 
-      this.http.importCSV(url, $event.target.files[0]).subscribe(response => {
-          if (response !== null) {
-            this.snackbar.snackSuccess(response, 'OK');
-            this.getMessagesForTranslator();
-          }
-        },
-        error => {
-          this.snackbar.snackError(error.error, 'OK');
-        });
-    }
-  }
+			this.http.importCSV(url, $event.target.files[0]).subscribe(response => {
+					if (response !== null) {
+						this.snackbar.snackSuccess(response, 'OK');
+						this.getMessagesForTranslator();
+					}
+				},
+				error => {
+					this.snackbar.snackError(error.error, 'OK');
+				});
+		}
+	}
 }

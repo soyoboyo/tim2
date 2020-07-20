@@ -3,7 +3,7 @@ package org.tim.services;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.lang.LocaleUtils;
-import org.apache.commons.lang.StringUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -28,17 +28,17 @@ import static org.tim.constants.CSVFileConstants.CSV_FILE_NAME;
 import static org.tim.constants.CSVFileConstants.STD_HEADERS;
 
 @ExtendWith(MockitoExtension.class)
-public class ReportServiceTests {
+public class ExportServiceTestIT {
 
-    @Mock
-    ProjectRepository projectRepository;
-    @Mock
-    MessageRepository messageRepository;
-    @Mock
-    TranslationRepository translationRepository;
-    @Mock
-    Message message1;
-    @Mock
+	@Mock
+	ProjectRepository projectRepository;
+	@Mock
+	MessageRepository messageRepository;
+	@Mock
+	TranslationRepository translationRepository;
+	@Mock
+	Message message1;
+	@Mock
     Message message2;
 
     private String testLocale1 = "pl";
@@ -47,11 +47,12 @@ public class ReportServiceTests {
     private String testLocale4 = "ru";
     private String testLocale5 = "hr";
 
-    @Test
+	@Test
+	@DisplayName("Throw exception if project doesn't exists")
     void generateExcelReport_projectNotFound_exception() {
         //given
         Mockito.lenient().when(projectRepository.findById(1L)).thenReturn(Optional.empty());
-        var reportService = new ReportService(projectRepository, messageRepository, translationRepository);
+		var reportService = new ExportService(projectRepository, messageRepository, translationRepository);
         //when, then
         assertThrows(EntityNotFoundException.class, () -> {
             reportService.generateCSVReport(1L, new String[]{});
@@ -59,11 +60,12 @@ public class ReportServiceTests {
     }
 
 
-    @Test
+	@Test
+	@DisplayName("Check if correct report is generated")
     void generateExcelReport_validCall_correctCSVFileProduced() {
         //given
         testInitialize();
-        var reportService = new ReportService(projectRepository, messageRepository, translationRepository);
+		var reportService = new ExportService(projectRepository, messageRepository, translationRepository);
         //when
         reportService.generateCSVReport(0L, new String[]{testLocale1, testLocale2, testLocale3, testLocale5});
         //then
@@ -152,11 +154,7 @@ public class ReportServiceTests {
                     () -> assertEquals("Message2TranslationRU", records.get(18).get(4)),
                     () -> assertEquals("New translation", records.get(19).get(0)),
                     () -> assertEquals("-", records.get(19).get(1))
-
-
-
             );
-
         } catch (IOException ex) {
             fail();
         }

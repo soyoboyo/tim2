@@ -1,31 +1,31 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {RestService} from '../../../shared/services/rest/rest.service';
-import {MessageDTO} from '../../../shared/types/DTOs/input/MessageDTO';
-import {SnackbarService} from '../../../shared/services/snackbar-service/snackbar.service';
-import {ConfirmationDialogService} from '../../../shared/services/confirmation-dialog/confirmation-dialog.service';
-import {ProjectsStoreService} from '../../../stores/projects-store/projects-store.service';
-import {UtilsService} from '../../../shared/services/utils-service/utils.service';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RestService } from '../../../shared/services/rest/rest.service';
+import { MessageDTO } from '../../../shared/types/DTOs/input/MessageDTO';
+import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
+import { ConfirmationDialogService } from '../../../shared/services/confirmation-dialog/confirmation-dialog.service';
+import { ProjectsStoreService } from '../../../stores/projects-store/projects-store.service';
+import { UtilsService } from '../../../shared/services/utils-service/utils.service';
 
 @Component({
-  selector: 'app-dev-messages',
-  templateUrl: './dev-messages.component.html',
-  styleUrls: ['./dev-messages.component.scss']
+	selector: 'app-dev-messages',
+	templateUrl: './dev-messages.component.html',
+	styleUrls: ['./dev-messages.component.scss']
 })
 export class DevMessagesComponent implements OnInit, AfterViewInit {
 
-  messageParams: FormGroup;
-  formMode = 'Add';
-  toUpdate: any = null;
-  showForm = false;
+	messageParams: FormGroup;
+	formMode = 'Add';
+	toUpdate: any = null;
+	showForm = false;
 
-  isLoadingResults = true;
-  selectedRowIndex = -1;
+	isLoadingResults = true;
+	selectedRowIndex = -1;
 
-  projects: any[] = [];
-  messages: any[] = [];
+	projects: any[] = [];
+	messages: any[] = [];
 
-  selectedProject = null;
+	selectedProject = null;
 	selectedProjectId = null;
 	aggregateInfoElement: any;
 	messagesTableElement: any;
@@ -192,40 +192,36 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 		formGroup.markAsUntouched();
 	}
 
-	downloadXLS() {
-		this.http.downloadXLS(this.selectedProject);
-  }
+	compareProjects(o1: any, o2: any): boolean {
+		if (o1 === null || o2 === null) {
+			return false;
+		} else {
+			return o1.name === o2.name;
+		}
+	}
 
-  compareProjects(o1: any, o2: any): boolean {
-    if (o1 === null || o2 === null) {
-      return false;
-    } else {
-      return o1.name === o2.name;
-    }
-  }
+	ngAfterViewInit(): void {
+		this.aggregateInfoElement = document.getElementById(this.aggregateInfoId);
+		this.messagesTableElement = document.getElementById(this.messagesTableId);
+		if (this.selectedProjectId == null) {
+			this.utilsService.hideElement(this.aggregateInfoElement);
+			this.utilsService.hideElement(this.messagesTableElement);
+		}
+	}
 
-  ngAfterViewInit(): void {
-    this.aggregateInfoElement = document.getElementById(this.aggregateInfoId);
-    this.messagesTableElement = document.getElementById(this.messagesTableId);
-    if (this.selectedProjectId == null) {
-      this.utilsService.hideElement(this.aggregateInfoElement);
-      this.utilsService.hideElement(this.messagesTableElement);
-    }
-  }
+	importCSV($event: any) {
+		if ($event.target.files[0]) {
+			const url = 'report/import/developer';
 
-  importCSV($event: any) {
-    if ($event.target.files[0]) {
-      const url = 'report/import/developer';
-
-      this.http.importCSV(url, $event.target.files[0]).subscribe(response => {
-          if (response !== null) {
-            this.snackbar.snackSuccess(response, 'OK');
-            this.getMessages();
-          }
-        },
-        error => {
-          this.snackbar.snackError(error.error, 'OK');
-        });
-    }
-  }
+			this.http.importCSV(url, $event.target.files[0]).subscribe(response => {
+					if (response !== null) {
+						this.snackbar.snackSuccess(response, 'OK');
+						this.getMessages();
+					}
+				},
+				error => {
+					this.snackbar.snackError(error.error, 'OK');
+				});
+		}
+	}
 }

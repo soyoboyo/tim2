@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.tim.entities.*;
+import org.tim.entities.LocaleWrapper;
+import org.tim.entities.Message;
+import org.tim.entities.Project;
+import org.tim.entities.Translation;
 import org.tim.repositories.*;
 
 import java.util.Arrays;
@@ -20,28 +23,25 @@ import static io.github.benas.randombeans.api.EnhancedRandom.random;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public abstract class SpringTestsCustomExtension {
 
-    @Autowired
-    protected ProjectRepository projectRepository;
+	protected final String BASE_URL = "http://localhost:8081";
 
-    @Autowired
-    protected MessageRepository messageRepository;
-
-    @Autowired
-    protected TranslationAgencyRepository translationAgencyRepository;
-
-    @Autowired
-    protected TranslationRepository translationRepository;
-
-    @Autowired
+	@Autowired
+	protected ProjectRepository projectRepository;
+	@Autowired
+	protected MessageRepository messageRepository;
+	@Autowired
+	protected TranslationAgencyRepository translationAgencyRepository;
+	@Autowired
+	protected TranslationRepository translationRepository;
+	@Autowired
     protected LocaleWrapperRepository localeWrapperRepository;
-
     @Autowired
     protected TranslationVersionRepository translationVersionRepository;
-
     @Autowired
     protected MessageVersionRepository messageVersionRepository;
 
-    @BeforeEach
+
+	@BeforeEach
     public void prepareDatabaseForTests() {
         clear();
     }

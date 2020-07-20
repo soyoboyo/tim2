@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.tim.services.ReportService;
+import org.springframework.web.multipart.MultipartFile;
+import org.tim.services.ExportService;
+import org.tim.services.ImportService;
+
 import static org.tim.constants.Mappings.*;
 
 @RestController
@@ -12,9 +15,28 @@ import static org.tim.constants.Mappings.*;
 @RequestMapping(API_VERSION + REPORT)
 public class ReportController {
 
-    private final ReportService reportService;
-    @GetMapping(GENERATE)
-    public ResponseEntity<FileSystemResource> generateExcelReport(@PathVariable Long id, @RequestParam String[] locales) {
-        return ResponseEntity.ok(new FileSystemResource(reportService.generateCSVReport(id, locales)));
-    }
+	private final ExportService exportService;
+	private final ImportService importService;
+
+	@GetMapping(GENERATE)
+	public ResponseEntity<FileSystemResource> generateCsvReportForTranslator(@PathVariable Long id, @RequestParam String[] locales) {
+		return ResponseEntity.ok(new FileSystemResource(exportService.generateCSVReport(id, locales)));
+	}
+
+	@PostMapping(IMPORT + TRANSLATOR)
+	public ResponseEntity<String> importTranslatorCSVReport(MultipartFile file) throws Exception {
+		importService.importTranslatorCSVFile(file);
+		return ResponseEntity.ok("success");
+	}
+
+	@PostMapping(IMPORT + DEVELOPER)
+	public ResponseEntity<String> importDeveloperCSVMessage(MultipartFile file) throws Exception {
+		importService.importDeveloperCSVMessage(file);
+		return ResponseEntity.ok("success");
+	}
+
+	@ExceptionHandler({Exception.class})
+	public ResponseEntity<String> csvProcessingError(Exception exception) {
+		return ResponseEntity.badRequest().body(exception.getMessage());
+	}
 }
