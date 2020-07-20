@@ -11,8 +11,9 @@ export class HomeComponent implements OnInit {
   translate: TranslateService;
   languages = [
     {value: 'en_US', viewValue: 'English'},
-    {value: 'pl_PL', viewValue: 'Polish'}
-  ]
+    {value: 'pl_PL', viewValue: 'Polish'},
+    {value: 'ko_KR', viewValue: 'Korean'}
+  ];
 
   constructor(translate: TranslateService) {
     this.translate = translate;

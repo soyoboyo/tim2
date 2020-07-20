@@ -1,0 +1,27 @@
+<div class="top">
+  <span class="app-name">App name</span>
+  <form [formGroup]="searchControl" class="search-form">
+    <mat-form-field>
+      <input type="text"
+             placeholder="Search for product"
+             aria-label="Search"
+             matInput
+             [formControl]="searchControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+  <mat-form-field class="select-language">
+    <mat-label>Select language</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let language of languages" [value]="language.value"
+                  (onSelectionChange)="changeLanguage($event)">
+        {{language.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
