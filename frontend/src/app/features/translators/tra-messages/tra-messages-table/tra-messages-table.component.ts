@@ -6,12 +6,12 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Project } from '../../../../shared/types/entities/Project';
 import { Message } from '../../../../shared/types/entities/Message';
 import { MessageForTranslator } from '../../../../shared/types/DTOs/output/MessageForTranslator';
-import { TranslatorFormStateService } from '../../translator-form-state-service/translator-form-state.service';
+import { TranslatorFormStateService } from '../translator-form-state-service/translator-form-state.service';
 
 @Component({
 	selector: 'app-tra-messages-table',
 	templateUrl: './tra-messages-table.component.html',
-	styleUrls: ['./tra-messages-table.component.scss', '../tra-messages.component.scss'],
+	styleUrls: ['./tra-messages-table.component.scss'],
 	animations: [
 		trigger('detailExpand', [
 			state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -174,7 +174,6 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	}
 
 	formSubmit(result: boolean) {
-		console.log(result);
 		this.formSubmitted.emit(result);
 	}
 

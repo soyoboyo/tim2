@@ -4,7 +4,7 @@ import { TranslationCreateDTO } from '../../../../shared/types/DTOs/input/Transl
 import { TranslationUpdateDTO } from '../../../../shared/types/DTOs/input/TranslationUpdateDTO';
 import { RestService } from '../../../../shared/services/rest/rest.service';
 import { SnackbarService } from '../../../../shared/services/snackbar-service/snackbar.service';
-import { TranslatorFormStateService } from '../../translator-form-state-service/translator-form-state.service';
+import { TranslatorFormStateService } from '../translator-form-state-service/translator-form-state.service';
 
 @Component({
 	selector: 'app-translator-form',

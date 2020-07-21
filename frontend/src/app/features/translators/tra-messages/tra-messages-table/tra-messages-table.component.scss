@@ -83,3 +83,11 @@ td:hover {
   align-items: center;
   gap: 4px;
 }
+
+.highlight {
+  background: $highlight-primary;
+}
+
+.highlight-accent {
+  background: $highlight-accent;
+}

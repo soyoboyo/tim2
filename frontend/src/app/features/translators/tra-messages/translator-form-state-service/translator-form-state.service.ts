@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MessageForTranslator } from '../../../shared/types/DTOs/output/MessageForTranslator';
+import { MessageForTranslator } from '../../../../shared/types/DTOs/output/MessageForTranslator';
 
 @Injectable({
 	providedIn: 'root'
@@ -9,6 +9,9 @@ export class TranslatorFormStateService {
 	private message = null;
 	private selectedLocale = '';
 
+	constructor() {
+	}
+
 	public closeForm() {
 		this.message = null;
 	}
@@ -16,7 +19,6 @@ export class TranslatorFormStateService {
 	public setValues(message: MessageForTranslator, locale: string) {
 		this.selectedLocale = locale;
 		this.message = message;
-		console.log(this.selectedLocale);
 	}
 
 	public getMessage() {
@@ -27,6 +29,5 @@ export class TranslatorFormStateService {
 		return this.selectedLocale;
 	}
 
-	constructor() {
-	}
+
 }
