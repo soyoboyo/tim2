@@ -61,7 +61,7 @@
 	<div class="app-table-wrapper">
 		<app-tra-messages-table [messages]="messages"
 								[selectedRowIndex]="selectedRowIndex"
-								(addTranslationEvent)="addNewTranslation($event)"
+								(formSubmitted)="formAction($event)"
 
 								(sendSelectedLocale)="selectLocale($event)"
 								(invalidateTranslationEvent)="invalidateTranslation($event)"

@@ -8,8 +8,6 @@ import { ConfirmationDialogService } from '../../../shared/services/confirmation
 import { Message } from '../../../shared/types/entities/Message';
 import { Project } from '../../../shared/types/entities/Project';
 import { MessageForTranslator } from '../../../shared/types/DTOs/output/MessageForTranslator';
-import { TranslationUpdateDTO } from '../../../shared/types/DTOs/input/TranslationUpdateDTO';
-import { TranslationCreateDTO } from '../../../shared/types/DTOs/input/TranslationCreateDTO';
 
 @Component({
 	selector: 'app-tra-messages',
@@ -59,13 +57,13 @@ export class TraMessagesComponent implements OnInit {
 		});
 	}
 
-	createTranslation(params: any) {
-		if (!this.toUpdate) {
-			this.addTranslation(new TranslationCreateDTO(params.value.content, this.selectedLocale));
-		} else {
-			this.updateTranslation(new TranslationUpdateDTO(params.value.content));
-		}
-	}
+	// createTranslation(params: any) {
+	// 	if (!this.toUpdate) {
+	// 		this.addTranslation(new TranslationCreateDTO(params.value.content, this.selectedLocale));
+	// 	} else {
+	// 		this.updateTranslation(new TranslationUpdateDTO(params.value.content));
+	// 	}
+	// }
 
 	addNewTranslation(message: MessageForTranslator) {
 		this.selectedMessage = message;
@@ -91,40 +89,6 @@ export class TraMessagesComponent implements OnInit {
 
 		this.toUpdate = message;
 		this.formMode = 'Update';
-	}
-
-	async addTranslation(body) {
-		this.http.save('translation/create' + '?messageId=' + this.selectedMessage.id, body).subscribe((response) => {
-			if (response !== null) {
-				this.getMessagesForTranslator();
-				this.snackbar.snackSuccess('Success!', 'OK');
-				this.selectedRowIndex = -1;
-				this.clearForm();
-			} else {
-				this.snackbar.snackError('Error', 'OK');
-			}
-		}, (error) => {
-			this.snackbar.snackError(error.error.message, 'OK');
-		});
-	}
-
-	async updateTranslation(body) {
-		const url = 'translation/update/' + this.selectedTranslationId + '?messageId=' + this.selectedMessage.id;
-		this.http.update(url, body).subscribe((response) => {
-			if (response !== null) {
-				this.toUpdate = null;
-				this.getMessagesForTranslator();
-				this.formMode = 'Add';
-				this.snackbar.snackSuccess('Success!', 'OK');
-				this.selectedRowIndex = -1;
-				this.clearForm();
-			} else {
-				this.snackbar.snackError('Error', 'OK');
-			}
-		}, (error) => {
-			this.snackbar.snackError(error.error.message, 'OK');
-		});
-		this.toUpdate = null;
 	}
 
 
@@ -201,10 +165,15 @@ export class TraMessagesComponent implements OnInit {
 		this.cd.markForCheck();
 	}
 
+	formAction(result: boolean) {
+		if (result) {
+			this.getMessagesForTranslator();
+		}
+	}
+
 	importCSV($event: any) {
 		if ($event.target.files[0]) {
 			const url = 'report/import/translator';
-
 			this.http.importCSV(url, $event.target.files[0]).subscribe(response => {
 					if (response !== null) {
 						this.snackbar.snackSuccess(response, 'OK');

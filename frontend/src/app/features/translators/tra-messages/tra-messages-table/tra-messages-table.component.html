@@ -106,8 +106,10 @@
 						</p>
 
 						<div *ngIf="showForm && selectedRowIndex === message.id">
-							<app-translator-form (hideForm)="hideForm($event)"
-												 [formMode]="formMode"></app-translator-form>
+							<app-translator-form [formMode]="formMode"
+												 (hideForm)="hideForm($event)"
+												 (formSubmitted)="formSubmit($event)"
+							></app-translator-form>
 						</div>
 
 					</div>

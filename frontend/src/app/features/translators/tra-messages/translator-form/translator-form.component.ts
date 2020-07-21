@@ -2,11 +2,8 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } fro
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslationCreateDTO } from '../../../../shared/types/DTOs/input/TranslationCreateDTO';
 import { TranslationUpdateDTO } from '../../../../shared/types/DTOs/input/TranslationUpdateDTO';
-import { MessageForTranslator } from '../../../../shared/types/DTOs/output/MessageForTranslator';
 import { RestService } from '../../../../shared/services/rest/rest.service';
 import { SnackbarService } from '../../../../shared/services/snackbar-service/snackbar.service';
-import { UtilsService } from '../../../../shared/services/utils-service/utils.service';
-import { ProjectsStoreService } from '../../../../stores/projects-store/projects-store.service';
 import { ConfirmationDialogService } from '../../../../shared/services/confirmation-dialog/confirmation-dialog.service';
 import { Project } from '../../../../shared/types/entities/Project';
 import { Message } from '../../../../shared/types/entities/Message';
@@ -19,9 +16,9 @@ import { TranslatorFormStateService } from '../../translator-form-state-service/
 })
 export class TranslatorFormComponent implements OnInit {
 
-	messageParams: FormGroup;
+	translationForm: FormGroup;
 	toUpdate: any = null;
-	// showForm = false;
+
 
 	isLoadingResults = true;
 	selectedRowIndex = -1;
@@ -35,25 +32,28 @@ export class TranslatorFormComponent implements OnInit {
 	private selectedTranslationId: number;
 	@Input() formMode: string;
 	@Output() hideForm = new EventEmitter<boolean>();
+	@Output() formSubmitted = new EventEmitter<boolean>();
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
 				private http: RestService,
 				private snackbar: SnackbarService,
-				private utils: UtilsService,
-				private projectsStore: ProjectsStoreService,
 				private confirmService: ConfirmationDialogService,
-				private projectStoreService: ProjectsStoreService,
 				private formState: TranslatorFormStateService) {
 	}
 
 	ngOnInit(): void {
 		this.initTranslationForm();
-		this.getMessagesForTranslator();
+		console.log(this.formMode);
+		if (this.formMode === 'Update') {
+			this.translationForm.patchValue({
+				content: this.formState.getMessage().translation.content,
+			});
+		}
 	}
 
 	initTranslationForm() {
-		this.messageParams = this.formBuilder.group({
+		this.translationForm = this.formBuilder.group({
 			content: ['', [Validators.required]]
 		});
 	}
@@ -66,99 +66,53 @@ export class TranslatorFormComponent implements OnInit {
 		}
 	}
 
-	addNewTranslation(message: MessageForTranslator) {
-		this.selectedMessage = message;
-		this.selectedRowIndex = message.id;
-	}
-
-	editTranslation(message: MessageForTranslator) {
-		this.selectedTranslationId = message.translation.id;
-		this.selectedMessage = message;
-		this.selectedRowIndex = message.id;
-
-		this.messageParams.patchValue({
-			content: message.translation.content,
-		});
-
-		this.toUpdate = message;
-		this.formMode = 'Update';
-	}
-
 	async addTranslation(body) {
 		this.http.save('translation/create' + '?messageId=' + this.formState.getMessage().id, body).subscribe((response) => {
-			if (response !== null) {
-				this.getMessagesForTranslator();
-				this.snackbar.snackSuccess('Success!', 'OK');
-				this.selectedRowIndex = -1;
-				this.clearForm();
-			} else {
-				this.snackbar.snackError('Error', 'OK');
-			}
+			this.submitNormal(response);
 		}, (error) => {
-			this.snackbar.snackError(error.error.message, 'OK');
+			this.submitException(error);
 		});
 	}
 
 	async updateTranslation(body) {
 		const url = 'translation/update/' + this.formState.getMessage().translation.id + '?messageId=' + this.formState.getMessage().id;
 		this.http.update(url, body).subscribe((response) => {
-			if (response !== null) {
-				this.toUpdate = null;
-				this.getMessagesForTranslator();
-				this.snackbar.snackSuccess('Success!', 'OK');
-				this.selectedRowIndex = -1;
-				this.clearForm();
-			} else {
-				this.snackbar.snackError('Error', 'OK');
-			}
+			this.submitNormal(response);
 		}, (error) => {
-			this.snackbar.snackError(error.error.message, 'OK');
+			this.submitException(error);
 		});
-		this.toUpdate = null;
 	}
 
-
-	async getMessagesForTranslator() {
-		if (this.selectedProject && this.selectedLocale) {
-			this.isLoadingResults = true;
-			this.messages = await this.http.getAll('message/translator/getByLocale/' + this.selectedProject.id + '?locale=' + this.selectedLocale);
-			this.messages = [].concat(this.messages);
-			this.isLoadingResults = false;
+	submitNormal(response: any) {
+		if (response !== null) {
+			this.formSubmitted.emit(true);
+			this.snackbar.snackSuccess('Success!', 'OK');
+			this.clearForm();
+			this.hideForm.emit(true);
+		} else {
+			this.formSubmitted.emit(false);
+			this.hideForm.emit(false);
+			this.snackbar.snackError('Error', 'OK');
 		}
 	}
 
-	async invalidateTranslation(message: any) {
-		await this.confirmService.openDialog('Are you sure you want to invalidate this translation?').subscribe((result) => {
-			if (result) {
-				this.http.update('translation/invalidate/' + message.translation.id + '?messageId=' + message.id, null).subscribe((response) => {
-					if (response !== null) {
-						this.getMessagesForTranslator();
-						this.snackbar.snackSuccess('Translation invalidated successfully!', 'OK');
-					}
-				}, (error) => {
-					this.snackbar.snackError(error.error.message, 'OK');
-				});
-			}
-		});
+	submitException(error: any) {
+		this.formSubmitted.emit(false);
+		this.hideForm.emit(false);
+		this.snackbar.snackError(error.error.message, 'OK');
 	}
-
-
-	cancelUpdate() {
-		this.selectedMessage = null;
-		this.toUpdate = null;
-		this.selectedRowIndex = -1;
-		this.formMode = 'Add';
-		// this.showForm = false;
+	
+	cancelForm() {
 		this.clearForm();
 	}
 
 	clearForm() {
 		this.hideForm.emit(false);
 		this.formState.closeForm();
-		// this.messageParams.reset();
-		// this.messageParams.markAsPristine();
-		// this.messageParams.markAsUntouched();
-		// this.cd.markForCheck();
+		this.translationForm.reset();
+		this.translationForm.markAsPristine();
+		this.translationForm.markAsUntouched();
+		this.cd.markForCheck();
 	}
 
 

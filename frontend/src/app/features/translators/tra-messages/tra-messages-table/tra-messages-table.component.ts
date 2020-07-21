@@ -7,7 +7,6 @@ import { Project } from '../../../../shared/types/entities/Project';
 import { Message } from '../../../../shared/types/entities/Message';
 import { MessageForTranslator } from '../../../../shared/types/DTOs/output/MessageForTranslator';
 import { TranslatorFormStateService } from '../../translator-form-state-service/translator-form-state.service';
-import { FormGroup } from '@angular/forms';
 
 @Component({
 	selector: 'app-tra-messages-table',
@@ -27,22 +26,21 @@ import { FormGroup } from '@angular/forms';
 
 export class TraMessagesTableComponent implements OnInit, OnChanges {
 
-	@Input() selectedRowIndex = -1;
-	@Input() selectedProject: Project;
-	@Input() selectedLocale: string = null;
 	@Input() messages: Message[] = [];
-	@Output() sendSelectedLocale = new EventEmitter<any>();
-	@Output() addTranslationEvent = new EventEmitter<any>();
-	@Output() editTranslationEvent = new EventEmitter<any>();
+	@Input() selectedLocale = '';
+	@Input() selectedProject: Project;
+	@Input() selectedRowIndex = -1;
+
+	@Output() formSubmitted = new EventEmitter<boolean>();
 	@Output() invalidateTranslationEvent = new EventEmitter<any>();
+	@Output() sendSelectedLocale = new EventEmitter<any>();
 
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	dataSource = new MatTableDataSource<MessageForTranslator>();
 	displayedColumns: string[] = ['key', 'message', 'translation', 'status'];
-	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	isLoadingResults = false;
-
 	expandedRow = null;
 
 	// filters
@@ -52,10 +50,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 
 	// form
 	showForm = false;
-	messageParams: FormGroup;
 	formMode = 'Add';
-	toUpdate: any = null;
-
 
 	constructor(private formState: TranslatorFormStateService) {
 	}
@@ -77,17 +72,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		this.isLoadingResults = false;
 	}
 
-	triggerTranslationForm(message: any, mode: string) {
-		if (mode === 'Add') {
-			this.formMode = 'Add';
-		} else {
-			this.formMode = 'Update';
-		}
-		this.formState.setValues(message, this.selectedLocale);
-		this.selectedRowIndex = message.id;
-		this.showForm = true;
-	}
-
+	// data table
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
@@ -145,10 +130,6 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		this.dataSource.filter = '{';
 	}
 
-	async invalidateTranslation(message: any) {
-		this.invalidateTranslationEvent.emit(message);
-	}
-
 	isTranslationOutdated(message: MessageForTranslator): boolean {
 		if (message.translation !== null) {
 			return message.updateDate > message.translation.updateDate;
@@ -171,10 +152,30 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		return 'Correct';
 	}
 
+	// interaction with form
+	triggerTranslationForm(message: any, mode: string) {
+		if (mode === 'Add') {
+			this.formMode = 'Add';
+		} else {
+			this.formMode = 'Update';
+		}
+		this.formState.setValues(message, this.selectedLocale);
+		this.selectedRowIndex = message.id;
+		this.showForm = true;
+	}
+
 	hideForm(stateChange: boolean) {
 		this.showForm = false;
 		this.selectedRowIndex = -1;
 	}
 
+	async invalidateTranslation(message: any) {
+		this.invalidateTranslationEvent.emit(message);
+	}
+
+	formSubmit(result: boolean) {
+		console.log(result);
+		this.formSubmitted.emit(result);
+	}
 
 }

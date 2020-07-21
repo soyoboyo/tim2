@@ -1,4 +1,4 @@
-<form [formGroup]="messageParams">
+<form [formGroup]="translationForm">
 
 	<mat-form-field>
 			<textarea formControlName="content"
@@ -11,10 +11,10 @@
 	</mat-form-field>
 
 	<div>
-		<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="!messageParams.valid" (click)="createTranslation(messageParams)">
+		<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="!translationForm.valid" (click)="createTranslation(translationForm)">
 			{{formMode}}
 		</button>
-		<button class="button-spacer" mat-button color="warn" type="button" (click)="cancelUpdate()">
+		<button class="button-spacer" mat-button color="warn" type="button" (click)="cancelForm()">
 			Cancel
 		</button>
 		<button mat-raised-button color="warn" type="button" (click)="clearForm()">
