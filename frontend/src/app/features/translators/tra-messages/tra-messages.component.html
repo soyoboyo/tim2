@@ -62,7 +62,7 @@
 		<app-tra-messages-table [messages]="messages"
 								[selectedRowIndex]="selectedRowIndex"
 								(addTranslationEvent)="addNewTranslation($event)"
-								(editTranslationEvent)="editTranslation($event)"
+
 								(sendSelectedLocale)="selectLocale($event)"
 								(invalidateTranslationEvent)="invalidateTranslation($event)"
 								[selectedProject]="selectedProject"
@@ -71,35 +71,35 @@
 		></app-tra-messages-table>
 	</div>
 
-	<div *ngIf="showForm" class="form-wrapper">
-		<mat-card id="form-messages" *ngIf="showForm" class="form-container mat-elevation-z4">
-			<h1>{{formMode}} translation</h1>
-			<form [formGroup]="messageParams">
+	<!--	<div *ngIf="showForm" class="form-wrapper">-->
+	<!--		<mat-card id="form-messages" *ngIf="showForm" class="form-container mat-elevation-z4">-->
+	<!--			<h1>{{formMode}} translation</h1>-->
+	<!--			<form [formGroup]="messageParams">-->
 
-				<mat-form-field>
-			<textarea formControlName="content"
-					  placeholder="Content"
-					  matInput
-					  cdkTextareaAutosize
-					  cdkAutosizeMinRows="1"
-					  cdkAutosizeMaxRows="10"
-					  required></textarea>
-				</mat-form-field>
+	<!--				<mat-form-field>-->
+	<!--			<textarea formControlName="content"-->
+	<!--					  placeholder="Content"-->
+	<!--					  matInput-->
+	<!--					  cdkTextareaAutosize-->
+	<!--					  cdkAutosizeMinRows="1"-->
+	<!--					  cdkAutosizeMaxRows="10"-->
+	<!--					  required></textarea>-->
+	<!--				</mat-form-field>-->
 
-				<div class="buttons-row">
-					<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="!messageParams.valid" (click)="createTranslation(messageParams)">
-						{{formMode}}
-					</button>
-					<button class="button-spacer" mat-button color="warn" type="button" (click)="cancelUpdate()">
-						Cancel
-					</button>
-					<button mat-raised-button color="warn" type="button" (click)="clearForm()">
-						Clear
-					</button>
-				</div>
+	<!--				<div class="buttons-row">-->
+	<!--					<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="!messageParams.valid" (click)="createTranslation(messageParams)">-->
+	<!--						{{formMode}}-->
+	<!--					</button>-->
+	<!--					<button class="button-spacer" mat-button color="warn" type="button" (click)="cancelUpdate()">-->
+	<!--						Cancel-->
+	<!--					</button>-->
+	<!--					<button mat-raised-button color="warn" type="button" (click)="clearForm()">-->
+	<!--						Clear-->
+	<!--					</button>-->
+	<!--				</div>-->
 
-			</form>
-		</mat-card>
-	</div>
+	<!--			</form>-->
+	<!--		</mat-card>-->
+	<!--	</div>-->
 </div>
 

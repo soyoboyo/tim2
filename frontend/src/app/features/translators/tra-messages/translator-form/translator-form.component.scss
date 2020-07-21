@@ -1,0 +1,19 @@
+@import "~src/theme-variables.scss";
+
+
+form mat-form-field {
+  width: 100%;
+}
+
+h1 {
+  text-align: center;
+}
+
+.buttons-row {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.button-spacer {
+  margin-right: 5px;
+}

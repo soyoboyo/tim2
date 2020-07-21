@@ -7,6 +7,7 @@ import { Project } from '../../../../shared/types/entities/Project';
 import { Message } from '../../../../shared/types/entities/Message';
 import { MessageForTranslator } from '../../../../shared/types/DTOs/output/MessageForTranslator';
 import { TranslatorFormStateService } from '../../translator-form-state-service/translator-form-state.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
 	selector: 'app-tra-messages-table',
@@ -38,14 +39,22 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<MessageForTranslator>();
-	displayedColumns: string[] = ['index', 'content', 'status'];
+	displayedColumns: string[] = ['key', 'message', 'translation', 'status'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	isLoadingResults = false;
 
 	expandedRow = null;
+
+	// filters
 	missing = false;
 	outdated = false;
 	invalid = false;
+
+	// form
+	showForm = false;
+	messageParams: FormGroup;
+	formMode = 'Add';
+	toUpdate: any = null;
 
 
 	constructor(private formState: TranslatorFormStateService) {
@@ -57,9 +66,6 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (this.selectedLocale !== null) {
-			if (!this.displayedColumns.includes('actions')) {
-				this.displayedColumns = ['index', 'content', 'status', 'actions'];
-			}
 			this.getMessages();
 			this.dataSource.filter = '{';
 		}
@@ -71,15 +77,15 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		this.isLoadingResults = false;
 	}
 
-	addTranslation(message: any) {
+	triggerTranslationForm(message: any, mode: string) {
+		if (mode === 'Add') {
+			this.formMode = 'Add';
+		} else {
+			this.formMode = 'Update';
+		}
+		this.formState.setValues(message, this.selectedLocale);
 		this.selectedRowIndex = message.id;
-		this.addTranslationEvent.emit(message);
-	}
-
-	updateTranslation(message: any) {
-		this.formState.setValues(message.id, message.content);
-		this.selectedRowIndex = message.id;
-		this.editTranslationEvent.emit(message);
+		this.showForm = true;
 	}
 
 	applyFilter(filterValue: string) {
@@ -139,7 +145,6 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		this.dataSource.filter = '{';
 	}
 
-
 	async invalidateTranslation(message: any) {
 		this.invalidateTranslationEvent.emit(message);
 	}
@@ -163,9 +168,13 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		if (translation.isValid === false) {
 			return 'Invalid';
 		}
-
-
 		return 'Correct';
-
 	}
+
+	hideForm(stateChange: boolean) {
+		this.showForm = false;
+		this.selectedRowIndex = -1;
+	}
+
+
 }

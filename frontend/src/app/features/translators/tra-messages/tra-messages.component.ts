@@ -155,12 +155,6 @@ export class TraMessagesComponent implements OnInit {
 			this.messages = [].concat(this.messages);
 			this.isLoadingResults = false;
 		}
-		// else if (this.selectedProject) {
-		// 	this.isLoadingResults = true;
-		// 	this.messages = await this.http.getAll('message/translator/getByProject/' + this.selectedProject.id);
-		// 	this.messages = [].concat(this.messages);
-		// 	this.isLoadingResults = false;
-		// }
 	}
 
 	async invalidateTranslation(message: any) {
