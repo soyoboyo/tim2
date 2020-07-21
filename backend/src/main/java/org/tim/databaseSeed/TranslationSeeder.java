@@ -3,7 +3,6 @@ package org.tim.databaseSeed;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.LocaleUtils;
 import org.springframework.stereotype.Service;
-
 import org.tim.entities.Message;
 import org.tim.entities.Translation;
 import org.tim.repositories.TranslationRepository;
@@ -207,15 +206,34 @@ public class TranslationSeeder {
         //featuresFooter6Pl.setContent("자원");
         Translation resourcesFooterPl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("resourcesFooter"));
         resourcesFooterPl.setContent("Zasoby");Translation resourcesFooter1Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("resourcesFooter1"));
-        resourcesFooter1Pl.setContent("Zasób");Translation resourcesFooter2Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("resourcesFooter2"));
-        resourcesFooter2Pl.setContent("Nazwa zasobu");Translation resourcesFooter3Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("resourcesFooter3"));
-        resourcesFooter3Pl.setContent("Inny zasób");Translation resourcesFooter4Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("resourcesFooter4"));
-        resourcesFooter4Pl.setContent("Ostateczny zasób");Translation aboutFooterPl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutFooter"));
-        aboutFooterPl.setContent("Infornacje");Translation aboutFooter1Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutFooter1"));
-        aboutFooter1Pl.setContent("Zespół");Translation aboutFooter2Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutFooter2"));
-        aboutFooter2Pl.setContent("Lokalizacje");Translation aboutFooter3Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutFooter3"));
-        aboutFooter3Pl.setContent("Prywatność");Translation aboutFooter4Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutFooter4"));
+        resourcesFooter1Pl.setContent("Zasób");
+        Translation resourcesFooter2Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("resourcesFooter2"));
+        resourcesFooter2Pl.setContent("Nazwa zasobu");
+        Translation resourcesFooter3Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("resourcesFooter3"));
+        resourcesFooter3Pl.setContent("Inny zasób");
+        Translation resourcesFooter4Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("resourcesFooter4"));
+        resourcesFooter4Pl.setContent("Ostateczny zasób");
+        Translation aboutFooterPl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutFooter"));
+        aboutFooterPl.setContent("Infornacje");
+        Translation aboutFooter1Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutFooter1"));
+        aboutFooter1Pl.setContent("Zespół");
+        Translation aboutFooter2Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutFooter2"));
+        aboutFooter2Pl.setContent("Lokalizacje");
+        Translation aboutFooter3Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutFooter3"));
+        aboutFooter3Pl.setContent("Prywatność");
+        Translation aboutFooter4Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutFooter4"));
         aboutFooter4Pl.setContent("Warunki");
+
+        Translation categoriesTitle = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("categoriesTitle"));
+        categoriesTitle.setContent("Kategorie");
+        Translation catHome = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("categoryHome"));
+        catHome.setContent("Dom");
+        Translation catEl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("categoryElectronics"));
+        catEl.setContent("Elektronika");
+        Translation catVid = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("categoryVideoGames"));
+        catVid.setContent("Gry Video");
+        Translation selectedCategory = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("selectedCategory"));
+        selectedCategory.setContent("Wybrana kategoria");
 
 
         translationRepository.saveAll(Arrays.asList(translationT1M1, translationT1M2, translationT1M3, translationT2M1,
@@ -224,7 +242,7 @@ public class TranslationSeeder {
                 pricingKo, signUpKo, ocadoTechnologyKo, featuresNavKo, enterpriseNavKo, supportNavKo, pricingNavKo,
                 freeCardKo, maxFreeUsersKo, maxFreeMemoryLimitKo, freeHelpCenterKo, signUpToAccessKo,
                 proCardKo, maxProUsersKo, maxProMemoryLimitKo, proEmailSupportKo, proHelpCenterKo, getStartedKo,
-                enterpriseCardKo,  contactUsKo, featuresFooterKo, featuresFooter1Ko, featuresFooter2Ko,
+                enterpriseCardKo, contactUsKo, featuresFooterKo, featuresFooter1Ko, featuresFooter2Ko,
                 featuresFooter3Ko, featuresFooter4Ko, featuresFooter5Ko, featuresFooter6Ko, resourcesFooterKo,
                 resourcesFooter1Ko, resourcesFooter2Ko, resourcesFooter3Ko, resourcesFooter4Ko, aboutFooterKo,
                 aboutFooter1Ko, aboutFooter2Ko, aboutFooter3Ko, aboutFooter4Ko, pricingDe, signUpDe,
@@ -242,7 +260,8 @@ public class TranslationSeeder {
                 maxEnterpriseUsersPl, maxEnterpriseMemoryLimitPl, enterpriseEmailSupportPl, enterpriseHelpCenterPl,
                 contactUsPl, featuresFooterPl, featuresFooter1Pl, featuresFooter2Pl, featuresFooter3Pl, featuresFooter4Pl,
                 featuresFooter5Pl, resourcesFooterPl, resourcesFooter1Pl, resourcesFooter2Pl,
-                resourcesFooter3Pl, resourcesFooter4Pl, aboutFooterPl, aboutFooter1Pl, aboutFooter2Pl, aboutFooter3Pl, aboutFooter4Pl
+                resourcesFooter3Pl, resourcesFooter4Pl, aboutFooterPl, aboutFooter1Pl, aboutFooter2Pl, aboutFooter3Pl, aboutFooter4Pl,
+                categoriesTitle, catEl, catHome, catVid, selectedCategory
 //                ,freeEmailSupportKo, maxFreeMemoryLimitPl, maxEnterpriseUsersKo, maxEnterpriseMemoryLimitKo, enterpriseEmailSupportKo,
 //                enterpriseHelpCenterKo,featuresFooterDe, featuresFooter6Pl, enterpriseCardPl, signUpToAccessDe
         ));

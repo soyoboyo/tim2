@@ -174,11 +174,23 @@ public class MessageSeeder {
 
 
         Message message1ForManyLocales = new Message("message1", "Short one.", projects.get("projectP3"));
-		messageM4.setDescription("M is short.");
-		messages.put("message1ForManyLocales", messageRepository.save(message1ForManyLocales));
+        messageM4.setDescription("M is short.");
+        messages.put("message1ForManyLocales", messageRepository.save(message1ForManyLocales));
         Message message2ForManyLocales = new Message("message2", "Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong one.", projects.get("projectP3"));
-		messageM4.setDescription("Message is long.");
-		messages.put("message2ForManyLocales", messageRepository.save(message2ForManyLocales));
+        messageM4.setDescription("Message is long.");
+        messages.put("message2ForManyLocales", messageRepository.save(message2ForManyLocales));
+
+        Message categoriesTitle = new Message("categoriesTitle", "Categories", projects.get("projectP4"));
+        categoriesTitle.setDescription("Categories title");
+        messages.put("categoriesTitle", messageRepository.save(categoriesTitle));
+        Message catHome = new Message("categoryHome", "Home", projects.get("projectP4"));
+        messages.put("categoryHome", messageRepository.save(catHome));
+        Message catEl = new Message("categoryElectronics", "Electronics", projects.get("projectP4"));
+        messages.put("categoryElectronics", messageRepository.save(catEl));
+        Message catVid = new Message("categoryVideoGames", "Video Games", projects.get("projectP4"));
+        messages.put("categoryVideoGames", messageRepository.save(catVid));
+        Message categorySel = new Message("selectedCategory", "Selected category", projects.get("projectP4"));
+        messages.put("selectedCategory", messageRepository.save(categorySel));
 
         return messages;
     }

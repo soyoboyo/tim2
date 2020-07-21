@@ -23,7 +23,7 @@ import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, APP_CONFIG.apiBaseUrl + 'api/v1/exportCD/message/getByLocale/1/', '');
+  return new TranslateHttpLoader(http, APP_CONFIG.apiBaseUrl + 'api/v1/exportCD/message/getByLocale/4/', '');
 }
 
 @NgModule({
@@ -42,7 +42,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatButtonModule,
     MatIconModule,
     TranslateModule.forRoot({
-      defaultLanguage: 'pl_PL',
+      defaultLanguage: 'en_GB',
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,

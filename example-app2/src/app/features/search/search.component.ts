@@ -16,7 +16,7 @@ export class SearchComponent implements OnInit {
 
   translate: TranslateService;
   languages = [
-    {value: 'en_US', viewValue: 'English'},
+    {value: 'en_GB', viewValue: 'English'},
     {value: 'pl_PL', viewValue: 'Polish'},
     {value: 'ko_KR', viewValue: 'Korean'}
   ];

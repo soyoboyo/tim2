@@ -1,6 +1,6 @@
 <mat-card class="card">
   <mat-card-title>
-    Categories
+    {{'categoriesTitle' | translate}}
   </mat-card-title>
   <mat-card-content>
     <mat-selection-list #categoriesList [multiple]="false">
@@ -12,7 +12,7 @@
 
   <mat-card-footer>
     <p class="selected">
-      Selected category: {{categoriesList.selectedOptions.selected[0]?.value}}
+      {{'selectedCategory' | translate}}: {{categoriesList.selectedOptions.selected[0]?.value}}
     </p>
   </mat-card-footer>
 

@@ -10,8 +10,8 @@ export class AppComponent {
   title = 'example-app2';
 
   constructor(translate: TranslateService) {
-    translate.setDefaultLang('en_US');
+    translate.setDefaultLang('pl_PL');
 
-    translate.use('pl_PL');
+    translate.use('en_GB');
   }
 }
