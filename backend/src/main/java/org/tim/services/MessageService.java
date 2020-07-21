@@ -6,13 +6,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tim.DTOs.MessageDTO;
-import org.tim.entities.Message;
-import org.tim.entities.MessageVersion;
-import org.tim.entities.Project;
-import org.tim.repositories.MessageRepository;
-import org.tim.repositories.MessageVersionRepository;
-import org.tim.repositories.ProjectRepository;
+import org.tim.entities.*;
+import org.tim.repositories.*;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -20,9 +18,11 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class MessageService {
 
-	private final MessageRepository messageRepository;
 	private final ProjectRepository projectRepository;
+	private final MessageRepository messageRepository;
 	private final MessageVersionRepository messageVersionRepository;
+	private final TranslationRepository translationRepository;
+	private final TranslationVersionRepository translationVersionRepository;
 	private final ModelMapper mapper = new ModelMapper();
 
 	public Message createMessage(MessageDTO messageDTO) {
@@ -52,6 +52,21 @@ public class MessageService {
 		saveMessageVersion(message);
 		message.setIsArchived(true);
 		return messageRepository.save(message);
+	}
+
+	public void deleteMessageAndTranslations(Long messageId) {
+		Message message = checkIfMessageExists(messageId, "");
+		List<MessageVersion> allMessageHistory = messageVersionRepository.findAllByMessageId(messageId);
+		List<Translation> translations = translationRepository.findAllByMessageId(messageId);
+		List<TranslationVersion> allTranslationsHistory = new LinkedList<>();
+		for (Translation t : translations) {
+			allTranslationsHistory.addAll(translationVersionRepository.findAllByTranslationId(t.getId()));
+		}
+
+		translationVersionRepository.deleteAll(allTranslationsHistory);
+		translationRepository.deleteAll(translations);
+		messageVersionRepository.deleteAll(allMessageHistory);
+		messageRepository.delete(message);
 	}
 
 	private Message checkIfMessageExists(Long id, String key) {
