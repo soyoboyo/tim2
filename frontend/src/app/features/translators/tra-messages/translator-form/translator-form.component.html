@@ -11,7 +11,7 @@
 	</mat-form-field>
 
 	<div>
-		<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="!translationForm.valid" (click)="createTranslation(translationForm)">
+		<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="!translationForm.valid" (click)="submitTranslationForm(translationForm)">
 			{{formMode}}
 		</button>
 		<button class="button-spacer" mat-button color="warn" type="button" (click)="cancelForm()">
