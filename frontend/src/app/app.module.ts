@@ -31,6 +31,7 @@ import { SharedModule } from './shared/shared.module';
 import { AggregateInfoComponent } from './features/developers/aggregate-info/aggregate-info.component';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptor } from './core/AuthInterceptor';
+import { TranslatorFormComponent } from './features/translators/translator-form/translator-form.component';
 
 @NgModule({
 	declarations: [
@@ -47,7 +48,8 @@ import { AuthInterceptor } from './core/AuthInterceptor';
 		DevProjectsTableComponent,
 		DevHistoryTranslationsComponent,
 		DevHistoryMessagesComponent,
-		AggregateInfoComponent
+		AggregateInfoComponent,
+		TranslatorFormComponent
 	],
 	imports: [
 		RouterModule.forRoot(routes),
@@ -69,7 +71,7 @@ import { AuthInterceptor } from './core/AuthInterceptor';
 	],
 	providers: [LoginService, UtilsService, SnackbarService, CookieService,
 		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ],
+		{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
 	bootstrap: [AppComponent],
 	entryComponents: [ConfirmationDialogComponent]
 })

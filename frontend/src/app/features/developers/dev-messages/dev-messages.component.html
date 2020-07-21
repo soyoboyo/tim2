@@ -1,51 +1,33 @@
 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
 	<div>
-    <mat-form-field class="select-project">
-      <mat-label>Select project</mat-label>
-      <mat-select [compareWith]="compareProjects" (selectionChange)="changeProject($event.value)"
-                  [(ngModel)]="selectedProject">
-        <mat-option *ngFor="let project of projects" [value]="project">
-          {{project.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-</div>
-<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" *ngIf="selectedProject">
-  <mat-label>Get report for selected locales:</mat-label>
-  <mat-form-field>
-    <mat-label>Locales</mat-label>
-    <mat-select multiple>
-      <mat-option *ngFor="let locale of targetLocales" [value]="locale">{{locale}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <div fxLayoutGap="10px">
-    <button mat-raised-button
-            color="accent"
-            matTooltip="Download report with list of missing translations"
-            matTooltipClass="tooltip-font"
-            [disabled]="!selectedProject"
-            (click)="downloadXLS()"
-    >
-      Download report
-    </button>
-    <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="importCSV($event)" accept=".csv"/>
-    <button mat-raised-button
-            color="primary"
-            matTooltip="Import list with messages"
-            matTooltipClass="tooltip-font"
-            [disabled]="!selectedProject"
-            (click)="csvInput.click()"
-    >
-      Import message from CSV file
-    </button>
-  </div>
-</div>
-<div [id]="aggregateInfoId">
-  <app-aggregate-info [selectedProjectId]="selectedProjectId"></app-aggregate-info>
+		<mat-form-field class="select-project">
+			<mat-label>Select project</mat-label>
+			<mat-select [compareWith]="compareProjects" (selectionChange)="changeProject($event.value)"
+						[(ngModel)]="selectedProject">
+				<mat-option *ngFor="let project of projects" [value]="project">
+					{{project.name}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+	<div fxLayoutGap="10px" *ngIf="selectedProject">
+		<input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="importCSV($event)" accept=".csv"/>
+		<button mat-raised-button
+				color="primary"
+				matTooltip="Import message from CSV file"
+				matTooltipClass="tooltip-font"
+				[disabled]="!selectedProject"
+				(click)="csvInput.click()">
+			Import messages
+		</button>
+	</div>
 </div>
 
-<!--<mat-divider></mat-divider>-->
+<div [id]="aggregateInfoId">
+	<app-aggregate-info [selectedProjectId]="selectedProjectId"></app-aggregate-info>
+</div>
+
+
 <div [id]="messagesTableId" fxLayout="row" fxLayoutAlign="space-evenly start">
 	<div class="app-table-wrapper">
 		<app-dev-messages-table

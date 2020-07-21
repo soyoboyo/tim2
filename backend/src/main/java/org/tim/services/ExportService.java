@@ -29,27 +29,27 @@ import static org.tim.constants.UserMessages.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ReportService {
+public class ExportService {
 
-    private final ProjectRepository projectRepository;
-    private final MessageRepository messageRepository;
-    private final TranslationRepository translationRepository;
+	private final ProjectRepository projectRepository;
+	private final MessageRepository messageRepository;
+	private final TranslationRepository translationRepository;
 
 
-    public String generateCSVReport(Long projectId, String[] localesForReport) {
-        var project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
-        var messages = new LinkedList<>(messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId));
-        var reportData = new ArrayList<>(gatherReportData(localesForReport, messages, project));
+	public String generateCSVReport(Long projectId, String[] localesForReport) {
+		var project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
+		var messages = new LinkedList<>(messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId));
+		var reportData = new ArrayList<>(gatherReportData(localesForReport, messages, project));
 
-        createCSVFile(reportData);
-        return CSV_FILE_NAME;
-    }
+		createCSVFile(reportData);
+		return CSV_FILE_NAME;
+	}
 
-    private List<ReportDataRow> gatherReportData(String[] localesForReport, LinkedList<Message> messages, Project project) {
-        var reportDataRows = new LinkedList<ReportDataRow>();
-        for (var message : messages) {
+	private List<ReportDataRow> gatherReportData(String[] localesForReport, LinkedList<Message> messages, Project project) {
+		var reportDataRows = new LinkedList<ReportDataRow>();
+		for (var message : messages) {
 
-            for (var localeString : localesForReport) {
+			for (var localeString : localesForReport) {
                 var row = new ReportDataRow();
                 Locale locale;
                 try {

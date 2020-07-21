@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface TranslationVersionRepository extends JpaRepository<TranslationVersion, Long> {
-    List<TranslationVersion> findAllByTranslationIdOrderByUpdateDateDesc(Long originalTranslationId);
+	List<TranslationVersion> findAllByTranslationIdOrderByUpdateDateDesc(Long originalTranslationId);
+
+	List<TranslationVersion> findAllByTranslationId(Long translationId);
 }

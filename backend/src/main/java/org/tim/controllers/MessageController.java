@@ -28,7 +28,14 @@ public class MessageController {
 
 	@DeleteMapping(value = ARCHIVE)
 	public ResponseEntity archiveMessage(@PathVariable Long id) {
-		return messageService.archiveMessage(id) != null ? ResponseEntity.ok("") : ResponseEntity.badRequest().body("");
+		Message archivedMessage = messageService.archiveMessage(id);
+		return archivedMessage != null ? ResponseEntity.ok("Message archived successfully.") : ResponseEntity.badRequest().body("");
+	}
+
+	@DeleteMapping(value = DELETE)
+	public ResponseEntity deleteMessageAndTranslations(@PathVariable Long id) {
+		messageService.deleteMessageAndTranslations(id);
+		return ResponseEntity.ok("Message and its translations, and whole history deleted successfully.");
 	}
 
 	@PostMapping(value = CREATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

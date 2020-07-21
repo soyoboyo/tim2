@@ -22,27 +22,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.tim.constants.Mappings.*;
 
-class ImportControllerTestIT extends SpringTestsCustomExtension {
+class ReportControllerTestIT extends SpringTestsCustomExtension {
 
-    private MockMvc mockMvc;
+	private MockMvc mockMvc;
 
-    private final String BASE_URL = "http://localhost:8081";
+	private final String BASE_URL = "http://localhost:8081";
 
-    @InjectMocks
-    private ImportController importController;
+	@InjectMocks
+	private ReportController reportController;
 
-    @Mock
-    private ImportService importService;
+	@Mock
+	private ImportService importService;
 
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(importController).build();
-    }
+	@BeforeEach
+	void setUp() {
+		mockMvc = MockMvcBuilders.standaloneSetup(reportController).build();
+	}
 
-    @Test
-    void whenValidTranslatorFileImportedThenResponseOk() throws Exception {
-        //given
-        MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
+	@Test
+	void whenValidTranslatorFileImportedThenResponseOk() throws Exception {
+		//given
+		MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
 
         //when
         mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)

@@ -5,13 +5,13 @@
 		</mat-form-field>
 	</div>
 	<div>
-		<mat-checkbox  [(ngModel)]="missing" (change)="filterMessages()">Missing</mat-checkbox>
+		<mat-checkbox [(ngModel)]="missing" (change)="filterMessages()">Missing</mat-checkbox>
 	</div>
 	<div>
-		<mat-checkbox  [(ngModel)]="outdated" (change)="filterMessages()">Outdated</mat-checkbox>
+		<mat-checkbox [(ngModel)]="outdated" (change)="filterMessages()">Outdated</mat-checkbox>
 	</div>
 	<div>
-		<mat-checkbox  [(ngModel)]="invalid"  (change)="filterMessages()">Invalid</mat-checkbox>
+		<mat-checkbox [(ngModel)]="invalid" (change)="filterMessages()">Invalid</mat-checkbox>
 	</div>
 	<span class="spacer"></span>
 	<div>
@@ -96,50 +96,28 @@
 				<div class="message-detail" [@detailExpand]="row == expandedRow ? 'expanded' : 'collapsed'">
 					<div class="padding-inside">
 
-						<p>
-							<strong>Key:</strong> {{row.key}}
-						</p>
-						<p>
-							<strong>Update date:</strong> {{row.updateDate | date:'dd.MM.yyyy HH:mm'}}
-						</p>
-
-						<p>
-							<strong>Content:</strong> {{row.content}}
-						</p>
-						<p>
-							<strong>Description: </strong> {{row.description}}
-						</p>
+						<p><strong>Key:</strong> {{row.key}}</p>
+						<p><strong>Update date:</strong> {{row.updateDate | date:'dd.MM.yyyy HH:mm'}}</p>
+						<p><strong>Content:</strong> {{row.content}}</p>
+						<p><strong>Description: </strong> {{row.description}}</p>
 
 						<hr>
 
 						<div *ngIf="row.translation !== null && !row.translation.isValid">
-							<p class="warning">
-								Translation has been invalidated.
-							</p>
+							<p class="warning">Translation has been invalidated.</p>
 						</div>
 
 						<div *ngIf="isTranslationOutdated(row)">
-							<p class="warning">
-								Translation is outdated.
-							</p>
-							<p>
-								<strong>Previous message content: </strong> {{row.previousMessageContent}}
-							</p>
+							<p class="warning">Translation is outdated.</p>
+							<p><strong>Previous message content: </strong> {{row.previousMessageContent}}</p>
 						</div>
 
-						<p *ngIf=" row.translation !== null">
-							<strong>Last updated: </strong> {{row.translation.updateDate | date:'dd.MM.yyyy HH:mm' }}
-						</p>
+						<p *ngIf=" row.translation !== null"><strong>Last updated: </strong> {{row.translation.updateDate | date:'dd.MM.yyyy HH:mm' }}</p>
 
-						<p *ngIf="row.translation !== null && row.translation !== undefined">
-							<strong>Translation: </strong> {{row.translation.content}}
-						</p>
-						<p *ngIf="row.translation === null" class="warning">
-							<strong>Translation: </strong> none.
-						</p>
-						<p *ngIf="row.substitute">
-							<strong>Substitute from locale {{row.substitute.locale}}:</strong> {{row.substitute.content}}
-						</p>
+						<p *ngIf="row.translation !== null && row.translation !== undefined"><strong>Translation: </strong> {{row.translation.content}}</p>
+						<p *ngIf="row.translation === null" class="warning"><strong>Translation: </strong> none.</p>
+						<p *ngIf="row.substitute"><strong>Substitute from locale {{row.substitute.locale}}:</strong> {{row.substitute.content}}</p>
+
 
 					</div>
 
