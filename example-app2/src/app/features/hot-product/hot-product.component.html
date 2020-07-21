@@ -1,0 +1,13 @@
+<mat-card class="hot-product">
+  <mat-card-title>
+    {{'hotProduct' | translate}}
+  </mat-card-title>
+
+  <img mat-card-image src="https://cdn.pixabay.com/photo/2014/08/05/10/30/iphone-410324_960_720.jpg" alt="Phone">
+  <mat-card-content>
+    <p [innerHTML]="'hotProductContent' | translate">
+    </p>
+  </mat-card-content>
+
+  <button mat-button>{{'addToCart' | translate}}</button>
+</mat-card>

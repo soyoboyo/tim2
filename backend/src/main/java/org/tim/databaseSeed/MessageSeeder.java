@@ -191,6 +191,12 @@ public class MessageSeeder {
         messages.put("categoryVideoGames", messageRepository.save(catVid));
         Message categorySel = new Message("selectedCategory", "Selected category", projects.get("projectP4"));
         messages.put("selectedCategory", messageRepository.save(categorySel));
+        Message hotProduct = new Message("hotProduct", "Hot product", projects.get("projectP4"));
+        messages.put("hotProduct", messageRepository.save(hotProduct));
+        Message hotProductContent = new Message("hotProductContent", "<b>HOT</b> Phone XYZ only for <b>100$</b>", projects.get("projectP4"));
+        messages.put("hotProductContent", messageRepository.save(hotProductContent));
+        Message addToCart = new Message("addToCart", "Add to cart", projects.get("projectP4"));
+        messages.put("addToCart", messageRepository.save(addToCart));
 
         return messages;
     }

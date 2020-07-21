@@ -235,6 +235,13 @@ public class TranslationSeeder {
         Translation selectedCategory = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("selectedCategory"));
         selectedCategory.setContent("Wybrana kategoria");
 
+        Translation hotProduct = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("hotProduct"));
+        hotProduct.setContent("Gorący produkt");
+        Translation hotProductContent = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("hotProductContent"));
+        hotProductContent.setContent("<b>OKAZJA</b> Telefon XYZ, już teraz tylko za <b>100$</b>");
+        Translation addToCart = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("addToCart"));
+        addToCart.setContent("Dodaj do koszyka");
+
 
         translationRepository.saveAll(Arrays.asList(translationT1M1, translationT1M2, translationT1M3, translationT2M1,
                 translationT2M2, translationT2M3, translationT2M4, translationT3M1, translationT3M2, translationT1M4,
@@ -261,7 +268,7 @@ public class TranslationSeeder {
                 contactUsPl, featuresFooterPl, featuresFooter1Pl, featuresFooter2Pl, featuresFooter3Pl, featuresFooter4Pl,
                 featuresFooter5Pl, resourcesFooterPl, resourcesFooter1Pl, resourcesFooter2Pl,
                 resourcesFooter3Pl, resourcesFooter4Pl, aboutFooterPl, aboutFooter1Pl, aboutFooter2Pl, aboutFooter3Pl, aboutFooter4Pl,
-                categoriesTitle, catEl, catHome, catVid, selectedCategory
+                categoriesTitle, catEl, catHome, catVid, selectedCategory, hotProduct, hotProductContent, addToCart
 //                ,freeEmailSupportKo, maxFreeMemoryLimitPl, maxEnterpriseUsersKo, maxEnterpriseMemoryLimitKo, enterpriseEmailSupportKo,
 //                enterpriseHelpCenterKo,featuresFooterDe, featuresFooter6Pl, enterpriseCardPl, signUpToAccessDe
         ));

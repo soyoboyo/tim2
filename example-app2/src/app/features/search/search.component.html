@@ -17,7 +17,7 @@
   </form>
   <mat-form-field class="select-language">
     <mat-label>Select language</mat-label>
-    <mat-select>
+    <mat-select [(value)]="selected">
       <mat-option *ngFor="let language of languages" [value]="language.value"
                   (onSelectionChange)="changeLanguage($event)">
         {{language.viewValue}}

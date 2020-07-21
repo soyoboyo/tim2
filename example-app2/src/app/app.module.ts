@@ -21,6 +21,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {CategoriesComponent} from './features/categories/categories.component';
 import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
+import {HotProductComponent} from './features/hot-product/hot-product.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, APP_CONFIG.apiBaseUrl + 'api/v1/exportCD/message/getByLocale/4/', '');
@@ -31,7 +32,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     HomeComponent,
     SearchComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    HotProductComponent
   ],
   imports: [
     BrowserModule,

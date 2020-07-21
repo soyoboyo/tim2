@@ -3,5 +3,19 @@
 }
 
 .categories-list {
-  margin: 16px;
+  margin-left: 16px;
+  flex-grow: 2;
+  max-width: 600px;
+}
+
+.middle {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.hot-product {
+  flex-grow: 3;
+  margin-left: 20%;
 }

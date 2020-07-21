@@ -14,15 +14,15 @@ export class SearchComponent implements OnInit {
   options: string[] = ['Bike', 'Car', 'IPhone'];
   filteredOptions: Observable<string[]>;
 
-  translate: TranslateService;
   languages = [
     {value: 'en_GB', viewValue: 'English'},
     {value: 'pl_PL', viewValue: 'Polish'},
     {value: 'ko_KR', viewValue: 'Korean'}
   ];
 
-  constructor(translate: TranslateService) {
-    this.translate = translate;
+  selected = this.languages[0].value;
+
+  constructor(private translate: TranslateService) {
   }
 
   ngOnInit(): void {
