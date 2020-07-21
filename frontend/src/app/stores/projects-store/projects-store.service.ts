@@ -9,11 +9,7 @@ export class ProjectsStoreService {
 	private selectedProject: Project = null;
 
 	getSelectedProject() {
-		if (this.selectedProject !== null) {
-			return this.selectedProject;
-		} else {
-			return null;
-		}
+		return this.selectedProject;
 	}
 
 	setSelectedProject(project: Project) {
