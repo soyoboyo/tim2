@@ -38,6 +38,12 @@ For translators:
 
 
 # 4. Technical details
+Accounts available in project:
+* tran / tran / ROLE_TRANSLATOR
+* prog / prog / ROLE_DEVELOPER
+* adminTran / adminTran / ROLE_ADMIN_TRANSLATOR
+* adminProg / adminProg / ROLE_ADMIN_DEVELOPER
+* admin / admin / ROLE_SUPER_ADMIN
 
 
 # 5. Technologies

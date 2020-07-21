@@ -23,11 +23,17 @@ public class AuthoritySeed {
 
     @PostConstruct
     public void addUsers() {
-        Principal roleUser = principalRepository.save(new Principal("ROLE_DEVELOPER"));
-        Principal roleGuest = principalRepository.save(new Principal("ROLE_TRANSLATOR"));
+        Principal roleDeveloper = principalRepository.save(new Principal("ROLE_DEVELOPER"));
+        Principal roleTranslator = principalRepository.save(new Principal("ROLE_TRANSLATOR"));
+        Principal roleAdminTranslator = principalRepository.save(new Principal("ROLE_ADMIN_TRANSLATOR"));
+        Principal roleAdminDeveloper = principalRepository.save(new Principal("ROLE_ADMIN_DEVELOPER"));
+        Principal roleSuperAdmin = principalRepository.save(new Principal("ROLE_SUPER_ADMIN"));
 
-        userRepository.save(new User("prog", bCryptPasswordEncoder.encode("prog"), roleUser));
-        userRepository.save(new User("tran", bCryptPasswordEncoder.encode("tran"), roleGuest));
+        userRepository.save(new User("prog", bCryptPasswordEncoder.encode("prog"), roleDeveloper));
+        userRepository.save(new User("tran", bCryptPasswordEncoder.encode("tran"), roleTranslator));
+        userRepository.save(new User("adminProg", bCryptPasswordEncoder.encode("adminProg"), roleAdminDeveloper));
+        userRepository.save(new User("adminTran", bCryptPasswordEncoder.encode("adminTran"), roleAdminTranslator));
+        userRepository.save(new User("admin", bCryptPasswordEncoder.encode("admin"), roleSuperAdmin));
     }
 
     @PostConstruct
