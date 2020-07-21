@@ -18,13 +18,15 @@ public interface TranslationRepository extends JpaRepository<Translation, Long> 
 			"WHERE T.LOCALE ILIKE ?1 AND M.PROJECT_ID = ?2 ;", nativeQuery = true)
 	List<Translation> findTranslationsByLocaleAndProjectId(Locale locale, Long projectId);
 
-    List<Translation> findTranslationsByLocaleAndMessage_ProjectIdAndIsValidTrue(Locale locale, Long projectId);
+	List<Translation> findTranslationsByLocaleAndMessage_ProjectIdAndIsValidTrue(Locale locale, Long projectId);
 
-    Optional<Translation> findTranslationsByLocaleAndMessage(Locale locale, Message message);
+	Optional<Translation> findTranslationsByLocaleAndMessage(Locale locale, Message message);
 
 	Translation findTranslationByLocaleAndMessageId(Locale locale, Long message_id);
 
 	List<Translation> findTranslationsByMessageIdAndIsArchivedFalse(Long messageId);
 
 	List<Translation> findAllByMessageAndIsArchivedFalseOrderByLocale(Message message);
+
+	List<Translation> findAllByMessageId(Long messageId);
 }
