@@ -6,11 +6,15 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Project } from '../../../../shared/types/entities/Project';
 import { Message } from '../../../../shared/types/entities/Message';
 import { MessageForTranslator } from '../../../../shared/types/DTOs/output/MessageForTranslator';
+import { TranslatorFormStateService } from '../translator-form-state-service/translator-form-state.service';
+import { RestService } from '../../../../shared/services/rest/rest.service';
+import { SnackbarService } from '../../../../shared/services/snackbar-service/snackbar.service';
+import { TranslationCreateDTO } from '../../../../shared/types/DTOs/input/TranslationCreateDTO';
 
 @Component({
 	selector: 'app-tra-messages-table',
 	templateUrl: './tra-messages-table.component.html',
-	styleUrls: ['./tra-messages-table.component.scss', '../tra-messages.component.scss'],
+	styleUrls: ['./tra-messages-table.component.scss'],
 	animations: [
 		trigger('detailExpand', [
 			state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -25,28 +29,35 @@ import { MessageForTranslator } from '../../../../shared/types/DTOs/output/Messa
 
 export class TraMessagesTableComponent implements OnInit, OnChanges {
 
-	@Input() selectedRowIndex = -1;
-	@Input() selectedProject: Project;
-	@Input() selectedLocale: string = null;
 	@Input() messages: Message[] = [];
-	@Output() sendSelectedLocale = new EventEmitter<any>();
-	@Output() addTranslationEvent = new EventEmitter<any>();
-	@Output() editTranslationEvent = new EventEmitter<any>();
+	@Input() selectedLocale = '';
+	@Input() selectedProject: Project;
+	@Input() selectedRowIndex = -1;
+
+	@Output() formSubmitted = new EventEmitter<boolean>();
 	@Output() invalidateTranslationEvent = new EventEmitter<any>();
+	@Output() sendSelectedLocale = new EventEmitter<any>();
 
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-	dataSource = new MatTableDataSource<MessageForTranslator>();
-	displayedColumns: string[] = ['index', 'content', 'existing', 'upToDate', 'valid'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
+	dataSource = new MatTableDataSource<MessageForTranslator>();
+	displayedColumns: string[] = ['key', 'message', 'translation', 'status'];
 	isLoadingResults = false;
-
 	expandedRow = null;
+
+	// filters
 	missing = false;
 	outdated = false;
 	invalid = false;
 
-	constructor() {
+	// form
+	showForm = false;
+	formMode = 'Add';
+
+	constructor(private http: RestService,
+				private snackbar: SnackbarService,
+				private formState: TranslatorFormStateService) {
 	}
 
 	ngOnInit() {
@@ -55,9 +66,6 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (this.selectedLocale !== null) {
-			if (!this.displayedColumns.includes('actions')) {
-				this.displayedColumns = ['index', 'content', 'existing', 'upToDate', 'valid', 'actions'];
-			}
 			this.getMessages();
 			this.dataSource.filter = '{';
 		}
@@ -69,16 +77,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		this.isLoadingResults = false;
 	}
 
-	addTranslation(message: any) {
-		this.selectedRowIndex = message.id;
-		this.addTranslationEvent.emit(message);
-	}
-
-	updateTranslation(message: any) {
-		this.selectedRowIndex = message.id;
-		this.editTranslationEvent.emit(message);
-	}
-
+	// data table
 	applyFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
@@ -136,17 +135,77 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		this.dataSource.filter = '{';
 	}
 
-
-	async invalidateTranslation(message: any) {
-		this.invalidateTranslationEvent.emit(message);
-	}
-
 	isTranslationOutdated(message: MessageForTranslator): boolean {
 		if (message.translation !== null) {
 			return message.updateDate > message.translation.updateDate;
 		} else {
 			return false;
 		}
+	}
+
+	getTranslationStatus(message: MessageForTranslator) {
+		const translation = message.translation;
+		if (translation === null) {
+			return 'Missing';
+		}
+		if (message.updateDate > translation.updateDate) {
+			return 'Outdated';
+		}
+		if (translation.isValid === false) {
+			return 'Invalid';
+		}
+		return 'Correct';
+	}
+
+	// interaction with form
+	triggerTranslationForm(message: any, mode: string) {
+		if (mode === 'Add') {
+			this.formMode = 'Add';
+		} else {
+			this.formMode = 'Update';
+		}
+		this.formState.setValues(message, this.selectedLocale);
+		this.selectedRowIndex = message.id;
+		this.showForm = true;
+	}
+
+	useSubstitute(message: any) {
+		const body = new TranslationCreateDTO(message.substitute.content, this.selectedLocale);
+		this.http.save('translation/create' + '?messageId=' + message.id, body).subscribe((response) => {
+			this.submitNormal(response);
+		}, (error) => {
+			this.submitException(error);
+		});
+	}
+
+	hideForm(stateChange: boolean) {
+		this.showForm = false;
+		this.selectedRowIndex = -1;
+
+	}
+
+	async invalidateTranslation(message: any) {
+		this.invalidateTranslationEvent.emit(message);
+	}
+
+	formSubmit(result: boolean) {
+		this.formSubmitted.emit(result);
+	}
+
+
+	submitNormal(response: any) {
+		if (response !== null) {
+			this.formSubmitted.emit(true);
+			this.snackbar.snackSuccess('Success!', 'OK');
+		} else {
+			this.formSubmitted.emit(false);
+			this.snackbar.snackError('Error', 'OK');
+		}
+	}
+
+	submitException(error: any) {
+		this.formSubmitted.emit(false);
+		this.snackbar.snackError(error.error.message, 'OK');
 	}
 
 }

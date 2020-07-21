@@ -31,35 +31,37 @@ import { SharedModule } from './shared/shared.module';
 import { AggregateInfoComponent } from './features/developers/aggregate-info/aggregate-info.component';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptor } from './core/AuthInterceptor';
+import { TranslatorFormComponent } from './features/translators/tra-messages/translator-form/translator-form.component';
 
 @NgModule({
 	declarations: [
+		AggregateInfoComponent,
 		AppComponent,
-		NavbarComponent,
-		LoginComponent,
-		DevelopersComponent,
-		TranslatorsComponent,
-		TraMessagesComponent,
-		TraMessagesTableComponent,
-		DevProjectsComponent,
+		DevHistoryMessagesComponent,
+		DevHistoryTranslationsComponent,
 		DevMessagesComponent,
 		DevMessagesTableComponent,
+		DevProjectsComponent,
 		DevProjectsTableComponent,
-		DevHistoryTranslationsComponent,
-		DevHistoryMessagesComponent,
-		AggregateInfoComponent
+		DevelopersComponent,
+		LoginComponent,
+		NavbarComponent,
+		TraMessagesComponent,
+		TraMessagesTableComponent,
+		TranslatorFormComponent,
+		TranslatorsComponent
 	],
 	imports: [
-		RouterModule.forRoot(routes),
-		SharedModule,
+		BrowserAnimationsModule,
 		BrowserModule,
+		FlexLayoutModule,
+		FormsModule,
+		HttpClientModule,
 		MaterialModule,
 		ReactiveFormsModule,
-		BrowserAnimationsModule,
-		FormsModule,
 		ReactiveFormsModule,
-		HttpClientModule,
-		FlexLayoutModule,
+		RouterModule.forRoot(routes),
+		SharedModule,
 		ViewsModule
 	],
 	exports: [
@@ -69,7 +71,7 @@ import { AuthInterceptor } from './core/AuthInterceptor';
 	],
 	providers: [LoginService, UtilsService, SnackbarService, CookieService,
 		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ],
+		{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
 	bootstrap: [AppComponent],
 	entryComponents: [ConfirmationDialogComponent]
 })
