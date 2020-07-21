@@ -103,6 +103,10 @@
 
 						<p *ngIf="message.substitute">
 							<strong>Substitute from locale {{message.substitute.locale}}:</strong> {{message.substitute.content}}
+							<button mat-button color="accent" (click)="useSubstitute(message)" *ngIf="!selectedLocale || !message.translation" matTooltip="Add new translation using this substitute" matTooltipClass="tooltip-font">
+								<mat-icon>swap_horiz</mat-icon>
+								Use this substitute
+							</button>
 						</p>
 
 						<div *ngIf="showForm && selectedRowIndex === message.id">

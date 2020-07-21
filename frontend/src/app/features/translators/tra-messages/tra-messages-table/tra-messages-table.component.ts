@@ -7,6 +7,9 @@ import { Project } from '../../../../shared/types/entities/Project';
 import { Message } from '../../../../shared/types/entities/Message';
 import { MessageForTranslator } from '../../../../shared/types/DTOs/output/MessageForTranslator';
 import { TranslatorFormStateService } from '../translator-form-state-service/translator-form-state.service';
+import { RestService } from '../../../../shared/services/rest/rest.service';
+import { SnackbarService } from '../../../../shared/services/snackbar-service/snackbar.service';
+import { TranslationCreateDTO } from '../../../../shared/types/DTOs/input/TranslationCreateDTO';
 
 @Component({
 	selector: 'app-tra-messages-table',
@@ -52,7 +55,9 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	showForm = false;
 	formMode = 'Add';
 
-	constructor(private formState: TranslatorFormStateService) {
+	constructor(private http: RestService,
+				private snackbar: SnackbarService,
+				private formState: TranslatorFormStateService) {
 	}
 
 	ngOnInit() {
@@ -164,9 +169,19 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		this.showForm = true;
 	}
 
+	useSubstitute(message: any) {
+		const body = new TranslationCreateDTO(message.substitute.content, this.selectedLocale);
+		this.http.save('translation/create' + '?messageId=' + message.id, body).subscribe((response) => {
+			this.submitNormal(response);
+		}, (error) => {
+			this.submitException(error);
+		});
+	}
+
 	hideForm(stateChange: boolean) {
 		this.showForm = false;
 		this.selectedRowIndex = -1;
+
 	}
 
 	async invalidateTranslation(message: any) {
@@ -175,6 +190,22 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 
 	formSubmit(result: boolean) {
 		this.formSubmitted.emit(result);
+	}
+
+
+	submitNormal(response: any) {
+		if (response !== null) {
+			this.formSubmitted.emit(true);
+			this.snackbar.snackSuccess('Success!', 'OK');
+		} else {
+			this.formSubmitted.emit(false);
+			this.snackbar.snackError('Error', 'OK');
+		}
+	}
+
+	submitException(error: any) {
+		this.formSubmitted.emit(false);
+		this.snackbar.snackError(error.error.message, 'OK');
 	}
 
 }
