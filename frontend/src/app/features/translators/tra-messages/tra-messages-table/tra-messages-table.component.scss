@@ -77,3 +77,9 @@ th {
 td:hover {
   cursor: pointer;
 }
+
+.with-icon {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

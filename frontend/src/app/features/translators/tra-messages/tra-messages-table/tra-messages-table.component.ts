@@ -6,6 +6,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Project } from '../../../../shared/types/entities/Project';
 import { Message } from '../../../../shared/types/entities/Message';
 import { MessageForTranslator } from '../../../../shared/types/DTOs/output/MessageForTranslator';
+import { TranslatorFormStateService } from '../../translator-form-state-service/translator-form-state.service';
 
 @Component({
 	selector: 'app-tra-messages-table',
@@ -37,7 +38,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	dataSource = new MatTableDataSource<MessageForTranslator>();
-	displayedColumns: string[] = ['index', 'content', 'existing', 'upToDate', 'valid'];
+	displayedColumns: string[] = ['index', 'content', 'status'];
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	isLoadingResults = false;
 
@@ -46,7 +47,8 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	outdated = false;
 	invalid = false;
 
-	constructor() {
+
+	constructor(private formState: TranslatorFormStateService) {
 	}
 
 	ngOnInit() {
@@ -56,7 +58,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	ngOnChanges(changes: SimpleChanges): void {
 		if (this.selectedLocale !== null) {
 			if (!this.displayedColumns.includes('actions')) {
-				this.displayedColumns = ['index', 'content', 'existing', 'upToDate', 'valid', 'actions'];
+				this.displayedColumns = ['index', 'content', 'status', 'actions'];
 			}
 			this.getMessages();
 			this.dataSource.filter = '{';
@@ -75,6 +77,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	}
 
 	updateTranslation(message: any) {
+		this.formState.setValues(message.id, message.content);
 		this.selectedRowIndex = message.id;
 		this.editTranslationEvent.emit(message);
 	}
@@ -149,4 +152,20 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		}
 	}
 
+	getTranslationStatus(message: MessageForTranslator) {
+		const translation = message.translation;
+		if (translation === null) {
+			return 'Missing';
+		}
+		if (message.updateDate > translation.updateDate) {
+			return 'Outdated';
+		}
+		if (translation.isValid === false) {
+			return 'Invalid';
+		}
+
+
+		return 'Correct';
+
+	}
 }

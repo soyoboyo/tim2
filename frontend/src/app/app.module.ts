@@ -69,7 +69,7 @@ import { AuthInterceptor } from './core/AuthInterceptor';
 	],
 	providers: [LoginService, UtilsService, SnackbarService, CookieService,
 		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ],
+		{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
 	bootstrap: [AppComponent],
 	entryComponents: [ConfirmationDialogComponent]
 })
