@@ -53,11 +53,13 @@ public class CDExportsService {
 
 	private Map<String, String> translationsOrMessagesToMap(List<Translation> translations, List<Message> messages) {
 		Map<String, String> map = new HashMap<>();
-		for (Translation translation : translations) {
-			map.put(translation.getMessage().getKey(), translation.getContent());
-		}
+
 		for (Message message : messages) {
 			map.put(message.getKey(), message.getContent());
+		}
+
+		for (Translation translation : translations) {
+			map.put(translation.getMessage().getKey(), translation.getContent());
 		}
 
 		return map;
