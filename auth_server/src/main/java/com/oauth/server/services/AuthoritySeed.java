@@ -16,13 +16,13 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class AuthoritySeed {
 
-    private final OauthClientDetailsRepository oauthClientDetailsRepository;
-    private final PrincipalRepository principalRepository;
-    private final UserRepository userRepository;
-    private final PasswordEncoder bCryptPasswordEncoder;
+	private final OauthClientDetailsRepository oauthClientDetailsRepository;
+	private final PrincipalRepository principalRepository;
+	private final UserRepository userRepository;
+	private final PasswordEncoder bCryptPasswordEncoder;
 
-    @PostConstruct
-    public void addUsers() {
+	@PostConstruct
+	public void addUsers() {
 		Principal roleDeveloper = principalRepository.save(new Principal("ROLE_DEVELOPER"));
 		Principal roleTranslator = principalRepository.save(new Principal("ROLE_TRANSLATOR"));
 		Principal roleAdminTranslator = principalRepository.save(new Principal("ROLE_ADMIN_TRANSLATOR"));
@@ -36,11 +36,11 @@ public class AuthoritySeed {
 		userRepository.save(new User("admin", bCryptPasswordEncoder.encode("admin"), roleSuperAdmin));
 	}
 
-    @PostConstruct
-    public void addOAuthClients() {
-        oauthClientDetailsRepository.save(new OauthClientDetails("timApp",
-                bCryptPasswordEncoder.encode("OcadoProject"), "read,write",
-                "password,refresh_token,client_credentials",
-                "ROLE_CLIENT", 8 * 60));
-    }
+	@PostConstruct
+	public void addOAuthClients() {
+		oauthClientDetailsRepository.save(new OauthClientDetails("timApp",
+				bCryptPasswordEncoder.encode("OcadoProject"), "read,write",
+				"password,refresh_token,client_credentials",
+				"ROLE_CLIENT", 8 * 60));
+	}
 }

@@ -123,7 +123,4 @@ public abstract class SpringTestsCustomExtension {
 		}
 	}
 
-	public int getMessagesCount() {
-		return messageRepository.findAll().size();
-	}
 }
