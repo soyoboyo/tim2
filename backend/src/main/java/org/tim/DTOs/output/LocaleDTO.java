@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 public class LocaleDTO {
 
-    private String name;
-    private String fullLanguageName;
-    private String fullCountryName;
+	private String name;
+	private String fullLanguageName;
+	private String fullCountryName;
 }

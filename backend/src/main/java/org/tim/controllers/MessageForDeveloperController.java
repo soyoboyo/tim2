@@ -21,11 +21,11 @@ import static org.tim.constants.Mappings.*;
 @RequestMapping(API_VERSION + MESSAGE + DEVELOPER)
 public class MessageForDeveloperController {
 
-    private final MessageForDeveloperService messageForDeveloperService;
+	private final MessageForDeveloperService messageForDeveloperService;
 
-    @GetMapping(path = GET_BY_PROJECT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MessageForDeveloper>> getMessagesForDeveloper(@PathVariable Long projectId) {
-        return ResponseEntity.ok(messageForDeveloperService.getMessagesForDeveloper(projectId));
-    }
+	@GetMapping(path = GET_BY_PROJECT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<MessageForDeveloper>> getMessagesForDeveloper(@PathVariable Long projectId) {
+		return ResponseEntity.ok(messageForDeveloperService.getMessagesForDeveloper(projectId));
+	}
 
 }

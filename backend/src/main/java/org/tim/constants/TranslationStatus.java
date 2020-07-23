@@ -1,8 +1,8 @@
 package org.tim.constants;
 
 public enum TranslationStatus {
-    Valid,
-    Invalid,
-    Outdated,
-    Missing
+	Valid,
+	Invalid,
+	Outdated,
+	Missing
 }

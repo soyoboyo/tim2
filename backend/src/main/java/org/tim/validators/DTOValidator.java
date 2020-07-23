@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 
 public class DTOValidator {
 
-    public static void validate(BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
-            List<String> errorsList = bindingResult.getAllErrors().stream()
-                        .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-            throw new ValidationException(errorsList.stream().collect(Collectors.joining(". \n")));
-        }
-    }
+	public static void validate(BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			List<String> errorsList = bindingResult.getAllErrors().stream()
+					.map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+			throw new ValidationException(errorsList.stream().collect(Collectors.joining(". \n")));
+		}
+	}
 }

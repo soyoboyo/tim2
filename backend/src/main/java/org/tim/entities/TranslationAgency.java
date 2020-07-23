@@ -15,24 +15,24 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TranslationAgency {
 
-    @Id
-    @Setter(AccessLevel.NONE)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@Setter(AccessLevel.NONE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @NotBlank
-    @NonNull
-    private String name;
+	@NotBlank
+	@NonNull
+	private String name;
 
-    @Email
-    private String email;
+	@Email
+	private String email;
 
-    @NonNull
-    @ManyToMany(cascade = {
-            CascadeType.MERGE, CascadeType.DETACH},
-            fetch = FetchType.EAGER)
-    @JoinTable(name = "translation_agency_locale_wrapper",
-            joinColumns = @JoinColumn(name = "translation_agency_id"),
-            inverseJoinColumns = @JoinColumn(name = "locale_wrapper_id"))
-    private List<LocaleWrapper> acceptedLocales;
+	@NonNull
+	@ManyToMany(cascade = {
+			CascadeType.MERGE, CascadeType.DETACH},
+			fetch = FetchType.EAGER)
+	@JoinTable(name = "translation_agency_locale_wrapper",
+			joinColumns = @JoinColumn(name = "translation_agency_id"),
+			inverseJoinColumns = @JoinColumn(name = "locale_wrapper_id"))
+	private List<LocaleWrapper> acceptedLocales;
 }

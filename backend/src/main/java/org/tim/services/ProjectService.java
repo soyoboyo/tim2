@@ -1,7 +1,6 @@
 package org.tim.services;
 
-import
-		lombok.RequiredArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.LocaleUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -163,7 +162,7 @@ public class ProjectService {
 
 			HashMap<String, String> substitutes = new HashMap<>(p.getReplaceableLocaleToItsSubstitute().size());
 
-			for (Map.Entry<LocaleWrapper, LocaleWrapper> entry : p.getReplaceableLocaleToItsSubstitute().entrySet()){
+			for (Map.Entry<LocaleWrapper, LocaleWrapper> entry : p.getReplaceableLocaleToItsSubstitute().entrySet()) {
 				String replaced = entry.getKey().toString().split("=")[2].substring(0, 6 - 1);
 				String replacement = entry.getValue().toString().split("=")[2].substring(0, 6 - 1);
 

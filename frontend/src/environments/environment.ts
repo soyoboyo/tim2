@@ -3,10 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  API : 'http://localhost:8080',
-  OAUTH_URL : 'http://localhost:9090/oauth/token',
-  APP_CREDENTIAL : 'timApp:OcadoProject'
+	production: false,
+	API: 'http://localhost:8080',
+	OAUTH_URL: 'http://localhost:9090/oauth/token',
+	APP_CREDENTIAL: 'timApp:OcadoProject'
 };
 
 /*

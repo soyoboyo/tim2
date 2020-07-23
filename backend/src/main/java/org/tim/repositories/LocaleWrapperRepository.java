@@ -11,7 +11,8 @@ import java.util.Locale;
 @Repository
 public interface LocaleWrapperRepository extends JpaRepository<LocaleWrapper, Long> {
 
-    LocaleWrapper findByLocale(Locale locale);
-    List<LocaleWrapper> findAllByLocaleIn(List<Locale> locales);
+	LocaleWrapper findByLocale(Locale locale);
+
+	List<LocaleWrapper> findAllByLocaleIn(List<Locale> locales);
 
 }

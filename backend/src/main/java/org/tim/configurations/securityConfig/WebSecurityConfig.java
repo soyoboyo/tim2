@@ -14,18 +14,18 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final LogoutSuccessHandler logoutSuccessHandler;
-    private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;
-    private final AuthenticationFailureHandler customAuthenticationFailureHandler;
+	private final LogoutSuccessHandler logoutSuccessHandler;
+	private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;
+	private final AuthenticationFailureHandler customAuthenticationFailureHandler;
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().disable()
-                .and().formLogin()
-                .failureHandler(customAuthenticationFailureHandler)
-                .successHandler(customAuthenticationSuccessHandler)
-                .and().logout()
-                .logoutSuccessHandler(logoutSuccessHandler)
-                .and().cors();
-    }
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http.headers().frameOptions().disable()
+				.and().formLogin()
+				.failureHandler(customAuthenticationFailureHandler)
+				.successHandler(customAuthenticationSuccessHandler)
+				.and().logout()
+				.logoutSuccessHandler(logoutSuccessHandler)
+				.and().cors();
+	}
 }

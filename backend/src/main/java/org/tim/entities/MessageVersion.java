@@ -1,4 +1,3 @@
-
 package org.tim.entities;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

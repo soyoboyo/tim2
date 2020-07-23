@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanActivateChild, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { LoginService } from '../../login-service/login.service';
 
@@ -8,17 +8,17 @@ import { LoginService } from '../../login-service/login.service';
 })
 export class AuthTranGuard implements CanActivate, CanActivateChild {
 
-  isLoggedOk = false;
-  role = '';
+	isLoggedOk = false;
+	role = '';
 
 	constructor(private loginService: LoginService,
 				private router: Router) {
-    this.loginService.getIsLoggedOk().subscribe(isLoggedIn => {
-      this.isLoggedOk = isLoggedIn;
-    });
-    this.loginService.getRole().subscribe(role => {
-      this.role = role;
-    });
+		this.loginService.getIsLoggedOk().subscribe(isLoggedIn => {
+			this.isLoggedOk = isLoggedIn;
+		});
+		this.loginService.getRole().subscribe(role => {
+			this.role = role;
+		});
 	}
 
 	canActivate(
@@ -34,7 +34,9 @@ export class AuthTranGuard implements CanActivate, CanActivateChild {
 	}
 
 	checkLogin(url: string): boolean {
-		if (this.isLoggedOk && this.role === 'ROLE_TRANSLATOR') { return true; }
+		if (this.isLoggedOk && this.role === 'ROLE_TRANSLATOR') {
+			return true;
+		}
 
 		// Store the attempted URL for redirecting
 		// this.loginService.redirectUrl = url;
