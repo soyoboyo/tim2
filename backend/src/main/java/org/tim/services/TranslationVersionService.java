@@ -13,9 +13,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TranslationVersionService {
 
-    private final TranslationVersionRepository translationVersionRepository;
+	private final TranslationVersionRepository translationVersionRepository;
 
-    public List<TranslationVersion> getTranslationVersionsByOriginal(Long originalId){
-        return translationVersionRepository.findAllByTranslationIdOrderByUpdateDateDesc(originalId);
-    }
+	public List<TranslationVersion> getTranslationVersionsByOriginal(Long originalId) {
+		return translationVersionRepository.findAllByTranslationIdOrderByUpdateDateDesc(originalId);
+	}
 }

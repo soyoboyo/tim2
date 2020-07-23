@@ -17,7 +17,6 @@ import org.tim.repositories.MessageRepository;
 import org.tim.repositories.TranslationRepository;
 import org.tim.repositories.TranslationVersionRepository;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;

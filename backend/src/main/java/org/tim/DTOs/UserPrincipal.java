@@ -7,6 +7,6 @@ import lombok.Getter;
 @Getter
 public class UserPrincipal {
 
-    private String username;
-    private String role;
+	private String username;
+	private String role;
 }

@@ -19,24 +19,24 @@ import java.util.List;
 @NoArgsConstructor
 public class MessageDTO {
 
-    private Long id;
+	private Long id;
 
-    @NotBlank
-    @NonNull
-    private String key;
+	@NotBlank
+	@NonNull
+	private String key;
 
-    @NotBlank
-    @NonNull
-    private String content;
+	@NotBlank
+	@NonNull
+	private String content;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@UpdateTimestamp
 	private LocalDateTime updateDate;
 
-    private String description;
+	private String description;
 
-    @NonNull
-    private Long projectId;
+	@NonNull
+	private Long projectId;
 
-    private List<Translation> translations;
+	private List<Translation> translations;
 }

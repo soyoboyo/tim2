@@ -7,9 +7,9 @@ import java.util.Locale;
 @Data
 public class WarningDTO {
 
-    String outdatedTranslationContent;
+	String outdatedTranslationContent;
 
-    Locale substituteLocale;
+	Locale substituteLocale;
 
-    String substituteContent;
+	String substituteContent;
 }

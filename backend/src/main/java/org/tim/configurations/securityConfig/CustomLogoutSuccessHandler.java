@@ -13,14 +13,14 @@ import java.io.IOException;
 
 @Component
 public class CustomLogoutSuccessHandler extends
-        SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
+		SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
 
-    @Override
-    public void onLogoutSuccess(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Authentication authentication)
-            throws IOException, ServletException {
-        response.setStatus(HttpStatus.OK.value());
-    }
+	@Override
+	public void onLogoutSuccess(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			Authentication authentication)
+			throws IOException, ServletException {
+		response.setStatus(HttpStatus.OK.value());
+	}
 }

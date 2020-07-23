@@ -17,27 +17,27 @@ import java.util.Locale;
 @NoArgsConstructor
 public class TranslationVersion {
 
-    @Id
-    @Setter(AccessLevel.NONE)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@Setter(AccessLevel.NONE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @NotNull
-    private String content;
+	@NotNull
+	private String content;
 
-    @NotNull
-    @NonNull
-    private Locale locale;
+	@NotNull
+	@NonNull
+	private Locale locale;
 
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime updateDate;
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	private LocalDateTime updateDate;
 
-    private Boolean isValid;
+	private Boolean isValid;
 
-    private String createdBy;
+	private String createdBy;
 
-    private Boolean isArchived;
+	private Boolean isArchived;
 
-    @NotNull
-    private Long translationId;
+	@NotNull
+	private Long translationId;
 }

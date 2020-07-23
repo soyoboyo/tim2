@@ -44,108 +44,108 @@ class ReportControllerTestIT extends SpringTestsCustomExtension {
 		//given
 		MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
 
-        //when
-        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
-                .file("file", sampleFile.getBytes()))
-                //then
-                .andExpect(status().isOk())
-                .andExpect(content().string("success"))
-                .andDo(print());
-    }
+		//when
+		mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
+				.file("file", sampleFile.getBytes()))
+				//then
+				.andExpect(status().isOk())
+				.andExpect(content().string("success"))
+				.andDo(print());
+	}
 
-    @Test
-    void whenEmptyTranslatorFileImportedThenResponseBadRequest() throws Exception {
-        //given
-        MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "".getBytes());
+	@Test
+	void whenEmptyTranslatorFileImportedThenResponseBadRequest() throws Exception {
+		//given
+		MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "".getBytes());
 
-        doThrow(new Exception("The file is empty.")).when(importService).importTranslatorCSVFile(any(MultipartFile.class));
+		doThrow(new Exception("The file is empty.")).when(importService).importTranslatorCSVFile(any(MultipartFile.class));
 
-        //when
-        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
-                .file("file", sampleFile.getBytes()))
-                //then
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("The file is empty."))
-                .andDo(print());
-    }
+		//when
+		mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
+				.file("file", sampleFile.getBytes()))
+				//then
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string("The file is empty."))
+				.andDo(print());
+	}
 
-    @Test
-    void whenValidDeveloperFileImportedThenResponseOk() throws Exception {
-        //given
-        MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
+	@Test
+	void whenValidDeveloperFileImportedThenResponseOk() throws Exception {
+		//given
+		MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
 
-        //when
-        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + DEVELOPER)
-                .file("file", sampleFile.getBytes()))
-                //then
-                .andExpect(status().isOk())
-                .andExpect(content().string("success"))
-                .andDo(print());
-    }
+		//when
+		mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + DEVELOPER)
+				.file("file", sampleFile.getBytes()))
+				//then
+				.andExpect(status().isOk())
+				.andExpect(content().string("success"))
+				.andDo(print());
+	}
 
-    @Test
-    void whenEmptyDeveloperFileImportedThenResponseBadRequest() throws Exception {
-        //given
-        MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "".getBytes());
+	@Test
+	void whenEmptyDeveloperFileImportedThenResponseBadRequest() throws Exception {
+		//given
+		MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "".getBytes());
 
-        //when
-        doThrow(new Exception("The file is empty.")).when(importService).importDeveloperCSVMessage(any(MultipartFile.class));
+		//when
+		doThrow(new Exception("The file is empty.")).when(importService).importDeveloperCSVMessage(any(MultipartFile.class));
 
-        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + DEVELOPER)
-                .file("file", sampleFile.getBytes()))
-                //then
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("The file is empty."))
-                .andDo(print());
-    }
+		mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + DEVELOPER)
+				.file("file", sampleFile.getBytes()))
+				//then
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string("The file is empty."))
+				.andDo(print());
+	}
 
-    @Test
-    @DisplayName("Check if exception message is returned when processing file from translator")
-    void whenParsingTranslatorFileExceptionThenReturnExceptionMessage() throws Exception {
-        //given
-        MockMultipartFile sampleFile = new MockMultipartFile("file", "asd\nasda".getBytes());
+	@Test
+	@DisplayName("Check if exception message is returned when processing file from translator")
+	void whenParsingTranslatorFileExceptionThenReturnExceptionMessage() throws Exception {
+		//given
+		MockMultipartFile sampleFile = new MockMultipartFile("file", "asd\nasda".getBytes());
 
-        doThrow(new IllegalArgumentException("Test")).when(importService).importTranslatorCSVFile(any(MultipartFile.class));
-        //when
-        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
-                .file("file", sampleFile.getBytes()))
-                //then
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Test"))
-                .andDo(print());
-    }
+		doThrow(new IllegalArgumentException("Test")).when(importService).importTranslatorCSVFile(any(MultipartFile.class));
+		//when
+		mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
+				.file("file", sampleFile.getBytes()))
+				//then
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string("Test"))
+				.andDo(print());
+	}
 
-    @Test
-    @DisplayName("Check if exception message is returned when processing file from developer")
-    void whenParsingDeveloperFileExceptionThenReturnExceptionMessage() throws Exception {
-        //given
-        MockMultipartFile sampleFile = new MockMultipartFile("file", "asd\nasda".getBytes());
-        String exceptionMessage = "Test";
+	@Test
+	@DisplayName("Check if exception message is returned when processing file from developer")
+	void whenParsingDeveloperFileExceptionThenReturnExceptionMessage() throws Exception {
+		//given
+		MockMultipartFile sampleFile = new MockMultipartFile("file", "asd\nasda".getBytes());
+		String exceptionMessage = "Test";
 
-        doThrow(new EntityNotFoundException(exceptionMessage)).when(importService).importDeveloperCSVMessage(any(MultipartFile.class));
-        //when
-        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + DEVELOPER)
-                .file("file", sampleFile.getBytes()))
-                //then
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Sorry, we can't find this " + exceptionMessage))
-                .andDo(print());
-    }
+		doThrow(new EntityNotFoundException(exceptionMessage)).when(importService).importDeveloperCSVMessage(any(MultipartFile.class));
+		//when
+		mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + DEVELOPER)
+				.file("file", sampleFile.getBytes()))
+				//then
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string("Sorry, we can't find this " + exceptionMessage))
+				.andDo(print());
+	}
 
-    @Test
-    @DisplayName("Check if exception message is returned when translation already exists")
-    void whenTranslationFromTranslatorFileAlreadyExistsThenReturnExceptionMessage() throws Exception {
-        //given
-        MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
+	@Test
+	@DisplayName("Check if exception message is returned when translation already exists")
+	void whenTranslationFromTranslatorFileAlreadyExistsThenReturnExceptionMessage() throws Exception {
+		//given
+		MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
 
-        //when
-        doThrow(new EntityAlreadyExistException("test")).when(importService).importTranslatorCSVFile(any(MultipartFile.class));
+		//when
+		doThrow(new EntityAlreadyExistException("test")).when(importService).importTranslatorCSVFile(any(MultipartFile.class));
 
-        mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
-                .file("file", sampleFile.getBytes()))
-                //then
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Sorry, test for given parameters already exists!"))
-                .andDo(print());
-    }
+		mockMvc.perform(MockMvcRequestBuilders.multipart(BASE_URL + API_VERSION + REPORT + IMPORT + TRANSLATOR)
+				.file("file", sampleFile.getBytes()))
+				//then
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string("Sorry, test for given parameters already exists!"))
+				.andDo(print());
+	}
 }

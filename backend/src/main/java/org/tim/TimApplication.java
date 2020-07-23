@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class TimApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(TimApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(TimApplication.class, args);
+	}
 }

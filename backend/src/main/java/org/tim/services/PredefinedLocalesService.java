@@ -2,7 +2,8 @@ package org.tim.services;
 
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Locale;
+import java.util.TreeSet;
 
 @Service
 public class PredefinedLocalesService {

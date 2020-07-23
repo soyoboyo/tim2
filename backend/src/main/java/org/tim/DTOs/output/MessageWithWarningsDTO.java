@@ -13,22 +13,22 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class MessageWithWarningsDTO {
 
-    @NotNull
-    private Long id;
+	@NotNull
+	private Long id;
 
-    @NotBlank
-    @NonNull
-    private String key;
+	@NotBlank
+	@NonNull
+	private String key;
 
-    @NotBlank
-    @NonNull
-    private String content;
+	@NotBlank
+	@NonNull
+	private String content;
 
-    private String description;
+	private String description;
 
-    @NonNull
-    private Long projectId;
+	@NonNull
+	private Long projectId;
 
-    WarningDTO warnings;
+	WarningDTO warnings;
 
 }

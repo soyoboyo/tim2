@@ -26,52 +26,52 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @RequiredArgsConstructor
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
-    @Value("${security.jwt.public-key}")
-    private Resource jwtPublicKey;
+	@Value("${security.jwt.public-key}")
+	private Resource jwtPublicKey;
 
-    private static final String ROOT_PATTERN = Mappings.API_VERSION + "/**";
+	private static final String ROOT_PATTERN = Mappings.API_VERSION + "/**";
 
-    @Override
-    public void configure(final ResourceServerSecurityConfigurer resources) {
-        resources.tokenStore(tokenStore());
-    }
+	@Override
+	public void configure(final ResourceServerSecurityConfigurer resources) {
+		resources.tokenStore(tokenStore());
+	}
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, ROOT_PATTERN).access("#oauth2.hasScope('write')")
-                .antMatchers(HttpMethod.PATCH, ROOT_PATTERN).access("#oauth2.hasScope('write')")
-                .antMatchers(HttpMethod.PUT, ROOT_PATTERN).access("#oauth2.hasScope('write')")
-                .antMatchers(HttpMethod.DELETE, ROOT_PATTERN).access("#oauth2.hasScope('write')")
-                .and().authorizeRequests().antMatchers(
-                        Mappings.SWAGGER_UI, Mappings.API_VERSION + Mappings.EXPORT_CI + "/**").permitAll()
-                .and().cors();
-    }
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+				.antMatchers(HttpMethod.POST, ROOT_PATTERN).access("#oauth2.hasScope('write')")
+				.antMatchers(HttpMethod.PATCH, ROOT_PATTERN).access("#oauth2.hasScope('write')")
+				.antMatchers(HttpMethod.PUT, ROOT_PATTERN).access("#oauth2.hasScope('write')")
+				.antMatchers(HttpMethod.DELETE, ROOT_PATTERN).access("#oauth2.hasScope('write')")
+				.and().authorizeRequests().antMatchers(
+				Mappings.SWAGGER_UI, Mappings.API_VERSION + Mappings.EXPORT_CI + "/**").permitAll()
+				.and().cors();
+	}
 
-    @Bean
-    public DefaultTokenServices tokenServices(final TokenStore tokenStore) {
-        DefaultTokenServices tokenServices = new DefaultTokenServices();
-        tokenServices.setTokenStore(tokenStore);
-        return tokenServices;
-    }
+	@Bean
+	public DefaultTokenServices tokenServices(final TokenStore tokenStore) {
+		DefaultTokenServices tokenServices = new DefaultTokenServices();
+		tokenServices.setTokenStore(tokenStore);
+		return tokenServices;
+	}
 
-    @Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
-    }
+	@Bean
+	public TokenStore tokenStore() {
+		return new JwtTokenStore(jwtAccessTokenConverter());
+	}
 
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setVerifierKey(getPublicKeyAsString());
-        return converter;
-    }
+	@Bean
+	public JwtAccessTokenConverter jwtAccessTokenConverter() {
+		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+		converter.setVerifierKey(getPublicKeyAsString());
+		return converter;
+	}
 
-    private String getPublicKeyAsString() {
-        try {
-            return IOUtils.toString(jwtPublicKey.getInputStream(), UTF_8);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	private String getPublicKeyAsString() {
+		try {
+			return IOUtils.toString(jwtPublicKey.getInputStream(), UTF_8);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

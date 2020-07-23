@@ -16,10 +16,10 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @GetMapping(Mappings.GET)
-    public UserPrincipal getPrincipal(Principal principal) {
-        return userService.getUserPrincipal(principal);
-    }
+	@GetMapping(Mappings.GET)
+	public UserPrincipal getPrincipal(Principal principal) {
+		return userService.getUserPrincipal(principal);
+	}
 }
