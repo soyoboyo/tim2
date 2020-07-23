@@ -119,17 +119,17 @@ export class DevProjectsComponent implements OnInit {
 	}
 
 	addReplacableLocale() {
-		const control = <FormArray>this.projectParams.get('replacableLocale');
+		const control = <FormArray> this.projectParams.get('replacableLocale');
 		control.push(this.initReplacableLocale());
 	}
 
 	removeReplacableLocale(i: number) {
-		const control = <FormArray>this.projectParams.get('replacableLocale');
+		const control = <FormArray> this.projectParams.get('replacableLocale');
 		control.removeAt(i);
 	}
 
 	addExistingReplacableLocale(replaced: string, replacement: string) {
-		const control = <FormArray>this.projectParams.get('replacableLocale');
+		const control = <FormArray> this.projectParams.get('replacableLocale');
 		control.push(this.initExistingReplacableLocale(replaced, replacement));
 	}
 
@@ -284,7 +284,7 @@ export class DevProjectsComponent implements OnInit {
 		this.projectParams.markAsPristine();
 		this.projectParams.markAsUntouched();
 		this.projectParams.reset();
-		const replacementControls = <FormArray>this.projectParams.get('replacableLocale');
+		const replacementControls = <FormArray> this.projectParams.get('replacableLocale');
 		while (replacementControls.controls.length > 0) {
 			replacementControls.removeAt(0);
 		}

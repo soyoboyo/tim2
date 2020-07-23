@@ -116,8 +116,6 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 		this.targetLocales.sort();
 		this.selectedProjectId = value.id;
 		this.projectStoreService.setSelectedProject(value);
-		console.log('selected project');
-		console.log(this.selectedProject);
 		this.getMessages();
 		// TODO: add boolean variable to check if any projects are loaded
 		this.utilsService.showElement(this.aggregateInfoElement);
@@ -131,7 +129,10 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	}
 
 	async getMessages() {
+		console.log('get messages');
+		console.log(this.selectedProject);
 		if (this.selectedProject) {
+			console.log('gettting messages');
 			this.isLoadingResults = true;
 			const response = await this.http.getAll('message/developer/getByProject/' + this.selectedProject.id);
 			this.messages = [].concat(response);
@@ -203,7 +204,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	ngAfterViewInit(): void {
 		this.aggregateInfoElement = document.getElementById(this.aggregateInfoId);
 		this.messagesTableElement = document.getElementById(this.messagesTableId);
-		if (this.selectedProjectId == null) {
+		if (this.selectedProject == null) {
 			this.utilsService.hideElement(this.aggregateInfoElement);
 			this.utilsService.hideElement(this.messagesTableElement);
 		}

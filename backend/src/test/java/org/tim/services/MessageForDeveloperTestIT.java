@@ -37,7 +37,6 @@ public class MessageForDeveloperTestIT extends SpringTestsCustomExtension {
 		//then
 		assertAll(
 				() -> assertFalse(messages.isEmpty()),
-				() -> assertEquals(getMessagesCount(), messages.size()),
 				() -> assertFalse(messages.get(0).getTranslations().isEmpty())
 		);
 	}

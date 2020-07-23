@@ -8,7 +8,7 @@
 	<h2>Login</h2>
 	<form (ngSubmit)="loginButtonClicked()" [formGroup]="loginParams">
 		<div *ngIf="!isLoggedOk" class="text-bad-credential">
-		Bad credentials!
+			Bad credentials!
 		</div>
 
 		<mat-form-field class="form-field">

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { RestService } from '../../../shared/services/rest/rest.service';
 
 import { Chart } from 'chart.js';
@@ -32,8 +32,6 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		console.log('aggregate info changes');
-		console.log(changes);
 		this.getAggregatedInfo();
 	}
 
@@ -46,8 +44,6 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 		if (this.selectedProjectId !== null) {
 			const response = await this.http.getAll('project/developer/aggregate/' + this.selectedProjectId);
 			this.aggregatedInfo = response;
-			console.log('aggregate info response');
-			console.log(response);
 			this.messagesTotal = response.messagesTotal;
 			this.parseData(response.aggregatedLocales);
 		}
@@ -68,7 +64,6 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	}
 
 	private updateChart() {
-		console.log('update chart');
 		this.summaryChart.data.labels = this.labels;
 		this.summaryChart.data.datasets = [
 			{
@@ -89,7 +84,6 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	}
 
 	generateChart() {
-		console.log('generate chart');
 		this.summaryChart = new Chart(this.summaryChartElement, {
 			type: 'bar',
 			data: {

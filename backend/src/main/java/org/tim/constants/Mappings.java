@@ -3,6 +3,7 @@ package org.tim.constants;
 public class Mappings {
 
 	public static final String AGGREGATE = "/aggregate/{id}";
+	public static final String API_VERSION = "/api/v1";
 	public static final String ARCHIVE = "/archive/{id}";
 	public static final String COUNTRIES = "/countries";
 	public static final String CREATE = "/create";
@@ -33,6 +34,5 @@ public class Mappings {
 	public static final String UPDATE = "/update/{id}";
 	public static final String USER = "/user";
 	public static final String VERSION = "/version/{originalId}";
-	public static final String API_VERSION = "/api/v1";
 
 }

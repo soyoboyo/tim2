@@ -8,7 +8,7 @@ import { DevHistoryTranslationsComponent } from './features/developers/dev-histo
 import { AccessDeniedComponent } from './views/access-denied/access-denied.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { AuthDevGuard } from './core/guards/auth-dev-guards/auth-dev.guard';
-import {AuthTranGuard} from './core/guards/auth-tran-guards/auth-tran.guard';
+import { AuthTranGuard } from './core/guards/auth-tran-guards/auth-tran.guard';
 
 export const routes: Routes = [
 	{ path: '', redirectTo: 'login', pathMatch: 'full' },
