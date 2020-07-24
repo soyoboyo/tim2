@@ -120,25 +120,26 @@ public class ExportService {
 
 	private void createCSVFile(List<ReportDataRow> reportData) {
 		try {
-			Message currentMessage = null;
 			CSVPrinter printer = new CSVPrinter(new FileWriter(CSV_FILE_NAME), CSVFormat.DEFAULT);
 
 			try {
 				for (var row : reportData) {
-					if (!row.getMessage().equals(currentMessage)) {
-						currentMessage = row.getMessage();
-						printMessageHeader(printer, row.getMessage());
-					}
+					printMessageHeader(printer, row.getMessage());
+
 					if (row.getStatus() == TranslationStatus.Valid) {
+						printer.printRecord(row.getLocale(), row.getStatus().name(), row.translation);
+						printer.println();
 						continue;
 					}
+
 					if (row.getStatus() == TranslationStatus.Missing) {
-						printer.printRecord(row.Locale, row.status.name(), "-", row.getSubstituteLocale(), row.getSubstituteTranslation());
+						printer.printRecord(row.Locale, row.status.name(), "", row.getSubstituteLocale(), row.getSubstituteTranslation());
 					} else {
 						printer.printRecord(row.Locale, row.status.name(), row.translation, "-", "-");
 					}
 
-					printer.printRecord("New translation", "-");
+					printer.printRecord("", "New translation", "");
+					printer.println();
 				}
 				printer.printRecord("");
 			} catch (IOException ex) {

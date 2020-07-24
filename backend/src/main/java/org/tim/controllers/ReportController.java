@@ -2,11 +2,14 @@ package org.tim.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.tim.services.ExportService;
 import org.tim.services.ImportService;
+
+import javax.activation.MimeType;
 
 import static org.tim.constants.Mappings.*;
 
@@ -18,7 +21,7 @@ public class ReportController {
 	private final ExportService exportService;
 	private final ImportService importService;
 
-	@GetMapping(GENERATE)
+	@GetMapping(value = GENERATE, produces = "text/csv")
 	public ResponseEntity<FileSystemResource> generateCsvReportForTranslator(@PathVariable Long id, @RequestParam String[] locales) {
 		return ResponseEntity.ok(new FileSystemResource(exportService.generateCSVReport(id, locales)));
 	}
