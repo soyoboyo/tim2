@@ -2,10 +2,12 @@ package org.tim.services;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang.LocaleUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.csv.CsvParser;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,6 +20,7 @@ import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -59,10 +62,9 @@ public class ExportServiceTestIT {
 		});
 	}
 
-
 	@Test
-	@DisplayName("Check if correct report is generated")
-	void generateExcelReport_validCall_correctCSVFileProduced() {
+	@DisplayName("Check if first message is generated correct")
+	void generateCSVAndCheckIfFirsMessageIsCorrect() {
 		//given
 		testInitialize();
 		var reportService = new ExportService(projectRepository, messageRepository, translationRepository);
@@ -70,92 +72,58 @@ public class ExportServiceTestIT {
 		reportService.generateCSVReport(0L, new String[]{testLocale1, testLocale2, testLocale3, testLocale5});
 		//then
 		try {
-			var reader = Files.newBufferedReader(Paths.get(CSV_FILE_NAME));
-			var parser = new CSVParser(reader, CSVFormat.DEFAULT);
-			var records = parser.getRecords();
+			BufferedReader reader = Files.newBufferedReader(Paths.get(CSV_FILE_NAME));
+			CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT);
+			List<CSVRecord> records = parser.getRecords();
+
 			assertAll(
-					//message Header 1
 					() -> assertEquals("", records.get(0).get(0)),
 					() -> assertEquals("message Key", records.get(0).get(1)),
-					() -> assertEquals("", records.get(0).get(2)),
 					() -> assertEquals("", records.get(1).get(0)),
 					() -> assertEquals("message Content", records.get(1).get(1)),
 					() -> assertEquals("Message1", records.get(1).get(2)),
 					() -> assertEquals("", records.get(2).get(0)),
 					() -> assertEquals("message Description", records.get(2).get(1)),
-					() -> assertEquals("", records.get(2).get(2)),
-					//Cell Headers
-					() -> assertEquals(STD_HEADERS[0], records.get(3).get(0)),
-					() -> assertEquals(STD_HEADERS[1], records.get(3).get(1)),
-					() -> assertEquals(STD_HEADERS[2], records.get(3).get(2)),
-					() -> assertEquals(STD_HEADERS[3], records.get(3).get(3)),
-					() -> assertEquals(STD_HEADERS[4], records.get(3).get(4)),
-					//Message1 TranslationUS
-					() -> assertEquals(testLocale2, records.get(4).get(0)),
-					() -> assertEquals("Invalid", records.get(4).get(1)),
-					() -> assertEquals("Message1TranslationUS", records.get(4).get(2)),
-					() -> assertEquals("-", records.get(4).get(3)),
-					() -> assertEquals("-", records.get(4).get(4)),
-					() -> assertEquals("New translation", records.get(5).get(0)),
-					() -> assertEquals("-", records.get(5).get(1)),
-					//Message1 TranslationUK
-					() -> assertEquals(testLocale3, records.get(6).get(0)),
-					() -> assertEquals("Outdated", records.get(6).get(1)),
-					() -> assertEquals("Message1TranslationUK", records.get(6).get(2)),
-					() -> assertEquals("-", records.get(6).get(3)),
-					() -> assertEquals("-", records.get(6).get(4)),
-					() -> assertEquals("New translation", records.get(7).get(0)),
-					() -> assertEquals("-", records.get(7).get(1)),
-					//Message1 TranslationHR
-					() -> assertEquals(testLocale5, records.get(8).get(0)),
-					() -> assertEquals("Missing", records.get(8).get(1)),
-					() -> assertEquals("-", records.get(8).get(2)),
-					() -> assertEquals("ru", records.get(8).get(3)),
-					() -> assertEquals("Message1TranslationRU", records.get(8).get(4)),
-					() -> assertEquals("New translation", records.get(9).get(0)),
-					() -> assertEquals("-", records.get(9).get(1)),
-					//message Header 2
-					() -> assertEquals("", records.get(10).get(0)),
-					() -> assertEquals("message Key", records.get(10).get(1)),
-					() -> assertEquals("", records.get(10).get(2)),
-					() -> assertEquals("", records.get(11).get(0)),
-					() -> assertEquals("message Content", records.get(11).get(1)),
-					() -> assertEquals("Message2", records.get(11).get(2)),
-					() -> assertEquals("", records.get(12).get(0)),
-					() -> assertEquals("message Description", records.get(12).get(1)),
-					() -> assertEquals("", records.get(12).get(2)),
-					//Cell Headers
-					() -> assertEquals(STD_HEADERS[0], records.get(13).get(0)),
-					() -> assertEquals(STD_HEADERS[1], records.get(13).get(1)),
-					() -> assertEquals(STD_HEADERS[2], records.get(13).get(2)),
-					() -> assertEquals(STD_HEADERS[3], records.get(13).get(3)),
-					() -> assertEquals(STD_HEADERS[4], records.get(13).get(4)),
-					//Message2 TranslationUS
-					() -> assertEquals(testLocale2, records.get(14).get(0)),
-					() -> assertEquals("Invalid", records.get(14).get(1)),
-					() -> assertEquals("Message2TranslationUS", records.get(14).get(2)),
-					() -> assertEquals("-", records.get(14).get(3)),
-					() -> assertEquals("-", records.get(14).get(4)),
-					() -> assertEquals("New translation", records.get(15).get(0)),
-					() -> assertEquals("-", records.get(15).get(1)),
-					//Message2 TranslationUK
-					() -> assertEquals(testLocale3, records.get(16).get(0)),
-					() -> assertEquals("Outdated", records.get(16).get(1)),
-					() -> assertEquals("Message2TranslationUK", records.get(16).get(2)),
-					() -> assertEquals("-", records.get(16).get(3)),
-					() -> assertEquals("-", records.get(16).get(4)),
-					() -> assertEquals("New translation", records.get(17).get(0)),
-					() -> assertEquals("-", records.get(17).get(1)),
-					//Message2 TranslationHR
-					() -> assertEquals(testLocale5, records.get(18).get(0)),
-					() -> assertEquals("Missing", records.get(18).get(1)),
-					() -> assertEquals("-", records.get(18).get(2)),
-					() -> assertEquals("ru", records.get(18).get(3)),
-					() -> assertEquals("Message2TranslationRU", records.get(18).get(4)),
-					() -> assertEquals("New translation", records.get(19).get(0)),
-					() -> assertEquals("-", records.get(19).get(1))
+					() -> assertEquals("Locale", records.get(3).get(0)),
+					() -> assertEquals("Translation Status", records.get(3).get(1)),
+					() -> assertEquals("Translation", records.get(3).get(2)),
+					() -> assertEquals("Substitute Locale", records.get(3).get(3)),
+					() -> assertEquals("Substitute Translation", records.get(3).get(4)),
+					() -> assertEquals("pl", records.get(4).get(0)),
+					() -> assertEquals("Valid", records.get(4).get(1)),
+					() -> assertEquals("Message1TranslationPL", records.get(4).get(2)),
+					() -> assertEquals("New translation", records.get(5).get(1))
 			);
-		} catch (IOException ex) {
+
+		} catch (IOException e) {
+			fail();
+		}
+	}
+
+	@Test
+	@DisplayName("Check if correct substitute translation is added")
+	void generateCSVAndCheckIfSubstituteTranslationIsAddedCorrect() {
+		//given
+		testInitialize();
+		var reportService = new ExportService(projectRepository, messageRepository, translationRepository);
+		//when
+		reportService.generateCSVReport(0L, new String[]{testLocale1, testLocale2, testLocale3, testLocale5});
+		//then
+		try {
+			BufferedReader reader = Files.newBufferedReader(Paths.get(CSV_FILE_NAME));
+			CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT);
+			List<CSVRecord> records = parser.getRecords();
+
+			for (CSVRecord record : records) {
+				if (record.get(1).equals("Missing")) {
+					assertAll(
+							() -> assertEquals("ru", record.get(3)),
+							() -> assertEquals("Message1TranslationRU", record.get(4))
+					);
+					break;
+				}
+			}
+		} catch (IOException e) {
 			fail();
 		}
 	}

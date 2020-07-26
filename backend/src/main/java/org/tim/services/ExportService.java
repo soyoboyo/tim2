@@ -128,6 +128,7 @@ public class ExportService {
 
 					if (row.getStatus() == TranslationStatus.Valid) {
 						printer.printRecord(row.getLocale(), row.getStatus().name(), row.translation);
+						printer.printRecord("", "New translation", "");
 						printer.println();
 						continue;
 					}
@@ -135,7 +136,7 @@ public class ExportService {
 					if (row.getStatus() == TranslationStatus.Missing) {
 						printer.printRecord(row.Locale, row.status.name(), "", row.getSubstituteLocale(), row.getSubstituteTranslation());
 					} else {
-						printer.printRecord(row.Locale, row.status.name(), row.translation, "-", "-");
+						printer.printRecord(row.Locale, row.status.name(), row.translation, "", "");
 					}
 
 					printer.printRecord("", "New translation", "");
