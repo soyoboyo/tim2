@@ -11,7 +11,6 @@ import org.tim.DTOs.MessageDTO;
 import org.tim.DTOs.input.TranslationCreateDTO;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
-import org.tim.exceptions.EntityAlreadyExistException;
 import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
@@ -21,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Optional;
+
+import static org.tim.constants.CSVFileConstants.*;
 
 @Service
 @AllArgsConstructor
@@ -65,41 +66,33 @@ public class ImportService {
 		}
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
-		String projectName = getAndSkipLine(reader, 2);
-		String locale = getAndSkipLine(reader, 2);
 
-		final CSVFormat csvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
-		CSVParser csvParser = new CSVParser(reader, csvFormat);
+		CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
 
-		createTranslations(csvParser.getRecords(), locale);
+		createTranslations(csvParser.getRecords());
 	}
 
-	private void createTranslations(List<CSVRecord> records, String locale) throws Exception {
-		for (CSVRecord record : records) {
+	private void createTranslations(List<CSVRecord> records) throws Exception {
+		for (int i = 0; i < records.size(); i += MESSAGE_BLOCK) {
 			String key = null;
+			String locale = null;
 			String translation = null;
 			try {
-				key = record.get("key");
-				translation = record.get("translation");
-			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException(e.getMessage() + ", or check if your delimiter is set to \",\" (comma)");
+				key = records.get(i + KEY_ROW).get(KEY_COLUMN);
+				locale = records.get(i + LOCALE_ROW).get(LOCALE_COLUMN);
+				translation = records.get(i + NEW_TRANSLATION_ROW).get(NEW_TRANSLATION_COLUMN);
+			} catch (Exception exception) {
+				throw new Exception("Check if your delimiter is set to \",\" (comma)");
 			}
-
-			Optional<Message> messageOptional = messageRepository.findByKey(key);
-			Message message;
-
-			if (messageOptional.isEmpty()) {
-				throw new EntityNotFoundException(key);
-			}
-
-			message = messageOptional.get();
 
 			TranslationCreateDTO translationCreateDTO = new TranslationCreateDTO(translation, locale);
 
-			try {
-				translationService.createTranslation(translationCreateDTO, message.getId());
-			} catch (EntityAlreadyExistException e) {
-				throw new Exception(e.getMessage() + " Check line " + (record.getParser().getCurrentLineNumber() + skippedLinesInDevFile) + " in csv file.");
+			Optional<Message> messageOptional = messageRepository.findByKey(key);
+
+			if (messageOptional.isPresent()) {
+				translationService.createTranslation(translationCreateDTO, messageOptional.get().getId());
+			} else {
+				throw new EntityNotFoundException(key);
 			}
 		}
 	}
