@@ -14,4 +14,6 @@ public class CSVFileConstants {
 	public final static int LOCALE_COLUMN = 0;
 	public final static int NEW_TRANSLATION_ROW = 5;
 	public final static int NEW_TRANSLATION_COLUMN = 2;
+	public final static int TRANSLATION_STATUS_ROW = 4;
+	public final static int TRANSLATION_STATUS_COLUMN = 1;
 }

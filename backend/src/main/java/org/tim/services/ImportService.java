@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.tim.DTOs.MessageDTO;
 import org.tim.DTOs.input.TranslationCreateDTO;
+import org.tim.constants.TranslationStatus;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.exceptions.EntityNotFoundException;
@@ -77,12 +78,20 @@ public class ImportService {
 			String key = null;
 			String locale = null;
 			String translation = null;
+			String translationStatus = null;
 			try {
 				key = records.get(i + KEY_ROW).get(KEY_COLUMN);
 				locale = records.get(i + LOCALE_ROW).get(LOCALE_COLUMN);
 				translation = records.get(i + NEW_TRANSLATION_ROW).get(NEW_TRANSLATION_COLUMN);
+				translationStatus = records.get(i + TRANSLATION_STATUS_ROW).get(TRANSLATION_STATUS_COLUMN);
 			} catch (Exception exception) {
 				throw new Exception("Check if your delimiter is set to \",\" (comma)");
+			}
+
+			if (!translationStatus.equals(TranslationStatus.Missing.name())) {
+				continue;
+			} else if (translation.isBlank()) {
+				continue;
 			}
 
 			TranslationCreateDTO translationCreateDTO = new TranslationCreateDTO(translation, locale);
