@@ -1,0 +1,11 @@
+.mat-card-image {
+  margin-top: unset;
+  height: 350px;
+  object-fit: contain;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

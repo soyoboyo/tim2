@@ -342,6 +342,16 @@ public class TranslationSeeder {
 		Translation addToCart = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("addToCart"));
 		addToCart.setContent("Dodaj do koszyka");
 
+		Translation featuredProducts = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("featuredProducts"));
+		featuredProducts.setContent("Polecane produkty");
+		Translation productContent1 = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("productContent1"));
+		productContent1.setContent("Zegarek na rękę XYZ <b>90$</b>");
+		Translation productContent2 = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("productContent2"));
+		productContent2.setContent("Fotel XYZ <b>40$</b>");
+		Translation productContent3 = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("productContent3"));
+		productContent3.setContent("Konsola do gier XYZ <b>60$</b>");
+		Translation showMore = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("showMore"));
+		showMore.setContent("Pokaż więcej");
 
 		translationRepository.saveAll(Arrays.asList(translationT1M1, translationT1M2, translationT1M3, translationT2M1,
 				translationT2M2, translationT2M3, translationT2M4, translationT3M1, translationT3M2, translationT1M4,
@@ -368,7 +378,8 @@ public class TranslationSeeder {
 				contactUsPl, featuresFooterPl, featuresFooter1Pl, featuresFooter2Pl, featuresFooter3Pl, featuresFooter4Pl,
 				featuresFooter5Pl, resourcesFooterPl, resourcesFooter1Pl, resourcesFooter2Pl,
 				resourcesFooter3Pl, resourcesFooter4Pl, aboutFooterPl, aboutFooter1Pl, aboutFooter2Pl, aboutFooter3Pl, aboutFooter4Pl,
-				categoriesTitle, catEl, catHome, catVid, selectedCategory, hotProduct, hotProductContent, addToCart
+				categoriesTitle, catEl, catHome, catVid, selectedCategory, hotProduct, hotProductContent, addToCart, featuredProducts,
+				productContent1, productContent2, productContent3, showMore
 //                ,freeEmailSupportKo, maxFreeMemoryLimitPl, maxEnterpriseUsersKo, maxEnterpriseMemoryLimitKo, enterpriseEmailSupportKo,
 //                enterpriseHelpCenterKo,featuresFooterDe, featuresFooter6Pl, enterpriseCardPl, signUpToAccessDe
 		));

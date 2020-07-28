@@ -1,0 +1,20 @@
+.title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 5px;
+  margin-left: 50px;
+}
+
+.product {
+  max-width: 450px;
+  margin-left: 10px;
+}
+
+.products-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+

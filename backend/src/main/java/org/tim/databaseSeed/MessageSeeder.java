@@ -197,6 +197,16 @@ public class MessageSeeder {
 		messages.put("hotProductContent", messageRepository.save(hotProductContent));
 		Message addToCart = new Message("addToCart", "Add to cart", projects.get("projectP4"));
 		messages.put("addToCart", messageRepository.save(addToCart));
+		Message featuredProducts = new Message("featuredProducts", "Featured products", projects.get("projectP4"));
+		messages.put("featuredProducts", messageRepository.save(featuredProducts));
+		Message productContent1 = new Message("productContent1", "Watch XYZ <b>90$</b>", projects.get("projectP4"));
+		messages.put("productContent1", messageRepository.save(productContent1));
+		Message productContent2 = new Message("productContent2", "Chair XYZ <b>40$</b>", projects.get("projectP4"));
+		messages.put("productContent2", messageRepository.save(productContent2));
+		Message productContent3 = new Message("productContent3", "Game console XYZ <b>60$</b>", projects.get("projectP4"));
+		messages.put("productContent3", messageRepository.save(productContent3));
+		Message showMore = new Message("showMore", "Show more", projects.get("projectP4"));
+		messages.put("showMore", messageRepository.save(showMore));
 
 		return messages;
 	}

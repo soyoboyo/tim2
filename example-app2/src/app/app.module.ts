@@ -22,6 +22,8 @@ import {CategoriesComponent} from './features/categories/categories.component';
 import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
 import {HotProductComponent} from './features/hot-product/hot-product.component';
+import {FeaturedComponent} from './features/featured/featured.component';
+import {ProductComponent} from './features/product/product.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, APP_CONFIG.apiBaseUrl + 'api/v1/exportCD/message/getByLocale/4/', '');
@@ -33,7 +35,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     HomeComponent,
     SearchComponent,
     CategoriesComponent,
-    HotProductComponent
+    HotProductComponent,
+    FeaturedComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,
