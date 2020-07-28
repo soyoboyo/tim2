@@ -7,7 +7,6 @@ import org.apache.commons.lang.LocaleUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.csv.CsvParser;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,7 +27,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.tim.constants.CSVFileConstants.CSV_FILE_NAME;
-import static org.tim.constants.CSVFileConstants.STD_HEADERS;
 
 @ExtendWith(MockitoExtension.class)
 public class ExportServiceTestIT {
@@ -89,10 +87,11 @@ public class ExportServiceTestIT {
 					() -> assertEquals("Translation", records.get(3).get(2)),
 					() -> assertEquals("Substitute Locale", records.get(3).get(3)),
 					() -> assertEquals("Substitute Translation", records.get(3).get(4)),
-					() -> assertEquals("pl", records.get(4).get(0)),
-					() -> assertEquals("Valid", records.get(4).get(1)),
-					() -> assertEquals("Message1TranslationPL", records.get(4).get(2)),
-					() -> assertEquals("New translation", records.get(5).get(1))
+					() -> assertEquals("en_US", records.get(4).get(0)),
+					() -> assertEquals("Invalid", records.get(4).get(1)),
+					() -> assertEquals("Message1TranslationUS", records.get(4).get(2)),
+					() -> assertEquals("New translation", records.get(5).get(1)),
+					() -> assertEquals("", records.get(5).get(2))
 			);
 
 		} catch (IOException e) {

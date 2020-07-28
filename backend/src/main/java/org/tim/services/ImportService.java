@@ -4,17 +4,21 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang.LocaleUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.tim.DTOs.MessageDTO;
 import org.tim.DTOs.input.TranslationCreateDTO;
+import org.tim.DTOs.input.TranslationUpdateDTO;
 import org.tim.constants.TranslationStatus;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
+import org.tim.entities.Translation;
 import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
+import org.tim.repositories.TranslationRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,6 +37,7 @@ public class ImportService {
 
 	private final ProjectRepository projectRepository;
 	private final MessageRepository messageRepository;
+	private final TranslationRepository translationRepository;
 
 	private final int skippedLinesInDevFile = 2;
 
@@ -88,9 +93,7 @@ public class ImportService {
 				throw new Exception("Check if your delimiter is set to \",\" (comma)");
 			}
 
-			if (!translationStatus.equals(TranslationStatus.Missing.name())) {
-				continue;
-			} else if (translation.isBlank()) {
+			if (translation.isBlank()) {
 				continue;
 			}
 
@@ -99,11 +102,23 @@ public class ImportService {
 			Optional<Message> messageOptional = messageRepository.findByKey(key);
 
 			if (messageOptional.isPresent()) {
-				translationService.createTranslation(translationCreateDTO, messageOptional.get().getId());
+				saveOrUpdateTranslation(translationCreateDTO, messageOptional.get().getId(), translationStatus, locale);
 			} else {
 				throw new EntityNotFoundException(key);
 			}
 		}
+	}
+
+	private void saveOrUpdateTranslation(TranslationCreateDTO translationCreateDTO, Long messageId, String translationStatus, String locale) {
+		if (translationStatus.equals(TranslationStatus.Missing.name())) {
+			translationService.createTranslation(translationCreateDTO, messageId);
+		} else {
+			Translation translation = translationRepository.findTranslationByLocaleAndMessageId(LocaleUtils.toLocale(locale), messageId);
+			TranslationUpdateDTO updateDTO = new TranslationUpdateDTO(translationCreateDTO.getContent());
+
+			translationService.updateTranslation(updateDTO, translation.getId(), messageId);
+		}
+
 	}
 
 	private void saveMessages(List<CSVRecord> records, Long projectId) {

@@ -124,23 +124,14 @@ public class ExportService {
 
 			try {
 				for (var row : reportData) {
-					printMessageHeader(printer, row.getMessage());
+					if (row.getStatus() != TranslationStatus.Valid) {
+						printMessageHeader(printer, row.getMessage());
 
-					if (row.getStatus() == TranslationStatus.Valid) {
-						printer.printRecord(row.getLocale(), row.getStatus().name(), row.translation);
+						printer.printRecord(row.Locale, row.status.name(), row.getTranslation(), row.getSubstituteLocale(), row.getSubstituteTranslation());
 						printer.printRecord("", "New translation", "");
 						printer.println();
-						continue;
 					}
 
-					if (row.getStatus() == TranslationStatus.Missing) {
-						printer.printRecord(row.Locale, row.status.name(), "", row.getSubstituteLocale(), row.getSubstituteTranslation());
-					} else {
-						printer.printRecord(row.Locale, row.status.name(), row.translation, "", "");
-					}
-
-					printer.printRecord("", "New translation", "");
-					printer.println();
 				}
 				printer.printRecord("");
 			} catch (IOException ex) {

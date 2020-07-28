@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { catchError } from 'rxjs/internal/operators';
-import { Observable, throwError } from 'rxjs';
-import { environment } from '../../../../environments/environment';
-import { saveAs } from 'file-saver';
-import { Project } from '../../types/entities/Project';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {catchError} from 'rxjs/internal/operators';
+import {Observable, throwError} from 'rxjs';
+import {environment} from '../../../../environments/environment';
+import {saveAs} from 'file-saver';
+import {Project} from '../../types/entities/Project';
 
 @Injectable({
-	providedIn: 'root'
+  providedIn: 'root'
 })
 export class RestService {
-	URL = environment.API + '/api/v1/';
+  URL = environment.API + '/api/v1/';
 
-	constructor(private http: HttpClient) {
-	}
+  constructor(private http: HttpClient) {
+  }
 
 	async getAll(url: string) {
 		return await this.http.get<any>(this.URL + url, { withCredentials: true })
@@ -66,9 +66,9 @@ export class RestService {
 			responseType: 'blob',
 			withCredentials: true
 		}).subscribe(response => {
-			const blob = new Blob([response], { type: 'application/xml' });
-			saveAs(blob, filename);
-		});
+      const blob = new Blob([response], {type: response.type});
+      saveAs(blob, filename);
+    });
 
 	}
 
