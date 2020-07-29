@@ -2,10 +2,13 @@
 
 ## Table of contents
 1. Project overview
-1. Functionality
+1. Functionalities
+1. Demo applications
 1. Technical details
 1. Technologies
-1. Installation guide
+1. Installation guide (developers)
+1. Installation guide (users)
+1. Docker
 1. Contributing
 
 # 1. Project overview
@@ -17,20 +20,39 @@ Main features:
   * exporting reports with missing translations
   * exporting ready translations in format acceptable by Spring applications
 
-# 2. Functionality
-For all users:
-* exporting reports with missing translations
+# 2. Functionalities
+For super-admin:
+* in progress...
 
-For developers:
-* adding, removing, editing projects
-* adding, removing, editing messages to translate
-* exporting properties files with ready translations
+For programmer:
+* uploading CSV report with messages to be translated 
+* adding, updating and archiving messages throught UI
+* browsing message and translations history
+* browsing summary of translation progress for all projects
+* invalidating translations (not implemented)
 
-For translators:
-* adding, editing, removing, invalidating translations of messages
+
+For programmer-admin:
+* in progress...
+
+For translator:
+* export CSV report with messages that need translations
+* upload of CSV report with translations
+* adding, updating and invalidating translations through UI
+* using substitute translations with single click
+* browsing message and translations history
+
+For translator-admin:
+* in progress...
+
+For external applications connected via continous integration endpoints:
+* get list of supported locales
+* get file with translated messages for given locale
 
 
-# 3. Web pages
+# 3. Demo application
+None are live at the moment.
+
 * Frontend
     * https://studentproject-tim-frontend.herokuapp.com
 * Backend
@@ -53,12 +75,26 @@ Accounts available in project:
   * [JUnit 5](https://junit.org/junit5/)
   * [Mockito 2](https://site.mockito.org/)
 * Frontend
-  * [Angular 7](https://angular.io/)
-  * [Angular Material 7](https://material.angular.io/)
+  * [Angular 10](https://angular.io/)
+  * [Angular Material 10](https://material.angular.io/)
 * Other
-  * [Swagger UI](https://swagger.io/)
+  * [Swagger UI 2.0](https://swagger.io/)
 
-# 6. Installation guide (users)
+
+# 6. Installation guide (developers)
+Backend:  
+1. Install prerequisites (OpenJDK 11, maven)
+1. Run `mvn clean install`  for `backend` and `auth_server` applications
+1. Run application with `mvn spring-boot:run`
+
+Frontend:  
+1. Install prerequisites according to this guide https://angular.io/guide/quickstart (Node.js, node package manager, Angular)
+1. Go to `/frontend` folder.  
+1. Run `npm i` to install dependencies.  
+1. Run `ng serve` to start the application. App will be available at `localhost:4200`.  
+
+
+# 7. Installation guide (users) - OUTDATED
 1. Install docker
 1. Pull backend and frontend project from dockerhub:
     * docker pull studentproject/ocado-tim-backend
@@ -73,19 +109,6 @@ Accounts available in project:
     * docker run -it -p 8081:8080 -d studentproject/ocado-tim-backend
     * docker run -it -p 8080:8080 -d studentproject/simple-web-app  
 1. The app is available on localhost or address 192.168.99.100 (depends on os)
-
-
-# 7. Installation guide (developers)
-Backend:  
-1. Install prerequisites (OpenJDK 11, maven)
-1. Run `mvn clean install`  for `backend` and `aut_server` applications
-
-    
-Frontend:  
-0. Install prerequisites according to this guide https://angular.io/guide/quickstart (Node.js, node package manager, Angular)
-1. Go to `/frontend` folder.  
-1. Run `npm i` to install dependencies.  
-1. Run `ng serve` to start the application. App will be available at `localhost:4200`.  
 
 
 # 8. Docker:
@@ -108,9 +131,8 @@ Frontend:
  
 
 # 9. Contributing
-* Mikołaj Banaszkiewicz
-* Alex Kostiukov 
-* Matusz Mytnik
-* Szymon Sakowicz
 * Wojciech Spoton 
 * Jacek Zalewski 
+* Mikołaj Banaszkiewicz
+* Alex Kostiukov 
+* Jacek Klimczak
