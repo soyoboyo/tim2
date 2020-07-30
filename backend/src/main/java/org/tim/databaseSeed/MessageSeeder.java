@@ -208,6 +208,23 @@ public class MessageSeeder {
 		Message showMore = new Message("showMore", "Show more", projects.get("projectP4"));
 		messages.put("showMore", messageRepository.save(showMore));
 
+		Message help = new Message("help", "Help", projects.get("projectP4"));
+		messages.put("help", messageRepository.save(help));
+		Message yOrders = new Message("yOrders", "Your orders", projects.get("projectP4"));
+		messages.put("yOrders", messageRepository.save(yOrders));
+		Message yAccount = new Message("yAccount", "Your account", projects.get("projectP4"));
+		messages.put("yAccount", messageRepository.save(yAccount));
+		Message helpCenter = new Message("helpCenter", "Help center", projects.get("projectP4"));
+		messages.put("helpCenter", messageRepository.save(helpCenter));
+		Message aboutUs = new Message("aboutUs", "About Us", projects.get("projectP4"));
+		messages.put("aboutUs", messageRepository.save(aboutUs));
+		Message careers = new Message("careers", "Careers", projects.get("projectP4"));
+		messages.put("careers", messageRepository.save(careers));
+		Message aboutExample = new Message("aboutExample", "About Example App", projects.get("projectP4"));
+		messages.put("aboutExample", messageRepository.save(aboutExample));
+		Message blog = new Message("blog", "Our blog", projects.get("projectP4"));
+		messages.put("blog", messageRepository.save(blog));
+
 		return messages;
 	}
 }

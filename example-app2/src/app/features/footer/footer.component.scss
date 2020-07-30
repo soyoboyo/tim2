@@ -1,0 +1,28 @@
+.footer {
+  background-color: #0a6dad;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.header {
+  font-weight: 400;
+  font-size: 22px;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    max-width: 25%;
+    width: 25%;
+  }
+}
+
+.copyright {
+  margin-top: 5px;
+  text-align: center;
+}

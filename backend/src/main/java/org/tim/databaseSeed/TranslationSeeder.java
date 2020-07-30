@@ -353,6 +353,24 @@ public class TranslationSeeder {
 		Translation showMore = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("showMore"));
 		showMore.setContent("Pokaż więcej");
 
+		Translation help = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("help"));
+		help.setContent("Pomoc");
+		Translation yOrders = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("yOrders"));
+		yOrders.setContent("Your orders");
+		Translation yAccount = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("yAccount"));
+		yAccount.setContent("Your account");
+		Translation helpCenter = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("helpCenter"));
+		helpCenter.setContent("Centrum pomocy");
+		Translation aboutUs = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutUs"));
+		aboutUs.setContent("O nas");
+		Translation careers = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("careers"));
+		careers.setContent("Kariera");
+		Translation aboutExample = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutExample"));
+		aboutExample.setContent("O firmie Example App");
+		Translation blog = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("blog"));
+		blog.setContent("Nasz blog");
+
+
 		translationRepository.saveAll(Arrays.asList(translationT1M1, translationT1M2, translationT1M3, translationT2M1,
 				translationT2M2, translationT2M3, translationT2M4, translationT3M1, translationT3M2, translationT1M4,
 				translationT4M1, translationT4M2, translationT3M3, translationT3M4, translationT4M3, translationT4M4,
@@ -379,7 +397,8 @@ public class TranslationSeeder {
 				featuresFooter5Pl, resourcesFooterPl, resourcesFooter1Pl, resourcesFooter2Pl,
 				resourcesFooter3Pl, resourcesFooter4Pl, aboutFooterPl, aboutFooter1Pl, aboutFooter2Pl, aboutFooter3Pl, aboutFooter4Pl,
 				categoriesTitle, catEl, catHome, catVid, selectedCategory, hotProduct, hotProductContent, addToCart, featuredProducts,
-				productContent1, productContent2, productContent3, showMore
+				productContent1, productContent2, productContent3, showMore, help, yOrders, yAccount, helpCenter, aboutUs, careers,
+				aboutExample, blog
 //                ,freeEmailSupportKo, maxFreeMemoryLimitPl, maxEnterpriseUsersKo, maxEnterpriseMemoryLimitKo, enterpriseEmailSupportKo,
 //                enterpriseHelpCenterKo,featuresFooterDe, featuresFooter6Pl, enterpriseCardPl, signUpToAccessDe
 		));
