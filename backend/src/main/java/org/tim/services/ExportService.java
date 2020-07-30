@@ -114,24 +114,36 @@ public class ExportService {
 
 		row.setStatus(TranslationStatus.Valid);
 		row.setTranslation(translation.get().getContent());
-		return;
 	}
 
 
 	private void createCSVFile(List<ReportDataRow> reportData) {
 		try {
 			CSVPrinter printer = new CSVPrinter(new FileWriter(CSV_FILE_NAME), CSVFormat.DEFAULT);
-
+			boolean shouldPrintMessageHeader = false;
+			boolean isNextMessage = false;
+			ReportDataRow previousData = null;
 			try {
 				for (var row : reportData) {
-					if (row.getStatus() != TranslationStatus.Valid) {
-						printMessageHeader(printer, row.getMessage());
+					if (!row.getStatus().equals(TranslationStatus.Valid)) {
+						isNextMessage = checkIfRowIsNextMessage(row, previousData);
+						shouldPrintMessageHeader = checkIfPrintMessageHeader(row, previousData);
+
+						if (isNextMessage) {
+							printer.println();
+						}
+
+						if (shouldPrintMessageHeader) {
+							printMessageHeader(printer, row.getMessage());
+						}
 
 						printer.printRecord(row.Locale, row.status.name(), row.getTranslation(), row.getSubstituteLocale(), row.getSubstituteTranslation());
 						printer.printRecord("", "New translation", "");
-						printer.println();
-					}
 
+						if (!Objects.equals(previousData, row)) {
+							previousData = row;
+						}
+					}
 				}
 				printer.printRecord("");
 			} catch (IOException ex) {
@@ -144,11 +156,26 @@ public class ExportService {
 		}
 	}
 
+	private boolean checkIfPrintMessageHeader(ReportDataRow row, ReportDataRow previousData) {
+		if (previousData == null)
+			return true;
+
+		return !row.getMessage().getKey().equals(previousData.getMessage().getKey());
+	}
+
+	private boolean checkIfRowIsNextMessage(ReportDataRow row, ReportDataRow previousData) {
+		if (previousData == null)
+			return false;
+
+		return !previousData.getMessage().getKey().equals(row.getMessage().getKey());
+	}
+
 	private void printMessageHeader(CSVPrinter printer, Message message) throws IOException {
 
-		printer.printRecord("", "message Key", message.getKey());
-		printer.printRecord("", "message Content", message.getContent());
-		printer.printRecord("", "message Description", message.getDescription());
+		printer.printRecord("", "Key", message.getKey());
+		printer.printRecord("", "Content", message.getContent());
+		printer.printRecord("", "Description", message.getDescription());
+		printer.printRecord("", "Last updated", message.getUpdateDate());
 		printer.printRecord((Object[]) STD_HEADERS);
 	}
 }

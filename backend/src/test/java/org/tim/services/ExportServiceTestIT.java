@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,6 +48,8 @@ public class ExportServiceTestIT {
 	private String testLocale3 = "en_GB";
 	private String testLocale4 = "ru";
 	private String testLocale5 = "hr";
+
+	private final LocalDateTime messageUpdateTime = LocalDateTime.of(2020, 7, 30, 10, 10);
 
 	@Test
 	@DisplayName("Throw exception if project doesn't exists")
@@ -76,22 +79,34 @@ public class ExportServiceTestIT {
 
 			assertAll(
 					() -> assertEquals("", records.get(0).get(0)),
-					() -> assertEquals("message Key", records.get(0).get(1)),
+					() -> assertEquals("Key", records.get(0).get(1)),
+					() -> assertEquals("message1Key", records.get(0).get(2)),
 					() -> assertEquals("", records.get(1).get(0)),
-					() -> assertEquals("message Content", records.get(1).get(1)),
+					() -> assertEquals("Content", records.get(1).get(1)),
 					() -> assertEquals("Message1", records.get(1).get(2)),
 					() -> assertEquals("", records.get(2).get(0)),
-					() -> assertEquals("message Description", records.get(2).get(1)),
-					() -> assertEquals("Locale", records.get(3).get(0)),
-					() -> assertEquals("Translation Status", records.get(3).get(1)),
-					() -> assertEquals("Translation", records.get(3).get(2)),
-					() -> assertEquals("Substitute Locale", records.get(3).get(3)),
-					() -> assertEquals("Substitute Translation", records.get(3).get(4)),
-					() -> assertEquals("en_US", records.get(4).get(0)),
-					() -> assertEquals("Invalid", records.get(4).get(1)),
-					() -> assertEquals("Message1TranslationUS", records.get(4).get(2)),
-					() -> assertEquals("New translation", records.get(5).get(1)),
-					() -> assertEquals("", records.get(5).get(2))
+					() -> assertEquals("Description", records.get(2).get(1)),
+					() -> assertEquals("Message1Description", records.get(2).get(2)),
+					() -> assertEquals("Last updated", records.get(3).get(1)),
+					() -> assertEquals(messageUpdateTime.toString(), records.get(3).get(2)),
+					() -> assertEquals("Locale", records.get(4).get(0)),
+					() -> assertEquals("Translation Status", records.get(4).get(1)),
+					() -> assertEquals("Translation", records.get(4).get(2)),
+					() -> assertEquals("Substitute Locale", records.get(4).get(3)),
+					() -> assertEquals("Substitute Translation", records.get(4).get(4)),
+					() -> assertEquals("en_US", records.get(5).get(0)),
+					() -> assertEquals("Invalid", records.get(5).get(1)),
+					() -> assertEquals("Message1TranslationUS", records.get(5).get(2)),
+					() -> assertEquals("New translation", records.get(6).get(1)),
+					() -> assertEquals("en_GB", records.get(7).get(0)),
+					() -> assertEquals("Outdated", records.get(7).get(1)),
+					() -> assertEquals("Message1TranslationUK", records.get(7).get(2)),
+					() -> assertEquals("New translation", records.get(8).get(1)),
+					() -> assertEquals("", records.get(8).get(2)),
+					() -> assertEquals("hr", records.get(9).get(0)),
+					() -> assertEquals("Missing", records.get(9).get(1)),
+					() -> assertEquals("ru", records.get(9).get(3)),
+					() -> assertEquals("Message1TranslationRU", records.get(9).get(4))
 			);
 
 		} catch (IOException e) {
@@ -138,7 +153,11 @@ public class ExportServiceTestIT {
 		Mockito.lenient().when(projectRepository.findById(0L)).thenReturn(Optional.of(project));
 		Mockito.lenient().when(projectRepository.findById(1L)).thenReturn(Optional.empty());
 
+		Mockito.when(message1.getKey()).thenReturn("message1Key");
 		Mockito.when(message1.getContent()).thenReturn(("Message1"));
+		Mockito.when(message1.getUpdateDate()).thenReturn(messageUpdateTime);
+		Mockito.when(message1.getDescription()).thenReturn("Message1Description");
+		Mockito.when(message2.getKey()).thenReturn("message2Key");
 		Mockito.when(message2.getContent()).thenReturn(("Message2"));
 
 		Mockito.when(messageRepository.findMessagesByProjectIdAndIsArchivedFalse(0L)).thenReturn(new LinkedList<>(Arrays.asList(message1, message2)));
