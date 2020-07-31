@@ -19,15 +19,14 @@ import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.tim.constants.CSVFileConstants.CSV_FILE_NAME;
 
 @ExtendWith(MockitoExtension.class)
 public class ExportServiceTestIT {
@@ -65,15 +64,15 @@ public class ExportServiceTestIT {
 
 	@Test
 	@DisplayName("Check if first message is generated correct")
-	void generateCSVAndCheckIfFirsMessageIsCorrect() {
+	void generateCSVAndCheckIfFirsMessageIsCorrect() throws IOException {
 		//given
 		testInitialize();
 		var reportService = new ExportService(projectRepository, messageRepository, translationRepository);
 		//when
-		reportService.generateCSVReport(0L, new String[]{testLocale1, testLocale2, testLocale3, testLocale5});
+		byte[] csvFile = reportService.generateCSVReport(0L, new String[]{testLocale1, testLocale2, testLocale3, testLocale5});
 		//then
 		try {
-			BufferedReader reader = Files.newBufferedReader(Paths.get(CSV_FILE_NAME));
+			Reader reader = new InputStreamReader(new ByteArrayInputStream(csvFile));
 			CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT);
 			List<CSVRecord> records = parser.getRecords();
 
@@ -116,15 +115,15 @@ public class ExportServiceTestIT {
 
 	@Test
 	@DisplayName("Check if correct substitute translation is added")
-	void generateCSVAndCheckIfSubstituteTranslationIsAddedCorrect() {
+	void generateCSVAndCheckIfSubstituteTranslationIsAddedCorrect() throws IOException {
 		//given
 		testInitialize();
 		var reportService = new ExportService(projectRepository, messageRepository, translationRepository);
 		//when
-		reportService.generateCSVReport(0L, new String[]{testLocale1, testLocale2, testLocale3, testLocale5});
+		byte[] csvFile = reportService.generateCSVReport(0L, new String[]{testLocale1, testLocale2, testLocale3, testLocale5});
 		//then
 		try {
-			BufferedReader reader = Files.newBufferedReader(Paths.get(CSV_FILE_NAME));
+			Reader reader = new InputStreamReader(new ByteArrayInputStream(csvFile));
 			CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT);
 			List<CSVRecord> records = parser.getRecords();
 

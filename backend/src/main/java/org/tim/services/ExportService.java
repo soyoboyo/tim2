@@ -17,8 +17,10 @@ import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 import static org.tim.constants.CSVFileConstants.CSV_FILE_NAME;
@@ -36,13 +38,12 @@ public class ExportService {
 	private final TranslationRepository translationRepository;
 
 
-	public String generateCSVReport(Long projectId, String[] localesForReport) {
+	public byte[] generateCSVReport(Long projectId, String[] localesForReport) throws IOException {
 		var project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
 		var messages = new LinkedList<>(messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId));
 		var reportData = new ArrayList<>(gatherReportData(localesForReport, messages, project));
 
-		createCSVFile(reportData);
-		return CSV_FILE_NAME;
+		return createCSVFile(reportData);
 	}
 
 	private List<ReportDataRow> gatherReportData(String[] localesForReport, LinkedList<Message> messages, Project project) {
@@ -117,9 +118,11 @@ public class ExportService {
 	}
 
 
-	private void createCSVFile(List<ReportDataRow> reportData) {
+	private byte[] createCSVFile(List<ReportDataRow> reportData) throws IOException {
+		File csvFile;
 		try {
-			CSVPrinter printer = new CSVPrinter(new FileWriter(CSV_FILE_NAME), CSVFormat.DEFAULT);
+			csvFile = new File(CSV_FILE_NAME);
+			CSVPrinter printer = new CSVPrinter(new FileWriter(csvFile), CSVFormat.DEFAULT);
 			boolean shouldPrintMessageHeader = false;
 			boolean isNextMessage = false;
 			ReportDataRow previousData = null;
@@ -154,6 +157,10 @@ public class ExportService {
 		} catch (IOException ex) {
 			throw new InvalidOperationException(FILE_WRITER_FAIL);
 		}
+
+		byte[] bytes = Files.readAllBytes(csvFile.toPath());
+		csvFile.delete();
+		return bytes;
 	}
 
 	private boolean checkIfPrintMessageHeader(ReportDataRow row, ReportDataRow previousData) {
