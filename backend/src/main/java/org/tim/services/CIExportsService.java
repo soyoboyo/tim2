@@ -68,7 +68,7 @@ public class CIExportsService {
 		}
 		for (Translation t : translations) {
 			if (existingMessages.containsKey(t.getMessage().getId())) {
-				String value = "";
+				String value;
 				if (t.getMessage().isTranslationOutdated(t)) {
 					value = t.getMessage().getContent();
 				} else {

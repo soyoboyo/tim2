@@ -55,7 +55,7 @@ public class ExportServiceTestIT {
 	void generateExcelReport_projectNotFound_exception() {
 		//given
 		Mockito.lenient().when(projectRepository.findById(1L)).thenReturn(Optional.empty());
-		var reportService = new ExportService(projectRepository, messageRepository, translationRepository);
+		ExportService reportService = new ExportService(projectRepository, messageRepository, translationRepository);
 		//when, then
 		assertThrows(EntityNotFoundException.class, () -> {
 			reportService.generateCSVReport(1L, new String[]{});
@@ -67,7 +67,7 @@ public class ExportServiceTestIT {
 	void generateCSVAndCheckIfFirsMessageIsCorrect() throws IOException {
 		//given
 		testInitialize();
-		var reportService = new ExportService(projectRepository, messageRepository, translationRepository);
+		ExportService reportService = new ExportService(projectRepository, messageRepository, translationRepository);
 		//when
 		byte[] csvFile = reportService.generateCSVReport(0L, new String[]{testLocale1, testLocale2, testLocale3, testLocale5});
 		//then
@@ -118,7 +118,7 @@ public class ExportServiceTestIT {
 	void generateCSVAndCheckIfSubstituteTranslationIsAddedCorrect() throws IOException {
 		//given
 		testInitialize();
-		var reportService = new ExportService(projectRepository, messageRepository, translationRepository);
+		ExportService reportService = new ExportService(projectRepository, messageRepository, translationRepository);
 		//when
 		byte[] csvFile = reportService.generateCSVReport(0L, new String[]{testLocale1, testLocale2, testLocale3, testLocale5});
 		//then
@@ -142,8 +142,8 @@ public class ExportServiceTestIT {
 	}
 
 	private void testInitialize() {
-		var project = new Project("ProjectName", new Locale("en"));
-		var list = new ArrayList<LocaleWrapper>();
+		Project project = new Project("ProjectName", new Locale("en"));
+		List<LocaleWrapper> list = new ArrayList<>();
 		list.add(new LocaleWrapper(new Locale("hr")));
 		list.add(new LocaleWrapper(new Locale("ru")));
 		project.addTargetLocale(list);
@@ -161,56 +161,56 @@ public class ExportServiceTestIT {
 
 		Mockito.when(messageRepository.findMessagesByProjectIdAndIsArchivedFalse(0L)).thenReturn(new LinkedList<>(Arrays.asList(message1, message2)));
 
-		var translationPLToMessage1 = new Translation();
+		Translation translationPLToMessage1 = new Translation();
 		translationPLToMessage1.setContent("Message1TranslationPL");
 		translationPLToMessage1.setIsValid(true);
 		translationPLToMessage1.setMessage(message1);
 		translationPLToMessage1.setIsArchived(false);
 		translationPLToMessage1.setLocale(LocaleUtils.toLocale(testLocale1));
 
-		var translationUSToMessage1 = new Translation();
+		Translation translationUSToMessage1 = new Translation();
 		translationUSToMessage1.setContent("Message1TranslationUS");
 		translationUSToMessage1.setIsValid(false);
 		translationUSToMessage1.setMessage(message1);
 		translationUSToMessage1.setIsArchived(false);
 		translationUSToMessage1.setLocale(LocaleUtils.toLocale(testLocale2));
 
-		var translationUKToMessage1 = new Translation();
+		Translation translationUKToMessage1 = new Translation();
 		translationUKToMessage1.setContent("Message1TranslationUK");
 		translationUKToMessage1.setIsValid(true);
 		translationUKToMessage1.setMessage(message1);
 		translationUKToMessage1.setIsArchived(false);
 		translationUKToMessage1.setLocale(LocaleUtils.toLocale(testLocale3));
 
-		var translationRUToMessage1 = new Translation();
+		Translation translationRUToMessage1 = new Translation();
 		translationRUToMessage1.setContent("Message1TranslationRU");
 		translationRUToMessage1.setIsValid(true);
 		translationRUToMessage1.setMessage(message1);
 		translationRUToMessage1.setIsArchived(false);
 		translationRUToMessage1.setLocale(LocaleUtils.toLocale(testLocale4));
 
-		var translationPLToMessage2 = new Translation();
+		Translation translationPLToMessage2 = new Translation();
 		translationPLToMessage2.setContent("Message2TranslationPL");
 		translationPLToMessage2.setIsValid(true);
 		translationPLToMessage2.setMessage(message2);
 		translationPLToMessage2.setIsArchived(false);
 		translationPLToMessage2.setLocale(LocaleUtils.toLocale(testLocale1));
 
-		var translationUSToMessage2 = new Translation();
+		Translation translationUSToMessage2 = new Translation();
 		translationUSToMessage2.setContent("Message2TranslationUS");
 		translationUSToMessage2.setIsValid(false);
 		translationUSToMessage2.setMessage(message2);
 		translationUSToMessage2.setIsArchived(false);
 		translationUSToMessage2.setLocale(LocaleUtils.toLocale(testLocale2));
 
-		var translationUKToMessage2 = new Translation();
+		Translation translationUKToMessage2 = new Translation();
 		translationUKToMessage2.setContent("Message2TranslationUK");
 		translationUKToMessage2.setIsValid(true);
 		translationUKToMessage2.setMessage(message2);
 		translationUKToMessage2.setIsArchived(false);
 		translationUKToMessage2.setLocale(LocaleUtils.toLocale(testLocale3));
 
-		var translationRUToMessage2 = new Translation();
+		Translation translationRUToMessage2 = new Translation();
 		translationRUToMessage2.setContent("Message2TranslationRU");
 		translationRUToMessage2.setIsValid(true);
 		translationRUToMessage2.setMessage(message2);

@@ -34,23 +34,18 @@ public class ImportService {
 
 	private final MessageService messageService;
 	private final TranslationService translationService;
-
 	private final ProjectRepository projectRepository;
 	private final MessageRepository messageRepository;
 	private final TranslationRepository translationRepository;
-
-	private final int skippedLinesInDevFile = 2;
 
 	@Transactional
 	public void importDeveloperCSVMessage(MultipartFile file) throws Exception {
 		if (file.isEmpty()) {
 			throw new Exception("The file is empty.");
 		}
-
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
 		String projectName = getAndSkipLine(reader, 2);
 		Optional<Project> optionalProject = projectRepository.findByName(projectName);
-
 		Project project;
 
 		if (optionalProject.isPresent()) {
@@ -58,11 +53,7 @@ public class ImportService {
 		} else {
 			throw new EntityNotFoundException(projectName);
 		}
-
-		final CSVFormat csvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
-		CSVParser csvParser = new CSVParser(reader, csvFormat);
-
-		saveMessages(csvParser.getRecords(), project.getId());
+		saveMessages(new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader()).getRecords(), project.getId());
 	}
 
 	@Transactional
@@ -70,20 +61,14 @@ public class ImportService {
 		if (file.isEmpty()) {
 			throw new Exception("The file is empty.");
 		}
-
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
-
 		CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
-
 		createTranslations(csvParser.getRecords());
 	}
 
 	private void createTranslations(List<CSVRecord> records) throws Exception {
 		for (int i = 0; i < records.size(); i += MESSAGE_BLOCK) {
-			String key = null;
-			String locale = null;
-			String translation = null;
-			String translationStatus = null;
+			String key, locale, translation, translationStatus;
 			try {
 				key = records.get(i + KEY_ROW).get(KEY_COLUMN);
 				locale = records.get(i + LOCALE_ROW).get(LOCALE_COLUMN);
@@ -98,7 +83,6 @@ public class ImportService {
 			}
 
 			TranslationCreateDTO translationCreateDTO = new TranslationCreateDTO(translation, locale);
-
 			Optional<Message> messageOptional = messageRepository.findByKey(key);
 
 			if (messageOptional.isPresent()) {
@@ -115,17 +99,13 @@ public class ImportService {
 		} else {
 			Translation translation = translationRepository.findTranslationByLocaleAndMessageId(LocaleUtils.toLocale(locale), messageId);
 			TranslationUpdateDTO updateDTO = new TranslationUpdateDTO(translationCreateDTO.getContent());
-
 			translationService.updateTranslation(updateDTO, translation.getId(), messageId);
 		}
-
 	}
 
 	private void saveMessages(List<CSVRecord> records, Long projectId) {
 		for (CSVRecord record : records) {
-			String key = null;
-			String content = null;
-			String description = null;
+			String key, content, description;
 			try {
 				key = record.get("key");
 				content = record.get("content");
@@ -144,18 +124,9 @@ public class ImportService {
 		}
 	}
 
-	private String getAndSkipLine(BufferedReader reader) throws IOException {
-		String projectNameRaw = reader.readLine();
-		String projectName = clearDelimiterFromProjectName(projectNameRaw, 1);
-
-		return projectName;
-	}
-
 	private String getAndSkipLine(BufferedReader reader, int delimiterLength) throws IOException {
 		String projectNameRaw = reader.readLine();
-		String projectName = clearDelimiterFromProjectName(projectNameRaw, delimiterLength);
-
-		return projectName;
+		return clearDelimiterFromProjectName(projectNameRaw, delimiterLength);
 	}
 
 	private String clearDelimiterFromProjectName(String projectNameRaw, int delimiterLength) {
