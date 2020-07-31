@@ -17,8 +17,10 @@ import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 import static org.tim.constants.CSVFileConstants.CSV_FILE_NAME;
@@ -36,21 +38,18 @@ public class ExportService {
 	private final TranslationRepository translationRepository;
 
 
-	public String generateCSVReport(Long projectId, String[] localesForReport) {
-		var project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
-		var messages = new LinkedList<>(messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId));
-		var reportData = new ArrayList<>(gatherReportData(localesForReport, messages, project));
-
-		createCSVFile(reportData);
-		return CSV_FILE_NAME;
+	public byte[] generateCSVReport(Long projectId, String[] localesForReport) throws IOException {
+		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
+		List<Message> messages = new LinkedList<>(messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId));
+		List<ReportDataRow> reportData = new ArrayList<>(gatherReportData(localesForReport, messages, project));
+		return createCSVFile(reportData);
 	}
 
-	private List<ReportDataRow> gatherReportData(String[] localesForReport, LinkedList<Message> messages, Project project) {
-		var reportDataRows = new LinkedList<ReportDataRow>();
-		for (var message : messages) {
-
-			for (var localeString : localesForReport) {
-				var row = new ReportDataRow();
+	private List<ReportDataRow> gatherReportData(String[] localesForReport, List<Message> messages, Project project) {
+		List<ReportDataRow> reportDataRows = new LinkedList<>();
+		for (Message message : messages) {
+			for (String localeString : localesForReport) {
+				ReportDataRow row = new ReportDataRow();
 				Locale locale;
 				try {
 					locale = LocaleUtils.toLocale(localeString);
@@ -63,19 +62,17 @@ public class ExportService {
 				translation = translationRepository.findTranslationsByLocaleAndMessage(locale, message);
 				setTranslationStatus(message, row, translation);
 				if (row.getStatus() == TranslationStatus.Missing) {
-					SetSubstituteTranslation(project, message, locale, row);
+					setSubstituteTranslation(project, message, locale, row);
 				}
 				reportDataRows.add(row);
 			}
 		}
-
 		return reportDataRows;
 	}
 
-	private void SetSubstituteTranslation(Project project, Message message, Locale locale, ReportDataRow row) {
-
+	private void setSubstituteTranslation(Project project, Message message, Locale locale, ReportDataRow row) {
 		while (true) {
-			var subLocale = project.getSubstituteLocale(new LocaleWrapper(locale));
+			Optional<LocaleWrapper> subLocale = project.getSubstituteLocale(new LocaleWrapper(locale));
 			Optional<Translation> subTranslation;
 			if (subLocale.isPresent()) {
 				subTranslation = translationRepository.findTranslationsByLocaleAndMessage(subLocale.get().getLocale(), message);
@@ -88,13 +85,11 @@ public class ExportService {
 			} else {
 				return;
 			}
-
 		}
-
 	}
 
 	private void setTranslationStatus(Message message, ReportDataRow row, Optional<Translation> translation) {
-		if (!translation.isPresent()) {
+		if (translation.isEmpty()) {
 			row.setStatus(TranslationStatus.Missing);
 			row.setTranslation(StringUtils.EMPTY);
 			return;
@@ -114,49 +109,70 @@ public class ExportService {
 
 		row.setStatus(TranslationStatus.Valid);
 		row.setTranslation(translation.get().getContent());
-		return;
 	}
 
 
-	private void createCSVFile(List<ReportDataRow> reportData) {
+	private byte[] createCSVFile(List<ReportDataRow> reportData) throws IOException {
+		File csvFile;
 		try {
-			Message currentMessage = null;
-			CSVPrinter printer = new CSVPrinter(new FileWriter(CSV_FILE_NAME), CSVFormat.DEFAULT);
-
+			csvFile = new File(CSV_FILE_NAME);
+			CSVPrinter printer = new CSVPrinter(new FileWriter(csvFile), CSVFormat.DEFAULT);
+			boolean shouldPrintMessageHeader, isNextMessage;
+			ReportDataRow previousData = null;
 			try {
-				for (var row : reportData) {
-					if (!row.getMessage().equals(currentMessage)) {
-						currentMessage = row.getMessage();
-						printMessageHeader(printer, row.getMessage());
-					}
-					if (row.getStatus() == TranslationStatus.Valid) {
-						continue;
-					}
-					if (row.getStatus() == TranslationStatus.Missing) {
-						printer.printRecord(row.Locale, row.status.name(), "-", row.getSubstituteLocale(), row.getSubstituteTranslation());
-					} else {
-						printer.printRecord(row.Locale, row.status.name(), row.translation, "-", "-");
-					}
+				for (ReportDataRow row : reportData) {
+					if (!row.getStatus().equals(TranslationStatus.Valid)) {
+						isNextMessage = checkIfRowIsNextMessage(row, previousData);
+						shouldPrintMessageHeader = checkIfPrintMessageHeader(row, previousData);
+						if (isNextMessage) {
+							printer.println();
+						}
+						if (shouldPrintMessageHeader) {
+							printMessageHeader(printer, row.getMessage());
+						}
+						printer.printRecord(row.Locale, row.status.name(), row.getTranslation(), row.getSubstituteLocale(), row.getSubstituteTranslation());
+						printer.printRecord("", "New translation", "");
 
-					printer.printRecord("New translation", "-");
+						if (!Objects.equals(previousData, row)) {
+							previousData = row;
+						}
+					}
 				}
 				printer.printRecord("");
 			} catch (IOException ex) {
 				throw new InvalidOperationException(CSV_WRITER_FAIL);
+			} finally {
+				printer.close(true);
 			}
-
-			printer.close(true);
 		} catch (IOException ex) {
 			throw new InvalidOperationException(FILE_WRITER_FAIL);
 		}
+
+		byte[] bytes = Files.readAllBytes(csvFile.toPath());
+		csvFile.delete();
+		return bytes;
+	}
+
+	private boolean checkIfPrintMessageHeader(ReportDataRow row, ReportDataRow previousData) {
+		if (previousData == null) {
+			return true;
+		}
+		return !row.getMessage().getKey().equals(previousData.getMessage().getKey());
+	}
+
+	private boolean checkIfRowIsNextMessage(ReportDataRow row, ReportDataRow previousData) {
+		if (previousData == null) {
+			return false;
+		}
+		return !previousData.getMessage().getKey().equals(row.getMessage().getKey());
 	}
 
 	private void printMessageHeader(CSVPrinter printer, Message message) throws IOException {
-
-		printer.printRecord("", "message Key", message.getKey());
-		printer.printRecord("", "message Content", message.getContent());
-		printer.printRecord("", "message Description", message.getDescription());
-		printer.printRecord((Object[]) STD_HEADERS);
+		printer.printRecord("", "Key", message.getKey());
+		printer.printRecord("", "Content", message.getContent());
+		printer.printRecord("", "Description", message.getDescription());
+		printer.printRecord("", "Last updated", message.getUpdateDate());
+		printer.printRecord(STD_HEADERS);
 	}
 }
 

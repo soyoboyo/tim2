@@ -27,7 +27,8 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 	private Project project;
 
 	private MultipartFile importExampleDevFile = new MockMultipartFile("file.csv", "Test project name,,\nkey,content,description\ntestKey1,testContent1,comment1\ntestKey2,testContent2,comment2 with text".getBytes());
-	private MultipartFile importExampleTranFile = new MockMultipartFile("file.csv", "Test project name,,\nen_US,,\nkey,content,translation\ntranKey1,Witaj,Hello\ntranKey2,Swiecie,World".getBytes());
+	private MultipartFile importExampleTranFile = new MockMultipartFile("file.csv",
+			",message Key,tranKey1,,\n,message Content,Witaj,,\n,message Description,Description,,\nLocale,Translation Status,Translation,Substitute Locale,Substitute Translation\nen_US,Missing,,,\n,New translation,Hello,,\n,,,,\n,message Key,tranKey2,,\n,message Content,Swiecie,,\n,message Description,Description,,\nLocale,Translation Status,Translation,Substitute Locale,Substitute Translation\nen_US,Missing,,,\n,New translation,World,,\n".getBytes());
 
 
 	@BeforeEach
@@ -65,7 +66,7 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 		assertAll(
 				() -> assertEquals(2, translations.size()),
 				() -> assertEquals("Hello", translations.get(0).getContent()),
-				() -> assertEquals("World", translationRepository.findAll().get(1).getContent())
+				() -> assertEquals("World", translations.get(1).getContent())
 		);
 	}
 
@@ -74,12 +75,12 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 	void whenKeyIsNotFoundInDBFromTranslatorCSVFileThenRollback() throws Exception {
 		//given
 		saveMessagesToTranslate();
-		MultipartFile importExampleTranFile = new MockMultipartFile("file.csv", "Test project name,,\nen_US,,\nkey,content,translation\ntranKey1,Witaj,Hello\ntest,Swiecie,World".getBytes());
+		MultipartFile importExampleTranFileWithWrongKey = new MockMultipartFile("file.csv", ",message Key,key,,\n,message Content,Witaj,,\n,message Description,Description,,\nLocale,Translation Status,Translation,Substitute Locale,Substitute Translation\nen_US,Missing,,,\n,New translation,Hello,,\n,,,,\n,message Key,tranKey2,,\n,message Content,Swiecie,,\n,message Description,Description,,\nLocale,Translation Status,Translation,Substitute Locale,Substitute Translation\nen_US,Missing,,,\n,New translation,World,,\n".getBytes());
 
 		//when
 		//then
-		Exception exception = assertThrows(EntityNotFoundException.class, () -> importService.importTranslatorCSVFile(importExampleTranFile));
-		assertTrue(exception.getMessage().contains("test"));
+		Exception exception = assertThrows(EntityNotFoundException.class, () -> importService.importTranslatorCSVFile(importExampleTranFileWithWrongKey));
+		assertEquals("Sorry, we can't find this key", exception.getMessage());
 		assertEquals(0, translationRepository.findAll().size());
 	}
 
@@ -88,12 +89,12 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 	void whenWrongFormattingTranslatorCSVFileThenRollback() throws Exception {
 		//given
 		saveMessagesToTranslate();
-		MultipartFile importExampleTranFile = new MockMultipartFile("file.csv", "Test project name;;\nen_US;;\nkey;content;translation\ntranKey1;Witaj;Hello\ntranKey2;Swiecie;World".getBytes());
+		MultipartFile importExampleTranFileWithWrongDelimiter = new MockMultipartFile("file.csv", ",message Key,tranKey1,,\n,message Content,Witaj,,\n,message Description,Description,,\nLocale,Translation Status,Translation,Substitute Locale,Substitute Translation\nen_US,Missing,,,\n,New translation,Hello,,\n,,,,\n,message Key,tranKey2,,\n,message Content,Swiecie,,\n,message Description,Description,,\nLocale,Translation Status,Translation,Substitute Locale,Substitute Translation\nen_US,Missing,,,\n,New translation,World,,\n".replace(",", ";").getBytes());
 
 		//when
 		//then
-		Exception exception = assertThrows(Exception.class, () -> importService.importTranslatorCSVFile(importExampleTranFile));
-		assertTrue(exception.getMessage().contains(", or check if your delimiter is set to \",\" (comma)"));
+		Exception exception = assertThrows(Exception.class, () -> importService.importTranslatorCSVFile(importExampleTranFileWithWrongDelimiter));
+		assertEquals("Check if your delimiter is set to \",\" (comma)", exception.getMessage());
 		assertEquals(0, translationRepository.findAll().size());
 	}
 

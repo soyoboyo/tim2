@@ -4,17 +4,21 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang.LocaleUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.tim.DTOs.MessageDTO;
 import org.tim.DTOs.input.TranslationCreateDTO;
+import org.tim.DTOs.input.TranslationUpdateDTO;
+import org.tim.constants.TranslationStatus;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
-import org.tim.exceptions.EntityAlreadyExistException;
+import org.tim.entities.Translation;
 import org.tim.exceptions.EntityNotFoundException;
 import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
+import org.tim.repositories.TranslationRepository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,28 +26,26 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Optional;
 
+import static org.tim.constants.CSVFileConstants.*;
+
 @Service
 @AllArgsConstructor
 public class ImportService {
 
 	private final MessageService messageService;
 	private final TranslationService translationService;
-
 	private final ProjectRepository projectRepository;
 	private final MessageRepository messageRepository;
-
-	private final int skippedLinesInDevFile = 2;
+	private final TranslationRepository translationRepository;
 
 	@Transactional
 	public void importDeveloperCSVMessage(MultipartFile file) throws Exception {
 		if (file.isEmpty()) {
 			throw new Exception("The file is empty.");
 		}
-
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
 		String projectName = getAndSkipLine(reader, 2);
 		Optional<Project> optionalProject = projectRepository.findByName(projectName);
-
 		Project project;
 
 		if (optionalProject.isPresent()) {
@@ -51,11 +53,7 @@ public class ImportService {
 		} else {
 			throw new EntityNotFoundException(projectName);
 		}
-
-		final CSVFormat csvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
-		CSVParser csvParser = new CSVParser(reader, csvFormat);
-
-		saveMessages(csvParser.getRecords(), project.getId());
+		saveMessages(new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader()).getRecords(), project.getId());
 	}
 
 	@Transactional
@@ -63,52 +61,51 @@ public class ImportService {
 		if (file.isEmpty()) {
 			throw new Exception("The file is empty.");
 		}
-
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
-		String projectName = getAndSkipLine(reader, 2);
-		String locale = getAndSkipLine(reader, 2);
-
-		final CSVFormat csvFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
-		CSVParser csvParser = new CSVParser(reader, csvFormat);
-
-		createTranslations(csvParser.getRecords(), locale);
+		CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
+		createTranslations(csvParser.getRecords());
 	}
 
-	private void createTranslations(List<CSVRecord> records, String locale) throws Exception {
-		for (CSVRecord record : records) {
-			String key = null;
-			String translation = null;
+	private void createTranslations(List<CSVRecord> records) throws Exception {
+		for (int i = 0; i < records.size(); i += MESSAGE_BLOCK) {
+			String key, locale, translation, translationStatus;
 			try {
-				key = record.get("key");
-				translation = record.get("translation");
-			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException(e.getMessage() + ", or check if your delimiter is set to \",\" (comma)");
+				key = records.get(i + KEY_ROW).get(KEY_COLUMN);
+				locale = records.get(i + LOCALE_ROW).get(LOCALE_COLUMN);
+				translation = records.get(i + NEW_TRANSLATION_ROW).get(NEW_TRANSLATION_COLUMN);
+				translationStatus = records.get(i + TRANSLATION_STATUS_ROW).get(TRANSLATION_STATUS_COLUMN);
+			} catch (Exception exception) {
+				throw new Exception("Check if your delimiter is set to \",\" (comma)");
 			}
 
-			Optional<Message> messageOptional = messageRepository.findByKey(key);
-			Message message;
-
-			if (messageOptional.isEmpty()) {
-				throw new EntityNotFoundException(key);
+			if (translation.isBlank()) {
+				continue;
 			}
-
-			message = messageOptional.get();
 
 			TranslationCreateDTO translationCreateDTO = new TranslationCreateDTO(translation, locale);
+			Optional<Message> messageOptional = messageRepository.findByKey(key);
 
-			try {
-				translationService.createTranslation(translationCreateDTO, message.getId());
-			} catch (EntityAlreadyExistException e) {
-				throw new Exception(e.getMessage() + " Check line " + (record.getParser().getCurrentLineNumber() + skippedLinesInDevFile) + " in csv file.");
+			if (messageOptional.isPresent()) {
+				saveOrUpdateTranslation(translationCreateDTO, messageOptional.get().getId(), translationStatus, locale);
+			} else {
+				throw new EntityNotFoundException(key);
 			}
+		}
+	}
+
+	private void saveOrUpdateTranslation(TranslationCreateDTO translationCreateDTO, Long messageId, String translationStatus, String locale) {
+		if (translationStatus.equals(TranslationStatus.Missing.name())) {
+			translationService.createTranslation(translationCreateDTO, messageId);
+		} else {
+			Translation translation = translationRepository.findTranslationByLocaleAndMessageId(LocaleUtils.toLocale(locale), messageId);
+			TranslationUpdateDTO updateDTO = new TranslationUpdateDTO(translationCreateDTO.getContent());
+			translationService.updateTranslation(updateDTO, translation.getId(), messageId);
 		}
 	}
 
 	private void saveMessages(List<CSVRecord> records, Long projectId) {
 		for (CSVRecord record : records) {
-			String key = null;
-			String content = null;
-			String description = null;
+			String key, content, description;
 			try {
 				key = record.get("key");
 				content = record.get("content");
@@ -127,18 +124,9 @@ public class ImportService {
 		}
 	}
 
-	private String getAndSkipLine(BufferedReader reader) throws IOException {
-		String projectNameRaw = reader.readLine();
-		String projectName = clearDelimiterFromProjectName(projectNameRaw, 1);
-
-		return projectName;
-	}
-
 	private String getAndSkipLine(BufferedReader reader, int delimiterLength) throws IOException {
 		String projectNameRaw = reader.readLine();
-		String projectName = clearDelimiterFromProjectName(projectNameRaw, delimiterLength);
-
-		return projectName;
+		return clearDelimiterFromProjectName(projectNameRaw, delimiterLength);
 	}
 
 	private String clearDelimiterFromProjectName(String projectNameRaw, int delimiterLength) {

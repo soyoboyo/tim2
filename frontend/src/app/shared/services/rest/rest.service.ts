@@ -44,6 +44,28 @@ export class RestService {
 	}
 
 	async downloadReport(project: Project, locales: string[]) {
+		this.http.get(this.buildCsvExportReportUrl(project, locales), {
+			responseType: 'blob',
+			withCredentials: true
+		}).subscribe(response => {
+			const blob = new Blob([response], { type: response.type });
+			saveAs(blob, this.generateCsvExportReportFilename(project, locales));
+		});
+	}
+
+	generateCsvExportReportFilename(project: Project, locales: string[]) {
+		const d = new Date();
+		const now = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear() + ' ' +
+			d.getHours() + ':' + d.getMinutes();
+		let localesJoined = '';
+		if (locales !== null && locales.length > 0) {
+			localesJoined = locales.join('-');
+		}
+		// excel can't open files with filename longer than 207 characters
+		return 'report_' + project.name + '_' + now + '_' + localesJoined + '.csv';
+	}
+
+	buildCsvExportReportUrl(project: Project, locales: string[]) {
 		let parameters = '';
 		if (locales != null) {
 			if (locales.length > 0) {
@@ -56,20 +78,7 @@ export class RestService {
 				parameters = parameters.slice(0, -1);
 			}
 		}
-		const url = this.URL + 'report/generate/' + project.id + parameters;
-		const d = new Date();
-		const now = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear() + ' ' +
-			d.getHours() + ':' + d.getMinutes();
-		const filename = 'report_' + project.name + '_' + now + '.csv';
-
-		this.http.get(url, {
-			responseType: 'blob',
-			withCredentials: true
-		}).subscribe(response => {
-			const blob = new Blob([response], { type: 'application/xml' });
-			saveAs(blob, filename);
-		});
-
+		return this.URL + 'report/generate/' + project.id + parameters;
 	}
 
 	importCSV(url: string, file: File) {
