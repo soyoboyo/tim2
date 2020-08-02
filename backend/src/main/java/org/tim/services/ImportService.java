@@ -5,6 +5,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang.LocaleUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,45 +63,66 @@ public class ImportService {
 			throw new Exception("The file is empty.");
 		}
 		BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()));
-		CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
+		CSVFormat csvFormat = CSVFormat.newFormat(',').withQuote('"').withRecordSeparator("\r\n").withIgnoreEmptyLines(false).withAllowDuplicateHeaderNames();
+		CSVParser csvParser = new CSVParser(reader, csvFormat);
 		createTranslations(csvParser.getRecords());
 	}
 
 	private void createTranslations(List<CSVRecord> records) throws Exception {
-		for (int i = 0; i < records.size(); i += MESSAGE_BLOCK) {
-			String key, locale, translation, translationStatus;
+		int i = 0;
+		while (i < records.size()) {
+			String key, lastUpdated;
 			try {
 				key = records.get(i + KEY_ROW).get(KEY_COLUMN);
-				locale = records.get(i + LOCALE_ROW).get(LOCALE_COLUMN);
-				translation = records.get(i + NEW_TRANSLATION_ROW).get(NEW_TRANSLATION_COLUMN);
-				translationStatus = records.get(i + TRANSLATION_STATUS_ROW).get(TRANSLATION_STATUS_COLUMN);
-			} catch (Exception exception) {
+				lastUpdated = records.get(i + LAST_UPDATED_ROW).get(LAST_UPDATED_COLUMN);
+			} catch (Exception e) {
 				throw new Exception("Check if your delimiter is set to \",\" (comma)");
 			}
 
-			if (translation.isBlank()) {
-				continue;
-			}
+			while (i + EMPTY_LINE_ROW < records.size() && !isEmptyLine(records.get(i + EMPTY_LINE_ROW))) {
+				String locale, translationStatus, translation;
+				try {
+					locale = records.get(i + LOCALE_ROW).get(LOCALE_COLUMN);
+					translationStatus = records.get(i + TRANSLATION_STATUS_ROW).get(TRANSLATION_STATUS_COLUMN);
+					translation = records.get(i + NEW_TRANSLATION_ROW).get(NEW_TRANSLATION_COLUMN);
+				} catch (Exception e) {
+					throw new Exception("Check if your delimiter is set to \",\" (comma)");
+				}
 
-			TranslationCreateDTO translationCreateDTO = new TranslationCreateDTO(translation, locale);
-			Optional<Message> messageOptional = messageRepository.findByKey(key);
+				if (translation.isBlank()) {
+					continue;
+				}
 
-			if (messageOptional.isPresent()) {
-				saveOrUpdateTranslation(translationCreateDTO, messageOptional.get().getId(), translationStatus, locale);
-			} else {
-				throw new EntityNotFoundException(key);
+				saveOrUpdateTranslation(new TranslationCreateDTO(translation, locale), key, translationStatus);
+				i += NEXT_LOCALE;
 			}
+			i += NEXT_MESSAGE;
 		}
 	}
 
-	private void saveOrUpdateTranslation(TranslationCreateDTO translationCreateDTO, Long messageId, String translationStatus, String locale) {
-		if (translationStatus.equals(TranslationStatus.Missing.name())) {
-			translationService.createTranslation(translationCreateDTO, messageId);
+	private void saveOrUpdateTranslation(TranslationCreateDTO translationCreateDTO, String messageKey, String translationStatus) {
+		Optional<Message> messageOptional = messageRepository.findByKey(messageKey);
+
+		if (messageOptional.isPresent()) {
+			if (translationStatus.equals(TranslationStatus.Missing.name())) {
+				translationService.createTranslation(translationCreateDTO, messageOptional.get().getId());
+			} else {
+				Translation translation = translationRepository.findTranslationByLocaleAndMessageId(LocaleUtils.toLocale(translationCreateDTO.getLocale()), messageOptional.get().getId());
+				TranslationUpdateDTO updateDTO = new TranslationUpdateDTO(translationCreateDTO.getContent());
+				translationService.updateTranslation(updateDTO, translation.getId(), messageOptional.get().getId());
+			}
 		} else {
-			Translation translation = translationRepository.findTranslationByLocaleAndMessageId(LocaleUtils.toLocale(locale), messageId);
-			TranslationUpdateDTO updateDTO = new TranslationUpdateDTO(translationCreateDTO.getContent());
-			translationService.updateTranslation(updateDTO, translation.getId(), messageId);
+			throw new EntityNotFoundException(messageKey);
 		}
+	}
+
+	private boolean isEmptyLine(CSVRecord record) {
+		for (int i = 0; i < record.size(); i++) {
+			if (StringUtils.isNotBlank(record.get(i))) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private void saveMessages(List<CSVRecord> records, Long projectId) {
