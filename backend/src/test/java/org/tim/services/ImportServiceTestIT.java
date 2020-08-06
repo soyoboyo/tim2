@@ -4,6 +4,7 @@ import org.apache.commons.lang.LocaleUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,19 +14,31 @@ import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
 import org.tim.exceptions.EntityNotFoundException;
+import org.tim.repositories.MessageRepository;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 class ImportServiceTestIT extends SpringTestsCustomExtension {
 
 	@Autowired
-	private ImportService importService;
+	private MessageService messageService;
+	@Autowired
+	private ImportService importServiceBean;
+
+	@Mock
+	private MessageRepository mockedMessageRepository;
+
+	private ImportService importServiceWithMock;
+	private TranslationService translationService;
 
 	private Project project;
 
@@ -36,6 +49,9 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 
 	@BeforeEach
 	void setUp() {
+		translationService = new TranslationService(translationRepository, translationVersionRepository, mockedMessageRepository);
+		importServiceWithMock = new ImportService(messageService, translationService, projectRepository, mockedMessageRepository, translationRepository);
+
 		project = createEmptyGermanToEnglishProject();
 		project.setName("Test project name");
 		LocaleWrapper localeWrapperEN = new LocaleWrapper(Locale.US);
@@ -50,7 +66,7 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 	void whenCorrectDeveloperFileImportedThenMessagesAreCreated() throws Exception {
 		//given
 		//when
-		importService.importDeveloperCSVMessage(importExampleDevFile);
+		importServiceWithMock.importDeveloperCSVMessage(importExampleDevFile);
 		//then
 		assertEquals(2, messageRepository.findAll().size());
 	}
@@ -61,10 +77,9 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 		//given
 		saveMessagesToTranslate();
 		MockMultipartFile importExampleTranFileWithWrongKey = new MockMultipartFile("file.csv", Files.newInputStream(Paths.get("src/test/resources/reports/testImportWithNotExistingKeys.csv")));
-
 		//when
 		//then
-		Exception exception = assertThrows(EntityNotFoundException.class, () -> importService.importTranslatorCSVFile(importExampleTranFileWithWrongKey));
+		Exception exception = assertThrows(EntityNotFoundException.class, () -> importServiceBean.importTranslatorCSVFile(importExampleTranFileWithWrongKey));
 		assertEquals("Sorry, we can't find this notExistingKey", exception.getMessage());
 		assertEquals(0, translationRepository.findAll().size());
 	}
@@ -78,7 +93,7 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 
 		//when
 		//then
-		Exception exception = assertThrows(Exception.class, () -> importService.importTranslatorCSVFile(importExampleTranFileWithWrongDelimiter));
+		Exception exception = assertThrows(Exception.class, () -> importServiceWithMock.importTranslatorCSVFile(importExampleTranFileWithWrongDelimiter));
 		assertEquals("Check if your delimiter is set to \",\" (comma)", exception.getMessage());
 		assertEquals(0, translationRepository.findAll().size());
 	}
@@ -91,9 +106,9 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 
 		//when
 		//then
-		Exception exception = assertThrows(Exception.class, () -> importService.importDeveloperCSVMessage(importExampleDevFile));
+		Exception exception = assertThrows(Exception.class, () -> importServiceWithMock.importDeveloperCSVMessage(importExampleDevFile));
 		assertTrue(exception.getMessage().contains(", or check if your delimiter is set to \",\" (comma)"));
-		assertEquals(0, messageRepository.findAll().size());
+		assertEquals(0, mockedMessageRepository.findAll().size());
 	}
 
 	@Test
@@ -104,9 +119,9 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 
 		//when
 		//then
-		Exception exception = assertThrows(EntityNotFoundException.class, () -> importService.importDeveloperCSVMessage(importExampleDevFile));
+		Exception exception = assertThrows(EntityNotFoundException.class, () -> importServiceWithMock.importDeveloperCSVMessage(importExampleDevFile));
 		assertTrue(exception.getMessage().contains("Wrong project name"));
-		assertEquals(0, messageRepository.findAll().size());
+		assertEquals(0, mockedMessageRepository.findAll().size());
 	}
 
 	@Test
@@ -116,7 +131,7 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 		MockMultipartFile importFile = new MockMultipartFile("file.csv", Files.newInputStream(Paths.get("src/test/resources/reports/testImportMessageWithTwoLocales.csv")));
 		saveMessagesToTranslate();
 		//when
-		importService.importTranslatorCSVFile(importFile);
+		importServiceWithMock.importTranslatorCSVFile(importFile);
 		//then
 		List<Translation> translations = translationRepository.findAll();
 
@@ -133,5 +148,15 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 		Message messageTwo = new Message("world", "world", project);
 
 		messageRepository.saveAll(List.of(messageOne, messageTwo));
+
+		messageOne.setUpdateDate(LocalDateTime.parse("2020-07-31T18:50:41.909720"));
+		messageTwo.setUpdateDate(LocalDateTime.parse("2020-07-31T18:50:41.909720"));
+
+		when(mockedMessageRepository.findByKey("hello")).thenReturn(Optional.of(messageOne));
+		when(mockedMessageRepository.findById(messageOne.getId())).thenReturn(Optional.of(messageOne));
+
+
+		when(mockedMessageRepository.findByKey("world")).thenReturn(Optional.of(messageTwo));
+		when(mockedMessageRepository.findById(messageTwo.getId())).thenReturn(Optional.of(messageTwo));
 	}
 }

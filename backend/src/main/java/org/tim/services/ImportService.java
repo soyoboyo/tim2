@@ -24,6 +24,7 @@ import org.tim.repositories.TranslationRepository;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,27 +94,37 @@ public class ImportService {
 					continue;
 				}
 
-				saveOrUpdateTranslation(new TranslationCreateDTO(translation, locale), key, translationStatus);
+				saveOrUpdateTranslation(new TranslationCreateDTO(translation, locale), key, translationStatus, lastUpdated);
 				i += NEXT_LOCALE;
 			}
 			i += NEXT_MESSAGE;
 		}
 	}
 
-	private void saveOrUpdateTranslation(TranslationCreateDTO translationCreateDTO, String messageKey, String translationStatus) {
+	private void saveOrUpdateTranslation(TranslationCreateDTO translationCreateDTO, String messageKey, String translationStatus, String lastUpdated) {
 		Optional<Message> messageOptional = messageRepository.findByKey(messageKey);
 
 		if (messageOptional.isPresent()) {
-			if (translationStatus.equals(TranslationStatus.Missing.name())) {
-				translationService.createTranslation(translationCreateDTO, messageOptional.get().getId());
-			} else {
-				Translation translation = translationRepository.findTranslationByLocaleAndMessageId(LocaleUtils.toLocale(translationCreateDTO.getLocale()), messageOptional.get().getId());
-				TranslationUpdateDTO updateDTO = new TranslationUpdateDTO(translationCreateDTO.getContent());
-				translationService.updateTranslation(updateDTO, translation.getId(), messageOptional.get().getId());
+			if (messageOptional.get().getUpdateDate().isEqual(LocalDateTime.parse(lastUpdated))) {
+				if (translationStatus.equals(TranslationStatus.Missing.name())) {
+					saveTranslation(translationCreateDTO, messageOptional.get().getId());
+				} else {
+					updateTranslation(translationCreateDTO, messageOptional.get().getId());
+				}
 			}
 		} else {
 			throw new EntityNotFoundException(messageKey);
 		}
+	}
+
+	private void updateTranslation(TranslationCreateDTO translationCreateDTO, Long messageId) {
+		Translation translation = translationRepository.findTranslationByLocaleAndMessageId(LocaleUtils.toLocale(translationCreateDTO.getLocale()), messageId);
+		TranslationUpdateDTO updateDTO = new TranslationUpdateDTO(translationCreateDTO.getContent());
+		translationService.updateTranslation(updateDTO, translation.getId(), messageId);
+	}
+
+	private void saveTranslation(TranslationCreateDTO translationCreateDTO, Long messageId) {
+		translationService.createTranslation(translationCreateDTO, messageId);
 	}
 
 	private boolean isEmptyLine(CSVRecord record) {

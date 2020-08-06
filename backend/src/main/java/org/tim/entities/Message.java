@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +26,6 @@ import java.time.LocalDateTime;
 public class Message {
 
 	@Id
-	@Setter(AccessLevel.NONE)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
@@ -39,7 +41,6 @@ public class Message {
 
 	@Version
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
-	@Setter(AccessLevel.NONE)
 	@UpdateTimestamp
 	private LocalDateTime updateDate;
 
