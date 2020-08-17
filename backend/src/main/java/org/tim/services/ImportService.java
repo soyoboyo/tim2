@@ -80,7 +80,7 @@ public class ImportService {
 				throw new Exception("Check if your delimiter is set to \",\" (comma)");
 			}
 
-			while (i + EMPTY_LINE_ROW < records.size() && !isEmptyLine(records.get(i + EMPTY_LINE_ROW))) {
+			while (haveMoreLocales(i, records)) {
 				String locale, translationStatus, translation;
 				try {
 					locale = records.get(i + LOCALE_ROW).get(LOCALE_COLUMN);
@@ -99,6 +99,10 @@ public class ImportService {
 			}
 			i += NEXT_MESSAGE;
 		}
+	}
+
+	private boolean haveMoreLocales(int line, List<CSVRecord> records) {
+		return line + EMPTY_LINE_ROW < records.size() && !isEmptyLine(records.get(line + EMPTY_LINE_ROW));
 	}
 
 	private void saveOrUpdateTranslation(TranslationCreateDTO translationCreateDTO, String messageKey, String translationStatus, String lastUpdated) {
