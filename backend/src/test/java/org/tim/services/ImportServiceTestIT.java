@@ -72,6 +72,32 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("When developer file have wrong formatting, rollback transaction and return message")
+	void whenWrongFormattingDeveloperCSVFileThenRollback() {
+		//given
+		MultipartFile importExampleDevFile = new MockMultipartFile("file.csv", "Test project name;;\nkey;content\ntestKey1;testContent1\ntestKey2;testContent2".getBytes());
+
+		//when
+		//then
+		Exception exception = assertThrows(Exception.class, () -> importServiceWithMock.importDeveloperCSVMessage(importExampleDevFile));
+		assertTrue(exception.getMessage().contains(", or check if your delimiter is set to \",\" (comma)"));
+		assertEquals(0, mockedMessageRepository.findAll().size());
+	}
+
+	@Test
+	@DisplayName("When developer file have wrong project name, rollback transaction and return message")
+	void whenWrongProjectNameInDeveloperCSVFileThenRollback() {
+		//given
+		MultipartFile importExampleDevFile = new MockMultipartFile("file.csv", "Wrong project name,,\nkey,content\ntestKey1,testContent1\ntestKey2,testContent2".getBytes());
+
+		//when
+		//then
+		Exception exception = assertThrows(EntityNotFoundException.class, () -> importServiceWithMock.importDeveloperCSVMessage(importExampleDevFile));
+		assertTrue(exception.getMessage().contains("Wrong project name"));
+		assertEquals(0, mockedMessageRepository.findAll().size());
+	}
+
+	@Test
 	@DisplayName("When translation message key isn't found then rollback transaction and return message")
 	void whenKeyIsNotFoundInDBFromTranslatorCSVFileThenRollback() throws Exception {
 		//given
@@ -96,32 +122,6 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 		Exception exception = assertThrows(Exception.class, () -> importServiceWithMock.importTranslatorCSVFile(importExampleTranFileWithWrongDelimiter));
 		assertEquals("Check if your delimiter is set to \",\" (comma)", exception.getMessage());
 		assertEquals(0, translationRepository.findAll().size());
-	}
-
-	@Test
-	@DisplayName("When developer file have wrong formatting, rollback transaction and return message")
-	void whenWrongFormattingDeveloperCSVFileThenRollback() {
-		//given
-		MultipartFile importExampleDevFile = new MockMultipartFile("file.csv", "Test project name;;\nkey;content\ntestKey1;testContent1\ntestKey2;testContent2".getBytes());
-
-		//when
-		//then
-		Exception exception = assertThrows(Exception.class, () -> importServiceWithMock.importDeveloperCSVMessage(importExampleDevFile));
-		assertTrue(exception.getMessage().contains(", or check if your delimiter is set to \",\" (comma)"));
-		assertEquals(0, mockedMessageRepository.findAll().size());
-	}
-
-	@Test
-	@DisplayName("When developer file have wrong project name, rollback transaction and return message")
-	void whenWrongProjectNameInDeveloperCSVFileThenRollback() {
-		//given
-		MultipartFile importExampleDevFile = new MockMultipartFile("file.csv", "Wrong project name,,\nkey,content\ntestKey1,testContent1\ntestKey2,testContent2".getBytes());
-
-		//when
-		//then
-		Exception exception = assertThrows(EntityNotFoundException.class, () -> importServiceWithMock.importDeveloperCSVMessage(importExampleDevFile));
-		assertTrue(exception.getMessage().contains("Wrong project name"));
-		assertEquals(0, mockedMessageRepository.findAll().size());
 	}
 
 	@Test
