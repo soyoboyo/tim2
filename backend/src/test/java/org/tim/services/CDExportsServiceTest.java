@@ -1,6 +1,9 @@
 package org.tim.services;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.tim.configuration.SpringTestsCustomExtension;
@@ -8,10 +11,16 @@ import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -60,6 +69,79 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 				() -> assertEquals(3, exported.size()),
 				() -> assertThat(exported).containsValues(expectedTranslations)
 		);
+	}
+
+	@Test
+	@DisplayName("Generate ZIP with translation files")
+	void whenExportingFileThenReturnZIPWithTranslations() throws IOException {
+		//given
+		List<String> translationsForProject = List.of("en.json", "de.json");
+		long projectID = project.getId();
+
+		//when
+		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectID);
+		ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(bytes));
+		List<String> fileNamesInZip = getFileNames(zipInputStream);
+
+		//then
+		assertThat(fileNamesInZip).containsExactlyInAnyOrder(translationsForProject.toArray(String[]::new));
+	}
+
+	@Test
+	@DisplayName("Check if file in ZIP contains translations")
+	void correctFileWithTranslationsInZIPGenerated() throws IOException {
+		//given
+		long projectID = project.getId();
+		List<Map<String, String>> translations = getTranslations();
+
+		//when
+		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectID);
+		ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(bytes));
+		List<Map<String, String>> translationsFromFile = getTranslationsFromZIPFiles(zipInputStream);
+
+		//then
+		assertThat(translationsFromFile).containsAll(translations);
+	}
+
+	private List<Map<String, String>> getTranslations() {
+		List<Message> messages = createMessages(project);
+		List<Translation> translationsToEnglish = createTranslationsToEnglish();
+
+		List<Map<String, String>> translations = new ArrayList<>();
+		translations.add(messages.stream().collect(Collectors.toMap(Message::getKey, Message::getContent)));
+		translations.add(translationsToEnglish.stream().collect(Collectors.toMap(translation -> translation.getMessage().getKey(), Translation::getContent)));
+
+		return translations;
+	}
+
+	private List<Map<String, String>> getTranslationsFromZIPFiles(ZipInputStream zipInputStream) throws IOException {
+		List<Map<String, String>> translations = new ArrayList<>();
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		ZipEntry entry;
+		while ((entry = zipInputStream.getNextEntry()) != null) {
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			byteArrayOutputStream.write(zipInputStream.readAllBytes());
+
+			TypeReference<Map<String, String>> typeReference = new TypeReference<>() {
+			};
+
+			translations.add(objectMapper.readValue(byteArrayOutputStream.toByteArray(), typeReference));
+			byteArrayOutputStream.close();
+		}
+
+		return translations;
+	}
+
+	private List<String> getFileNames(ZipInputStream zipInputStream) throws IOException {
+		List<String> fileNames = new ArrayList<>();
+		ZipEntry zipEntry;
+
+		while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+			fileNames.add(zipEntry.getName());
+		}
+
+		return fileNames;
 	}
 
 	private void createAndSaveMessages(Project project) {

@@ -2,6 +2,7 @@ package org.tim.services;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.LocaleUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
@@ -13,10 +14,11 @@ import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 @RequiredArgsConstructor
@@ -48,15 +50,58 @@ public class CDExportsService {
 			}
 		}
 
-		return translationsOrMessagesToMap(translations, messages);
+		return translationsWithMessagesToMap(translations, messages);
 	}
 
-	private Map<String, String> translationsOrMessagesToMap(List<Translation> translations, List<Message> messages) {
+	public byte[] exportAllReadyTranslationsByProjectInZIP(Long projectId) throws IOException {
+		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
+		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
+		Locale sourceLocale = project.getSourceLocale();
+		Set<LocaleWrapper> targetLocales = project.getTargetLocales();
+
+		try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			 ZipOutputStream zos = new ZipOutputStream(byteArrayOutputStream)) {
+
+			ObjectMapper mapper = new ObjectMapper();
+
+			zos.putNextEntry(new ZipEntry(sourceLocale.toString() + ".json"));
+			zos.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(messagesToMap(messages)));
+
+
+			for (LocaleWrapper localeWrapper : targetLocales) {
+				List<Translation> translations = translationRepository.findTranslationsByLocaleAndProjectId(localeWrapper.getLocale(), projectId);
+
+				zos.putNextEntry(new ZipEntry(localeWrapper.getLocale().toString() + ".json"));
+				zos.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(translationsToMap(translations)));
+			}
+
+			zos.finish();
+
+			return byteArrayOutputStream.toByteArray();
+		}
+	}
+
+	private Map<String, String> translationsWithMessagesToMap(List<Translation> translations, List<Message> messages) {
+		Map<String, String> map = new HashMap<>();
+
+		map.putAll(messagesToMap(messages));
+		map.putAll(translationsToMap(translations));
+
+		return map;
+	}
+
+	private Map<String, String> messagesToMap(List<Message> messages) {
 		Map<String, String> map = new HashMap<>();
 
 		for (Message message : messages) {
 			map.put(message.getKey(), message.getContent());
 		}
+
+		return map;
+	}
+
+	private Map<String, String> translationsToMap(List<Translation> translations) {
+		Map<String, String> map = new HashMap<>();
 
 		for (Translation translation : translations) {
 			map.put(translation.getMessage().getKey(), translation.getContent());

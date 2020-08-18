@@ -325,4 +325,8 @@ export class DevProjectsComponent implements OnInit {
 		const index = array.indexOf(locale);
 		array.splice(index, 1);
 	}
+
+	downloadTranslations(project: any) {
+		this.http.downloadZip(project.id);
+	}
 }
