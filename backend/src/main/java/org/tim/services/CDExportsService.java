@@ -1,8 +1,8 @@
 package org.tim.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.LocaleUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
