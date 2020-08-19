@@ -1,15 +1,11 @@
 package org.tim.databaseSeed;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.json.JSONParser;
-import org.apache.tomcat.util.json.ParseException;
 import org.springframework.stereotype.Service;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.repositories.MessageRepository;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.*;
 
 @Service
@@ -24,16 +20,8 @@ public class MessageSeeder {
 		List<String> projectIds = Arrays.asList("P1", "P2", "P3", "P4");
 
 		for (String id : projectIds) {
-			ArrayList<LinkedHashMap<String, Object>> messagesArray = new ArrayList<>();
-			try {
-				FileReader fr = new FileReader("backend/src/main/resources/json-seed/project" + id + "/messages" + id + ".json");
-				JSONParser parser = new JSONParser(fr);
-				messagesArray = (ArrayList<LinkedHashMap<String, Object>>) parser.parse();
-			} catch (ParseException e) {
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
+			String path = "backend/src/main/resources/json-seed/project" + id + "/messages" + id + ".json";
+			ArrayList<LinkedHashMap<String, Object>> messagesArray = SeederUtils.getObjectsFromJSON(path);
 
 			for (LinkedHashMap<String, Object> m : messagesArray) {
 				String key = (String) m.get("key");

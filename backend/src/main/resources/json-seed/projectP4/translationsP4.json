@@ -1,2 +1,191 @@
 [
+	{
+		"messageKey": "categoriesTitle",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Kategorie"
+			}
+		]
+	},
+	{
+		"messageKey": "categoryHome",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Dom"
+			}
+		]
+	},
+	{
+		"messageKey": "categoryElectronics",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Elektronika"
+			}
+		]
+	},
+	{
+		"messageKey": "categoryVideoGames",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Gry Video"
+			}
+		]
+	},
+	{
+		"messageKey": "selectedCategory",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wybrana kategoria"
+			}
+		]
+	},
+	{
+		"messageKey": "hotProduct",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Gorący produkt"
+			}
+		]
+	},
+	{
+		"messageKey": "hotProductContent",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "<b>OKAZJA</b> Telefon XYZ, już teraz tylko za <b>100$</b>"
+			}
+		]
+	},
+	{
+		"messageKey": "addToCart",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Dodaj do koszyka"
+			}
+		]
+	},
+	{
+		"messageKey": "featuredProducts",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Polecane produkty"
+			}
+		]
+	},
+	{
+		"messageKey": "productContent1",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Zegarek na rękę XYZ <b>90$</b>"
+			}
+		]
+	},
+	{
+		"messageKey": "productContent2",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Fotel XYZ <b>40$</b>"
+			}
+		]
+	},
+	{
+		"messageKey": "productContent3",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Konsola do gier XYZ <b>60$</b>"
+			}
+		]
+	},
+	{
+		"messageKey": "showMore",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Pokaż więcej"
+			}
+		]
+	},
+	{
+		"messageKey": "help",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Pomoc"
+			}
+		]
+	},
+	{
+		"messageKey": "yOrders",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Your orders"
+			}
+		]
+	},
+	{
+		"messageKey": "yAccount",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Your account"
+			}
+		]
+	},
+	{
+		"messageKey": "helpCenter",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Centrum pomocy"
+			}
+		]
+	},
+	{
+		"messageKey": "aboutUs",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "O nas"
+			}
+		]
+	},
+	{
+		"messageKey": "careers",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Kariera"
+			}
+		]
+	},
+	{
+		"messageKey": "aboutExample",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "O firmie Example App"
+			}
+		]
+	},
+	{
+		"messageKey": "blog",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nasz blog"
+			}
+		]
+	}
 ]
