@@ -1,0 +1,24 @@
+.search-form {
+  padding-left: 100px;
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #f5f5f5;
+  justify-content: space-around;
+}
+
+.app-name {
+  font-weight: 500;
+  font-size: x-large;
+  padding-left: 16px;
+}

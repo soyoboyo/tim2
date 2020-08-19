@@ -180,6 +180,51 @@ public class MessageSeeder {
 		messageM4.setDescription("Message is long.");
 		messages.put("message2ForManyLocales", messageRepository.save(message2ForManyLocales));
 
+		Message categoriesTitle = new Message("categoriesTitle", "Categories", projects.get("projectP4"));
+		categoriesTitle.setDescription("Categories title");
+		messages.put("categoriesTitle", messageRepository.save(categoriesTitle));
+		Message catHome = new Message("categoryHome", "Home", projects.get("projectP4"));
+		messages.put("categoryHome", messageRepository.save(catHome));
+		Message catEl = new Message("categoryElectronics", "Electronics", projects.get("projectP4"));
+		messages.put("categoryElectronics", messageRepository.save(catEl));
+		Message catVid = new Message("categoryVideoGames", "Video Games", projects.get("projectP4"));
+		messages.put("categoryVideoGames", messageRepository.save(catVid));
+		Message categorySel = new Message("selectedCategory", "Selected category", projects.get("projectP4"));
+		messages.put("selectedCategory", messageRepository.save(categorySel));
+		Message hotProduct = new Message("hotProduct", "Hot product", projects.get("projectP4"));
+		messages.put("hotProduct", messageRepository.save(hotProduct));
+		Message hotProductContent = new Message("hotProductContent", "<b>HOT</b> Phone XYZ only for <b>100$</b>", projects.get("projectP4"));
+		messages.put("hotProductContent", messageRepository.save(hotProductContent));
+		Message addToCart = new Message("addToCart", "Add to cart", projects.get("projectP4"));
+		messages.put("addToCart", messageRepository.save(addToCart));
+		Message featuredProducts = new Message("featuredProducts", "Featured products", projects.get("projectP4"));
+		messages.put("featuredProducts", messageRepository.save(featuredProducts));
+		Message productContent1 = new Message("productContent1", "Watch XYZ <b>90$</b>", projects.get("projectP4"));
+		messages.put("productContent1", messageRepository.save(productContent1));
+		Message productContent2 = new Message("productContent2", "Chair XYZ <b>40$</b>", projects.get("projectP4"));
+		messages.put("productContent2", messageRepository.save(productContent2));
+		Message productContent3 = new Message("productContent3", "Game console XYZ <b>60$</b>", projects.get("projectP4"));
+		messages.put("productContent3", messageRepository.save(productContent3));
+		Message showMore = new Message("showMore", "Show more", projects.get("projectP4"));
+		messages.put("showMore", messageRepository.save(showMore));
+
+		Message help = new Message("help", "Help", projects.get("projectP4"));
+		messages.put("help", messageRepository.save(help));
+		Message yOrders = new Message("yOrders", "Your orders", projects.get("projectP4"));
+		messages.put("yOrders", messageRepository.save(yOrders));
+		Message yAccount = new Message("yAccount", "Your account", projects.get("projectP4"));
+		messages.put("yAccount", messageRepository.save(yAccount));
+		Message helpCenter = new Message("helpCenter", "Help center", projects.get("projectP4"));
+		messages.put("helpCenter", messageRepository.save(helpCenter));
+		Message aboutUs = new Message("aboutUs", "About Us", projects.get("projectP4"));
+		messages.put("aboutUs", messageRepository.save(aboutUs));
+		Message careers = new Message("careers", "Careers", projects.get("projectP4"));
+		messages.put("careers", messageRepository.save(careers));
+		Message aboutExample = new Message("aboutExample", "About Example App", projects.get("projectP4"));
+		messages.put("aboutExample", messageRepository.save(aboutExample));
+		Message blog = new Message("blog", "Our blog", projects.get("projectP4"));
+		messages.put("blog", messageRepository.save(blog));
+
 		return messages;
 	}
 }

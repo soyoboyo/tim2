@@ -28,6 +28,7 @@ export class DevProjectsTableComponent implements OnInit, OnChanges {
 	@Output() editEvent = new EventEmitter<any>();
 	@Output() removeEvent = new EventEmitter<any>();
 	@Output() formToggle = new EventEmitter<boolean>();
+	@Output() downloadEvent = new EventEmitter<any>();
 
 	// table
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -78,4 +79,7 @@ export class DevProjectsTableComponent implements OnInit, OnChanges {
 		this.formToggle.emit(true);
 	}
 
+	downloadTranslations(project: any) {
+		this.downloadEvent.emit(project);
+	}
 }

@@ -324,6 +324,52 @@ public class TranslationSeeder {
 		Translation aboutFooter4Pl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutFooter4"));
 		aboutFooter4Pl.setContent("Warunki");
 
+		Translation categoriesTitle = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("categoriesTitle"));
+		categoriesTitle.setContent("Kategorie");
+		Translation catHome = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("categoryHome"));
+		catHome.setContent("Dom");
+		Translation catEl = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("categoryElectronics"));
+		catEl.setContent("Elektronika");
+		Translation catVid = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("categoryVideoGames"));
+		catVid.setContent("Gry Video");
+		Translation selectedCategory = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("selectedCategory"));
+		selectedCategory.setContent("Wybrana kategoria");
+
+		Translation hotProduct = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("hotProduct"));
+		hotProduct.setContent("Gorący produkt");
+		Translation hotProductContent = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("hotProductContent"));
+		hotProductContent.setContent("<b>OKAZJA</b> Telefon XYZ, już teraz tylko za <b>100$</b>");
+		Translation addToCart = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("addToCart"));
+		addToCart.setContent("Dodaj do koszyka");
+
+		Translation featuredProducts = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("featuredProducts"));
+		featuredProducts.setContent("Polecane produkty");
+		Translation productContent1 = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("productContent1"));
+		productContent1.setContent("Zegarek na rękę XYZ <b>90$</b>");
+		Translation productContent2 = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("productContent2"));
+		productContent2.setContent("Fotel XYZ <b>40$</b>");
+		Translation productContent3 = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("productContent3"));
+		productContent3.setContent("Konsola do gier XYZ <b>60$</b>");
+		Translation showMore = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("showMore"));
+		showMore.setContent("Pokaż więcej");
+
+		Translation help = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("help"));
+		help.setContent("Pomoc");
+		Translation yOrders = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("yOrders"));
+		yOrders.setContent("Your orders");
+		Translation yAccount = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("yAccount"));
+		yAccount.setContent("Your account");
+		Translation helpCenter = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("helpCenter"));
+		helpCenter.setContent("Centrum pomocy");
+		Translation aboutUs = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutUs"));
+		aboutUs.setContent("O nas");
+		Translation careers = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("careers"));
+		careers.setContent("Kariera");
+		Translation aboutExample = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("aboutExample"));
+		aboutExample.setContent("O firmie Example App");
+		Translation blog = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("blog"));
+		blog.setContent("Nasz blog");
+
 
 		translationRepository.saveAll(Arrays.asList(translationT1M1, translationT1M2, translationT1M3, translationT2M1,
 				translationT2M2, translationT2M3, translationT2M4, translationT3M1, translationT3M2, translationT1M4,
@@ -349,7 +395,10 @@ public class TranslationSeeder {
 				maxEnterpriseUsersPl, maxEnterpriseMemoryLimitPl, enterpriseEmailSupportPl, enterpriseHelpCenterPl,
 				contactUsPl, featuresFooterPl, featuresFooter1Pl, featuresFooter2Pl, featuresFooter3Pl, featuresFooter4Pl,
 				featuresFooter5Pl, resourcesFooterPl, resourcesFooter1Pl, resourcesFooter2Pl,
-				resourcesFooter3Pl, resourcesFooter4Pl, aboutFooterPl, aboutFooter1Pl, aboutFooter2Pl, aboutFooter3Pl, aboutFooter4Pl
+				resourcesFooter3Pl, resourcesFooter4Pl, aboutFooterPl, aboutFooter1Pl, aboutFooter2Pl, aboutFooter3Pl, aboutFooter4Pl,
+				categoriesTitle, catEl, catHome, catVid, selectedCategory, hotProduct, hotProductContent, addToCart, featuredProducts,
+				productContent1, productContent2, productContent3, showMore, help, yOrders, yAccount, helpCenter, aboutUs, careers,
+				aboutExample, blog
 //                ,freeEmailSupportKo, maxFreeMemoryLimitPl, maxEnterpriseUsersKo, maxEnterpriseMemoryLimitKo, enterpriseEmailSupportKo,
 //                enterpriseHelpCenterKo,featuresFooterDe, featuresFooter6Pl, enterpriseCardPl, signUpToAccessDe
 		));

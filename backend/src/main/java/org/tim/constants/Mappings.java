@@ -10,6 +10,7 @@ public class Mappings {
 	public static final String DELETE = "/delete/{id}";
 	public static final String DEVELOPER = "/developer";
 	public static final String EXPORT = "/export";
+	public static final String EXPORT_CD = "/exportCD";
 	public static final String EXPORT_CI = "/exportCI";
 	public static final String GENERATE = "/generate/{id}";
 	public static final String GET = "/get";
@@ -19,6 +20,7 @@ public class Mappings {
 	public static final String GET_BY_PROJECT = "/getByProject/{projectId}";
 	public static final String IMPORT = "/import";
 	public static final String INVALIDATE = "/invalidate/{id}";
+	public static final String LANG = "/{lang}";
 	public static final String LANGUAGES = "/languages";
 	public static final String LOCALES = "/locales";
 	public static final String MESSAGE = "/message";

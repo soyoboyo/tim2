@@ -1,0 +1,6 @@
+<p class="title">{{'featuredProducts' | translate}}:</p>
+<div class="products-list">
+  <mat-card class="product" *ngFor="let product of products">
+    <app-product [imgURL]="product.imgURL" [productContent]="product.productContent" [alt]="product.alt"></app-product>
+  </mat-card>
+</div>

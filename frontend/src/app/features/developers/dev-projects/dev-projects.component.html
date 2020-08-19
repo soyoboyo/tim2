@@ -5,7 +5,8 @@
 								[isLoadingResults]="isLoadingResults"
 								(editEvent)="editProject($event)"
 								(formToggle)="toggleForm()"
-								(removeEvent)="removeProject($event)"></app-dev-projects-table>
+								(removeEvent)="removeProject($event)"
+								(downloadEvent)="downloadTranslations($event)"></app-dev-projects-table>
 
 	</div>
 	<div *ngIf="showForm" class="form-wrapper">

@@ -1,0 +1,11 @@
+<img mat-card-image src="{{imgURL}}" alt="{{alt}}">
+<mat-card-content>
+  <p [innerHTML]="productContent | translate">
+  </p>
+</mat-card-content>
+
+<mat-card-actions class="buttons">
+  <button mat-button>{{'addToCart' | translate}}</button>
+  <button mat-button color="primary">{{'showMore' | translate}}</button>
+</mat-card-actions>
+

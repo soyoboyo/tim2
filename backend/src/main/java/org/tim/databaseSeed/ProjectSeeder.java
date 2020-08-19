@@ -44,6 +44,10 @@ public class ProjectSeeder {
 				locales.get("fr_BL"), locales.get("ko_KR"), locales.get("ar_LY"), locales.get("gu_IN")));
 		projects.put("projectP3", projectRepository.save(projectP3));
 
+		Project projectP4 = new Project("Example Angular app", new Locale("en_GB"));
+		projectP4.addTargetLocale(Arrays.asList(locales.get("pl_PL")));
+		projects.put("projectP4", projectRepository.save(projectP4));
+
 		return projects;
 	}
 }
