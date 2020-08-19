@@ -7,19 +7,20 @@ import org.tim.entities.Project;
 import org.tim.repositories.ProjectRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectSeeder {
 
 	private final ProjectRepository projectRepository;
 
+	@SuppressWarnings("unchecked")
 	public Map<String, Project> initProjects(Map<String, LocaleWrapper> locales) {
-
 		Map<String, Project> projects = new HashMap<>();
 
 		String path = "backend/src/main/resources/json-seed/project-seed.json";
 		ArrayList<LinkedHashMap<String, Object>> projectsArray = SeederUtils.getObjectsFromJSON(path);
-
 
 		for (LinkedHashMap<String, Object> p : projectsArray) {
 			String name = (String) p.get("name");
@@ -30,23 +31,19 @@ public class ProjectSeeder {
 			updateSubstituteLocales(locales, (LinkedHashMap<String, Object>) p.get("substituteLocales"), project);
 			projects.put((String) p.get("uuid"), projectRepository.save(project));
 		}
-
 		return projects;
 	}
 
 	private static List<LocaleWrapper> getWrappedLocales(Map<String, LocaleWrapper> locales, ArrayList<String> stringLocales) {
-		List<LocaleWrapper> wrapped = new LinkedList<>();
-		for (String locale : stringLocales) {
-			wrapped.add(locales.get(locale));
-		}
-		return wrapped;
+		return stringLocales.stream()
+				.map(locales::get)
+				.collect(Collectors.toList());
 	}
 
 	private static void updateSubstituteLocales(Map<String, LocaleWrapper> locales, LinkedHashMap<String, Object> stringLocales, Project project) {
-		for (Map.Entry<String, Object> l : stringLocales.entrySet()) {
-			String locale = l.getKey();
-			String substitute = (String) l.getValue();
-			project.updateSubstituteLocale(locales.get(locale), locales.get(substitute));
-		}
+		stringLocales.forEach((key, value) -> project.updateSubstituteLocale(
+				locales.get(key),
+				locales.get(value)
+		));
 	}
 }
