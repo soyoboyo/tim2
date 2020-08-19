@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 
 public class SeederUtils {
 
+
 	@SuppressWarnings("unchecked")
 	public static ArrayList<LinkedHashMap<String, Object>> getObjectsFromJSON(String path) {
 		try {
@@ -17,6 +18,7 @@ public class SeederUtils {
 			JSONParser parser = new JSONParser(fr);
 			return (ArrayList<LinkedHashMap<String, Object>>) parser.parse();
 		} catch (ParseException | FileNotFoundException e) {
+
 			throw new IllegalStateException(e);
 		}
 	}

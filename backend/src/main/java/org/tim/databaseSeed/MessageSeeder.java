@@ -20,7 +20,7 @@ public class MessageSeeder {
 		List<String> projectIds = Arrays.asList("P1", "P2", "P3", "P4");
 
 		for (String id : projectIds) {
-			String path = "backend/src/main/resources/json-seed/project" + id + "/messages" + id + ".json";
+			String path = "backend\\src\\main\\resources\\json-seed\\project" + id + "\\messages" + id + ".json";
 			ArrayList<LinkedHashMap<String, Object>> messagesArray = SeederUtils.getObjectsFromJSON(path);
 
 			for (LinkedHashMap<String, Object> m : messagesArray) {
