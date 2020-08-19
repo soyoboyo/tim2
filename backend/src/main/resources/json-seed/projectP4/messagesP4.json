@@ -1,0 +1,107 @@
+[
+	{
+		"key": "categoriesTitle",
+		"content": "Categories",
+		"description": "Categories title"
+	},
+	{
+		"key": "categoryHome",
+		"content": "Home",
+		"description": ""
+	},
+	{
+		"key": "categoryElectronics",
+		"content": "Electronics",
+		"description": ""
+	},
+	{
+		"key": "categoryVideoGames",
+		"content": "Video Games",
+		"description": ""
+	},
+	{
+		"key": "selectedCategory",
+		"content": "Selected category",
+		"description": ""
+	},
+	{
+		"key": "hotProduct",
+		"content": "Hot product",
+		"description": ""
+	},
+	{
+		"key": "hotProductContent",
+		"content": "<b>HOT</b> Phone XYZ only for <b>100$</b>",
+		"description": ""
+	},
+	{
+		"key": "addToCart",
+		"content": "Add to cart",
+		"description": ""
+	},
+	{
+		"key": "featuredProducts",
+		"content": "Featured products",
+		"description": ""
+	},
+	{
+		"key": "productContent1",
+		"content": "Watch XYZ <b>90$</b>",
+		"description": ""
+	},
+	{
+		"key": "productContent2",
+		"content": "Chair XYZ <b>40$</b>",
+		"description": ""
+	},
+	{
+		"key": "productContent3",
+		"content": "Game console XYZ <b>60$</b>",
+		"description": ""
+	},
+	{
+		"key": "showMore",
+		"content": "Show more",
+		"description": ""
+	},
+	{
+		"key": "help",
+		"content": "Help",
+		"description": ""
+	},
+	{
+		"key": "yOrders",
+		"content": "Your orders",
+		"description": ""
+	},
+	{
+		"key": "yAccount",
+		"content": "Your account",
+		"description": ""
+	},
+	{
+		"key": "helpCenter",
+		"content": "Help center",
+		"description": ""
+	},
+	{
+		"key": "aboutUs",
+		"content": "About Us",
+		"description": ""
+	},
+	{
+		"key": "careers",
+		"content": "Careers",
+		"description": ""
+	},
+	{
+		"key": "aboutExample",
+		"content": "About Example App",
+		"description": ""
+	},
+	{
+		"key": "blog",
+		"content": "Our blog",
+		"description": ""
+	}
+]

@@ -1,0 +1,224 @@
+[
+	{
+		"uuid": "messageM1",
+		"key": "welcome1",
+		"content": "Groceries you’ll love, perfectly delivered.",
+		"description": "The first page of the website for selling food and chemical products."
+	},
+	{
+		"uuid": "messageM2",
+		"key": "welcome2",
+		"content": "Low Price Promise.",
+		"description": "The first page of the website for selling food and chemical products."
+	},
+	{
+		"key": "pricing",
+		"content": "Pricing",
+		"description": "Website title."
+	},
+	{
+		"key": "signUp",
+		"content": "Sign up",
+		"description": "Sign up button"
+	},
+	{
+		"key": "ocadoTechnology",
+		"content": "Ocado Technology",
+		"description": "Company name"
+	},
+	{
+		"key": "featuresNav",
+		"content": "Features",
+		"description": "Navbar link to see more information about features."
+	},
+	{
+		"key": "enterpriseNav",
+		"content": "Enterprise",
+		"description": "Navbar link to see more information for enterprise clients."
+	},
+	{
+		"key": "supportNav",
+		"content": "Support",
+		"description": "Navbar link to see help view."
+	},
+	{
+		"key": "pricingNav",
+		"content": "Pricing",
+		"description": "Navbar link to see pricing information."
+	},
+	{
+		"key": "freeCard",
+		"content": "Free",
+		"description": "Information that product presented in this card is for free."
+	},
+	{
+		"key": "maxFreeUsers",
+		"content": "10 users included",
+		"description": "Information about maximal number of user that can use this product for free."
+	},
+	{
+		"key": "maxFreeMemoryLimit",
+		"content": "2 GB of storage",
+		"description": "nformation about maximum memory limit that can be use for free."
+	},
+	{
+		"key": "freeEmailSupport",
+		"content": "Email support",
+		"description": "Information about email support for free account."
+	},
+	{
+		"key": "freeHelpCenter",
+		"content": "Help center access",
+		"description": "Information that user can use free help center for free account."
+	},
+	{
+		"key": "signUpToAccess",
+		"content": "Sign up for free",
+		"description": "Information that user need to create account to use this product."
+	},
+	{
+		"key": "proCard",
+		"content": "Pro",
+		"description": "Information about product type."
+	},
+	{
+		"key": "maxProUsers",
+		"content": "20 users included",
+		"description": "Information about maximal number of user that can use this product on pro type."
+	},
+	{
+		"key": "maxProMemoryLimit",
+		"content": "10 GB of storage",
+		"description": "Information about maximum memory limit that can be use on pro type."
+	},
+	{
+		"key": "proEmailSupport",
+		"content": "Priority email support",
+		"description": "Information about priority email support for pro account."
+	},
+	{
+		"key": "proHelpCenter",
+		"content": "Help center access",
+		"description": "Information that user can use free help center for pro account."
+	},
+	{
+		"key": "getStarted",
+		"content": "Get started",
+		"description": "Information that user need to create account to use this product."
+	},
+	{
+		"key": "enterpriseCard",
+		"content": "Enterprise",
+		"description": "Information about product type."
+	},
+	{
+		"key": "maxEnterpriseUsers",
+		"content": "30 users included",
+		"description": "Information about maximal number of user that can use this product on enterprise type."
+	},
+	{
+		"key": "maxEnterpriseMemoryLimit",
+		"content": "15 GB of storage",
+		"description": "Information about maximum memory limit that can be use on enterprise type."
+	},
+	{
+		"key": "enterpriseEmailSupport",
+		"content": "Phone and email support",
+		"description": "Information about phone and email support for enterprise account."
+	},
+	{
+		"key": "enterpriseHelpCenter",
+		"content": "Help center access",
+		"description": "Information that user can use free help center for pro account."
+	},
+	{
+		"key": "contactUs",
+		"content": "Contact us",
+		"description": "Information that user need to create account to use this product."
+	},
+	{
+		"key": "featuresFooter",
+		"content": "Features",
+		"description": "Footer links"
+	},
+	{
+		"key": "featuresFooter1",
+		"content": "Cool stuff",
+		"description": "Footer links"
+	},
+	{
+		"key": "featuresFooter2",
+		"content": "Random feature",
+		"description": "Footer links"
+	},
+	{
+		"key": "featuresFooter3",
+		"content": "Team feature",
+		"description": "Footer links"
+	},
+	{
+		"key": "featuresFooter4",
+		"content": "Stuff for developers",
+		"description": "Footer links"
+	},
+	{
+		"key": "featuresFooter5",
+		"content": "Another one",
+		"description": "Footer links"
+	},
+	{
+		"key": "featuresFooter6",
+		"content": "Last one",
+		"description": "featuresFooter6"
+	},
+	{
+		"key": "resourcesFooter",
+		"content": "Resources",
+		"description": "Footer links"
+	},
+	{
+		"key": "resourcesFooter1",
+		"content": "Resource",
+		"description": "Footer links"
+	},
+	{
+		"key": "resourcesFooter2",
+		"content": "Resource name",
+		"description": "Footer links"
+	},
+	{
+		"key": "resourcesFooter3",
+		"content": "Another resource",
+		"description": "Footer links"
+	},
+	{
+		"key": "resourcesFooter4",
+		"content": "Final resource",
+		"description": "Footer links"
+	},
+	{
+		"key": "aboutFooter",
+		"content": "About",
+		"description": "Footer links"
+	},
+	{
+		"key": "aboutFooter1",
+		"content": "Team",
+		"description": "Footer links"
+	},
+	{
+		"key": "aboutFooter2",
+		"content": "Locations",
+		"description": "Footer links"
+	},
+	{
+		"key": "aboutFooter3",
+		"content": "Privacy",
+		"description": "Footer links"
+	},
+	{
+		"key": "aboutFooter4",
+		"content": "Terms",
+		"description": "Footer links"
+	}
+]
