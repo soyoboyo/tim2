@@ -6,6 +6,7 @@ import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Project;
 import org.tim.repositories.ProjectRepository;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,9 @@ public class ProjectSeeder {
 	public Map<String, Project> initProjects(Map<String, LocaleWrapper> locales) {
 		Map<String, Project> projects = new HashMap<>();
 
-		String path = "backend/src/main/resources/json-seed/project-seed.json";
+		String path = "backend\\src\\main\\resources\\json-seed\\project-seed.json";
+		System.out.println("file absolut path");
+		System.out.println(new File(".").getAbsolutePath());
 		ArrayList<LinkedHashMap<String, Object>> projectsArray = SeederUtils.getObjectsFromJSON(path);
 
 		for (LinkedHashMap<String, Object> p : projectsArray) {
