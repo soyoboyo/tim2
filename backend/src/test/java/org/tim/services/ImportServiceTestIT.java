@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.internal.util.reflection.FieldSetter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -143,14 +144,14 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 		);
 	}
 
-	private void saveMessagesToTranslate() {
+	private void saveMessagesToTranslate() throws NoSuchFieldException {
 		Message messageOne = new Message("hello", "hello", project);
 		Message messageTwo = new Message("world", "world", project);
 
 		messageRepository.saveAll(List.of(messageOne, messageTwo));
 
-		messageOne.setUpdateDate(LocalDateTime.parse("2020-07-31T18:50:41.909720"));
-		messageTwo.setUpdateDate(LocalDateTime.parse("2020-07-31T18:50:41.909720"));
+		FieldSetter.setField(messageOne, messageOne.getClass().getDeclaredField("updateDate"), LocalDateTime.parse("2020-07-31T18:50:41.909720"));
+		FieldSetter.setField(messageTwo, messageTwo.getClass().getDeclaredField("updateDate"), LocalDateTime.parse("2020-07-31T18:50:41.909720"));
 
 		when(mockedMessageRepository.findByKey("hello")).thenReturn(Optional.of(messageOne));
 		when(mockedMessageRepository.findById(messageOne.getId())).thenReturn(Optional.of(messageOne));
