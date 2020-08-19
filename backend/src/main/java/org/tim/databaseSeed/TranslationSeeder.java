@@ -2,13 +2,16 @@ package org.tim.databaseSeed;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.LocaleUtils;
+import org.apache.tomcat.util.json.JSONParser;
+import org.apache.tomcat.util.json.ParseException;
 import org.springframework.stereotype.Service;
 import org.tim.entities.Message;
 import org.tim.entities.Translation;
 import org.tim.repositories.TranslationRepository;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +21,30 @@ public class TranslationSeeder {
 
 	public void initTranslations(Map<String, Message> messages) {
 
-		Translation translationT1M1 = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("messageM1"));
-		translationT1M1.setContent("Artykuły spożywcze, które pokochasz, idealnie dostarczone.");
+		LinkedList<Translation> translations = new LinkedList<>();
+		List<String> projectIds = Arrays.asList("P1", "P2", "P3", "P4");
+
+		for (String id : projectIds) {
+			ArrayList<LinkedHashMap<String, Object>> messagesArray = new ArrayList<>();
+			try {
+				FileReader fr = new FileReader("backend/src/main/resources/json-seed/project" + id + "/messages" + id + ".json");
+				JSONParser parser = new JSONParser(fr);
+				messagesArray = (ArrayList<LinkedHashMap<String, Object>>) parser.parse();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			for (LinkedHashMap<String, Object> m : messagesArray) {
+				String messageKey = (String) m.get("messageKey");
+				String stringLocale = (String) m.get("locale");
+				String content = (String) m.get("content");
+				Translation translation = new Translation(LocaleUtils.toLocale(stringLocale), messages.get(messageKey));
+				translation.setContent(content);
+				translations.add(translation);
+			}
+		}
 
 		Translation translationT2M1 = new Translation(LocaleUtils.toLocale("de_DE"), messages.get("messageM1"));
 		translationT2M1.setContent("Boodschappen waar u van houdt, perfect afgeleverd.");
@@ -370,8 +395,9 @@ public class TranslationSeeder {
 		Translation blog = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("blog"));
 		blog.setContent("Nasz blog");
 
+		translationRepository.saveAll(translations);
 
-		translationRepository.saveAll(Arrays.asList(translationT1M1, translationT1M2, translationT1M3, translationT2M1,
+		translationRepository.saveAll(Arrays.asList(translationT1M2, translationT1M3, translationT2M1,
 				translationT2M2, translationT2M3, translationT2M4, translationT3M1, translationT3M2, translationT1M4,
 				translationT4M1, translationT4M2, translationT3M3, translationT3M4, translationT4M3, translationT4M4,
 				pricingKo, signUpKo, ocadoTechnologyKo, featuresNavKo, enterpriseNavKo, supportNavKo, pricingNavKo,
