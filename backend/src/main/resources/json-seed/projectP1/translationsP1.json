@@ -1,17 +1,44 @@
 [
 	{
 		"messageKey": "messageM1",
-		"locale": "pl_PL",
-		"content": "Artykuły spożywcze, które pokochasz, idealnie dostarczone."
+		"translations": [
+			{
+				"locale": "en_US",
+				"content": "Groceries you’ll love, perfectly delivered."
+			},
+			{
+				"locale": "de_DE",
+				"content": "Boodschappen waar u van houdt, perfect afgeleverd."
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Artykuły spożywcze, które pokochasz, idealnie dostarczone."
+			},
+			{
+				"locale": "ko_KR",
+				"content": "당신이 좋아할 음식, 완벽하게 배달되는 식료품."
+			}
+		]
 	},
 	{
-		"messageKey": "messageM1",
-		"locale": "de_DE",
-		"content": "Boodschappen waar u van houdt, perfect afgeleverd."
-	},
-	{
-		"messageKey": "messageM1",
-		"locale": "en_US",
-		"content": "Groceries you’ll love, perfectly delivered."
+		"messageKey": "messageM2",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Niska cena gwarantowana."
+			},
+			{
+				"locale": "de_DE",
+				"content": "Lage prijsbelofte."
+			},
+			{
+				"locale": "en_US",
+				"content": "Low Price Promise."
+			},
+			{
+				"locale": "ko_KR",
+				"content": "저렴한 가격 약속."
+			}
+		]
 	}
 ]

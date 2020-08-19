@@ -1,2 +1,44 @@
 [
+	{
+		"messageKey": "messageM3",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Wir haben ein einzigartiges Geschäftsmodell entwickelt und betreiben, das uns stark positioniert, da sich immer mehr Verbraucher für Online-Shopping entscheiden."
+			},
+			{
+				"locale": "en_GB",
+				"content": "We have developed and operate a unique business model which positions us strongly as more consumers choose to shop online."
+			},
+			{
+				"locale": "ko_KR",
+				"content": "우리는 더 많은 소비자가 온라인 쇼핑을 선택함에 따라 우리를 강하게 위치시키는 독특한 비즈니스 모델을 개발하고 운영합니다."
+			},
+			{
+				"locale": "ar_LY",
+				"content": "لقد قمنا بتطوير وتشغيل نموذج أعمال فريد من نوعه يضعنا بقوة مع اختيار المزيد من المستهلكين للتسوق عبر الإنترنت"
+			}
+		]
+	},
+	{
+		"messageKey": "messageM4",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Unser strategisches Ziel ist es, die Interessen unserer Kunden, Investoren und anderer Stakeholder in Einklang zu bringen, um einen langfristigen Shareholder Value zu erzielen."
+			},
+			{
+				"locale": "en_GB",
+				"content": "Our strategic objective is to align the interests of our customers,investors and other stakeholders to deliver long term shareholder value."
+			},
+			{
+				"locale": "ko_KR",
+				"content": "우리의 전략적 목표는 고객, 투자자 및 기타 이해 관계자의 이익을 조정하여 장기적인 주주 가치를 제공하는 것입니다."
+			},
+			{
+				"locale": "ar_LY",
+				"content": "هدفنا الاستراتيجي هو مواءمة مصالح عملائنا والمستثمرين وأصحاب المصلحة الآخرين لتحقيق قيمة طويلة الأجل للمساهمي"
+			}
+		]
+	}
 ]

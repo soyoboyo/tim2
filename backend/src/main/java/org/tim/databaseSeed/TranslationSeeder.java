@@ -27,7 +27,7 @@ public class TranslationSeeder {
 		for (String id : projectIds) {
 			ArrayList<LinkedHashMap<String, Object>> messagesArray = new ArrayList<>();
 			try {
-				FileReader fr = new FileReader("backend/src/main/resources/json-seed/project" + id + "/messages" + id + ".json");
+				FileReader fr = new FileReader("backend/src/main/resources/json-seed/project" + id + "/translations" + id + ".json");
 				JSONParser parser = new JSONParser(fr);
 				messagesArray = (ArrayList<LinkedHashMap<String, Object>>) parser.parse();
 			} catch (ParseException e) {
@@ -38,58 +38,16 @@ public class TranslationSeeder {
 
 			for (LinkedHashMap<String, Object> m : messagesArray) {
 				String messageKey = (String) m.get("messageKey");
-				String stringLocale = (String) m.get("locale");
-				String content = (String) m.get("content");
-				Translation translation = new Translation(LocaleUtils.toLocale(stringLocale), messages.get(messageKey));
-				translation.setContent(content);
-				translations.add(translation);
+				List<LinkedHashMap<String, Object>> translationsForMessage = (List<LinkedHashMap<String, Object>>) m.get("translations");
+				for (LinkedHashMap<String, Object> t : translationsForMessage) {
+					String stringLocale = (String) t.get("locale");
+					String content = (String) t.get("content");
+					Translation translation = new Translation(LocaleUtils.toLocale(stringLocale), messages.get(messageKey));
+					translation.setContent(content);
+					translations.add(translation);
+				}
 			}
 		}
-
-
-		Translation translationT4M1 = new Translation(LocaleUtils.toLocale("ko_KR"), messages.get("messageM1"));
-		translationT4M1.setContent("당신이 좋아할 음식, 완벽하게 배달되는 식료품.");
-
-		Translation translationT1M2 = new Translation(LocaleUtils.toLocale("pl_PL"), messages.get("messageM2"));
-		translationT1M2.setContent("Niska cena gwarantowana.");
-
-		Translation translationT2M2 = new Translation(LocaleUtils.toLocale("de_DE"), messages.get("messageM2"));
-		translationT2M2.setContent("Lage prijsbelofte.");
-
-		Translation translationT3M2 = new Translation(LocaleUtils.toLocale("en_US"), messages.get("messageM2"));
-		translationT3M2.setContent("Low Price Promise.");
-
-		Translation translationT4M2 = new Translation(LocaleUtils.toLocale("ko_KR"), messages.get("messageM2"));
-		translationT4M2.setContent("저렴한 가격 약속.");
-
-		Translation translationT1M3 = new Translation(LocaleUtils.toLocale("de_DE"), messages.get("messageM3"));
-		translationT1M3.setContent("Wir haben ein einzigartiges Geschäftsmodell entwickelt und betreiben, das uns stark positioniert, " +
-				"da sich immer mehr Verbraucher für Online-Shopping entscheiden.");
-
-		Translation translationT2M3 = new Translation(LocaleUtils.toLocale("en_GB"), messages.get("messageM3"));
-		translationT2M3.setContent("We have developed and operate a unique business model which positions us strongly" +
-				" as more consumers choose to shop online.");
-
-		Translation translationT3M3 = new Translation(LocaleUtils.toLocale("ko_KR"), messages.get("messageM3"));
-		translationT3M3.setContent("우리는 더 많은 소비자가 온라인 쇼핑을 선택함에 따라 우리를 강하게 위치시키는 독특한 비즈니스 모델을 개발하고 운영합니다.");
-
-		Translation translationT4M3 = new Translation(LocaleUtils.toLocale("ar_LY"), messages.get("messageM3"));
-		translationT4M3.setContent("لقد قمنا بتطوير وتشغيل نموذج أعمال فريد من نوعه يضعنا بقوة مع اختيار المزيد من المستهلكين للتسوق عبر الإنترنت");
-
-		Translation translationT1M4 = new Translation(LocaleUtils.toLocale("de_DE"), messages.get("messageM4"));
-		translationT1M4.setContent("Unser strategisches Ziel ist es, die Interessen unserer Kunden, Investoren und anderer Stakeholder in " +
-				"Einklang zu bringen, um einen langfristigen Shareholder Value zu erzielen.");
-
-		Translation translationT2M4 = new Translation(LocaleUtils.toLocale("en_GB"), messages.get("messageM4"));
-		translationT2M4.setContent("Our strategic objective is to align the interests of our customers, " +
-				"investors and other stakeholders to deliver long term shareholder value.");
-
-		Translation translationT3M4 = new Translation(LocaleUtils.toLocale("ko_KR"), messages.get("messageM4"));
-		translationT3M4.setContent("우리의 전략적 목표는 고객, 투자자 및 기타 이해 관계자의 이익을 조정하여 장기적인 주주 가치를 제공하는 것입니다.");
-
-		Translation translationT4M4 = new Translation(LocaleUtils.toLocale("ar_LY"), messages.get("messageM4"));
-		translationT4M4.setContent("هدفنا الاستراتيجي هو مواءمة مصالح عملائنا والمستثمرين وأصحاب المصلحة الآخرين لتحقيق قيمة طويلة الأجل للمساهمي");
-
 
 		//all translation needed for "simple web app" presentation
 		Translation pricingKo = new Translation(LocaleUtils.toLocale("ko_KR"), messages.get("pricing"));
@@ -392,9 +350,7 @@ public class TranslationSeeder {
 
 		translationRepository.saveAll(translations);
 
-		translationRepository.saveAll(Arrays.asList(translationT1M2, translationT1M3,
-				translationT2M2, translationT2M3, translationT2M4, translationT3M2, translationT1M4,
-				translationT4M1, translationT4M2, translationT3M3, translationT3M4, translationT4M3, translationT4M4,
+		translationRepository.saveAll(Arrays.asList(
 				pricingKo, signUpKo, ocadoTechnologyKo, featuresNavKo, enterpriseNavKo, supportNavKo, pricingNavKo,
 				freeCardKo, maxFreeUsersKo, maxFreeMemoryLimitKo, freeHelpCenterKo, signUpToAccessKo,
 				proCardKo, maxProUsersKo, maxProMemoryLimitKo, proEmailSupportKo, proHelpCenterKo, getStartedKo,
