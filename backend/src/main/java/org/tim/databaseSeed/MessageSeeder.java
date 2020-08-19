@@ -1,12 +1,18 @@
 package org.tim.databaseSeed;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.json.JSONParser;
+import org.apache.tomcat.util.json.ParseException;
 import org.springframework.stereotype.Service;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.repositories.MessageRepository;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Service
@@ -19,13 +25,33 @@ public class MessageSeeder {
 
 		Map<String, Message> messages = new HashMap<>();
 
-		Message messageM1 = new Message("welcome1", "Groceries you’ll love, perfectly delivered.", projects.get("projectP1"));
-		messageM1.setDescription("The first page of the website for selling food and chemical products.");
-		messages.put("messageM1", messageRepository.save(messageM1));
+		ArrayList<LinkedHashMap<String, Object>> messagesArray = new ArrayList<>();
+		try {
+			FileReader fr = new FileReader("backend/src/main/resources/json-seed/projectP1/messagesP1.json");
+			JSONParser parser = new JSONParser(fr);
+			messagesArray = (ArrayList<LinkedHashMap<String, Object>>) parser.parse();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 
-		Message messageM2 = new Message("welcome2", "Low Price Promise.", projects.get("projectP1"));
-		messageM2.setDescription("The first page of the website for selling food and chemical products.");
-		messages.put("messageM2", messageRepository.save(messageM2));
+		for (LinkedHashMap<String, Object> m : messagesArray) {
+			String key = (String) m.get("key");
+			String content = (String) m.get("content");
+			String description = (String) m.get("description");
+			Message message = new Message(key, content, projects.get("projectP1"));
+			message.setDescription(description);
+			messages.put((String) m.get("uuid"), messageRepository.save(message));
+		}
+
+//		Message messageM1 = new Message("welcome1", "Groceries you’ll love, perfectly delivered.", projects.get("projectP1"));
+//		messageM1.setDescription("The first page of the website for selling food and chemical products.");
+//		messages.put("messageM1", messageRepository.save(messageM1));
+
+//		Message messageM2 = new Message("welcome2", "Low Price Promise.", projects.get("projectP1"));
+//		messageM2.setDescription("The first page of the website for selling food and chemical products.");
+//		messages.put("messageM2", messageRepository.save(messageM2));
 
 
 		Message pricing = new Message("pricing", "Pricing", projects.get("projectP1"));

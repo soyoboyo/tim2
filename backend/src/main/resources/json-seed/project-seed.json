@@ -1,0 +1,82 @@
+[
+	{
+		"uuid": "projectP1",
+		"name": "Ocado - supermarket website",
+		"sourceLocale": "en_GB",
+		"targetLocales": [
+			"en_US",
+			"pl_PL",
+			"de_DE",
+			"ar_LY",
+			"ko_KR"
+		],
+		"substituteLocales": {
+			"ar_LY": "pl_PL",
+			"pl_PL": "ko_KR"
+		}
+	},
+	{
+		"uuid": "projectP2",
+		"name": "Ocado - strona prezentująca przedsiębiorstwo",
+		"sourceLocale": "pl_PL",
+		"targetLocales": [
+			"en_US",
+			"en_GB",
+			"de_DE",
+			"ar_LY",
+			"ko_KR"
+		],
+		"substituteLocales": {
+		}
+	},
+	{
+		"uuid": "projectP3",
+		"name": "Project with a lot of locales",
+		"sourceLocale": "en_US",
+		"targetLocales": [
+			"pl_PL",
+			"en_GB",
+			"af_NA",
+			"af_ZA",
+			"ak_GH",
+			"sq_AL",
+			"hy_AM",
+			"ar_DZ",
+			"ar_SD",
+			"de_DE",
+			"ar_EG",
+			"bn_IN",
+			"bs_BA",
+			"bg_BG",
+			"my_MM",
+			"ca_ES",
+			"kw_GB",
+			"da_DK",
+			"en_AS",
+			"en_AU",
+			"en_VI",
+			"en_ZA",
+			"fr_MG",
+			"fr_MC",
+			"fr_BL",
+			"ko_KR",
+			"ar_LY",
+			"gu_IN"
+		],
+		"substituteLocales": {
+		}
+	},
+	{
+		"uuid": "projectP4",
+		"name": "Example Angular app",
+		"sourceLocale": "en_GB",
+		"targetLocales": [
+			"pl_PL"
+		],
+		"substituteLocales": {
+		}
+	}
+]
+
+
+

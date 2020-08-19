@@ -1,0 +1,14 @@
+[
+	{
+		"uuid": "messageM1",
+		"key": "welcome1",
+		"content": "Groceries you’ll love, perfectly delivered.",
+		"description": "The first page of the website for selling food and chemical products."
+	},
+	{
+		"uuid": "messageM2",
+		"key": "welcome2",
+		"content": "Low Price Promise.",
+		"description": "The first page of the website for selling food and chemical products."
+	}
+]
