@@ -10,5 +10,108 @@
 		"key": "welcome2",
 		"content": "Low Price Promise.",
 		"description": "The first page of the website for selling food and chemical products."
+	},
+	{
+		"uuid": "pricing",
+		"key": "pricing",
+		"content": "Pricing",
+		"description": "Website title."
+	},
+	{
+		"uuid": "signUp",
+		"key": "signUp",
+		"content": "Sign up",
+		"description": "Sign up button"
+	},
+	{
+		"uuid": "ocadoTechnology",
+		"key": "ocadoTechnology",
+		"content": "Ocado Technology",
+		"description": "Company name"
+	},
+	{
+		"uuid": "featuresNav",
+		"key": "featuresNav",
+		"content": "Features",
+		"description": "Navbar link to see more information about features."
+	},
+	{
+		"uuid": "enterpriseNav",
+		"key": "enterpriseNav",
+		"content": "Enterprise",
+		"description": "Navbar link to see more information for enterprise clients."
+	},
+	{
+		"uuid": "supportNav",
+		"key": "supportNav",
+		"content": "Support",
+		"description": "Navbar link to see help view."
+	},
+	{
+		"uuid": "pricingNav",
+		"key": "pricingNav",
+		"content": "Pricing",
+		"description": "Navbar link to see pricing information."
+	},
+	{
+		"uuid": "freeCard",
+		"key": "freeCard",
+		"content": "Free",
+		"description": "Information that product presented in this card is for free."
+	},
+	{
+		"uuid": "maxFreeUsers",
+		"key": "maxFreeUsers",
+		"content": "10 users included",
+		"description": "Information about maximal number of user that can use this product for free."
+	},
+	{
+		"uuid": "maxFreeMemoryLimit",
+		"key": "maxFreeMemoryLimit",
+		"content": "2 GB of storage",
+		"description": "nformation about maximum memory limit that can be use for free."
+	},
+	{
+		"uuid": "freeEmailSupport",
+		"key": "freeEmailSupport",
+		"content": "Email support",
+		"description": "Information about email support for free account."
+	},
+	{
+		"uuid": "freeHelpCenter",
+		"key": "freeHelpCenter",
+		"content": "Help center access",
+		"description": "Information that user can use free help center for free account."
+	},
+	{
+		"uuid": "signUpToAccess",
+		"key": "signUpToAccess",
+		"content": "Sign up for free",
+		"description": "Information that user need to create account to use this product."
+	},
+	{
+		"uuid": "proCard",
+		"key": "proCard",
+		"content": "Pro",
+		"description": "Information about product type."
+	},
+	{
+		"uuid": "maxProUsers",
+		"key": "maxProUsers",
+		"content": "20 users included",
+		"description": "Information about maximal number of user that can use this product on pro type."
+	},
+	{
+		"uuid": "maxProMemoryLimit",
+		"key": "maxProMemoryLimit",
+		"content": "10 GB of storage",
+		"description": "Information about maximum memory limit that can be use on pro type."
 	}
+	//,
+	//	{
+	//		"uuid": "",
+	//		"key": "",
+	//		"content": "",
+	//		"description": ""
+	//	}
 ]

@@ -1,0 +1,14 @@
+[
+	{
+		"uuid": "message1ForManyLocales",
+		"key": "message1",
+		"content": "Short one.",
+		"description": "Message is short."
+	},
+	{
+		"uuid": "message2ForManyLocales",
+		"key": "message2",
+		"content": "Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong one.",
+		"description": "Message is long."
+	}
+]

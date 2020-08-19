@@ -10,10 +10,7 @@ import org.tim.repositories.MessageRepository;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,86 +21,31 @@ public class MessageSeeder {
 	public Map<String, Message> initMessages(Map<String, Project> projects) {
 
 		Map<String, Message> messages = new HashMap<>();
+		List<String> projectIds = Arrays.asList("P1", "P2", "P3", "P4");
 
-		ArrayList<LinkedHashMap<String, Object>> messagesArray = new ArrayList<>();
-		try {
-			FileReader fr = new FileReader("backend/src/main/resources/json-seed/projectP1/messagesP1.json");
-			JSONParser parser = new JSONParser(fr);
-			messagesArray = (ArrayList<LinkedHashMap<String, Object>>) parser.parse();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		for (String id : projectIds) {
+			ArrayList<LinkedHashMap<String, Object>> messagesArray = new ArrayList<>();
+			try {
+				FileReader fr = new FileReader("backend/src/main/resources/json-seed/project" + id + "/messages" + id + ".json");
+				JSONParser parser = new JSONParser(fr);
+				messagesArray = (ArrayList<LinkedHashMap<String, Object>>) parser.parse();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			for (LinkedHashMap<String, Object> m : messagesArray) {
+				String key = (String) m.get("key");
+				String content = (String) m.get("content");
+				String description = (String) m.get("description");
+				Message message = new Message(key, content, projects.get("project" + id));
+				message.setDescription(description);
+				messages.put((String) m.get("uuid"), messageRepository.save(message));
+			}
 		}
 
-		for (LinkedHashMap<String, Object> m : messagesArray) {
-			String key = (String) m.get("key");
-			String content = (String) m.get("content");
-			String description = (String) m.get("description");
-			Message message = new Message(key, content, projects.get("projectP1"));
-			message.setDescription(description);
-			messages.put((String) m.get("uuid"), messageRepository.save(message));
-		}
 
-//		Message messageM1 = new Message("welcome1", "Groceries you’ll love, perfectly delivered.", projects.get("projectP1"));
-//		messageM1.setDescription("The first page of the website for selling food and chemical products.");
-//		messages.put("messageM1", messageRepository.save(messageM1));
-
-//		Message messageM2 = new Message("welcome2", "Low Price Promise.", projects.get("projectP1"));
-//		messageM2.setDescription("The first page of the website for selling food and chemical products.");
-//		messages.put("messageM2", messageRepository.save(messageM2));
-
-
-		Message pricing = new Message("pricing", "Pricing", projects.get("projectP1"));
-		pricing.setDescription("Website title.");
-		messages.put("pricing", messageRepository.save(pricing));
-		Message signUp = new Message("signUp", "Sign up", projects.get("projectP1"));
-		signUp.setDescription("Sign up button");
-		messages.put("signUp", messageRepository.save(signUp));
-		Message ocadoTechnology = new Message("ocadoTechnology", "Ocado Technology", projects.get("projectP1"));
-		ocadoTechnology.setDescription("Company name");
-		messages.put("ocadoTechnology", messageRepository.save(ocadoTechnology));
-		Message featuresNav = new Message("featuresNav", "Features", projects.get("projectP1"));
-		featuresNav.setDescription("Navbar link to see more information about features.");
-		messages.put("featuresNav", messageRepository.save(featuresNav));
-		Message enterpriseNav = new Message("enterpriseNav", "Enterprise ", projects.get("projectP1"));
-		enterpriseNav.setDescription("Navbar link to see more information for enterprise clients.");
-		messages.put("enterpriseNav", messageRepository.save(enterpriseNav));
-		Message supportNav = new Message("supportNav", "Support ", projects.get("projectP1"));
-		supportNav.setDescription("Navbar link to see help view.");
-		messages.put("supportNav", messageRepository.save(supportNav));
-		Message pricingNav = new Message("pricingNav", "Pricing ", projects.get("projectP1"));
-		pricingNav.setDescription("Navbar link to see pricing information.");
-		messages.put("pricingNav", messageRepository.save(pricingNav));
-
-		Message freeCard = new Message("freeCard", "Free", projects.get("projectP1"));
-		freeCard.setDescription("Information that product presented in this card is for free.");
-		messages.put("freeCard", messageRepository.save(freeCard));
-		Message maxFreeUsers = new Message("maxFreeUsers", "10 users included", projects.get("projectP1"));
-		maxFreeUsers.setDescription("Information about maximal number of user that can use this product for free.");
-		messages.put("maxFreeUsers", messageRepository.save(maxFreeUsers));
-		Message maxFreeMemoryLimit = new Message("maxFreeMemoryLimit", "2 GB of storage", projects.get("projectP1"));
-		maxFreeMemoryLimit.setDescription("Information about maximum memory limit that can be use for free.");
-		messages.put("maxFreeMemoryLimit", messageRepository.save(maxFreeMemoryLimit));
-		Message freeEmailSupport = new Message("freeEmailSupport", "Email support", projects.get("projectP1"));
-		freeEmailSupport.setDescription("Information about email support for free account.");
-		messages.put("freeEmailSupport", messageRepository.save(freeEmailSupport));
-		Message freeHelpCenter = new Message("freeHelpCenter", "Help center access", projects.get("projectP1"));
-		freeHelpCenter.setDescription("Information that user can use free help center for free account.");
-		messages.put("freeHelpCenter", messageRepository.save(freeHelpCenter));
-		Message signUpToAccess = new Message("signUpToAccess", "Sign up for free", projects.get("projectP1"));
-		signUpToAccess.setDescription("Information that user need to create account to use this product.");
-		messages.put("signUpToAccess", messageRepository.save(signUpToAccess));
-
-		Message proCard = new Message("proCard", "Pro", projects.get("projectP1"));
-		proCard.setDescription("Information about product type.");
-		messages.put("proCard", messageRepository.save(proCard));
-		Message maxProUsers = new Message("maxProUsers", "20 users included", projects.get("projectP1"));
-		maxProUsers.setDescription("Information about maximal number of user that can use this product on pro type.");
-		messages.put("maxProUsers", messageRepository.save(maxProUsers));
-		Message maxProMemoryLimit = new Message("maxProMemoryLimit", "10 GB of storage", projects.get("projectP1"));
-		maxProMemoryLimit.setDescription("Information about maximum memory limit that can be use on pro type.");
-		messages.put("maxProMemoryLimit", messageRepository.save(maxProMemoryLimit));
 		Message proEmailSupport = new Message("proEmailSupport", "Priority email support", projects.get("projectP1"));
 		proEmailSupport.setDescription("Information about priority email support for pro account.");
 		messages.put("proEmailSupport", messageRepository.save(proEmailSupport));
@@ -113,7 +55,6 @@ public class MessageSeeder {
 		Message getStarted = new Message("getStarted", "Get started", projects.get("projectP1"));
 		getStarted.setDescription("Information that user need to create account to use this product.");
 		messages.put("getStarted", messageRepository.save(getStarted));
-
 		Message enterpriseCard = new Message("enterpriseCard", "Enterprise", projects.get("projectP1"));
 		enterpriseCard.setDescription("Information about product type.");
 		messages.put("enterpriseCard", messageRepository.save(enterpriseCard));
@@ -132,7 +73,6 @@ public class MessageSeeder {
 		Message contactUs = new Message("contactUs", "Contact us", projects.get("projectP1"));
 		contactUs.setDescription("Information that user need to create account to use this product.");
 		messages.put("contactUs", messageRepository.save(contactUs));
-
 		Message featuresFooter = new Message("featuresFooter", "Features", projects.get("projectP1"));
 		featuresFooter.setDescription("Footer links");
 		messages.put("featuresFooter", messageRepository.save(featuresFooter));
@@ -154,7 +94,6 @@ public class MessageSeeder {
 		Message featuresFooter6 = new Message("featuresFooter6", "Last time", projects.get("projectP1"));
 		featuresFooter6.setDescription("Footer links");
 		messages.put("featuresFooter6", messageRepository.save(featuresFooter6));
-
 		Message resourcesFooter = new Message("resourcesFooter", "Resources", projects.get("projectP1"));
 		resourcesFooter.setDescription("Footer links");
 		messages.put("resourcesFooter", messageRepository.save(resourcesFooter));
@@ -170,7 +109,6 @@ public class MessageSeeder {
 		Message resourcesFooter4 = new Message("resourcesFooter4", "Final resource", projects.get("projectP1"));
 		resourcesFooter4.setDescription("Footer links");
 		messages.put("resourcesFooter4", messageRepository.save(resourcesFooter4));
-
 		Message aboutFooter = new Message("aboutFooter", "About", projects.get("projectP1"));
 		aboutFooter.setDescription("Footer links");
 		messages.put("aboutFooter", messageRepository.save(aboutFooter));
@@ -188,24 +126,7 @@ public class MessageSeeder {
 		messages.put("aboutFooter4", messageRepository.save(aboutFooter4));
 
 
-		Message messageM3 = new Message("business1", "Opracowaliśmy i stosujemy unikalny model biznesowy, który mocno nas pozycjonuje, " +
-				"ponieważ coraz więcej konsumentów decyduje się na zakupy w Internecie.", projects.get("projectP2"));
-		messageM3.setDescription("Pierwsza strona prezentująca przedsiębiorstwo.");
-		messages.put("messageM3", messageRepository.save(messageM3));
-
-		Message messageM4 = new Message("business2", "Naszym strategicznym celem jest dostosowanie interesów naszych klientów," +
-				" inwestorów i innych interesariuszy do zapewnienia długoterminowej wartości dla akcjonariuszy.", projects.get("projectP2"));
-		messageM4.setDescription("Pierwsza strona prezentująca przedsiębiorstwo.");
-		messages.put("messageM4", messageRepository.save(messageM4));
-
-
-		Message message1ForManyLocales = new Message("message1", "Short one.", projects.get("projectP3"));
-		messageM4.setDescription("M is short.");
-		messages.put("message1ForManyLocales", messageRepository.save(message1ForManyLocales));
-		Message message2ForManyLocales = new Message("message2", "Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong one.", projects.get("projectP3"));
-		messageM4.setDescription("Message is long.");
-		messages.put("message2ForManyLocales", messageRepository.save(message2ForManyLocales));
-
+// project 4
 		Message categoriesTitle = new Message("categoriesTitle", "Categories", projects.get("projectP4"));
 		categoriesTitle.setDescription("Categories title");
 		messages.put("categoriesTitle", messageRepository.save(categoriesTitle));
