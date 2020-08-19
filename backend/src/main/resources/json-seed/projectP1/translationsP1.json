@@ -1,2 +1,17 @@
 [
+	{
+		"messageKey": "messageM1",
+		"locale": "pl_PL",
+		"content": "Artykuły spożywcze, które pokochasz, idealnie dostarczone."
+	},
+	{
+		"messageKey": "messageM1",
+		"locale": "de_DE",
+		"content": "Boodschappen waar u van houdt, perfect afgeleverd."
+	},
+	{
+		"messageKey": "messageM1",
+		"locale": "en_US",
+		"content": "Groceries you’ll love, perfectly delivered."
+	}
 ]

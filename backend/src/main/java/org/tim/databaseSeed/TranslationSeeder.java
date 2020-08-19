@@ -46,11 +46,6 @@ public class TranslationSeeder {
 			}
 		}
 
-		Translation translationT2M1 = new Translation(LocaleUtils.toLocale("de_DE"), messages.get("messageM1"));
-		translationT2M1.setContent("Boodschappen waar u van houdt, perfect afgeleverd.");
-
-		Translation translationT3M1 = new Translation(LocaleUtils.toLocale("en_US"), messages.get("messageM1"));
-		translationT3M1.setContent("Groceries you’ll love, perfectly delivered.");
 
 		Translation translationT4M1 = new Translation(LocaleUtils.toLocale("ko_KR"), messages.get("messageM1"));
 		translationT4M1.setContent("당신이 좋아할 음식, 완벽하게 배달되는 식료품.");
@@ -397,8 +392,8 @@ public class TranslationSeeder {
 
 		translationRepository.saveAll(translations);
 
-		translationRepository.saveAll(Arrays.asList(translationT1M2, translationT1M3, translationT2M1,
-				translationT2M2, translationT2M3, translationT2M4, translationT3M1, translationT3M2, translationT1M4,
+		translationRepository.saveAll(Arrays.asList(translationT1M2, translationT1M3,
+				translationT2M2, translationT2M3, translationT2M4, translationT3M2, translationT1M4,
 				translationT4M1, translationT4M2, translationT3M3, translationT3M4, translationT4M3, translationT4M4,
 				pricingKo, signUpKo, ocadoTechnologyKo, featuresNavKo, enterpriseNavKo, supportNavKo, pricingNavKo,
 				freeCardKo, maxFreeUsersKo, maxFreeMemoryLimitKo, freeHelpCenterKo, signUpToAccessKo,
