@@ -91,6 +91,7 @@ public class ImportService {
 				}
 
 				if (translation.isBlank()) {
+					i += NEXT_LOCALE;
 					continue;
 				}
 

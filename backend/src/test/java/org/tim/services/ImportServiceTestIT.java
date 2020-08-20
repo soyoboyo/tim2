@@ -144,6 +144,27 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 		);
 	}
 
+	@Test
+	@DisplayName("Create translations from translator file but skip empty translations")
+	void whenTranslatorFileImportedWithEmptyTranslation() throws Exception {
+		//given
+		MockMultipartFile importFile = new MockMultipartFile("file.csv", Files.newInputStream(Paths.get("src/test/resources/reports/testImportMessageWithEmptyTranslation.csv")));
+		saveMessagesToTranslate();
+
+		//when
+		importServiceWithMock.importTranslatorCSVFile(importFile);
+
+		//then
+		List<Translation> translations = translationRepository.findAll();
+
+		assertAll(
+				() -> assertEquals(2, translations.size()),
+				() -> assertEquals("witaj", translations.get(0).getContent()),
+				() -> assertEquals("world", translations.get(1).getContent())
+		);
+
+	}
+
 	private void saveMessagesToTranslate() throws NoSuchFieldException {
 		Message messageOne = new Message("hello", "hello", project);
 		Message messageTwo = new Message("world", "world", project);
