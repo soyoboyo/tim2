@@ -18,7 +18,7 @@ public class TranslationSeeder {
 	public void initTranslations(Map<String, Message> messages) {
 
 		LinkedList<Translation> translations = new LinkedList<>();
-		List<String> projectIds = Arrays.asList("P1", "P2", "P3", "P4");
+		List<String> projectIds = Arrays.asList("P1", "P2", "P3", "P4", "P5");
 
 		for (String id : projectIds) {
 			String path = "project" + id + "/translations" + id + ".json";

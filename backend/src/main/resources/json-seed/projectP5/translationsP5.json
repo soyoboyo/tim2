@@ -1,0 +1,132 @@
+[
+	{
+		"messageKey": "name",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nazwa"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Name"
+			}
+		]
+	},
+	{
+		"messageKey": "welcome",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Witamy w Translation & Internationalization Manager"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Willkommen zu Translation & Internationalization Manager"
+			}
+		]
+	},
+	{
+		"messageKey": "pleaseLogin",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Zaloguj się by móc wykonywać czynności"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "login",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Logowanie"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Anmeldung"
+			}
+		]
+	},
+	{
+		"messageKey": "username",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nazwa użytkownika"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Nutzername"
+			}
+		]
+	},
+	{
+		"messageKey": "password",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Hasło"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Passwort"
+			}
+		]
+	},
+	{
+		"messageKey": "loginButton",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Zaloguj się"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Anmelden"
+			}
+		]
+	},
+	{
+		"messageKey": "usernameRequired",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nazwa użytkownika jest <strong>wymagana</strong>"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "passwordRequired",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Hasło jest <strong>wymagane</strong>"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "badCredentials",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Zły login lub hasło"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	}
+]

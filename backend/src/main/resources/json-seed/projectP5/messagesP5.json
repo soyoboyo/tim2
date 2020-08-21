@@ -1,0 +1,52 @@
+[
+	{
+		"key": "name",
+		"content": "Name",
+		"description": "Name column"
+	},
+	{
+		"key": "welcome",
+		"content": "Welcome to Translation & Internationalization Manager",
+		"description": ""
+	},
+	{
+		"key": "pleaseLogin",
+		"content": "Please login to perform any actions",
+		"description": ""
+	},
+	{
+		"key": "login",
+		"content": "Login",
+		"description": ""
+	},
+	{
+		"key": "username",
+		"content": "Username",
+		"description": ""
+	},
+	{
+		"key": "password",
+		"content": "Password",
+		"description": ""
+	},
+	{
+		"key": "loginButton",
+		"content": "Log in",
+		"description": "Login button"
+	},
+	{
+		"key": "usernameRequired",
+		"content": "Username is <strong>required</strong>",
+		"description": ""
+	},
+	{
+		"key": "passwordRequired",
+		"content": "Password is <strong>required</strong>",
+		"description": ""
+	},
+	{
+		"key": "badCredentials",
+		"content": "Bad credentials!",
+		"description": ""
+	}
+]

@@ -75,6 +75,17 @@
 		],
 		"substituteLocales": {
 		}
+	},
+	{
+		"uuid": "projectP5",
+		"name": "TIM",
+		"sourceLocale": "en_GB",
+		"targetLocales": [
+			"pl_PL",
+			"de_DE"
+		],
+		"substituteLocales": {
+		}
 	}
 ]
 
