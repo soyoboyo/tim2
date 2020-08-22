@@ -6,12 +6,19 @@ public class CSVFileConstants {
 	public static final int EMPTY_LINES_BETWEEN_MESSAGES = 1;
 	public static final int MESSAGE_LENGTH = 6;
 	public static final int MESSAGE_BLOCK = MESSAGE_LENGTH + EMPTY_LINES_BETWEEN_MESSAGES;
+
+	public static final int NEXT_LOCALE = 2;
+	public static final int NEXT_MESSAGE = 6;
+	public static final int EMPTY_LINE_ROW = 5;
+
 	public static final int KEY_ROW = 0;
 	public static final int KEY_COLUMN = 2;
-	public static final int LOCALE_ROW = 4;
+	public static final int LAST_UPDATED_ROW = 3;
+	public static final int LAST_UPDATED_COLUMN = 2;
+	public static final int LOCALE_ROW = 5;
 	public static final int LOCALE_COLUMN = 0;
-	public static final int NEW_TRANSLATION_ROW = 5;
-	public static final int NEW_TRANSLATION_COLUMN = 2;
-	public static final int TRANSLATION_STATUS_ROW = 4;
+	public static final int TRANSLATION_STATUS_ROW = 5;
 	public static final int TRANSLATION_STATUS_COLUMN = 1;
+	public static final int NEW_TRANSLATION_ROW = 6;
+	public static final int NEW_TRANSLATION_COLUMN = 2;
 }
