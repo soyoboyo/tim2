@@ -32,6 +32,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	aggregateInfoId = 'aggregateInfoId';
 	messagesTableId = 'messagesTable';
 	targetLocales: string[] = [];
+	showProjectForm = false;
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
@@ -145,15 +146,20 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 		await this.confirmService.openDialog('Are you sure you want to archive selected message?').subscribe((result) => {
 			if (result) {
 				this.http.remove('message/archive/' + id).subscribe((response) => {
-					if (response == null) {
+					console.log('response');
+					console.log(response);
+					console.log(response.message);
+					if (response !== null) {
 						this.selectedRowIndex = -1;
-						this.snackbar.snackSuccess('Success!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
 					} else {
 						this.snackbar.snackError('Error', 'OK');
 					}
 					this.getMessages();
 				}, (error) => {
-					this.snackbar.snackError(error.error.message, 'OK');
+					console.log('error');
+					console.log(error);
+					this.snackbar.snackError(error.message, 'OK');
 				});
 			}
 		});
@@ -224,5 +230,13 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 					this.snackbar.snackError(error.error, 'OK');
 				});
 		}
+	}
+
+	newProject() {
+		this.showProjectForm = true;
+	}
+
+	editCurrentProject() {
+		this.showProjectForm = false;
 	}
 }

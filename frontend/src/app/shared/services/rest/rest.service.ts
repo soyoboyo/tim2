@@ -83,14 +83,13 @@ export class RestService {
 
 	downloadZip(projectID) {
 		const url = this.URL + 'exportCD/message/getByLocale/' + projectID + '/file';
-
 		this.http.get(url, {
 			responseType: 'blob',
 			withCredentials: true
 		}).subscribe(response => {
 			const blob = new Blob([response], { type: 'application/zip' });
 			saveAs(blob, 'translations.zip');
-		})
+		});
 	}
 
 	importCSV(url: string, file: File) {

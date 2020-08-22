@@ -32,6 +32,7 @@ import { AggregateInfoComponent } from './features/developers/aggregate-info/agg
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptor } from './core/AuthInterceptor';
 import { TranslatorFormComponent } from './features/translators/tra-messages/translator-form/translator-form.component';
+import { DevProjectFormComponent } from './features/developers/dev-messages/dev-project-form/dev-project-form.component';
 
 @NgModule({
 	declarations: [
@@ -49,7 +50,8 @@ import { TranslatorFormComponent } from './features/translators/tra-messages/tra
 		TraMessagesComponent,
 		TraMessagesTableComponent,
 		TranslatorFormComponent,
-		TranslatorsComponent
+		TranslatorsComponent,
+		DevProjectFormComponent
 	],
 	imports: [
 		BrowserAnimationsModule,
