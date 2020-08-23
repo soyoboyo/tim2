@@ -34,6 +34,8 @@ import { AuthInterceptor } from './core/AuthInterceptor';
 import { TranslatorFormComponent } from './features/translators/tra-messages/translator-form/translator-form.component';
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MatPaginatorIntl } from "@angular/material/paginator";
+import { MatPaginatorIntlService } from "./core/mat-paginator-intl-service/mat-paginator-intl.service";
 
 export function HttpLoaderFactory(http: HttpClient) {
 	return new TranslateHttpLoader(http);
@@ -85,7 +87,8 @@ export function HttpLoaderFactory(http: HttpClient) {
 	],
 	providers: [LoginService, UtilsService, SnackbarService, CookieService,
 		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },
-		{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+		{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+		{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlService }],
 	bootstrap: [AppComponent],
 	entryComponents: [ConfirmationDialogComponent]
 })

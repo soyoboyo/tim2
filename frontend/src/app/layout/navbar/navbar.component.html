@@ -12,7 +12,7 @@
 
 		<!--		<div>{{username}}</div>-->
 		<mat-form-field class="select-language">
-			<mat-label>Select language</mat-label>
+			<mat-label>{{'selectLanguage' | translate}}</mat-label>
 			<mat-select [(value)]="selected">
 				<mat-option *ngFor="let language of languages" [value]="language.value"
 							(onSelectionChange)="changeLanguage($event)">
@@ -21,7 +21,7 @@
 			</mat-select>
 		</mat-form-field>
 
-		<div [hidden]="!isLoggedIn">Logged as {{username}}</div>
+		<div [hidden]="!isLoggedIn">{{'loggedAs' | translate}} {{username}}</div>
 
 		<button mat-icon-button [matMenuTriggerFor]="menuOptions">
 			<mat-icon>more_vert</mat-icon>
@@ -29,20 +29,20 @@
 		<mat-menu #menuOptions="matMenu">
 			<button mat-menu-item (click)="signInButtonClicked()" *ngIf="!isLoggedIn">
 				<mat-icon>account_circle</mat-icon>
-				<span>Login</span>
+				<span>{{'login' | translate}}</span>
 			</button>
 			<button mat-menu-item routerLink="/homepage">
-				<span>Homepage</span>
+				<span>{{'homepage' | translate}}</span>
 			</button>
 			<button mat-menu-item routerLink="/developer" *ngIf="role==='ROLE_DEVELOPER'">
-				<span>Developers</span>
+				<span>{{'developers' | translate}}</span>
 			</button>
 			<button mat-menu-item routerLink="/translator" *ngIf="role==='ROLE_TRANSLATOR'">
-				<span>Translators</span>
+				<span>{{'translators' | translate}}</span>
 			</button>
 			<button mat-menu-item (click)="logoutButtonClicked()" *ngIf="isLoggedIn">
 				<mat-icon>exit_to_app</mat-icon>
-				<span>Logout</span>
+				<span>{{'logout' | translate}}</span>
 			</button>
 
 		</mat-menu>

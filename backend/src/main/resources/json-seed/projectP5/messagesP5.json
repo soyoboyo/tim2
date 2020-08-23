@@ -1,10 +1,5 @@
 [
 	{
-		"key": "name",
-		"content": "Name",
-		"description": "Name column"
-	},
-	{
 		"key": "welcome",
 		"content": "Welcome to Translation & Internationalization Manager",
 		"description": ""
@@ -47,6 +42,486 @@
 	{
 		"key": "badCredentials",
 		"content": "Bad credentials!",
+		"description": ""
+	},
+	{
+		"key": "selectLanguage",
+		"content": "Select language",
+		"description": ""
+	},
+	{
+		"key": "loggedAs",
+		"content": "Logged as",
+		"description": ""
+	},
+	{
+		"key": "projects",
+		"content": "Projects",
+		"description": ""
+	},
+	{
+		"key": "messages",
+		"content": "Messages",
+		"description": ""
+	},
+	{
+		"key": "selectProject",
+		"content": "Select project",
+		"description": ""
+	},
+	{
+		"key": "filter",
+		"content": "Filter",
+		"description": ""
+	},
+	{
+		"key": "addProject",
+		"content": "Add new project",
+		"description": ""
+	},
+	{
+		"key": "name",
+		"content": "Name",
+		"description": "Name column"
+	},
+	{
+		"key": "sourceLocale",
+		"content": "Source locale",
+		"description": ""
+	},
+	{
+		"key": "actions",
+		"content": "Actions",
+		"description": ""
+	},
+	{
+		"key": "itemsPerPage",
+		"content": "Items per page",
+		"description": ""
+	},
+	{
+		"key": "of",
+		"content": "of",
+		"description": ""
+	},
+	{
+		"key": "edit",
+		"content": "Edit",
+		"description": ""
+	},
+	{
+		"key": "download",
+		"content": "Download",
+		"description": ""
+	},
+	{
+		"key": "selectLocale",
+		"content": "Select locale",
+		"description": ""
+	},
+	{
+		"key": "getReport",
+		"content": "Get report for selected locales",
+		"description": ""
+	},
+	{
+		"key": "locales",
+		"content": "Locales",
+		"description": ""
+	},
+	{
+		"key": "downloadReport",
+		"content": "Download report",
+		"description": ""
+	},
+	{
+		"key": "uploadTranslations",
+		"content": "Upload translations",
+		"description": ""
+	},
+	{
+		"key": "missing",
+		"content": "Missing",
+		"description": ""
+	},
+	{
+		"key": "outdated",
+		"content": "Outdated",
+		"description": ""
+	},
+	{
+		"key": "invalid",
+		"content": "Invalid",
+		"description": ""
+	},
+	{
+		"key": "key",
+		"content": "Key",
+		"description": ""
+	},
+	{
+		"key": "content",
+		"content": "Content",
+		"description": ""
+	},
+	{
+		"key": "translation",
+		"content": "Translation",
+		"description": ""
+	},
+	{
+		"key": "status",
+		"content": "Status",
+		"description": ""
+	},
+	{
+		"key": "selectToSee",
+		"content": "Select project and locale to see messages",
+		"description": ""
+	},
+	{
+		"key": "correct",
+		"content": "Correct",
+		"description": ""
+	},
+	{
+		"key": "updateDate",
+		"content": "Update date",
+		"description": ""
+	},
+	{
+		"key": "description",
+		"content": "Description",
+		"description": ""
+	},
+	{
+		"key": "lastUpdated",
+		"content": "Last updated",
+		"description": ""
+	},
+	{
+		"key": "update",
+		"content": "Update",
+		"description": ""
+	},
+	{
+		"key": "invalidate",
+		"content": "Invalidate",
+		"description": ""
+	},
+	{
+		"key": "add",
+		"content": "Add",
+		"description": ""
+	},
+	{
+		"key": "useSubstitute",
+		"content": "Use this substitute",
+		"description": ""
+	},
+	{
+		"key": "translationInvalidated",
+		"content": "Translation has been invalidated",
+		"description": ""
+	},
+	{
+		"key": "previousMessageContent",
+		"content": "Previous message content",
+		"description": ""
+	},
+	{
+		"key": "translationOutdated",
+		"content": "Translation is outdated",
+		"description": ""
+	},
+	{
+		"key": "cancel",
+		"content": "Cancel",
+		"description": ""
+	},
+	{
+		"key": "clear",
+		"content": "Clear",
+		"description": ""
+	},
+	{
+		"key": "homepage",
+		"content": "Homepage",
+		"description": ""
+	},
+	{
+		"key": "developers",
+		"content": "Developers",
+		"description": ""
+	},
+	{
+		"key": "translators",
+		"content": "Translators",
+		"description": ""
+	},
+	{
+		"key": "logout",
+		"content": "Logout",
+		"description": ""
+	},
+	{
+		"key": "accessDenied",
+		"content": "Access denied, you must login first",
+		"description": ""
+	},
+	{
+		"key": "goToLogin",
+		"content": "Go to login page",
+		"description": ""
+	},
+	{
+		"key": "projectRequired",
+		"content": "Project name is <strong>required</strong>",
+		"description": ""
+	},
+	{
+		"key": "sourceRequired",
+		"content": "Source language is <strong>required</strong>",
+		"description": ""
+	},
+	{
+		"key": "wrongPattern",
+		"content": "Wrong pattern: requires 2 small letters",
+		"description": ""
+	},
+	{
+		"key": "sourceCountry",
+		"content": "Source country is <strong>required</strong>",
+		"description": ""
+	},
+	{
+		"key": "wrongPatternBig",
+		"content": "Wrong pattern: requires 2 big letters",
+		"description": ""
+	},
+	{
+		"key": "targetLocales",
+		"content": "Target locales",
+		"description": ""
+	},
+	{
+		"key": "addTargetLocale",
+		"content": "Add target locale",
+		"description": ""
+	},
+	{
+		"key": "remove",
+		"content": "Remove",
+		"description": ""
+	},
+	{
+		"key": "addReplacements",
+		"content": "Add more replacements",
+		"description": ""
+	},
+	{
+		"key": "projectName",
+		"content": "Project name",
+		"description": ""
+	},
+	{
+		"key": "nothingFound",
+		"content": "Nothing found",
+		"description": ""
+	},
+	{
+		"key": "importMessages",
+		"content": "Import messages",
+		"description": ""
+	},
+	{
+		"key": "importMessagesTooltip",
+		"content": "Import message from CSV file",
+		"description": ""
+	},
+	{
+		"key": "projectNotSelected",
+		"content": "Project not selected",
+		"description": ""
+	},
+	{
+		"key": "messageKeyRequired",
+		"content": "Message key is <strong>required</strong>",
+		"description": ""
+	},
+	{
+		"key": "messageContentRequired",
+		"content": "Message content is <strong>required</strong>",
+		"description": ""
+	},
+	{
+		"key": "archive",
+		"content": "Archive",
+		"description": ""
+	},
+	{
+		"key": "messageHistory",
+		"content": "Message history",
+		"description": ""
+	},
+	{
+		"key": "missingTranslations",
+		"content": "Missing translations for locales",
+		"description": ""
+	},
+	{
+		"key": "translations",
+		"content": "Translations",
+		"description": ""
+	},
+	{
+		"key": "listOfTranslations",
+		"content": "List of existing translations",
+		"description": ""
+	},
+	{
+		"key": "history",
+		"content": "History",
+		"description": ""
+	},
+	{
+		"key": "addMessage",
+		"content": "Add new message",
+		"description": ""
+	},
+	{
+		"key": "selectProjectToSee",
+		"content": "Select project to see messages",
+		"description": ""
+	},
+	{
+		"key": "goBack",
+		"content": "Go back",
+		"description": ""
+	},
+	{
+		"key": "createdBy",
+		"content": "Created by",
+		"description": ""
+	},
+	{
+		"key": "locale",
+		"content": "Locale",
+		"description": ""
+	},
+	{
+		"key": "isValid",
+		"content": "Is valid",
+		"description": ""
+	},
+	{
+		"key": "yes",
+		"content": "Yes",
+		"description": ""
+	},
+	{
+		"key": "no",
+		"content": "No",
+		"description": ""
+	},
+	{
+		"key": "noHistory",
+		"content": "No history found",
+		"description": ""
+	},
+	{
+		"key": "message",
+		"content": "Message",
+		"description": ""
+	},
+	{
+		"key": "translationsSummary",
+		"content": "Translations summary chart",
+		"description": ""
+	},
+	{
+		"key": "expandToSee",
+		"content": "Expand to see detailed info",
+		"description": ""
+	},
+	{
+		"key": "sourceCountryPlaceholder",
+		"content": "Source country",
+		"description": ""
+	},
+	{
+		"key": "targetLanguage",
+		"content": "Target language",
+		"description": ""
+	},
+	{
+		"key": "targetCountry",
+		"content": "Target country",
+		"description": ""
+	},
+	{
+		"key": "substitute",
+		"content": "Substitute",
+		"description": ""
+	},
+	{
+		"key": "target",
+		"content": "Target",
+		"description": ""
+	},
+	{
+		"key": "project",
+		"content": "Project",
+		"description": ""
+	},
+	{
+		"key": "oneTargetLocaleRequired",
+		"content": "At least 1 target locale is <strong>required</strong>",
+		"description": ""
+	},
+	{
+		"key": "selectLocaleAndTarget",
+		"content": "Select source locale and at least 1 target locale to add substitutes",
+		"description": ""
+	},
+	{
+		"key": "incorrect",
+		"content": "Incorrect",
+		"description": ""
+	},
+	{
+		"key": "archiveMessageDialog",
+		"content": "Are you sure you want to archive selected message",
+		"description": ""
+	},
+	{
+		"key": "invalidateTranslationDialog",
+		"content": "Are you sure you want to invalidate this translation",
+		"description": ""
+	},
+	{
+		"key": "invalidationSuccess",
+		"content": "Translation invalidated successfully",
+		"description": ""
+	},
+	{
+		"key": "removeItemDialog",
+		"content": "Are you sure you want to remove this item",
+		"description": ""
+	},
+	{
+		"key": "substituteFromLocale",
+		"content": "Substitute from locale",
+		"description": ""
+	},
+	{
+		"key": "uploadCSVTranslations",
+		"content": "Upload csv file with translations",
+		"description": ""
+	},
+	{
+		"key": "downloadMissingTranslations",
+		"content": "Download report with list of missing translations",
 		"description": ""
 	}
 ]

@@ -128,5 +128,1240 @@
 				"content": ""
 			}
 		]
+	},
+	{
+		"messageKey": "selectLanguage",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wybierz język"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "loggedAs",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Zalogowany jako"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "projects",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Projekty"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "messages",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wiadomości"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "selectProject",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wybierz projekt"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "filter",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Filtr"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "addProject",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Dodaj nowy projekt"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "sourceLocale",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Język źródłowy"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "actions",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Działania"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "itemsPerPage",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wyników na stronie"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "of",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "z"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "edit",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Edytuj"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "download",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Pobierz"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "selectLocale",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wybierz język"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "getReport",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Raport dla danego języka"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "locales",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Języki"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "downloadReport",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Pobierz raport"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "uploadTranslations",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Import tłumaczeń"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "missing",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Brak"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "outdated",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nieaktualne"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "invalid",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Niepoprawne"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "key",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Klucz"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "content",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Zawartość"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "translation",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Tłumaczenie"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "status",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Status"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "selectToSee",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wybierz projekt i język by zobaczyć wiadomości"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "correct",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Poprawne"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "updateDate",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Zaktualizowano"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "description",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Opis"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "lastUpdated",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Ostatnia aktualizacja"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "update",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Aktualizuj"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "invalidate",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Unieważnij"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "add",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Dodaj"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "useSubstitute",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Użyj tego zamiennika"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "translationInvalidated",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Tłumaczenie oznaczone jako unieważnione"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "previousMessageContent",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Poprzednia zawartość wiadomości"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "translationOutdated",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Tłumaczenie jest nieaktualne"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "cancel",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Anuluj"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "clear",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wyczyść"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "homepage",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Strona domowa"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Startseite"
+			}
+		]
+	},
+	{
+		"messageKey": "developers",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Dla deweloperów"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Entwickler"
+			}
+		]
+	},
+	{
+		"messageKey": "translators",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Dla tłumaczy"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Übersetzer"
+			}
+		]
+	},
+	{
+		"messageKey": "logout",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wyloguj"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Ausloggen"
+			}
+		]
+	},
+	{
+		"messageKey": "accessDenied",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Brak dostępu, musisz się najpierw zalogować"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "goToLogin",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Przejdź to strony logowania"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "projectRequired",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nazwa projektu jest <strong>wymagana</strong>"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "sourceRequired",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Język źródłowy jest <strong>wymagany</strong>"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "wrongPattern",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Błędny wzór: wymagane 2 małe litery"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "sourceCountry",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Kraj pochodzenia jest <strong>wymagany</strong>"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "wrongPatternBig",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Błedny wzór: wymagane 2 duże litery"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "targetLocales",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Docelowe języki"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "addTargetLocale",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Dodaj docelowy język"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "remove",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Usuń"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Entfernen"
+			}
+		]
+	},
+	{
+		"messageKey": "addReplacements",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Dodaj więcej zamienników"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "projectName",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nazwa projektu"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "nothingFound",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nic nie znaleziono"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "importMessages",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Dodaj wiadomości"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "importMessagesTooltip",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Dodaj wiadomości z pliku CSV"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "projectNotSelected",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nie wybrano projektu"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "messageKeyRequired",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Klucz wiadomości jest <strong>wymagany</strong>"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "messageContentRequired",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Zawartość wiadomości jest <strong>wymagana</strong>"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "archive",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Archiwizuj"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Archiv"
+			}
+		]
+	},
+	{
+		"messageKey": "messageHistory",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Historia wiadomości"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "missingTranslations",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Brakujace tłumaczenia dla języków"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "translations",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Tłumaczenia"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Übersetzungen"
+			}
+		]
+	},
+	{
+		"messageKey": "listOfTranslations",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Lista istniejących tłumaczeń"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "history",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Historia"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Geschichte"
+			}
+		]
+	},
+	{
+		"messageKey": "addMessage",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Dodaj nową wiadomość"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "selectProjectToSee",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wybierz projekt by zoabczyć wiadomości"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "goBack",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Powrót"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Zurückgehen"
+			}
+		]
+	},
+	{
+		"messageKey": "createdBy",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Utworzone przez"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "locale",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Język"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "isValid",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Czy poprawne"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "yes",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Tak"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Ja"
+			}
+		]
+	},
+	{
+		"messageKey": "no",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nie"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Nein"
+			}
+		]
+	},
+	{
+		"messageKey": "noHistory",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nie znaleziono historii"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "message",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wiadomość"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Botschaft"
+			}
+		]
+	},
+	{
+		"messageKey": "translationsSummary",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wykres podsumowujący tłumaczenia"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "expandToSee",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Rozwiń by zobaczyć szczegółowe informacje"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "sourceCountryPlaceholder",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Kraj źródłowy"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "targetLanguage",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Docelowy język"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "targetCountry",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Docelowy kraj"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "substitute",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Zamiennik"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "target",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Docelowy"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "project",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Projekt"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "oneTargetLocaleRequired",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Conajmniej 1 docelowy język jest <strong>wymagany</strong>"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "selectLocaleAndTarget",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Wybierz język źródłowy, oraz conajmniej 1 język docelowy by dodać zamienniki"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "incorrect",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Nieprawidłowy"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "archiveMessageDialog",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Czy jesteś pewien, by zarchiwizować wybraną wiadomość"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "invalidateTranslationDialog",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Czy jesteś pewien, by unieważnić to tłumaczenie"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "invalidationSuccess",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Tłumaczenie unieważnione pomyślnie"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "removeItemDialog",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Czy jesteś pewien, że chcesz to usunąć"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "substituteFromLocale",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Zamiennik z języka"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "uploadCSVTranslations",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Importuj tłumaczenia z pliku CSV"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "downloadMissingTranslations",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Pobierz raport z brakującymi tłumaczeniami"
+			},
+			{
+				"locale": "de_DE",
+				"content": ""
+			}
+		]
 	}
 ]

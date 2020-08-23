@@ -1,36 +1,36 @@
 <button mat-raised-button color="primary" (click)="goBack()">
 	<mat-icon>keyboard_arrow_left</mat-icon>
-	Go back
+	{{'goBack' | translate}}
 </button>
 
-<h3>Translation</h3>
-<p><strong>Update date:</strong> {{auditedTranslation.updateDate | date:'dd.MM.yyyy HH:mm'}}</p>
-<p><strong>Created by:</strong> {{auditedTranslation.createdBy}}</p>
-<p><strong>Content:</strong> {{auditedTranslation.content}}</p>
-<p><strong>Locale:</strong> {{auditedTranslation.locale}}</p>
-<p *ngIf="auditedTranslation.isValid"><strong>Is valid:</strong> Yes</p>
-<p *ngIf="!auditedTranslation.isValid"><strong>Is valid:</strong> No</p>
+<h3>{{'translation' | translate}}</h3>
+<p><strong>{{'updateDate' | translate}}:</strong> {{auditedTranslation.updateDate | date:'dd.MM.yyyy HH:mm'}}</p>
+<p><strong>{{'createdBy' | translate}}:</strong> {{auditedTranslation.createdBy}}</p>
+<p><strong>{{'content' | translate}}:</strong> {{auditedTranslation.content}}</p>
+<p><strong>{{'locale' | translate}}:</strong> {{auditedTranslation.locale}}</p>
+<p *ngIf="auditedTranslation.isValid"><strong>{{'isValid' | translate}}:</strong> {{'yes' | translate}}</p>
+<p *ngIf="!auditedTranslation.isValid"><strong>{{'isValid' | translate}}:</strong> {{'no' | translate}}</p>
 
 <mat-divider></mat-divider>
 
-<h3>History</h3>
+<h3>{{'history' | translate}}</h3>
 <ol>
 	<li *ngFor="let version of translationVersions">
 		<p>
-			<strong>Update date:</strong> {{version.updateDate | date:'dd.MM.yyyy HH:mm'}}
+			<strong>{{'updateDate' | translate}}:</strong> {{version.updateDate | date:'dd.MM.yyyy HH:mm'}}
 		</p>
 		<p>
-			<strong>Created by:</strong> {{version.createdBy}}
+			<strong>{{'createdBy' | translate}}:</strong> {{version.createdBy}}
 		</p>
 		<div class="subcontent">
 			<p>
-				<strong>Content:</strong> {{version.content}}
+				<strong>{{'content' | translate}}:</strong> {{version.content}}
 			</p>
 			<p *ngIf="version.isValid">
-				<strong>Is valid:</strong> Yes
+				<strong>{{'isValid' | translate}}:</strong> {{'yes' | translate}}
 			</p>
 			<p *ngIf="!version.isValid">
-				<strong>Is valid:</strong> No
+				<strong>{{'isValid' | translate}}:</strong> {{'no' | translate}}
 			</p>
 
 		</div>
@@ -39,5 +39,5 @@
 </ol>
 <mat-spinner *ngIf="loadingResults"></mat-spinner>
 <p *ngIf="!loadingResults && translationVersions.length < 1">
-	No history found.
+	{{'noHistory' | translate}}.
 </p>

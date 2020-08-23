@@ -27,7 +27,7 @@ export class DevProjectsComponent implements OnInit {
 	filteredTargetLanguages: Observable<any[]>;
 	filteredTargetCountries: Observable<any[]>;
 
-	formMode = 'Add';
+	formMode = 'add';
 	toUpdate: any = null;
 	showForm = false;
 
@@ -183,7 +183,7 @@ export class DevProjectsComponent implements OnInit {
 
 	editProject(project: ProjectForDeveloper) {
 		this.toUpdate = project;
-		this.formMode = 'Update';
+		this.formMode = 'update';
 		this.clearForm();
 		this.selectedRowIndex = project.id;
 		if (this.showForm === false) {
@@ -213,7 +213,7 @@ export class DevProjectsComponent implements OnInit {
 			if (response !== null) {
 				this.getProjects();
 				this.toUpdate = null;
-				this.formMode = 'Add';
+				this.formMode = 'add';
 				this.snackbar.snackSuccess('Success!', 'OK');
 				this.selectedRowIndex = -1;
 				this.clearForm();
@@ -250,7 +250,7 @@ export class DevProjectsComponent implements OnInit {
 	cancelUpdate() {
 		this.toUpdate = null;
 		this.selectedRowIndex = -1;
-		this.formMode = 'Add';
+		this.formMode = 'add';
 		this.showForm = false;
 		this.clearForm();
 	}

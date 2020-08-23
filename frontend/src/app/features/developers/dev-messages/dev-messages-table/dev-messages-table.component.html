@@ -15,33 +15,36 @@
 	<table class="table-container" mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
 		<ng-container matColumnDef="key">
-			<th mat-header-cell *matHeaderCellDef>Key</th>
+			<th mat-header-cell *matHeaderCellDef>{{'key' | translate}}</th>
 			<td mat-cell *matCellDef="let message">{{message.key | shorten: [40, '...']}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="content">
-			<th mat-header-cell *matHeaderCellDef>Content</th>
+			<th mat-header-cell *matHeaderCellDef>{{'content' | translate}}</th>
 			<td mat-cell *matCellDef="let message">{{message.content | shorten: [40, '...']}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="translations">
-			<th mat-header-cell *matHeaderCellDef>Translations</th>
-			<td mat-cell *matCellDef="let message" matTooltip="correct/incorrect/missing" matTooltipClass="tooltip-font">
-				{{message.translationStatuses['correct']}}/{{message.translationStatuses['incorrect']}}/{{message.translationStatuses['missing']}}
+			<th mat-header-cell *matHeaderCellDef>{{'translations' | translate}}</th>
+			<td mat-cell *matCellDef="let message"
+				matTooltip="{{'correct' | translate | lowercase}}/{{'incorrect' | translate | lowercase}}/{{'missing' | translate | lowercase}}"
+				matTooltipClass="tooltip-font">
+				{{message.translationStatuses['correct']}}/{{message.translationStatuses['incorrect']}}
+				/{{message.translationStatuses['missing']}}
 			</td>
 		</ng-container>
 
 		<ng-container matColumnDef="actions">
-			<th mat-header-cell *matHeaderCellDef>Actions</th>
+			<th mat-header-cell *matHeaderCellDef>{{'actions' | translate}}</th>
 			<td mat-cell *matCellDef="let message">
 				<p>
 					<button color="primary" mat-button (click)="editMessage(message)">
 						<mat-icon>edit</mat-icon>
-						Edit
+						{{'edit' | translate}}
 					</button>
 					<button color="warn" mat-button (click)="archiveMessage(message.id)">
 						<mat-icon>archive</mat-icon>
-						Archive
+						{{'archive' | translate}}
 					</button>
 				</p>
 			</td>
@@ -52,38 +55,40 @@
 				<div class="message-detail" [@detailExpand]="row == expandedRow ? 'expanded' : 'collapsed'">
 					<div class="padding-inside">
 						<p>
-							<strong>Update date:</strong> {{row.updateDate | date:'dd.MM.yyyy HH:mm'}}
+							<strong>{{'updateDate' | translate}}:</strong> {{row.updateDate | date:'dd.MM.yyyy HH:mm'}}
 						</p>
 						<p>
-							<strong>Content:</strong> {{row.content}}
+							<strong>{{'content' | translate}}:</strong> {{row.content}}
 						</p>
 						<p>
-							<strong>Description: </strong> {{row.description}}
+							<strong>{{'description' | translate}}: </strong> {{row.description}}
 						</p>
 
 						<p>
-							<button mat-button routerLink="/developer/message/{{row.id}}" routerLinkActive="active" (click)="auditMessage(row)">
+							<button mat-button routerLink="/developer/message/{{row.id}}" routerLinkActive="active"
+									(click)="auditMessage(row)">
 								<mat-icon>info</mat-icon>
-								Message history
+								{{'messageHistory' | translate}}
 							</button>
 						</p>
 
 						<p class="warning" *ngIf="row.missingLocales.length > 0">
-							Missing translations for locales: {{row.missingLocales.join(',  ')}}
+							{{'missingTranslations' | translate}}: {{row.missingLocales.join(',  ')}}
 						</p>
 
 						<div *ngIf="row.translations.length < 1">
-							<strong>Translations: </strong> none.
+							<strong>{{'translations' | translate}}: </strong> none.
 						</div>
 						<div *ngIf="row.translations.length > 0">
-							<p>List of existing translations:</p>
+							<p>{{'listOfTranslations' | translate}}:</p>
 							<div *ngFor="let translation of row.translations; let i = index">
 								<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
 									<div>
-										<button mat-button routerLink="/developer/translation/{{translation.id}}" routerLinkActive="active"
+										<button mat-button routerLink="/developer/translation/{{translation.id}}"
+												routerLinkActive="active"
 												(click)="auditTranslation(translation)">
 											<mat-icon>info</mat-icon>
-											History
+											{{'history' | translate}}
 										</button>
 									</div>
 									<div>
@@ -103,7 +108,8 @@
 		<ng-container matColumnDef="add-new-message">
 			<th [attr.colspan]="displayedColumns.length" mat-header-cell *matHeaderCellDef>
 				<div class="add-button">
-					<button mat-raised-button color="accent" type="button" (click)="toggleForm()">Add new message</button>
+					<button mat-raised-button color="accent" type="button"
+							(click)="toggleForm()">{{'addMessage' | translate}}</button>
 				</div>
 			</th>
 		</ng-container>
@@ -122,4 +128,5 @@
 	</table>
 
 </div>
-<app-nothing-found [nothingFound]="messages.length == 0 && !isLoadingResults" [message]="'Select project to see messages.'"></app-nothing-found>
+<app-nothing-found [nothingFound]="messages.length == 0 && !isLoadingResults"
+				   [message]="('selectProjectToSee' | translate) + '.'"></app-nothing-found>
