@@ -38,6 +38,57 @@
 			<app-aggregate-info [selectedProjectId]="selectedProjectId"></app-aggregate-info>
 		</div>
 
+		<div *ngIf="showForm" class="form-wrapper">
+			<mat-card id="form-messages" *ngIf="showForm" class="form-container mat-elevation-z4">
+				<h1>{{formMode}} message</h1>
+				<mat-label *ngIf="!selectedProject" class="warning"><strong>Project not selected!</strong></mat-label>
+
+				<form [formGroup]="messageParams">
+
+					<mat-form-field class="form-field">
+						<input formControlName="key"
+							   placeholder="Key"
+							   matInput
+							   required>
+						<mat-error *ngIf="messageParams.get('key').hasError('required')">
+							Message key is <strong>required</strong>
+						</mat-error>
+					</mat-form-field>
+
+					<mat-form-field>
+						<input formControlName="content"
+							   placeholder="Content"
+							   matInput
+							   required>
+						<mat-error *ngIf="messageParams.get('content').hasError('required')">
+							Message content is <strong>required</strong>
+						</mat-error>
+					</mat-form-field>
+
+					<mat-form-field>
+			<textarea formControlName="description"
+					  placeholder="Description"
+					  matInput
+					  cdkTextareaAutosize
+					  cdkAutosizeMinRows="1"
+					  cdkAutosizeMaxRows="5"></textarea>
+					</mat-form-field>
+
+					<div class="buttons-row">
+						<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="(!messageParams.valid || !selectedProject)" (click)="createMessage(messageParams)">
+							{{formMode}}
+						</button>
+						<button class="button-spacer" mat-button color="warn" type="button" (click)="cancelUpdate()">
+							Cancel
+						</button>
+						<button mat-raised-button color="warn" type="button" (click)="clearForm(messageParams)">
+							Clear
+						</button>
+					</div>
+
+				</form>
+			</mat-card>
+		</div>
 
 		<div [id]="messagesTableId" fxLayout="row" fxLayoutAlign="space-evenly start">
 			<div class="app-table-wrapper">
@@ -50,57 +101,7 @@
 					[selectedProject]="selectedProject"></app-dev-messages-table>
 			</div>
 
-			<div *ngIf="showForm" class="form-wrapper">
-				<mat-card id="form-messages" *ngIf="showForm" class="form-container mat-elevation-z4">
-					<h1>{{formMode}} message</h1>
-					<mat-label *ngIf="!selectedProject" class="warning"><strong>Project not selected!</strong></mat-label>
 
-					<form [formGroup]="messageParams">
-
-						<mat-form-field class="form-field">
-							<input formControlName="key"
-								   placeholder="Key"
-								   matInput
-								   required>
-							<mat-error *ngIf="messageParams.get('key').hasError('required')">
-								Message key is <strong>required</strong>
-							</mat-error>
-						</mat-form-field>
-
-						<mat-form-field>
-							<input formControlName="content"
-								   placeholder="Content"
-								   matInput
-								   required>
-							<mat-error *ngIf="messageParams.get('content').hasError('required')">
-								Message content is <strong>required</strong>
-							</mat-error>
-						</mat-form-field>
-
-						<mat-form-field>
-			<textarea formControlName="description"
-					  placeholder="Description"
-					  matInput
-					  cdkTextareaAutosize
-					  cdkAutosizeMinRows="1"
-					  cdkAutosizeMaxRows="5"></textarea>
-						</mat-form-field>
-
-						<div class="buttons-row">
-							<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="(!messageParams.valid || !selectedProject)" (click)="createMessage(messageParams)">
-								{{formMode}}
-							</button>
-							<button class="button-spacer" mat-button color="warn" type="button" (click)="cancelUpdate()">
-								Cancel
-							</button>
-							<button mat-raised-button color="warn" type="button" (click)="clearForm(messageParams)">
-								Clear
-							</button>
-						</div>
-
-					</form>
-				</mat-card>
-			</div>
 		</div>
 
 
@@ -109,7 +110,7 @@
 
 	<div *ngIf="showProjectForm">
 
-		<app-dev-project-form></app-dev-project-form>
+		<app-dev-project-form (hideForm)="hideForm($event)"></app-dev-project-form>
 
 	</div>
 

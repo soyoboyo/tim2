@@ -239,4 +239,8 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	editCurrentProject() {
 		this.showProjectForm = false;
 	}
+
+	hideForm(stateChange: boolean) {
+		this.showProjectForm = false;
+	}
 }

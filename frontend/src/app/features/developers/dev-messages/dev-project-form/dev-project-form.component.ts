@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Project } from '../../../../shared/types/entities/Project';
@@ -44,6 +44,8 @@ export class DevProjectFormComponent implements OnInit {
 	allCountries: string[] = [];
 	allTargetLanguages: string[] = [];
 	allTargetCountries: string[] = [];
+
+	@Output() hideForm = new EventEmitter<boolean>();
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
@@ -292,6 +294,8 @@ export class DevProjectFormComponent implements OnInit {
 		this.availableReplacements = [];
 		this.selectedTargetLocales = [];
 		this.cd.markForCheck();
+		this.showForm = false;
+		this.hideForm.emit(true);
 	}
 
 	onSelectSourceLanguage(language: string) {
