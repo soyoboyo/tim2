@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Project } from '../../../../shared/types/entities/Project';
@@ -7,7 +7,7 @@ import { SnackbarService } from '../../../../shared/services/snackbar-service/sn
 import { ConfirmationDialogService } from '../../../../shared/services/confirmation-dialog/confirmation-dialog.service';
 import { map, startWith } from 'rxjs/operators';
 import { ProjectDTO } from '../../../../shared/types/DTOs/input/ProjectDTO';
-import { ProjectForDeveloper } from '../../../../shared/types/DTOs/output/ProjectForDeveloper';
+import { ProjectsStoreService } from '../../../../stores/projects-store/projects-store.service';
 
 @Component({
 	selector: 'app-dev-project-form',
@@ -15,6 +15,10 @@ import { ProjectForDeveloper } from '../../../../shared/types/DTOs/output/Projec
 	styleUrls: ['./dev-project-form.component.scss']
 })
 export class DevProjectFormComponent implements OnInit {
+
+	formMode = 'Add';
+	toUpdate: any = null;
+	isLoadingResults = true;
 
 	projectParams: FormGroup;
 	projectNameControl = new FormControl([''], [Validators.required]);
@@ -27,15 +31,6 @@ export class DevProjectFormComponent implements OnInit {
 	filteredTargetLanguages: Observable<any[]>;
 	filteredTargetCountries: Observable<any[]>;
 
-	formMode = 'Add';
-	toUpdate: any = null;
-	showForm = false;
-
-	isLoadingResults = true;
-	selectedRowIndex = -1;
-
-	projects: Project[] = [];
-
 	sourceLocale: string = null;
 	selectedTargetLocales: string[] = [];
 	availableReplacements: string[] = [];
@@ -46,18 +41,21 @@ export class DevProjectFormComponent implements OnInit {
 	allTargetCountries: string[] = [];
 
 	@Output() hideForm = new EventEmitter<Project>();
+	@Input() formModeInput: any;
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
 				private http: RestService,
 				private snackbar: SnackbarService,
-				private confirmService: ConfirmationDialogService) {
+				private confirmService: ConfirmationDialogService,
+				private projectStoreService: ProjectsStoreService,) {
 	}
-
 
 	ngOnInit() {
 		this.initProjectForm();
-		this.getProjects();
+		if (this.formModeInput !== 'Add') {
+			this.editProject(this.projectStoreService.getSelectedProject());
+		}
 		this.getLocales();
 
 		this.filteredLanguages = this.sourceLanguageControl.valueChanges
@@ -79,7 +77,6 @@ export class DevProjectFormComponent implements OnInit {
 		.pipe(
 			startWith(''),
 			map(country => country ? this.filterLocales(country, this.allTargetCountries) : this.allTargetCountries.slice()));
-
 	}
 
 	async getLocales() {
@@ -87,13 +84,6 @@ export class DevProjectFormComponent implements OnInit {
 		this.allCountries = await this.http.getAll('locales/countries/getAll');
 		this.allTargetLanguages = this.allLanguages;
 		this.allTargetCountries = this.allCountries;
-	}
-
-	async getProjects() {
-		this.isLoadingResults = true;
-		this.projects = await this.http.getAll('project/developer/getAll');
-		this.projects = [].concat(this.projects);
-		this.isLoadingResults = false;
 	}
 
 	private filterLocales(value: string, fullArray: string[]): any[] {
@@ -122,17 +112,17 @@ export class DevProjectFormComponent implements OnInit {
 	}
 
 	addReplacableLocale() {
-		const control = <FormArray> this.projectParams.get('replacableLocale');
+		const control = this.projectParams.get('replacableLocale') as FormArray;
 		control.push(this.initReplacableLocale());
 	}
 
 	removeReplacableLocale(i: number) {
-		const control = <FormArray> this.projectParams.get('replacableLocale');
+		const control = this.projectParams.get('replacableLocale') as FormArray;
 		control.removeAt(i);
 	}
 
 	addExistingReplacableLocale(replaced: string, replacement: string) {
-		const control = <FormArray> this.projectParams.get('replacableLocale');
+		const control = this.projectParams.get('replacableLocale') as FormArray;
 		control.push(this.initExistingReplacableLocale(replaced, replacement));
 	}
 
@@ -160,9 +150,6 @@ export class DevProjectFormComponent implements OnInit {
 			sourceLocale,
 			targetLocales,
 			replacements);
-
-		console.log(body);
-
 		if (!this.toUpdate) {
 			this.addProject(body);
 		} else {
@@ -186,41 +173,47 @@ export class DevProjectFormComponent implements OnInit {
 		});
 	}
 
-	editProject(project: ProjectForDeveloper) {
+	editProject(project: Project) {
+		console.log('edit project form');
+
 		this.toUpdate = project;
 		this.formMode = 'Update';
 		this.clearForm();
-		this.selectedRowIndex = project.id;
-		if (this.showForm === false) {
-			this.showForm = true;
-		}
-		this.sourceLocale = project.sourceLanguage + '_' + project.sourceCountry;
+
+		const localeParts: string[] = project.sourceLocale.split('_');
+		const sourceLanguage: string = localeParts[0];
+		const sourceCountry = localeParts[1];
 		this.projectParams.patchValue({
 			projectName: project.name,
-			sourceLanguage: project.sourceLanguage,
-			sourceCountry: project.sourceCountry,
+			sourceLanguage,
+			sourceCountry,
 			targetLanguage: '',
 			targetCountry: ''
 		});
-		this.selectedTargetLocales = [].concat(project.targetLocales);
-		this.availableReplacements = [].concat(project.availableReplacements);
+		const stringTargetLocales: string[] = [];
+		project.targetLocales.forEach((o) => {
+			stringTargetLocales.push(o.locale);
+		});
+		this.selectedTargetLocales = [].concat(stringTargetLocales);
+		this.availableReplacements = [].concat(stringTargetLocales);
 
-		const replacements = project.substitutes;
+		const replacements = project.replaceableLocaleToItsSubstitute;
 		Object.keys(replacements).forEach((key) => {
-			const replacedLocale = key;
+			console.log(key);
+
+			const replacedLocale = key.split('=')[2].substring(0, 5);
+
 			const replacement = replacements[key];
-			this.addExistingReplacableLocale(replacedLocale, replacement);
+			this.addExistingReplacableLocale(replacedLocale, replacement.locale);
 		});
 	}
 
 	updateProject(body) {
 		this.http.update('project/update/' + this.toUpdate.id, body).subscribe((response) => {
 			if (response !== null) {
-				this.getProjects();
 				this.toUpdate = null;
 				this.formMode = 'Add';
 				this.snackbar.snackSuccess('Success!', 'OK');
-				this.selectedRowIndex = -1;
 				this.clearForm();
 			} else {
 				this.snackbar.snackError('Error', 'OK');
@@ -230,33 +223,11 @@ export class DevProjectFormComponent implements OnInit {
 		});
 	}
 
-	async removeProject(id: any) {
-		await this.confirmService.openDialog().subscribe((result) => {
-			if (result) {
-				this.http.remove('message/remove/' + id).subscribe((response) => {
-					if (response.success) {
-						this.snackbar.snackSuccess(response.message, 'OK');
-					} else {
-						this.snackbar.snackError('Error', 'OK');
-					}
-					this.getProjects();
-				}, (error) => {
-					this.snackbar.snackError(error.error.message, 'OK');
-				});
-			}
-		});
-		this.selectedRowIndex = -1;
-	}
-
-	toggleForm() {
-		this.showForm = !this.showForm;
-	}
 
 	cancelUpdate() {
 		this.toUpdate = null;
-		this.selectedRowIndex = -1;
 		this.formMode = 'Add';
-		this.showForm = false;
+		this.hideForm.emit(this.projectStoreService.getSelectedProject());
 		this.clearForm();
 	}
 
@@ -289,14 +260,13 @@ export class DevProjectFormComponent implements OnInit {
 		this.projectParams.markAsPristine();
 		this.projectParams.markAsUntouched();
 		this.projectParams.reset();
-		const replacementControls = <FormArray> this.projectParams.get('replacableLocale');
+		const replacementControls = this.projectParams.get('replacableLocale') as FormArray;
 		while (replacementControls.controls.length > 0) {
 			replacementControls.removeAt(0);
 		}
 		this.availableReplacements = [];
 		this.selectedTargetLocales = [];
 		this.cd.markForCheck();
-		this.showForm = false;
 	}
 
 	onSelectSourceLanguage(language: string) {

@@ -109,9 +109,7 @@
 
 
 	<div *ngIf="showProjectForm">
-
-		<app-dev-project-form (hideForm)="projectCreated($event)"></app-dev-project-form>
-
+		<app-dev-project-form #devProjectForm (hideForm)="projectCreated($event)" [formModeInput]="formMode"></app-dev-project-form>
 	</div>
 
 

@@ -7,6 +7,7 @@ import { ConfirmationDialogService } from '../../../shared/services/confirmation
 import { ProjectsStoreService } from '../../../stores/projects-store/projects-store.service';
 import { UtilsService } from '../../../shared/services/utils-service/utils.service';
 import { Project } from '../../../shared/types/entities/Project';
+import { Subject } from 'rxjs';
 
 @Component({
 	selector: 'app-dev-messages',
@@ -35,6 +36,9 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	targetLocales: string[] = [];
 	showProjectForm = false;
 
+	projectToEdit: Subject<Project> = new Subject();
+
+
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
 				private http: RestService,
@@ -45,6 +49,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 				private utilsService: UtilsService) {
 		this.selectedProject = this.projectStoreService.getSelectedProject();
 	}
+
 
 	ngOnInit() {
 		this.initProjectForm();
@@ -109,6 +114,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	}
 
 	changeProject(value) {
+		this.showProjectForm = false;
 		this.cancelUpdate();
 		this.selectedProject = value;
 		this.targetLocales = [];
@@ -238,7 +244,11 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	}
 
 	editCurrentProject() {
+		this.formMode = 'Update';
 		this.showProjectForm = true;
+		console.log(this.selectedProject);
+		this.projectToEdit.next(this.selectedProject);
+		this.projectToEdit.next(this.selectedProject);
 	}
 
 	projectCreated(result: Project) {
