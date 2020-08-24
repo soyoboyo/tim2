@@ -25,6 +25,7 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	private dataMissing: number[] = [];
 	private messagesTotal = 0;
 	previousProjectId = -1;
+	panelIsOpened = false;
 
 	constructor(private http: RestService, private utilsService: UtilsService) {
 	}
@@ -33,13 +34,11 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		console.log('changes');
-		console.log(changes);
-		console.log(this.selectedProjectId);
 		if (this.previousProjectId !== this.selectedProjectId) {
+			this.labels = [];
 			this.getAggregatedInfo();
+			this.previousProjectId = this.selectedProjectId;
 		}
-		this.previousProjectId = this.selectedProjectId;
 	}
 
 	ngAfterViewInit(): void {
@@ -48,7 +47,7 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	}
 
 	public async getAggregatedInfo() {
-		if (this.selectedProjectId !== null && this.previousProjectId !== this.selectedProjectId) {
+		if (this.selectedProjectId !== null && this.panelIsOpened && this.labels.length === 0) {
 			const response = await this.http.getAll('project/developer/aggregate/' + this.selectedProjectId);
 			this.aggregatedInfo = response;
 			this.messagesTotal = response.messagesTotal;
