@@ -53,13 +53,11 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 		this.selectedProject = this.projectStoreService.getSelectedProject();
 	}
 
-
 	ngOnInit() {
 		this.initProjectForm();
 		this.getProjects();
 		this.getMessages();
 	}
-
 
 	initProjectForm() {
 		this.messageParams = this.formBuilder.group({

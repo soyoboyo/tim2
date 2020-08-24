@@ -1,6 +1,5 @@
-<!--<mat-accordion *ngIf="aggregatedInfo !== null">-->
 <mat-accordion>
-	<mat-expansion-panel>
+	<mat-expansion-panel (opened)="getAggregatedInfo()">
 		<mat-expansion-panel-header>
 			<mat-panel-title>
 				Translations summary chart
