@@ -31,10 +31,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Zaloguj się by móc wykonywać czynności"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -96,10 +92,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Nazwa użytkownika jest <strong>wymagana</strong>"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -109,10 +101,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Hasło jest <strong>wymagane</strong>"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -122,10 +110,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Zły login lub hasło"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -138,7 +122,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Sprache wählen"
 			}
 		]
 	},
@@ -151,7 +135,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Angemeldet als"
 			}
 		]
 	},
@@ -164,7 +148,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Projekte"
 			}
 		]
 	},
@@ -177,7 +161,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Mitteilungen"
 			}
 		]
 	},
@@ -190,7 +174,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Wählen Sie ein Projekt"
 			}
 		]
 	},
@@ -203,7 +187,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Filter"
 			}
 		]
 	},
@@ -213,10 +197,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Dodaj nowy projekt"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -229,7 +209,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Ausgangssprache"
 			}
 		]
 	},
@@ -242,7 +222,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Aktionen"
 			}
 		]
 	},
@@ -255,7 +235,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Ergebnisse pro Seite"
 			}
 		]
 	},
@@ -268,7 +248,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "von"
 			}
 		]
 	},
@@ -281,7 +261,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Bearbeiten"
 			}
 		]
 	},
@@ -294,7 +274,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Herunterladen"
 			}
 		]
 	},
@@ -307,7 +287,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Sprache wählen"
 			}
 		]
 	},
@@ -317,10 +297,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Raport dla danego języka"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -333,7 +309,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Sprachen"
 			}
 		]
 	},
@@ -346,7 +322,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Bericht herunterladen"
 			}
 		]
 	},
@@ -359,7 +335,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Übersetzungen hochladen"
 			}
 		]
 	},
@@ -372,7 +348,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Vermisst"
 			}
 		]
 	},
@@ -385,7 +361,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Veraltet"
 			}
 		]
 	},
@@ -398,7 +374,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Ungültig"
 			}
 		]
 	},
@@ -411,7 +387,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Schlüssel"
 			}
 		]
 	},
@@ -424,7 +400,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Inhalt"
 			}
 		]
 	},
@@ -437,7 +413,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Übersetzung"
 			}
 		]
 	},
@@ -450,7 +426,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Status"
 			}
 		]
 	},
@@ -460,10 +436,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Wybierz projekt i język by zobaczyć wiadomości"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -476,7 +448,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Richtig"
 			}
 		]
 	},
@@ -489,7 +461,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Aktualisierungsdatum"
 			}
 		]
 	},
@@ -502,7 +474,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Beschreibung"
 			}
 		]
 	},
@@ -515,7 +487,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Letzte Aktualisierung"
 			}
 		]
 	},
@@ -528,7 +500,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Aktualisieren"
 			}
 		]
 	},
@@ -541,7 +513,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Ungültig machen"
 			}
 		]
 	},
@@ -554,7 +526,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Hinzufügen"
 			}
 		]
 	},
@@ -564,10 +536,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Użyj tego zamiennika"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -577,10 +545,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Tłumaczenie oznaczone jako unieważnione"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -590,10 +554,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Poprzednia zawartość wiadomości"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -603,10 +563,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Tłumaczenie jest nieaktualne"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -619,7 +575,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Stornieren"
 			}
 		]
 	},
@@ -632,7 +588,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Löschen"
 			}
 		]
 	},
@@ -694,10 +650,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Brak dostępu, musisz się najpierw zalogować"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -707,10 +659,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Przejdź to strony logowania"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -720,10 +668,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Nazwa projektu jest <strong>wymagana</strong>"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -733,10 +677,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Język źródłowy jest <strong>wymagany</strong>"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -746,10 +686,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Błędny wzór: wymagane 2 małe litery"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -759,10 +695,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Kraj pochodzenia jest <strong>wymagany</strong>"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -772,10 +704,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Błedny wzór: wymagane 2 duże litery"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -788,7 +716,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Zielsprachen"
 			}
 		]
 	},
@@ -798,10 +726,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Dodaj docelowy język"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -824,10 +748,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Dodaj więcej zamienników"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -840,7 +760,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Projektname"
 			}
 		]
 	},
@@ -853,7 +773,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Nichts gefunden"
 			}
 		]
 	},
@@ -866,7 +786,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Nachrichten importieren"
 			}
 		]
 	},
@@ -876,10 +796,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Dodaj wiadomości z pliku CSV"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -889,10 +805,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Nie wybrano projektu"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -902,10 +814,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Klucz wiadomości jest <strong>wymagany</strong>"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -915,10 +823,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Zawartość wiadomości jest <strong>wymagana</strong>"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -944,7 +848,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Nachrichtenverlauf"
 			}
 		]
 	},
@@ -954,10 +858,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Brakujace tłumaczenia dla języków"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -980,10 +880,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Lista istniejących tłumaczeń"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -1009,7 +905,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Neue Nachricht hinzufügen"
 			}
 		]
 	},
@@ -1019,10 +915,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Wybierz projekt by zoabczyć wiadomości"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -1048,7 +940,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Erstellt von"
 			}
 		]
 	},
@@ -1061,7 +953,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Sprache"
 			}
 		]
 	},
@@ -1074,7 +966,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Ist gültig"
 			}
 		]
 	},
@@ -1110,10 +1002,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Nie znaleziono historii"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -1136,10 +1024,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Wykres podsumowujący tłumaczenia"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -1149,10 +1033,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Rozwiń by zobaczyć szczegółowe informacje"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -1165,7 +1045,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Herkunftsland"
 			}
 		]
 	},
@@ -1178,7 +1058,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Zielsprache"
 			}
 		]
 	},
@@ -1191,7 +1071,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Zielland"
 			}
 		]
 	},
@@ -1204,7 +1084,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Ersatz"
 			}
 		]
 	},
@@ -1217,7 +1097,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Ziel"
 			}
 		]
 	},
@@ -1230,7 +1110,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Projekt"
 			}
 		]
 	},
@@ -1240,10 +1120,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Conajmniej 1 docelowy język jest <strong>wymagany</strong>"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -1253,10 +1129,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Wybierz język źródłowy, oraz conajmniej 1 język docelowy by dodać zamienniki"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -1269,7 +1141,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Falsch"
 			}
 		]
 	},
@@ -1279,10 +1151,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Czy jesteś pewien, by zarchiwizować wybraną wiadomość"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -1292,10 +1160,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Czy jesteś pewien, by unieważnić to tłumaczenie"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -1305,10 +1169,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Tłumaczenie unieważnione pomyślnie"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -1318,10 +1178,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Czy jesteś pewien, że chcesz to usunąć"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	},
@@ -1334,7 +1190,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Ersatz aus dem Gebietsschema"
 			}
 		]
 	},
@@ -1347,7 +1203,7 @@
 			},
 			{
 				"locale": "de_DE",
-				"content": ""
+				"content": "Laden Sie Übersetzungen aus der CSV-Datei hoch"
 			}
 		]
 	},
@@ -1357,10 +1213,6 @@
 			{
 				"locale": "pl_PL",
 				"content": "Pobierz raport z brakującymi tłumaczeniami"
-			},
-			{
-				"locale": "de_DE",
-				"content": ""
 			}
 		]
 	}
