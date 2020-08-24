@@ -45,7 +45,7 @@ export class DevProjectFormComponent implements OnInit {
 	allTargetLanguages: string[] = [];
 	allTargetCountries: string[] = [];
 
-	@Output() hideForm = new EventEmitter<boolean>();
+	@Output() hideForm = new EventEmitter<Project>();
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
@@ -172,9 +172,11 @@ export class DevProjectFormComponent implements OnInit {
 
 	addProject(body) {
 		this.http.save('project/create', body).subscribe((response) => {
-			if (response.i !== null) {
+			console.log('response');
+			console.log(response);
+			if (response !== null) {
 				this.clearForm();
-				this.getProjects();
+				this.hideForm.emit(response);
 				this.snackbar.snackSuccess('Success!', 'OK');
 			} else {
 				this.snackbar.snackError('Error', 'OK');
@@ -295,7 +297,6 @@ export class DevProjectFormComponent implements OnInit {
 		this.selectedTargetLocales = [];
 		this.cd.markForCheck();
 		this.showForm = false;
-		this.hideForm.emit(true);
 	}
 
 	onSelectSourceLanguage(language: string) {

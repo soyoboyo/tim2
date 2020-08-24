@@ -6,6 +6,7 @@ import { SnackbarService } from '../../../shared/services/snackbar-service/snack
 import { ConfirmationDialogService } from '../../../shared/services/confirmation-dialog/confirmation-dialog.service';
 import { ProjectsStoreService } from '../../../stores/projects-store/projects-store.service';
 import { UtilsService } from '../../../shared/services/utils-service/utils.service';
+import { Project } from '../../../shared/types/entities/Project';
 
 @Component({
 	selector: 'app-dev-messages',
@@ -237,10 +238,17 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	}
 
 	editCurrentProject() {
-		this.showProjectForm = false;
+		this.showProjectForm = true;
 	}
 
-	hideForm(stateChange: boolean) {
+	projectCreated(result: Project) {
+		console.log('result');
+		console.log(result);
 		this.showProjectForm = false;
+		this.projectStoreService.setSelectedProject(result);
+		this.selectedProject = result;
+		this.getProjects();
+		this.changeProject(result);
 	}
+
 }
