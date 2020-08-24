@@ -48,7 +48,7 @@ export class DevProjectFormComponent implements OnInit {
 				private http: RestService,
 				private snackbar: SnackbarService,
 				private confirmService: ConfirmationDialogService,
-				private projectStoreService: ProjectsStoreService,) {
+				private projectStoreService: ProjectsStoreService) {
 	}
 
 	ngOnInit() {
@@ -159,10 +159,7 @@ export class DevProjectFormComponent implements OnInit {
 
 	addProject(body) {
 		this.http.save('project/create', body).subscribe((response) => {
-			console.log('response');
-			console.log(response);
 			if (response !== null) {
-				this.clearForm();
 				this.hideForm.emit(response);
 				this.snackbar.snackSuccess('Success!', 'OK');
 			} else {
@@ -174,8 +171,6 @@ export class DevProjectFormComponent implements OnInit {
 	}
 
 	editProject(project: Project) {
-		console.log('edit project form');
-
 		this.toUpdate = project;
 		this.formMode = 'Update';
 		this.clearForm();
@@ -199,10 +194,7 @@ export class DevProjectFormComponent implements OnInit {
 
 		const replacements = project.replaceableLocaleToItsSubstitute;
 		Object.keys(replacements).forEach((key) => {
-			console.log(key);
-
 			const replacedLocale = key.split('=')[2].substring(0, 5);
-
 			const replacement = replacements[key];
 			this.addExistingReplacableLocale(replacedLocale, replacement.locale);
 		});
@@ -211,10 +203,8 @@ export class DevProjectFormComponent implements OnInit {
 	updateProject(body) {
 		this.http.update('project/update/' + this.toUpdate.id, body).subscribe((response) => {
 			if (response !== null) {
-				this.toUpdate = null;
-				this.formMode = 'Add';
+				this.hideForm.emit(response);
 				this.snackbar.snackSuccess('Success!', 'OK');
-				this.clearForm();
 			} else {
 				this.snackbar.snackError('Error', 'OK');
 			}
@@ -223,12 +213,8 @@ export class DevProjectFormComponent implements OnInit {
 		});
 	}
 
-
 	cancelUpdate() {
-		this.toUpdate = null;
-		this.formMode = 'Add';
 		this.hideForm.emit(this.projectStoreService.getSelectedProject());
-		this.clearForm();
 	}
 
 	addNewTargetLocale() {

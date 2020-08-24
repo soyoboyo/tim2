@@ -7,7 +7,6 @@ import { ConfirmationDialogService } from '../../../shared/services/confirmation
 import { ProjectsStoreService } from '../../../stores/projects-store/projects-store.service';
 import { UtilsService } from '../../../shared/services/utils-service/utils.service';
 import { Project } from '../../../shared/types/entities/Project';
-import { Subject } from 'rxjs';
 
 @Component({
 	selector: 'app-dev-messages',
@@ -16,10 +15,14 @@ import { Subject } from 'rxjs';
 })
 export class DevMessagesComponent implements OnInit, AfterViewInit {
 
+	// message form
 	messageParams: FormGroup;
 	formMode = 'Add';
+
+
 	toUpdate: any = null;
 	showForm = false;
+
 
 	isLoadingResults = true;
 	selectedRowIndex = -1;
@@ -34,10 +37,10 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	aggregateInfoId = 'aggregateInfoId';
 	messagesTableId = 'messagesTable';
 	targetLocales: string[] = [];
+
+	// project form
+	projectFormMode = 'Add';
 	showProjectForm = false;
-
-	projectToEdit: Subject<Project> = new Subject();
-
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
@@ -137,8 +140,6 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	}
 
 	async getMessages() {
-		console.log('get messages');
-		console.log(this.selectedProject);
 		if (this.selectedProject) {
 			console.log('gettting messages');
 			this.isLoadingResults = true;
@@ -153,9 +154,6 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 		await this.confirmService.openDialog('Are you sure you want to archive selected message?').subscribe((result) => {
 			if (result) {
 				this.http.remove('message/archive/' + id).subscribe((response) => {
-					console.log('response');
-					console.log(response);
-					console.log(response.message);
 					if (response !== null) {
 						this.selectedRowIndex = -1;
 						this.snackbar.snackSuccess(response.message, 'OK');
@@ -164,8 +162,6 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 					}
 					this.getMessages();
 				}, (error) => {
-					console.log('error');
-					console.log(error);
 					this.snackbar.snackError(error.message, 'OK');
 				});
 			}
@@ -244,20 +240,16 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	}
 
 	editCurrentProject() {
-		this.formMode = 'Update';
+		this.projectFormMode = 'Update';
 		this.showProjectForm = true;
-		console.log(this.selectedProject);
-		this.projectToEdit.next(this.selectedProject);
-		this.projectToEdit.next(this.selectedProject);
 	}
 
-	projectCreated(result: Project) {
-		console.log('result');
-		console.log(result);
+	projectActionComplete(result: Project) {
 		this.showProjectForm = false;
 		this.projectStoreService.setSelectedProject(result);
 		this.selectedProject = result;
 		this.getProjects();
+		// todo: get messages if project is updated
 		this.changeProject(result);
 	}
 

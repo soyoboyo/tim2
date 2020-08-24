@@ -28,7 +28,7 @@
 				<button mat-button [matMenuTriggerFor]="menu">Manage projects</button>
 				<mat-menu #menu="matMenu">
 					<button mat-menu-item (click)="newProject()">New project</button>
-					<button mat-menu-item (click)="editCurrentProject()">Edit</button>
+					<button mat-menu-item (click)="editCurrentProject()" [disabled]="!selectedProject">Edit</button>
 				</mat-menu>
 
 			</div>
@@ -109,7 +109,7 @@
 
 
 	<div *ngIf="showProjectForm">
-		<app-dev-project-form #devProjectForm (hideForm)="projectCreated($event)" [formModeInput]="formMode"></app-dev-project-form>
+		<app-dev-project-form (hideForm)="projectActionComplete($event)" [formModeInput]="projectFormMode"></app-dev-project-form>
 	</div>
 
 
