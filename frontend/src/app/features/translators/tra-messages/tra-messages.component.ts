@@ -7,6 +7,7 @@ import { ProjectsStoreService } from '../../../stores/projects-store/projects-st
 import { ConfirmationDialogService } from '../../../shared/services/confirmation-dialog/confirmation-dialog.service';
 import { Message } from '../../../shared/types/entities/Message';
 import { Project } from '../../../shared/types/entities/Project';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-tra-messages',
@@ -31,7 +32,8 @@ export class TraMessagesComponent implements OnInit {
 				private utils: UtilsService,
 				private projectsStore: ProjectsStoreService,
 				private confirmService: ConfirmationDialogService,
-				private projectStoreService: ProjectsStoreService) {
+				private projectStoreService: ProjectsStoreService,
+				private translateService: TranslateService) {
 		this.selectedProject = this.projectStoreService.getSelectedProject();
 	}
 
@@ -69,12 +71,12 @@ export class TraMessagesComponent implements OnInit {
 	}
 
 	async invalidateTranslation(message: any) {
-		await this.confirmService.openDialog('Are you sure you want to invalidate this translation?').subscribe((result) => {
+		await this.confirmService.openDialog(this.translateService.instant('invalidateTranslationDialog') + '?').subscribe((result) => {
 			if (result) {
 				this.http.update('translation/invalidate/' + message.translation.id + '?messageId=' + message.id, null).subscribe((response) => {
 					if (response !== null) {
 						this.getMessagesForTranslator();
-						this.snackbar.snackSuccess('Translation invalidated successfully!', 'OK');
+						this.snackbar.snackSuccess(this.translateService.instant('invalidationSuccess') + '!', 'OK');
 					}
 				}, (error) => {
 					this.snackbar.snackError(error.error.message, 'OK');

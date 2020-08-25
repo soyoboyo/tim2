@@ -1,4 +1,4 @@
-<h1 *ngIf="!data" mat-dialog-title>Are you sure you want to remove this item?</h1>
+<h1 *ngIf="!data" mat-dialog-title>{{'removeItemDialog' | translate}}?</h1>
 <div *ngIf="!data" mat-dialog-actions>
 	<button mat-raised-button color="primary" mat-dialog-close cdkFocusInitial (click)="toRemove()">Remove</button>
 	<button mat-button color="warn" (click)="onNoClick()">Cancel</button>

@@ -38,8 +38,8 @@ public class Message {
 	private String description;
 
 	@Version
-	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@Setter(AccessLevel.NONE)
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@UpdateTimestamp
 	private LocalDateTime updateDate;
 

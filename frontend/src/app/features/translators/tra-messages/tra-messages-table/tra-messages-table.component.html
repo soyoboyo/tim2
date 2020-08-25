@@ -1,17 +1,17 @@
 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
 	<div>
 		<mat-form-field>
-			<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+			<input matInput (keyup)="applyFilter($event.target.value)" placeholder="{{'filter' | translate}}">
 		</mat-form-field>
 	</div>
 	<div>
-		<mat-checkbox [(ngModel)]="missing" (change)="filterMessages()">Missing</mat-checkbox>
+		<mat-checkbox [(ngModel)]="missing" (change)="filterMessages()">{{'missing' | translate}}</mat-checkbox>
 	</div>
 	<div>
-		<mat-checkbox [(ngModel)]="outdated" (change)="filterMessages()">Outdated</mat-checkbox>
+		<mat-checkbox [(ngModel)]="outdated" (change)="filterMessages()">{{'outdated' | translate}}</mat-checkbox>
 	</div>
 	<div>
-		<mat-checkbox [(ngModel)]="invalid" (change)="filterMessages()">Invalid</mat-checkbox>
+		<mat-checkbox [(ngModel)]="invalid" (change)="filterMessages()">{{'invalid' | translate}}</mat-checkbox>
 	</div>
 	<span class="spacer"></span>
 	<div>
@@ -23,17 +23,17 @@
 	<table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
 
 		<ng-container matColumnDef="key">
-			<th mat-header-cell *matHeaderCellDef>Key</th>
+			<th mat-header-cell *matHeaderCellDef>{{'key' | translate}}</th>
 			<td mat-cell *matCellDef="let message">{{message.key}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="message">
-			<th mat-header-cell *matHeaderCellDef>Content</th>
+			<th mat-header-cell *matHeaderCellDef>{{'content' | translate}}</th>
 			<td mat-cell *matCellDef="let message">{{message.content | shorten: [60, '...']}}</td>
 		</ng-container>
 
 		<ng-container matColumnDef="translation">
-			<th mat-header-cell *matHeaderCellDef>Translation</th>
+			<th mat-header-cell *matHeaderCellDef>{{'translation' | translate}}</th>
 			<td mat-cell *matCellDef="let message">
 				<p *ngIf="message.translation != null">{{message.translation.content | shorten: [60, '...']}}</p>
 				<p *ngIf="message.translation === null">-</p>
@@ -41,12 +41,12 @@
 		</ng-container>
 
 		<ng-container matColumnDef="status">
-			<th mat-header-cell *matHeaderCellDef>Status</th>
+			<th mat-header-cell *matHeaderCellDef>{{'status' | translate}}</th>
 			<td mat-cell *matCellDef="let message">
 				<p class="with-icon" *ngIf="getTranslationStatus(message); let status">
-					<mat-icon color="accent" *ngIf="status === 'Correct'">check_circle_outline</mat-icon>
-					<mat-icon color="warn" *ngIf="status !== 'Correct'">highlight_off</mat-icon>
-					{{status}}
+					<mat-icon color="accent" *ngIf="status === 'correct'">check_circle_outline</mat-icon>
+					<mat-icon color="warn" *ngIf="status !== 'correct'">highlight_off</mat-icon>
+					{{status | translate}}
 				</p>
 			</td>
 		</ng-container>
@@ -56,56 +56,70 @@
 				<div class="message-detail" [@detailExpand]="message == expandedRow ? 'expanded' : 'collapsed'">
 					<div class="padding-inside">
 
-						<p><strong>Key:</strong> {{message.key}}</p>
-						<p><strong>Update date:</strong> {{message.updateDate | date:'dd.MM.yyyy HH:mm'}}</p>
+						<p><strong>{{'key' | translate}}:</strong> {{message.key}}</p>
+						<p><strong>{{'updateDate' | translate}}
+							:</strong> {{message.updateDate | date:'dd.MM.yyyy HH:mm'}}</p>
 
-						<p><strong>Content:</strong> {{message.content}}</p>
-						<p><strong>Description: </strong> {{message.description}}</p>
+						<p><strong>{{'content' | translate}}:</strong> {{message.content}}</p>
+						<p><strong>{{'description' | translate}}: </strong> {{message.description}}</p>
 
 						<hr>
 
 						<div *ngIf="message.translation !== null && !message.translation.isValid">
-							<p class="warning">Translation has been invalidated.</p>
+							<p class="warning">{{'translationInvalidated' | translate}}.</p>
 						</div>
 
 
 						<div *ngIf="isTranslationOutdated(message)">
-							<p class="warning">Translation is outdated.</p>
-							<p><strong>Previous message content: </strong> {{message.previousMessageContent}}</p>
+							<p class="warning">{{'translationOutdated' | translate}}.</p>
+							<p><strong>{{'previousMessageContent' | translate}}
+								: </strong> {{message.previousMessageContent}}</p>
 						</div>
 
 						<p *ngIf=" message.translation !== null">
-							<strong>Last updated: </strong> {{message.translation.updateDate | date:'dd.MM.yyyy HH:mm' }}
+							<strong>{{'lastUpdated' | translate}}
+								: </strong> {{message.translation.updateDate | date:'dd.MM.yyyy HH:mm' }}
 						</p>
 
 						<p *ngIf="message.translation !== null && message.translation !== undefined">
-							<strong>Translation: </strong> {{message.translation.content}}
+							<strong>{{'translation' | translate}}: </strong> {{message.translation.content}}
 						</p>
 						<p>
 
-							<button mat-button (click)="triggerTranslationForm(message, 'Update')" *ngIf="selectedLocale && message.translation" matTooltip="Update translation" matTooltipClass="tooltip-font">
+							<button mat-button (click)="triggerTranslationForm(message, 'Update')"
+									*ngIf="selectedLocale && message.translation" matTooltip="Update translation"
+									matTooltipClass="tooltip-font">
 								<mat-icon>update</mat-icon>
-								Update
+								{{'update' | translate}}
 							</button>
-							<button mat-button color="warn" (click)="invalidateTranslation(message)" *ngIf="selectedLocale && message.translation && message.translation.isValid" matTooltip="Invalidate translation if it's incorrect" matTooltipClass="tooltip-font">
+							<button mat-button color="warn" (click)="invalidateTranslation(message)"
+									*ngIf="selectedLocale && message.translation && message.translation.isValid"
+									matTooltip="Invalidate translation if it's incorrect"
+									matTooltipClass="tooltip-font">
 								<mat-icon>highlight_off</mat-icon>
-								Invalidate
+								{{'invalidate' | translate}}
 							</button>
 						</p>
 
 						<p *ngIf="message.translation === null" class="warning">
-							<strong>Translation: </strong> none.
-							<button mat-button color="primary" (click)="triggerTranslationForm(message, 'Add')" *ngIf="!selectedLocale || !message.translation" matTooltip="Add new translation" matTooltipClass="tooltip-font">
+							<strong>{{'translation' | translate}}: </strong> none.
+							<button mat-button color="primary" (click)="triggerTranslationForm(message, 'Add')"
+									*ngIf="!selectedLocale || !message.translation" matTooltip="Add new translation"
+									matTooltipClass="tooltip-font">
 								<mat-icon>add</mat-icon>
-								Add
+								{{'add' | translate}}
 							</button>
 						</p>
 
 						<p *ngIf="message.substitute">
-							<strong>Substitute from locale {{message.substitute.locale}}:</strong> {{message.substitute.content}}
-							<button mat-button color="accent" (click)="useSubstitute(message)" *ngIf="!selectedLocale || !message.translation" matTooltip="Add new translation using this substitute" matTooltipClass="tooltip-font">
+							<strong>{{'substituteFromLocale' | translate}} {{message.substitute.locale}}
+								:</strong> {{message.substitute.content}}
+							<button mat-button color="accent" (click)="useSubstitute(message)"
+									*ngIf="!selectedLocale || !message.translation"
+									matTooltip="Add new translation using this substitute"
+									matTooltipClass="tooltip-font">
 								<mat-icon>swap_horiz</mat-icon>
-								Use this substitute
+								{{'useSubstitute' | translate}}
 							</button>
 						</p>
 
@@ -132,4 +146,5 @@
 
 	</table>
 </div>
-<app-nothing-found [nothingFound]="messages.length == 0 && !isLoadingResults" [message]="'Select project and locale to see messages.'"></app-nothing-found>
+<app-nothing-found [nothingFound]="messages.length == 0 && !isLoadingResults"
+				   [message]="'selectToSee' | translate"></app-nothing-found>

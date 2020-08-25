@@ -17,7 +17,7 @@ public class MessageSeeder {
 	public Map<String, Message> initMessages(Map<String, Project> projects) {
 
 		Map<String, Message> messages = new HashMap<>();
-		List<String> projectIds = Arrays.asList("P1", "P2", "P3", "P4");
+		List<String> projectIds = Arrays.asList("P1", "P2", "P3", "P4", "P5");
 
 		for (String id : projectIds) {
 			String path = "project" + id + "/messages" + id + ".json";

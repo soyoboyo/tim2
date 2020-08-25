@@ -2,7 +2,7 @@
 
 	<mat-form-field>
 			<textarea formControlName="content"
-					  placeholder="Content"
+					  placeholder="{{'content' | translate}}"
 					  matInput
 					  cdkTextareaAutosize
 					  cdkAutosizeMinRows="1"
@@ -11,14 +11,15 @@
 	</mat-form-field>
 
 	<div>
-		<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="!translationForm.valid" (click)="submitTranslationForm(translationForm)">
-			{{formMode}}
+		<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="!translationForm.valid"
+				(click)="submitTranslationForm(translationForm)">
+			{{formMode | translate}}
 		</button>
 		<button class="button-spacer" mat-button color="warn" type="button" (click)="cancelForm()">
-			Cancel
+			{{'cancel' | translate}}
 		</button>
 		<button mat-raised-button color="warn" type="button" (click)="clearForm()">
-			Clear
+			{{'clear' | translate}}
 		</button>
 	</div>
 

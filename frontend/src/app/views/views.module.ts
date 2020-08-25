@@ -3,6 +3,7 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { MaterialModule } from '../material.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
 	declarations: [
@@ -10,7 +11,7 @@ import { MaterialModule } from '../material.module';
 		PageNotFoundComponent,
 		AccessDeniedComponent
 	],
-	imports: [MaterialModule],
+	imports: [MaterialModule, TranslateModule],
 	exports: []
 })
 export class ViewsModule {

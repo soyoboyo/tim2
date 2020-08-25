@@ -7,6 +7,7 @@ import { ConfirmationDialogService } from '../../../shared/services/confirmation
 import { ProjectsStoreService } from '../../../stores/projects-store/projects-store.service';
 import { UtilsService } from '../../../shared/services/utils-service/utils.service';
 import { Project } from '../../../shared/types/entities/Project';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-dev-messages',
@@ -17,9 +18,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 
 	// message form
 	messageParams: FormGroup;
-	formMode = 'Add';
-
-
+	formMode = 'add';
 	toUpdate: any = null;
 	showForm = false;
 
@@ -49,7 +48,8 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 				private projectsStore: ProjectsStoreService,
 				private confirmService: ConfirmationDialogService,
 				private projectStoreService: ProjectsStoreService,
-				private utilsService: UtilsService) {
+				private utilsService: UtilsService,
+				private translateService: TranslateService) {
 		this.selectedProject = this.projectStoreService.getSelectedProject();
 	}
 
@@ -101,7 +101,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 				this.toUpdate = null;
 				this.clearForm(this.messageParams);
 				this.getMessages();
-				this.formMode = 'Add';
+				this.formMode = 'add';
 				this.snackbar.snackSuccess('Success!', 'OK');
 				this.selectedRowIndex = -1;
 				this.toggleForm('');
@@ -149,7 +149,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	}
 
 	async archiveMessage(id: any) {
-		await this.confirmService.openDialog('Are you sure you want to archive selected message?').subscribe((result) => {
+		await this.confirmService.openDialog(this.translateService.instant('archiveMessageDialog') + '?').subscribe((result) => {
 			if (result) {
 				this.http.remove('message/archive/' + id).subscribe((response) => {
 					if (response !== null) {
@@ -178,7 +178,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 			projectId: this.selectedProject.id
 		});
 		this.toUpdate = message;
-		this.formMode = 'Update';
+		this.formMode = 'update';
 	}
 
 	toggleForm($event) {
@@ -188,7 +188,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	cancelUpdate() {
 		this.toUpdate = null;
 		this.selectedRowIndex = -1;
-		this.formMode = 'Add';
+		this.formMode = 'add';
 		this.showForm = false;
 		this.clearForm(this.messageParams);
 		this.cd.markForCheck();
