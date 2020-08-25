@@ -21,6 +21,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { AuthInterceptor } from '../../core/AuthInterceptor';
 import { ConfirmationDialogComponent } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { ConfirmationDialogComponent } from '../../shared/components/confirmatio
 		ReactiveFormsModule,
 		RouterModule.forRoot(routes),
 		SharedModule,
-		ViewsModule
+		ViewsModule,
+		TranslateModule
 	],
 	providers: [LoginService, UtilsService, SnackbarService, CookieService,
 		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },

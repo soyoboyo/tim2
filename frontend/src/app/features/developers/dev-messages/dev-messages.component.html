@@ -3,7 +3,7 @@
 		<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
 			<div>
 				<mat-form-field class="select-project">
-					<mat-label>Select project</mat-label>
+					<mat-label>{{'selectProject' | translate}}</mat-label>
 					<mat-select [compareWith]="compareProjects" (selectionChange)="changeProject($event.value)"
 								[(ngModel)]="selectedProject">
 						<mat-option *ngFor="let project of projects" [value]="project">
@@ -16,11 +16,11 @@
 				<input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="importCSV($event)" accept=".csv"/>
 				<button mat-raised-button
 						color="primary"
-						matTooltip="Import message from CSV file"
+						matTooltip="{{'importMessagesTooltip' | translate}}"
 						matTooltipClass="tooltip-font"
 						[disabled]="!selectedProject"
 						(click)="csvInput.click()">
-					Import messages
+					{{'importMessages' | translate}}
 				</button>
 			</div>
 			<span style="flex: 1 1 auto;"></span>
@@ -47,7 +47,7 @@
 
 					<mat-form-field class="form-field">
 						<input formControlName="key"
-							   placeholder="Key"
+							   placeholder="{{'key' | translate}}"
 							   matInput
 							   required>
 						<mat-error *ngIf="messageParams.get('key').hasError('required')">
@@ -57,7 +57,7 @@
 
 					<mat-form-field>
 						<input formControlName="content"
-							   placeholder="Content"
+							   placeholder="{{'content' | translate}}"
 							   matInput
 							   required>
 						<mat-error *ngIf="messageParams.get('content').hasError('required')">
@@ -67,7 +67,7 @@
 
 					<mat-form-field>
 			<textarea formControlName="description"
-					  placeholder="Description"
+					  placeholder="{{'description' | translate}}"
 					  matInput
 					  cdkTextareaAutosize
 					  cdkAutosizeMinRows="1"
@@ -76,13 +76,13 @@
 
 					<div class="buttons-row">
 						<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="(!messageParams.valid || !selectedProject)" (click)="createMessage(messageParams)">
-							{{formMode}}
+							{{formMode | translate}}
 						</button>
 						<button class="button-spacer" mat-button color="warn" type="button" (click)="cancelUpdate()">
-							Cancel
+							{{'cancel' | translate}}
 						</button>
 						<button mat-raised-button color="warn" type="button" (click)="clearForm(messageParams)">
-							Clear
+							{{'clear' | translate}}
 						</button>
 					</div>
 
@@ -100,12 +100,8 @@
 					(archiveEvent)="archiveMessage($event)"
 					[selectedProject]="selectedProject"></app-dev-messages-table>
 			</div>
-
-
 		</div>
-
 	</div>
-
 
 	<div *ngIf="showProjectForm">
 		<app-dev-project-form (hideForm)="projectActionComplete($event)" [formModeInput]="projectFormMode"></app-dev-project-form>
