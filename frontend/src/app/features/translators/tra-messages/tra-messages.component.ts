@@ -7,7 +7,7 @@ import { ProjectsStoreService } from '../../../stores/projects-store/projects-st
 import { ConfirmationDialogService } from '../../../shared/services/confirmation-dialog/confirmation-dialog.service';
 import { Message } from '../../../shared/types/entities/Message';
 import { Project } from '../../../shared/types/entities/Project';
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-tra-messages',

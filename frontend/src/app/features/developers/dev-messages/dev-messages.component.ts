@@ -6,7 +6,7 @@ import { SnackbarService } from '../../../shared/services/snackbar-service/snack
 import { ConfirmationDialogService } from '../../../shared/services/confirmation-dialog/confirmation-dialog.service';
 import { ProjectsStoreService } from '../../../stores/projects-store/projects-store.service';
 import { UtilsService } from '../../../shared/services/utils-service/utils.service';
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-dev-messages',

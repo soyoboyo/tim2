@@ -4,7 +4,7 @@ import { RestService } from '../../../shared/services/rest/rest.service';
 import { Chart } from 'chart.js';
 import { AggregatedLocale } from './types/AggregatedLocale';
 import { UtilsService } from '../../../shared/services/utils-service/utils.service';
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({

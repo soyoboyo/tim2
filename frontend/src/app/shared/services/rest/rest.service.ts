@@ -90,7 +90,7 @@ export class RestService {
 		}).subscribe(response => {
 			const blob = new Blob([response], { type: 'application/zip' });
 			saveAs(blob, 'translations.zip');
-		})
+		});
 	}
 
 	importCSV(url: string, file: File) {

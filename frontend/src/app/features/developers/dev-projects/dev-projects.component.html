@@ -118,10 +118,10 @@
 				<div class="chip-list-wrapper">
 					<mat-chip-list minlength="2">
 						<mat-chip
-								*ngFor="let cat of selectedTargetLocales"
-								[selectable]="true"
-								[removable]="true"
-								(removed)="removeTargetLocale(cat)">
+							*ngFor="let cat of selectedTargetLocales"
+							[selectable]="true"
+							[removable]="true"
+							(removed)="removeTargetLocale(cat)">
 							{{cat}}
 							<mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
 						</mat-chip>

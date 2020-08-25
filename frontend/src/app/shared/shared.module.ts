@@ -15,7 +15,7 @@ import { NavbarService } from './services/navbar-service/navbar.service';
 import { RestService } from './services/rest/rest.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../material.module';
-import { TranslateModule } from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
