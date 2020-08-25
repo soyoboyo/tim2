@@ -23,7 +23,7 @@
 	"welcome": "Welcome to Translation & Internationalization Manager",
 	"uploadTranslations": "Upload translations",
 	"badCredentials": "Bad credentials!",
-	"loggedAs": "Logged as",
+	"loggedAs": "Logged in as",
 	"edit": "Edit",
 	"goToLogin": "Go to login page",
 	"wrongPatternBig": "Wrong pattern: requires 2 big letters",
