@@ -1,5 +1,10 @@
 [
 	{
+		"key": "TIMname",
+		"content": "Translation & Internationalization Manager",
+		"description": "Name of the project"
+	},
+	{
 		"key": "welcome",
 		"content": "Welcome to Translation & Internationalization Manager",
 		"description": ""
@@ -7,7 +12,7 @@
 	{
 		"key": "pleaseLogin",
 		"content": "Please login to perform any actions",
-		"description": ""
+		"description": "Message for user to login first"
 	},
 	{
 		"key": "login",
@@ -51,7 +56,7 @@
 	},
 	{
 		"key": "loggedAs",
-		"content": "Logged as",
+		"content": "Logged in as",
 		"description": ""
 	},
 	{

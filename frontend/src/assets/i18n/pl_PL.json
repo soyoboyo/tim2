@@ -58,6 +58,7 @@
 	"correct": "Poprawne",
 	"previousMessageContent": "Poprzednia zawartość wiadomości",
 	"project": "Projekt",
+	"TIMname": "Menadżer tłumaczeń i internalizacji",
 	"addMessage": "Dodaj nową wiadomość",
 	"uploadCSVTranslations": "Importuj tłumaczenia z pliku CSV",
 	"sourceRequired": "Język źródłowy jest <strong>wymagany</strong>",

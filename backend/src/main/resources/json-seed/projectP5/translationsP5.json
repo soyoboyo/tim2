@@ -13,6 +13,19 @@
 		]
 	},
 	{
+		"messageKey": "TIMname",
+		"translations": [
+			{
+				"locale": "pl_PL",
+				"content": "Menadżer tłumaczeń i internalizacji"
+			},
+			{
+				"locale": "de_DE",
+				"content": "Übersetzung und Internalisierung Manager"
+			}
+		]
+	},
+	{
 		"messageKey": "welcome",
 		"translations": [
 			{
@@ -30,7 +43,7 @@
 		"translations": [
 			{
 				"locale": "pl_PL",
-				"content": "Zaloguj się by móc wykonywać czynności"
+				"content": "Zaloguj się, aby móc wykonywać czynności"
 			}
 		]
 	},
@@ -435,7 +448,7 @@
 		"translations": [
 			{
 				"locale": "pl_PL",
-				"content": "Wybierz projekt i język by zobaczyć wiadomości"
+				"content": "Wybierz projekt i język by przeglądać wiadomości"
 			}
 		]
 	},
@@ -544,7 +557,7 @@
 		"translations": [
 			{
 				"locale": "pl_PL",
-				"content": "Tłumaczenie oznaczone jako unieważnione"
+				"content": "Tłumaczenie oznaczone jako nieprawidłowe"
 			}
 		]
 	},

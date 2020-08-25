@@ -4,6 +4,7 @@
 	"correct": "Richtig",
 	"developers": "Entwickler",
 	"project": "Projekt",
+	"TIMname": "Übersetzung und Internalisierung Manager",
 	"addMessage": "Neue Nachricht hinzufügen",
 	"uploadCSVTranslations": "Laden Sie Übersetzungen aus der CSV-Datei hoch",
 	"lastUpdated": "Letzte Aktualisierung",

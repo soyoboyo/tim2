@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NavbarService } from './shared/services/navbar-service/navbar.service';
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-root',
@@ -15,14 +15,16 @@ export class AppComponent implements OnInit {
 				private translateService: TranslateService) {
 		translateService.setDefaultLang('en_GB');
 
-		let savedLanguage = localStorage.getItem('selectedLanguage');
-		if (savedLanguage != null) {
+		const savedLanguage = localStorage.getItem('selectedLanguage');
+		const localeRegexp = new RegExp('[a-z]{2}_[A-Z]{2}');
+		if (savedLanguage.match(localeRegexp)) {
 			translateService.use(savedLanguage);
+		} else {
+			localStorage.setItem('selectedLanguage', 'en_GB');
 		}
 	}
 
 	ngOnInit(): void {
 		this.sidenavService.setSidenav(this.sidenav);
 	}
-
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavbarService } from '../../shared/services/navbar-service/navbar.service';
 import { LoginService } from '../../core/login-service/login.service';
 import { Router } from '@angular/router';
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-navbar',
@@ -59,10 +59,8 @@ export class NavbarComponent implements OnInit {
 		this.loginService.logoutUser();
 	}
 
-	changeLanguage(event) {
-		const selectedLanguage = event.target.value;
-
-		this.translateService.use(selectedLanguage);
-		localStorage.setItem('selectedLanguage', selectedLanguage);
+	changeLanguage(language: string) {
+		this.translateService.use(language);
+		localStorage.setItem('selectedLanguage', language);
 	}
 }

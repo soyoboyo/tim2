@@ -58,6 +58,7 @@
 	"correct": "Correct",
 	"previousMessageContent": "Previous message content",
 	"project": "Project",
+	"TIMname": "Translation & Internationalization Manager",
 	"addMessage": "Add new message",
 	"uploadCSVTranslations": "Upload csv file with translations",
 	"sourceRequired": "Source language is <strong>required</strong>",

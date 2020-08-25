@@ -6,7 +6,7 @@
 				(click)="gotToHomepage()">
 			<mat-icon>home</mat-icon>
 		</button>
-		<span>Translation & Internalization Manager</span>
+		<span>{{'TIMname' | translate}}</span>
 
 		<span class="toolbar-spacer"></span>
 
@@ -47,7 +47,7 @@
 
 		<mat-menu #languageOptions="matMenu" xPosition="before">
 			<button mat-menu-item *ngFor="let language of languages" [value]="language.value"
-					(click)="changeLanguage($event)">
+					(click)="changeLanguage(language.value)">
 				<span>{{language.viewValue}}</span>
 			</button>
 		</mat-menu>
