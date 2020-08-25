@@ -22,9 +22,13 @@ import { AuthInterceptor } from './core/AuthInterceptor';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { DevelopersModule } from './features/developers/developers.module';
 import { TranslatorsModule } from './features/translators/translators.module';
-import { HttpLoaderFactory } from '../../../example-app2/src/app/app.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MatPaginatorIntlService } from './core/mat-paginator-intl-service/mat-paginator-intl.service';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function HttpLoaderFactory(http: HttpClient) {
+	return new TranslateHttpLoader(http);
+}
 
 @NgModule({
 	declarations: [
