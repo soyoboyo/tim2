@@ -1,17 +1,17 @@
-,Key,hello,,
-,Content,hello,,
-,Description,Information about product type.,,
-,Last updated,2020-07-31T18:50:41.909720,,
-Locale,Translation Status,Translation,Substitute Locale,Substitute Translation
-en_GB,Missing,,,
-,New translation,hello,,
-pl_PL,Missing,,ko_KR,기업
-,New translation,witaj,,
-,,,,
-,Key,notExistingKey,,
-,Content,world,,
-,Description,Information about maximal number of user that can use this product on enterprise type.,,
-,Last updated,2020-07-31T18:50:41.909720,,
-Locale,Translation Status,Translation,Substitute Locale,Substitute Translation
-en_GB,Missing,,,
-,New translation,world,,
+      ,Key               ,hello                                                                                 ,                 ,
+      ,Content           ,hello                                                                                 ,                 ,
+      ,Description       ,Information about product type.                                                       ,                 ,
+      ,Last updated      ,2020-07-31T18:50:41.909720                                                            ,                 ,
+Locale,Translation Status,Translation                                                                           ,Substitute Locale,Substitute Translation
+en_GB ,Missing           ,                                                                                      ,                 ,
+      ,New translation   ,hello                                                                                 ,                 ,
+pl_PL ,Missing           ,                                                                                      ,ko_KR            ,기업
+      ,New translation   ,witaj                                                                                 ,                 ,
+      ,                  ,                                                                                      ,                 ,
+      ,Key               ,notExistingKey                                                                        ,                 ,
+      ,Content           ,world                                                                                 ,                 ,
+      ,Description       ,Information about maximal number of user that can use this product on enterprise type.,                 ,
+      ,Last updated      ,2020-07-31T18:50:41.909720                                                            ,                 ,
+Locale,Translation Status,Translation                                                                           ,Substitute Locale,Substitute Translation
+en_GB ,Missing           ,                                                                                      ,                 ,
+      ,New translation   ,world                                                                                 ,                 ,

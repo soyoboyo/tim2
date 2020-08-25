@@ -26,10 +26,10 @@ public class MessageController {
 	private final MessageVersionService messageVersionService;
 
 
-	@DeleteMapping(value = ARCHIVE)
+	@DeleteMapping(value = ARCHIVE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity archiveMessage(@PathVariable Long id) {
 		Message archivedMessage = messageService.archiveMessage(id);
-		return archivedMessage != null ? ResponseEntity.ok("Message archived successfully.") : ResponseEntity.badRequest().body("");
+		return archivedMessage != null ? ResponseEntity.ok("{\"message\": \"Message archived successfully.\"}") : ResponseEntity.badRequest().body("");
 	}
 
 	@DeleteMapping(value = DELETE)

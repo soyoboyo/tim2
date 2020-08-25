@@ -83,7 +83,6 @@ export class RestService {
 
 	downloadZip(projectID) {
 		const url = this.URL + 'exportCD/message/getByLocale/' + projectID + '/file';
-
 		this.http.get(url, {
 			responseType: 'blob',
 			withCredentials: true

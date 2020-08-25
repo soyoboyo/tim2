@@ -6,6 +6,7 @@ import { SnackbarService } from '../../../shared/services/snackbar-service/snack
 import { ConfirmationDialogService } from '../../../shared/services/confirmation-dialog/confirmation-dialog.service';
 import { ProjectsStoreService } from '../../../stores/projects-store/projects-store.service';
 import { UtilsService } from '../../../shared/services/utils-service/utils.service';
+import { Project } from '../../../shared/types/entities/Project';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -15,10 +16,12 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class DevMessagesComponent implements OnInit, AfterViewInit {
 
+	// message form
 	messageParams: FormGroup;
 	formMode = 'add';
 	toUpdate: any = null;
 	showForm = false;
+
 
 	isLoadingResults = true;
 	selectedRowIndex = -1;
@@ -33,6 +36,10 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	aggregateInfoId = 'aggregateInfoId';
 	messagesTableId = 'messagesTable';
 	targetLocales: string[] = [];
+
+	// project form
+	projectFormMode = 'Add';
+	showProjectForm = false;
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
@@ -51,7 +58,6 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 		this.getProjects();
 		this.getMessages();
 	}
-
 
 	initProjectForm() {
 		this.messageParams = this.formBuilder.group({
@@ -109,6 +115,7 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	}
 
 	changeProject(value) {
+		this.showProjectForm = false;
 		this.cancelUpdate();
 		this.selectedProject = value;
 		this.targetLocales = [];
@@ -131,8 +138,6 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	}
 
 	async getMessages() {
-		console.log('get messages');
-		console.log(this.selectedProject);
 		if (this.selectedProject) {
 			console.log('gettting messages');
 			this.isLoadingResults = true;
@@ -147,15 +152,15 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 		await this.confirmService.openDialog(this.translateService.instant('archiveMessageDialog') + '?').subscribe((result) => {
 			if (result) {
 				this.http.remove('message/archive/' + id).subscribe((response) => {
-					if (response == null) {
+					if (response !== null) {
 						this.selectedRowIndex = -1;
-						this.snackbar.snackSuccess('Success!', 'OK');
+						this.snackbar.snackSuccess(response.message, 'OK');
 					} else {
 						this.snackbar.snackError('Error', 'OK');
 					}
 					this.getMessages();
 				}, (error) => {
-					this.snackbar.snackError(error.error.message, 'OK');
+					this.snackbar.snackError(error.message, 'OK');
 				});
 			}
 		});
@@ -227,4 +232,23 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 				});
 		}
 	}
+
+	newProject() {
+		this.showProjectForm = true;
+	}
+
+	editCurrentProject() {
+		this.projectFormMode = 'Update';
+		this.showProjectForm = true;
+	}
+
+	projectActionComplete(result: Project) {
+		this.showProjectForm = false;
+		this.projectStoreService.setSelectedProject(result);
+		this.selectedProject = result;
+		this.getProjects();
+		// todo: get messages if project is updated
+		this.changeProject(result);
+	}
+
 }

@@ -1,8 +1,8 @@
-import { MissingPipePipe } from './outdated.pipe';
+import { OutdatedPipe } from './outdated.pipe';
 
-describe('MissingPipePipe', () => {
+describe('OutdatedPipe', () => {
 	it('create an instance', () => {
-		const pipe = new MissingPipePipe();
+		const pipe = new OutdatedPipe();
 		expect(pipe).toBeTruthy();
 	});
 });

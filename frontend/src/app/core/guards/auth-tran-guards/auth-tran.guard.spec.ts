@@ -1,15 +1,15 @@
 import { inject, TestBed } from '@angular/core/testing';
 
-import { AuthDevGuard } from './auth-tran.guard';
+import { AuthTranGuard } from './auth-tran.guard';
 
-describe('AuthDevGuard', () => {
+describe('AuthTranGuard', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [AuthDevGuard]
+			providers: [AuthTranGuard]
 		});
 	});
 
-	it('should ...', inject([AuthDevGuard], (guard: AuthDevGuard) => {
+	it('should ...', inject([AuthTranGuard], (guard: AuthTranGuard) => {
 		expect(guard).toBeTruthy();
 	}));
 });
