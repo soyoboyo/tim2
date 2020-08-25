@@ -25,7 +25,7 @@
 			</div>
 			<span style="flex: 1 1 auto;"></span>
 			<div>
-				<button mat-button [matMenuTriggerFor]="menu">Manage projects</button>
+				<button mat-raised-button [matMenuTriggerFor]="menu">Manage projects</button>
 				<mat-menu #menu="matMenu">
 					<button mat-menu-item (click)="newProject()">New project</button>
 					<button mat-menu-item (click)="editCurrentProject()" [disabled]="!selectedProject">Edit</button>
