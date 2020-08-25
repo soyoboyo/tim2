@@ -18,8 +18,6 @@ export class NavbarComponent implements OnInit {
 		{ value: 'de_DE', viewValue: 'German' }
 	];
 
-	selected: string;
-
 	constructor(private navbarService: NavbarService,
 				private loginService: LoginService,
 				private router: Router,
@@ -31,8 +29,6 @@ export class NavbarComponent implements OnInit {
 	role = '';
 
 	ngOnInit() {
-		this.selected = localStorage.getItem('selectedLanguage') ?? this.languages[0].value;
-
 		this.loginService.getIsLoggedOk().subscribe(isLoggedIn => {
 			this.isLoggedIn = isLoggedIn;
 		});
@@ -64,7 +60,9 @@ export class NavbarComponent implements OnInit {
 	}
 
 	changeLanguage(event) {
-		this.translateService.use(event.target.value);
-		localStorage.setItem('selectedLanguage', event.target.value);
+		const selectedLanguage = event.target.value;
+
+		this.translateService.use(selectedLanguage);
+		localStorage.setItem('selectedLanguage', selectedLanguage);
 	}
 }
