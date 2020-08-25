@@ -53,7 +53,7 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 
 	// form
 	showForm = false;
-	formMode = 'Add';
+	formMode = 'add';
 
 	constructor(private http: RestService,
 				private snackbar: SnackbarService,
@@ -146,23 +146,23 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	getTranslationStatus(message: MessageForTranslator) {
 		const translation = message.translation;
 		if (translation === null) {
-			return 'Missing';
+			return 'missing';
 		}
 		if (message.updateDate > translation.updateDate) {
-			return 'Outdated';
+			return 'outdated';
 		}
 		if (translation.isValid === false) {
-			return 'Invalid';
+			return 'invalid';
 		}
-		return 'Correct';
+		return 'correct';
 	}
 
 	// interaction with form
 	triggerTranslationForm(message: any, mode: string) {
 		if (mode === 'Add') {
-			this.formMode = 'Add';
+			this.formMode = 'add';
 		} else {
-			this.formMode = 'Update';
+			this.formMode = 'update';
 		}
 		this.formState.setValues(message, this.selectedLocale);
 		this.selectedRowIndex = message.id;

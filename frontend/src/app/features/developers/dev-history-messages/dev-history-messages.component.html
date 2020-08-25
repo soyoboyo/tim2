@@ -1,36 +1,36 @@
 <button mat-raised-button color="primary" (click)="goBack()">
 	<mat-icon>keyboard_arrow_left</mat-icon>
-	Go back
+	{{'goBack' | translate}}
 </button>
 
-<h3>Message</h3>
-<p><strong>Update date:</strong> {{auditedMessage.updateDate | date:'dd.MM.yyyy HH:mm'}}</p>
-<p><strong>Created by:</strong> {{auditedMessage.createdBy}}</p>
-<p><strong>Key:</strong> {{auditedMessage.key}}</p>
-<p><strong>Content:</strong> {{auditedMessage.content}}</p>
-<strong>Description:</strong> {{auditedMessage.description}}
+<h3>{{'message' | translate}}</h3>
+<p><strong>{{'updateDate' | translate}}:</strong> {{auditedMessage.updateDate | date:'dd.MM.yyyy HH:mm'}}</p>
+<p><strong>{{'createdBy' | translate}}:</strong> {{auditedMessage.createdBy}}</p>
+<p><strong>{{'key' | translate}}:</strong> {{auditedMessage.key}}</p>
+<p><strong>{{'content' | translate}}:</strong> {{auditedMessage.content}}</p>
+<strong>{{'description' | translate}}:</strong> {{auditedMessage.description}}
 
 
 <mat-divider></mat-divider>
 
-<h3>History</h3>
+<h3>{{'history' | translate}}</h3>
 <ol>
 	<li *ngFor="let version of messageVersions">
 		<p>
-			<strong>Update date:</strong> {{version.updateDate | date:'dd.MM.yyyy HH:mm'}}
+			<strong>{{'updateDate' | translate}}:</strong> {{version.updateDate | date:'dd.MM.yyyy HH:mm'}}
 		</p>
 		<p>
-			<strong>Created by:</strong> {{version.createdBy}}
+			<strong>{{'createdBy' | translate}}:</strong> {{version.createdBy}}
 		</p>
 		<div class="subcontent">
 			<p>
-				<strong>Key:</strong> {{version.key}}
+				<strong>{{'key' | translate}}:</strong> {{version.key}}
 			</p>
 			<p>
-				<strong>Content:</strong> {{version.content}}
+				<strong>{{'content' | translate}}:</strong> {{version.content}}
 			</p>
 			<p>
-				<strong>Description:</strong> {{version.description}}
+				<strong>{{'description' | translate}}:</strong> {{version.description}}
 			</p>
 
 		</div>
@@ -39,6 +39,6 @@
 </ol>
 <mat-spinner *ngIf="loadingResults"></mat-spinner>
 <p *ngIf="!loadingResults && messageVersions.length < 1">
-	No history found.
+	{{'noHistory' | translate}}.
 </p>
 

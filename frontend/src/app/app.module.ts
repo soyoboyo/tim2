@@ -11,7 +11,7 @@ import { DevelopersComponent } from './features/developers/developers.component'
 import { TranslatorsComponent } from './features/translators/translators.component';
 import { DevProjectsComponent } from './features/developers/dev-projects/dev-projects.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { DevMessagesComponent } from './features/developers/dev-messages/dev-messages.component';
 import { DevMessagesTableComponent } from './features/developers/dev-messages/dev-messages-table/dev-messages-table.component';
 import { SnackbarService } from './shared/services/snackbar-service/snackbar.service';
@@ -32,6 +32,14 @@ import { AggregateInfoComponent } from './features/developers/aggregate-info/agg
 import { CookieService } from 'ngx-cookie-service';
 import { AuthInterceptor } from './core/AuthInterceptor';
 import { TranslatorFormComponent } from './features/translators/tra-messages/translator-form/translator-form.component';
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MatPaginatorIntl } from "@angular/material/paginator";
+import { MatPaginatorIntlService } from "./core/mat-paginator-intl-service/mat-paginator-intl.service";
+
+export function HttpLoaderFactory(http: HttpClient) {
+	return new TranslateHttpLoader(http);
+}
 
 @NgModule({
 	declarations: [
@@ -54,6 +62,14 @@ import { TranslatorFormComponent } from './features/translators/tra-messages/tra
 	imports: [
 		BrowserAnimationsModule,
 		BrowserModule,
+		TranslateModule.forRoot({
+			defaultLanguage: 'en_GB',
+			loader: {
+				provide: TranslateLoader,
+				useFactory: HttpLoaderFactory,
+				deps: [HttpClient]
+			}
+		}),
 		FlexLayoutModule,
 		FormsModule,
 		HttpClientModule,
@@ -71,7 +87,8 @@ import { TranslatorFormComponent } from './features/translators/tra-messages/tra
 	],
 	providers: [LoginService, UtilsService, SnackbarService, CookieService,
 		{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } },
-		{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+		{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+		{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlService }],
 	bootstrap: [AppComponent],
 	entryComponents: [ConfirmationDialogComponent]
 })

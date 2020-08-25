@@ -1,33 +1,32 @@
 <div fxLayout="column" fxLayoutAlign="center center">
-	<h3>Welcome to Translation & Internationalization Manager</h3>
-	<p>Please login to perform any actions</p>
+	<h3>{{'welcome' | translate}}</h3>
+	<p>{{'pleaseLogin' | translate}}</p>
 </div>
 
 
 <mat-card class="form-container mat-elevation-z8">
-	<h2>Login</h2>
+	<h2>{{'login' | translate}}</h2>
 	<form (ngSubmit)="loginButtonClicked()" [formGroup]="loginParams">
 		<div *ngIf="!isLoggedOk" class="text-bad-credential">
-			Bad credentials!
+			{{'badCredentials' | translate}}
 		</div>
 
 		<mat-form-field class="form-field">
-			<input matInput placeholder="Username"
+			<input matInput placeholder="{{'username' | translate}}"
 				   formControlName="username">
-			<mat-error *ngIf="usernameFormControl.hasError('required')">
-				Username is <strong>required</strong>
+			<mat-error *ngIf="usernameFormControl.hasError('required')" [innerHTML]="'usernameRequired' | translate">
 			</mat-error>
 		</mat-form-field>
 
 		<mat-form-field class="form-field ">
-			<input matInput placeholder="Password"
+			<input matInput placeholder="{{'password' | translate}}"
 				   formControlName="password"
 				   type="password">
-			<mat-error *ngIf="passwordFormControl.hasError('required')">
-				Password is <strong>required</strong>
+			<mat-error *ngIf="passwordFormControl.hasError('required')" [innerHTML]="'passwordRequired' | translate">
 			</mat-error>
 		</mat-form-field>
 
-		<button class="form-field form-button" mat-raised-button color="primary" [disabled]="!loginParams.valid">Log in</button>
+		<button class="form-field form-button" mat-raised-button color="primary"
+				[disabled]="!loginParams.valid">{{'loginButton' | translate}}</button>
 	</form>
 </mat-card>

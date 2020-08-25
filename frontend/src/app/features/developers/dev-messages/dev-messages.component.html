@@ -1,7 +1,7 @@
 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
 	<div>
 		<mat-form-field class="select-project">
-			<mat-label>Select project</mat-label>
+			<mat-label>{{'selectProject' | translate}}</mat-label>
 			<mat-select [compareWith]="compareProjects" (selectionChange)="changeProject($event.value)"
 						[(ngModel)]="selectedProject">
 				<mat-option *ngFor="let project of projects" [value]="project">
@@ -14,11 +14,11 @@
 		<input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="importCSV($event)" accept=".csv"/>
 		<button mat-raised-button
 				color="primary"
-				matTooltip="Import message from CSV file"
+				matTooltip="{{'importMessagesTooltip' | translate}}"
 				matTooltipClass="tooltip-font"
 				[disabled]="!selectedProject"
 				(click)="csvInput.click()">
-			Import messages
+			{{'importMessages' | translate}}
 		</button>
 	</div>
 </div>
@@ -41,34 +41,37 @@
 
 	<div *ngIf="showForm" class="form-wrapper">
 		<mat-card id="form-messages" *ngIf="showForm" class="form-container mat-elevation-z4">
-			<h1>{{formMode}} message</h1>
-			<mat-label *ngIf="!selectedProject" class="warning"><strong>Project not selected!</strong></mat-label>
+			<h1>{{formMode | translate}} {{'message' | translate | lowercase}}</h1>
+			<mat-label *ngIf="!selectedProject" class="warning"><strong>{{'projectNotSelected' | translate}}!</strong>
+			</mat-label>
 
 			<form [formGroup]="messageParams">
 
 				<mat-form-field class="form-field">
 					<input formControlName="key"
-						   placeholder="Key"
+						   placeholder="{{'key' | translate}}"
 						   matInput
 						   required>
-					<mat-error *ngIf="messageParams.get('key').hasError('required')">
-						Message key is <strong>required</strong>
+					<mat-error *ngIf="messageParams.get('key').hasError('required')"
+							   [innerHTML]="'messageKeyRequired' | translate">
+
 					</mat-error>
 				</mat-form-field>
 
 				<mat-form-field>
 					<input formControlName="content"
-						   placeholder="Content"
+						   placeholder="{{'content' | translate}}"
 						   matInput
 						   required>
-					<mat-error *ngIf="messageParams.get('content').hasError('required')">
-						Message content is <strong>required</strong>
+					<mat-error *ngIf="messageParams.get('content').hasError('required')"
+							   [innerHTML]="'messageContentRequired' | translate">
+
 					</mat-error>
 				</mat-form-field>
 
 				<mat-form-field>
 			<textarea formControlName="description"
-					  placeholder="Description"
+					  placeholder="{{'description' | translate}}"
 					  matInput
 					  cdkTextareaAutosize
 					  cdkAutosizeMinRows="1"
@@ -76,14 +79,16 @@
 				</mat-form-field>
 
 				<div class="buttons-row">
-					<button class="button-spacer" mat-raised-button color="accent" type="button" [disabled]="(!messageParams.valid || !selectedProject)" (click)="createMessage(messageParams)">
-						{{formMode}}
+					<button class="button-spacer" mat-raised-button color="accent" type="button"
+							[disabled]="(!messageParams.valid || !selectedProject)"
+							(click)="createMessage(messageParams)">
+						{{formMode | translate}}
 					</button>
 					<button class="button-spacer" mat-button color="warn" type="button" (click)="cancelUpdate()">
-						Cancel
+						{{'cancel' | translate}}
 					</button>
 					<button mat-raised-button color="warn" type="button" (click)="clearForm(messageParams)">
-						Clear
+						{{'clear' | translate}}
 					</button>
 				</div>
 

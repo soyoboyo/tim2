@@ -4,6 +4,7 @@ import { RestService } from '../../../shared/services/rest/rest.service';
 import { Chart } from 'chart.js';
 import { AggregatedLocale } from './types/AggregatedLocale';
 import { UtilsService } from '../../../shared/services/utils-service/utils.service';
+import { TranslateService } from "@ngx-translate/core";
 
 
 @Component({
@@ -25,7 +26,9 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 	private dataMissing: number[] = [];
 	private messagesTotal = 0;
 
-	constructor(private http: RestService, private utilsService: UtilsService) {
+	constructor(private http: RestService,
+				private utilsService: UtilsService,
+				private translateService: TranslateService) {
 	}
 
 	ngOnInit() {
@@ -67,15 +70,15 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 		this.summaryChart.data.labels = this.labels;
 		this.summaryChart.data.datasets = [
 			{
-				label: 'Correct',
+				label: this.translateService.instant('correct'),
 				data: this.dataCorrect,
 				backgroundColor: 'rgba(30, 204, 79, 1)'
 			}, {
-				label: 'Incorrect',
+				label: this.translateService.instant('incorrect'),
 				data: this.dataIncorrect,
 				backgroundColor: 'rgba(204, 207, 38, 1)'
 			}, {
-				label: 'Missing',
+				label: this.translateService.instant('missing'),
 				data: this.dataMissing,
 				backgroundColor: 'rgba(204, 41, 30, 1)'
 			}];
@@ -90,15 +93,15 @@ export class AggregateInfoComponent implements OnInit, OnChanges, AfterViewInit 
 				labels: this.labels,
 				datasets: [
 					{
-						label: 'Correct',
+						label: this.translateService.instant('correct'),
 						data: this.dataCorrect,
 						backgroundColor: 'rgba(30, 204, 79, 1)'
 					}, {
-						label: 'Incorrect',
+						label: this.translateService.instant('incorrect'),
 						data: this.dataIncorrect,
 						backgroundColor: 'rgba(204, 207, 38, 1)'
 					}, {
-						label: 'Missing',
+						label: this.translateService.instant('missing'),
 						data: this.dataMissing,
 						backgroundColor: 'rgba(204, 41, 30, 1)'
 					}]

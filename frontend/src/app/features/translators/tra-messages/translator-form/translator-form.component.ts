@@ -30,7 +30,7 @@ export class TranslatorFormComponent implements OnInit {
 			content: ['', [Validators.required]]
 		});
 		console.log(this.formMode);
-		if (this.formMode === 'Update') {
+		if (this.formMode === 'update') {
 			this.translationForm.patchValue({
 				content: this.formState.getMessage().translation.content,
 			});
@@ -52,7 +52,7 @@ export class TranslatorFormComponent implements OnInit {
 	}
 
 	submitTranslationForm(params: any) {
-		if (this.formMode === 'Add') {
+		if (this.formMode === 'add') {
 			this.addTranslation(new TranslationCreateDTO(params.value.content, this.formState.getLocale()));
 		} else {
 			this.updateTranslation(new TranslationUpdateDTO(params.value.content));
