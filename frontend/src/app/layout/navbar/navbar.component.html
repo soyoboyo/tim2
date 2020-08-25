@@ -11,16 +11,6 @@
 		<span class="toolbar-spacer"></span>
 
 		<!--		<div>{{username}}</div>-->
-		<mat-form-field class="select-language">
-			<mat-label>{{'selectLanguage' | translate}}</mat-label>
-			<mat-select [(value)]="selected">
-				<mat-option *ngFor="let language of languages" [value]="language.value"
-							(onSelectionChange)="changeLanguage($event)">
-					{{language.viewValue}}
-				</mat-option>
-			</mat-select>
-		</mat-form-field>
-
 		<div [hidden]="!isLoggedIn">{{'loggedAs' | translate}} {{username}}</div>
 
 		<button mat-icon-button [matMenuTriggerFor]="menuOptions">
@@ -44,7 +34,16 @@
 				<mat-icon>exit_to_app</mat-icon>
 				<span>{{'logout' | translate}}</span>
 			</button>
+			<button mat-menu-item [matMenuTriggerFor]="languageOptions">{{'locales' | translate}}</button>
 
 		</mat-menu>
+
+		<mat-menu #languageOptions="matMenu">
+			<button mat-menu-item *ngFor="let language of languages" [value]="language.value"
+					(click)="changeLanguage($event)">
+				{{language.viewValue}}
+			</button>
+		</mat-menu>
+
 	</mat-toolbar-row>
 </mat-toolbar>
