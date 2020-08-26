@@ -47,6 +47,8 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 	expandedRow = null;
 
 	// filters
+	clearFilter = false;
+	incorrect = false;
 	missing = false;
 	outdated = false;
 	invalid = false;
@@ -82,58 +84,65 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
+	filterMessages() {
+		this.clearFilter = false;
+		this.incorrect = false;
+		if (!this.missing && !this.invalid && !this.outdated && !this.incorrect) {
+			this.clearFilter = true;
+		}
+		this.dataSource.filter = '{';
+	}
+
+	filterAllIncorrect() {
+		this.clearFilter = false;
+		this.missing = true;
+		this.invalid = true;
+		this.outdated = true;
+		this.dataSource.filter = '{';
+	}
+
+	clearFilters() {
+		this.missing = false;
+		this.invalid = false;
+		this.outdated = false;
+		this.incorrect = false;
+		this.dataSource.filter = '{';
+	}
+
 	createDataSource(messages: any[]) {
 		this.dataSource = new MatTableDataSource(messages);
+		if (this.dataSource.data.length > 0) {
+			this.clearFilter = true;
+		}
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
-			return JSON.stringify(data).toLowerCase().includes(filter.toLowerCase())
-				&& this.filterByMissing(data)
-				&& this.filterByInvalid(data)
-				&& this.filterByOutdated(data);
+			return ((this.filterByMissing(data) || this.filterByInvalid(data) || this.filterByOutdated(data)) || this.clearFilter);
 		};
 		this.dataSource.sort = this.sort;
 	}
 
 	filterByMissing(row): boolean {
-		if (this.missing === false) {
-			return true;
-		} else {
-			if (row.translation === null) {
+		return this.missing === true && row.translation === null;
+	}
+
+	filterByInvalid(row): boolean {
+		if (row.translation !== null) {
+			if (this.invalid === true && row.translation.isValid === false) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	filterByInvalid(row): boolean {
-		if (this.invalid === false) {
-			return true;
-		} else {
-			if (row.translation !== null) {
-				if (row.translation.isValid === false) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	filterByOutdated(row): boolean {
-		if (this.outdated === false) {
-			return true;
-		} else {
-			if (row.translation !== null) {
-				if (this.isTranslationOutdated(row)) {
-					return true;
-				}
+		if (row.translation !== null) {
+			if (this.outdated === true && this.isTranslationOutdated(row)) {
+				return true;
 			}
 		}
 		return false;
 	}
 
-	filterMessages() {
-		this.dataSource.filter = '{';
-	}
 
 	isTranslationOutdated(message: MessageForTranslator): boolean {
 		if (message.translation !== null) {

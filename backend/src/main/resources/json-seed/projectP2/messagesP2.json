@@ -1,14 +1,22 @@
 [
 	{
-		"uuid": "messageM3",
-		"key": "business1",
-		"content": "Opracowaliśmy i stosujemy unikalny model biznesowy, który mocno nas pozycjonuje, ponieważ coraz więcej konsumentów decyduje się na zakupy w Internecie.",
-		"description": "Pierwsza strona prezentująca przedsiębiorstwo."
+		"key": "P2correct",
+		"content": "This project is amazing!",
+		"description": "This message has correct translation."
 	},
 	{
-		"uuid": "messageM4",
-		"key": "welcome1",
-		"content": "Naszym strategicznym celem jest dostosowanie interesów naszych klientów, inwestorów i innych interesariuszy do zapewnienia długoterminowej wartości dla akcjonariuszy.",
-		"description": "Pierwsza strona prezentująca przedsiębiorstwo."
+		"key": "P2missing",
+		"content": "Why won't anyone translate me :(",
+		"description": "This message doesn't have any translations."
+	},
+	{
+		"key": "P2invalid",
+		"content": "Not everyone can be a programmer.",
+		"description": "This message has invalid translation."
+	},
+	{
+		"key": "P2outdated",
+		"content": "We are leaving on Monday.",
+		"description": "This message has outdated translation."
 	}
 ]

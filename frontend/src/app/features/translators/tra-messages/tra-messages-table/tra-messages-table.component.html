@@ -5,6 +5,9 @@
 		</mat-form-field>
 	</div>
 	<div>
+		<mat-checkbox [(ngModel)]="clearFilter" (change)="clearFilters()" [disabled]="!(missing || invalid || outdated || incorrect)">All</mat-checkbox>
+	</div>
+	<div>
 		<mat-checkbox [(ngModel)]="missing" (change)="filterMessages()">{{'missing' | translate}}</mat-checkbox>
 	</div>
 	<div>
@@ -12,6 +15,9 @@
 	</div>
 	<div>
 		<mat-checkbox [(ngModel)]="invalid" (change)="filterMessages()">{{'invalid' | translate}}</mat-checkbox>
+	</div>
+	<div>
+		<mat-checkbox [(ngModel)]="incorrect" (change)="filterAllIncorrect()">Incorrect</mat-checkbox>
 	</div>
 	<span class="spacer"></span>
 	<div>
