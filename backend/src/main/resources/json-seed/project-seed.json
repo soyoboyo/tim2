@@ -17,14 +17,10 @@
 	},
 	{
 		"uuid": "projectP2",
-		"name": "Ocado - strona prezentująca przedsiębiorstwo",
-		"sourceLocale": "pl_PL",
+		"name": "Project with all types of translations",
+		"sourceLocale": "en_US",
 		"targetLocales": [
-			"en_US",
-			"en_GB",
-			"de_DE",
-			"ar_LY",
-			"ko_KR"
+			"pl_PL"
 		],
 		"substituteLocales": {
 		}

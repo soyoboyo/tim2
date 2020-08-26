@@ -3,20 +3,20 @@
 		"messageKey": "messageM1",
 		"translations": [
 			{
-				"locale": "en_US",
-				"content": "Groceries you’ll love, perfectly delivered."
-			},
-			{
 				"locale": "de_DE",
-				"content": "Boodschappen waar u van houdt, perfect afgeleverd."
+				"content": "Wir haben ein einzigartiges Geschäftsmodell entwickelt und betreiben, das uns stark positioniert, da sich immer mehr Verbraucher für Online-Shopping entscheiden."
 			},
 			{
-				"locale": "pl_PL",
-				"content": "Artykuły spożywcze, które pokochasz, idealnie dostarczone."
+				"locale": "en_GB",
+				"content": "We have developed and operate a unique business model which positions us strongly as more consumers choose to shop online."
 			},
 			{
 				"locale": "ko_KR",
-				"content": "당신이 좋아할 음식, 완벽하게 배달되는 식료품."
+				"content": "우리는 더 많은 소비자가 온라인 쇼핑을 선택함에 따라 우리를 강하게 위치시키는 독특한 비즈니스 모델을 개발하고 운영합니다."
+			},
+			{
+				"locale": "ar_LY",
+				"content": "لقد قمنا بتطوير وتشغيل نموذج أعمال فريد من نوعه يضعنا بقوة مع اختيار المزيد من المستهلكين للتسوق عبر الإنترنت"
 			}
 		]
 	},
@@ -24,20 +24,726 @@
 		"messageKey": "messageM2",
 		"translations": [
 			{
-				"locale": "pl_PL",
-				"content": "Niska cena gwarantowana."
-			},
-			{
 				"locale": "de_DE",
-				"content": "Lage prijsbelofte."
+				"content": "Unser strategisches Ziel ist es, die Interessen unserer Kunden, Investoren und anderer Stakeholder in Einklang zu bringen, um einen langfristigen Shareholder Value zu erzielen."
 			},
 			{
-				"locale": "en_US",
-				"content": "Low Price Promise."
+				"locale": "en_GB",
+				"content": "Our strategic objective is to align the interests of our customers,investors and other stakeholders to deliver long term shareholder value."
 			},
 			{
 				"locale": "ko_KR",
-				"content": "저렴한 가격 약속."
+				"content": "우리의 전략적 목표는 고객, 투자자 및 기타 이해 관계자의 이익을 조정하여 장기적인 주주 가치를 제공하는 것입니다."
+			},
+			{
+				"locale": "ar_LY",
+				"content": "هدفنا الاستراتيجي هو مواءمة مصالح عملائنا والمستثمرين وأصحاب المصلحة الآخرين لتحقيق قيمة طويلة الأجل للمساهمي"
+			}
+		]
+	},
+	{
+		"messageKey": "pricing",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Preisgestaltung"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "가격"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Cennik"
+			}
+		]
+	},
+	{
+		"messageKey": "signUp",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Anmelden"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "가입"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Zaloguj się"
+			}
+		]
+	},
+	{
+		"messageKey": "ocadoTechnology",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Ocado Technology"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "Ocado Technology"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Ocado Technology"
+			}
+		]
+	},
+	{
+		"messageKey": "featuresNav",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Eigenschaften"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "풍모"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Funkcje"
+			}
+		]
+	},
+	{
+		"messageKey": "enterpriseNav",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Unternehmen"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "기업"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Przedsiębiorstwo"
+			}
+		]
+	},
+	{
+		"messageKey": "supportNav",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Unterstützung"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "지원하다"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Wsparcie"
+			}
+		]
+	},
+	{
+		"messageKey": "pricingNav",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Preisgestaltung"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "가격"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Cennik"
+			}
+		]
+	},
+	{
+		"messageKey": "freeCard",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Kostenlos"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "비어 있는"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Darmowy"
+			}
+		]
+	},
+	{
+		"messageKey": "maxFreeUsers",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "10 Benutzer eingeschlossen"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "10 명의 사용자 포함"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Dołącz 10 użytkowników"
+			}
+		]
+	},
+	{
+		"messageKey": "maxFreeMemoryLimit",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "2 GB Speicher"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "2GB의 저장 용량"
+			}
+		]
+	},
+	{
+		"messageKey": "freeEmailSupport",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Email Unterstützung"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Wsparcie emailowe"
+			}
+		]
+	},
+	{
+		"messageKey": "freeHelpCenter",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Zugriff auf das Hilfezentrum"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "도움말 센터 액세스"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Dostęp do centrum pomocy"
+			}
+		]
+	},
+	{
+		"messageKey": "proCard",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Profi"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "찬성"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Pro"
+			}
+		]
+	},
+	{
+		"messageKey": "maxProUsers",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "20 Benutzer eingeschlossen"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "사용자 20 명 포함"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Dołącz 20 użytkowników"
+			}
+		]
+	},
+	{
+		"messageKey": "maxProMemoryLimit",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "10 GB Speicher"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "10GB의 저장 용량"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "10 GB pamięci"
+			}
+		]
+	},
+	{
+		"messageKey": "proEmailSupport",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Bevorzugte E-Mail-Unterstützung"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "이메일 우선 지원"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Priorytetowa obsługa wsparcia e-mail"
+			}
+		]
+	},
+	{
+		"messageKey": "proHelpCenter",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Zugriff auf das Hilfezentrum"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "도움말 센터 액세스"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Dostęp do centrum pomocy"
+			}
+		]
+	},
+	{
+		"messageKey": "getStarted",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Loslegen"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "시작하다"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Rozpocznij"
+			}
+		]
+	},
+	{
+		"messageKey": "enterpriseCard",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Unternehmen"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "기업"
+			},
+			{
+				"locale": "pl_PL",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "maxEnterpriseUsers",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "30 Benutzer eingeschlossen"
+			},
+			{
+				"locale": "ko_KR",
+				"content": ""
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Dołącz 30 użytkowników"
+			}
+		]
+	},
+	{
+		"messageKey": "maxEnterpriseMemoryLimit",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "15 GB Speicher"
+			},
+			{
+				"locale": "ko_KR",
+				"content": ""
+			},
+			{
+				"locale": "pl_PL",
+				"content": "15 GB pamięci"
+			}
+		]
+	},
+	{
+		"messageKey": "enterpriseEmailSupport",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Telefon- und E-Mail-Support"
+			},
+			{
+				"locale": "ko_KR",
+				"content": ""
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Wsparcie telefoniczne i e-mailowe"
+			}
+		]
+	},
+	{
+		"messageKey": "enterpriseHelpCenter",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Zugriff auf das Hilfezentrum"
+			},
+			{
+				"locale": "ko_KR",
+				"content": ""
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Dostęp do centrum pomocy"
+			}
+		]
+	},
+	{
+		"messageKey": "signUpToAccess",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": ""
+			},
+			{
+				"locale": "ko_KR",
+				"content": "무료 가입"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Zarejestruj się za darmo"
+			}
+		]
+	},
+	{
+		"messageKey": "contactUs",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Kontaktiere uns"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "문의하기"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Skontaktuj się z nami"
+			}
+		]
+	},
+	{
+		"messageKey": "featuresFooter",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": ""
+			},
+			{
+				"locale": "ko_KR",
+				"content": "풍모"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Funkcje"
+			}
+		]
+	},
+	{
+		"messageKey": "featuresFooter1",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Cooles Zeug"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "좋은 것"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Fajne rzeczy"
+			}
+		]
+	},
+	{
+		"messageKey": "featuresFooter2",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Zufälliges Merkmal"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "무작위 기능"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Losowa funkcja"
+			}
+		]
+	},
+	{
+		"messageKey": "featuresFooter3",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Team-Funktion"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "팀 기능"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Funkcja zespołu"
+			}
+		]
+	},
+	{
+		"messageKey": "featuresFooter4",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Zeug für Entwickler"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "개발자 용 자료"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Rzeczy dla programistów"
+			}
+		]
+	},
+	{
+		"messageKey": "featuresFooter5",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Noch einer"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "다른 것"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Inny"
+			}
+		]
+	},
+	{
+		"messageKey": "featuresFooter6",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Ostatni raz"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "마지막으로"
+			},
+			{
+				"locale": "pl_PL",
+				"content": ""
+			}
+		]
+	},
+	{
+		"messageKey": "resourcesFooter",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Ressourcen"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "자원"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Zasoby"
+			}
+		]
+	},
+	{
+		"messageKey": "resourcesFooter1",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Ressource"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "의지"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Zasób"
+			}
+		]
+	},
+	{
+		"messageKey": "resourcesFooter2",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Ressourcenname"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "리소스 이름"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Nazwa zasobu"
+			}
+		]
+	},
+	{
+		"messageKey": "resourcesFooter3",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Eine weitere Ressource"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "다른 리소스"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Inny zasób"
+			}
+		]
+	},
+	{
+		"messageKey": "resourcesFooter4",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Letzte Ressource"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "최종 자원"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Ostateczny zasób"
+			}
+		]
+	},
+	{
+		"messageKey": "aboutFooter",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Über"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "약"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Infornacje"
+			}
+		]
+	},
+	{
+		"messageKey": "aboutFooter1",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Mannschaft"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "팀"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Zespół"
+			}
+		]
+	},
+	{
+		"messageKey": "aboutFooter2",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Standorte"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "위치"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Lokalizacje"
+			}
+		]
+	},
+	{
+		"messageKey": "aboutFooter3",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Privatsphäre"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "은둔"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Prywatność"
+			}
+		]
+	},
+	{
+		"messageKey": "aboutFooter4",
+		"translations": [
+			{
+				"locale": "de_DE",
+				"content": "Nutzungsbedingungen"
+			},
+			{
+				"locale": "ko_KR",
+				"content": "자귀"
+			},
+			{
+				"locale": "pl_PL",
+				"content": "Warunki"
 			}
 		]
 	}

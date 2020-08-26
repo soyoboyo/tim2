@@ -3,9 +3,13 @@ package org.tim.databaseSeed;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.LocaleUtils;
 import org.springframework.stereotype.Service;
+import org.tim.DTOs.MessageDTO;
 import org.tim.entities.Message;
 import org.tim.entities.Translation;
+import org.tim.repositories.MessageRepository;
 import org.tim.repositories.TranslationRepository;
+import org.tim.services.MessageService;
+import org.tim.services.TranslationService;
 
 import java.util.*;
 
@@ -13,7 +17,10 @@ import java.util.*;
 @RequiredArgsConstructor
 public class TranslationSeeder {
 
+	private final MessageRepository messageRepository;
 	private final TranslationRepository translationRepository;
+	private final MessageService messageService;
+	private final TranslationService translationService;
 
 	public void initTranslations(Map<String, Message> messages) {
 
@@ -39,7 +46,20 @@ public class TranslationSeeder {
 			}
 		}
 		translationRepository.saveAll(translations);
+
 		// project 2
+		String invalidKey = "P2invalid";
+		Optional<Message> messageInvalid = messageRepository.findByKey(invalidKey);
+		Translation translationInvalid = translationRepository.findTranslationByLocaleAndMessageId(LocaleUtils.toLocale("pl_PL"), messageInvalid.get().getId());
+		translationService.invalidateTranslation(translationInvalid.getId(), messageInvalid.get().getId());
+
+		String outdatedKey = "P2outdated";
+		Optional<Message> messageOutdated = messageRepository.findByKey(outdatedKey);
+		MessageDTO outdatedDTO = new MessageDTO(outdatedKey, "We are actually leaving on Tuesday.", 2L);
+		messageService.updateMessage(outdatedDTO, messageOutdated.get().getId());
+
+
+		// project 1 - backup translations
 
 		// de_DE
 		//Translation signUpToAccessDe = new Translation(LocaleUtils.toLocale("de_DE"), messages.get("signUpToAccess"));

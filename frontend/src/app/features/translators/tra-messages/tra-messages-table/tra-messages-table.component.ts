@@ -116,11 +116,6 @@ export class TraMessagesTableComponent implements OnInit, OnChanges {
 		}
 		this.dataSource.paginator = this.paginator;
 		this.dataSource.filterPredicate = (data, filter: string) => {
-			console.log(data);
-			console.log(filter);
-			console.log(this.filterByMissing(data));
-			console.log(this.filterByInvalid(data));
-			console.log(this.filterByOutdated(data));
 			return ((this.filterByMissing(data) || this.filterByInvalid(data) || this.filterByOutdated(data)) || this.clearFilter);
 		};
 		this.dataSource.sort = this.sort;
