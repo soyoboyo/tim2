@@ -1,5 +1,6 @@
 package org.tim;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Project;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProjectTestsCT {
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Update substitute locale in project")
 	void updateSubstituteLocale_NoCyclesAndBothLocalesInTargetLocales_Success() {
 		//given
 		Project project = random(Project.class);
@@ -33,7 +34,7 @@ class ProjectTestsCT {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Throw ValidationException when substitute locale is not in target locales")
 	void whenUpdateSubstituteLocaleAndLocalesIsMissingInTargetLocalesThenFailure() {
 		//given
 		Project project = random(Project.class);
@@ -51,7 +52,7 @@ class ProjectTestsCT {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("When updating substitute locale and graph has cycles then throw ValidationException")
 	void whenUpdateSubstituteLocaleAndGraphHasCyclesThenFailure() {
 		//given
 		Project project = random(Project.class);
@@ -74,7 +75,7 @@ class ProjectTestsCT {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Check if removed target locale is removed from substitute locales")
 	void removeTargetLocale_RemovedLocaleIsPresentInReplacementMapAsKey_ReplacementMapEntryIsRemoved() {
 		//given
 		Project project = random(Project.class);
@@ -91,7 +92,7 @@ class ProjectTestsCT {
 
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("When removing target locale remove replicable locales of removed target locale")
 	void whenRemoveTargetLocaleAndRemovedLocaleIsPresentInReplacementMapAsValueThenReplacementMapEntriesAreRemoved() {
 		//given
 		Project project = random(Project.class);

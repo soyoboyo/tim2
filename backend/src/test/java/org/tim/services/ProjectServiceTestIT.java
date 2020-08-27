@@ -53,7 +53,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Check if project is updated correctly")
 	void updateProject_DataCorrect_Success() {
 		Map<String, String> replaceableLocaleToItsSubstituteString = new HashMap<>();
 		replaceableLocaleToItsSubstituteString.put("en_US", "en_GB");
@@ -69,7 +69,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Check if project is crated correctly")
 	void createNewProject_DataCorrectWithExistingDateInDatabase_Success() {
 		LocaleWrapper localeWrapperToSave = new LocaleWrapper(Locale.JAPAN);
 		LocaleWrapper savedLocaleWrapper = localeWrapperRepository.save(localeWrapperToSave);
@@ -109,7 +109,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Throw exception when project is created with substitute locale in incorrect format")
 	void createNewProject_tReplaceableLocaleToItsSubstituteWithIncorrectLocaleFormat_ThrowException() {
 		projectDTO.getReplaceableLocaleToItsSubstitute().put("pl_PL", "incorrectFormat");
 		Exception exception = assertThrows(ValidationException.class, () ->
@@ -119,7 +119,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Create project with replaceableLocale in incorrect format then throw exception")
 	void createNewProject_TargetLocalesWithIncorrectLocaleFormat_ThrowException() {
 		ProjectDTO newProjectDTO = new ProjectDTO("name", "pl_PL",
 				Arrays.asList("incorrectFormat", "en_GB", "en_US", "de_DE"),
@@ -131,7 +131,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Create project with source locale in incorrect format then throw exception")
 	void createNewProject_SourceLocaleWithIncorrectLocaleFormat_ThrowException() {
 		projectDTO.setSourceLocale("incorrectFormat");
 		Exception exception = assertThrows(ValidationException.class, () ->
@@ -141,7 +141,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Create project with replaceable locale in incorrect format then throw exception")
 	void createNewProject_IncorrectReplaceableLocaleToItsSubstitute_ThrowException() {
 		String incorrectLocale = "en_GB_PL";
 		projectDTO.getReplaceableLocaleToItsSubstitute().put("pl_PL", incorrectLocale);
@@ -151,7 +151,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Update project with replaceable locale in incorrect format then throw exception")
 	void updateProject_IncorrectReplaceableLocaleToItsSubstitute_ThrowException() {
 		projectDTO.setName("randomName2");
 		Long projectId = projectService.createProject(projectDTO).getId();
@@ -163,7 +163,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Create project with replaceable locale that make cycle then throw exception")
 	void createNewProject_ReplaceableLocaleToItsSubstituteMakeCycle_ThrowException() {
 		projectDTO.getReplaceableLocaleToItsSubstitute().put("de_DE", "pl_PL");
 		Exception exception = assertThrows(ValidationException.class, () ->
@@ -172,7 +172,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Update project with replaceable locale that make cycle then throw exception")
 	void updateProject_ReplaceableLocaleToItsSubstituteMakeCycle_ThrowException() {
 		projectDTO.setName("randomName");
 		projectDTO.getReplaceableLocaleToItsSubstitute().put("de_DE", "pl_PL");
@@ -183,7 +183,7 @@ public class ProjectServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Get all projects from service")
 	void getAllProjects_ReturnAllProjects() {
 		Project project1 = createEmptyGermanToEnglishProjectWithSubstituteLocales();
 		Project project2 = createEmptyGermanToEnglishAndFrenchProject();

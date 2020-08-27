@@ -62,7 +62,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-	// TODO: Add @DisplayName
+	@DisplayName("Create new translation for message")
 	public void createNewTranslation_DataCorrect_Success() {
 		Long messageId = messageRepository.findAll().get(0).getId();
 		Translation responseTranslation = translationService.createTranslation(translationCreateDTO, messageId);
@@ -73,7 +73,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Throw exception when translation is not target locale")
 	void createNewTranslation_TranslationLanguageNotExistInProjectTargetLocales_ThrowException() {
 		Long messageId = messageRepository.findAll().get(0).getId();
 		translationCreateDTO.setLocale("pl_DE");
@@ -83,7 +83,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Throw exception when creating translation for not existing message")
 	void createNewTranslation_MessageNotExist_ThrowException() {
 		Exception exception = assertThrows(EntityNotFoundException.class, () ->
 				translationService.createTranslation(translationCreateDTO, 100L));
@@ -91,7 +91,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Check if message update date is before translation update date")
 	void createMessage_createTranslation__MessageTimeIsBefore() throws InterruptedException {
 		Message message = messageRepository.findAll().get(0);
 		message.setContent("testContent");
@@ -102,7 +102,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Check if message update date is after translation update date")
 	void createTranslation_UpdateMessage__MessageTimeIsAfter() throws InterruptedException {
 		Message message = messageRepository.findAll().get(0);
 		Translation translation = translationService.createTranslation(translationCreateDTO, message.getId());
@@ -112,7 +112,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: Add @DisplayName
+	@DisplayName("Create new translation for message")
 	void createNewTranslation__DataCorrectWithExistingDateInDatabase_Success() {
 		Project project = new Project();
 		project.setName("ProjectForTest");

@@ -40,6 +40,7 @@ class ReportControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("When correct translator file is imported then response with success message")
 	void whenValidTranslatorFileImportedThenResponseOk() throws Exception {
 		//given
 		MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
@@ -54,6 +55,7 @@ class ReportControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("When empty translator file is imported then return BadRequest and message")
 	void whenEmptyTranslatorFileImportedThenResponseBadRequest() throws Exception {
 		//given
 		MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "".getBytes());
@@ -70,6 +72,7 @@ class ReportControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("When correct developer file is imported then response with success message")
 	void whenValidDeveloperFileImportedThenResponseOk() throws Exception {
 		//given
 		MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "test content".getBytes());
@@ -84,6 +87,7 @@ class ReportControllerTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("When empty developer file is imported then return BadRequest and message")
 	void whenEmptyDeveloperFileImportedThenResponseBadRequest() throws Exception {
 		//given
 		MockMultipartFile sampleFile = new MockMultipartFile("report.csv", "".getBytes());
