@@ -123,4 +123,23 @@ public abstract class SpringTestsCustomExtension {
 		}
 	}
 
+	public List<Message> createMessagesForTestsWithDelay(Project project) throws InterruptedException {
+		Message message = new Message("key1", "Content1", project);
+		Message message1 = new Message("key2", "Content2", project);
+		Message message2 = new Message("key3", "Content3", project);
+
+		messageRepository.save(message);
+		Thread.sleep(1);
+		messageRepository.save(message1);
+		Thread.sleep(1);
+		messageRepository.save(message2);
+
+		return List.of(message, message1, message2);
+	}
+
+	public void updateMessage(Message message) {
+		message.setContent("New content");
+		messageRepository.save(message);
+	}
+
 }

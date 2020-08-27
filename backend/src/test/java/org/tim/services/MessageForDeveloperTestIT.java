@@ -9,7 +9,8 @@ import org.tim.configuration.SpringTestsCustomExtension;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,28 +44,29 @@ public class MessageForDeveloperTestIT extends SpringTestsCustomExtension {
 
 	@Test
 	@DisplayName("As developer get messages with translations that are correctly ordered by updateDate")
-	void whenAskingForMessagesWithTranslationsThenTheyAreReturnedInCorrectOrder() {
+	void whenAskingForMessagesWithTranslationsThenTheyAreReturnedInCorrectOrder() throws InterruptedException {
 		//given
 		Project project = createEmptyGermanToEnglishProject();
-		List<Message> messages = createMessagesForTests(project);
+		List<Message> messages = new ArrayList<>(createMessagesForTestsWithDelay(project));
+		messages.sort(Comparator.comparing(Message::getUpdateDate, Comparator.reverseOrder()));
 		//when
 		List<MessageForDeveloper> messagesForDeveloper = messageForDeveloperService.getMessagesForDeveloper(project.getId());
 		//then
 		assertAll(
-				() -> assertEquals(messagesForDeveloper.get(0).getKey(), messages.get(2).getKey()),
+				() -> assertEquals(messagesForDeveloper.get(0).getKey(), messages.get(0).getKey()),
 				() -> assertEquals(messagesForDeveloper.get(1).getKey(), messages.get(1).getKey()),
-				() -> assertEquals(messagesForDeveloper.get(2).getKey(), messages.get(0).getKey())
+				() -> assertEquals(messagesForDeveloper.get(2).getKey(), messages.get(2).getKey())
 		);
 	}
 
 	@Test
 	@DisplayName("As developer get messages with translations that are correctly ordered by updateDate")
-	void whenAskingForMessagesWithTranslationsThatWereUpdatedThenTheyAreReturnedInCorrectOrder() {
+	void whenAskingForMessagesWithTranslationsThatWereUpdatedThenTheyAreReturnedInCorrectOrder() throws InterruptedException {
 		//given
 		Project project = createEmptyGermanToEnglishProject();
-		List<Message> messages = createMessagesForTests(project);
-		messages.get(1).setContent("New content");
-		messageRepository.saveAll(messages);
+		List<Message> messages = createMessagesForTestsWithDelay(project);
+		updateMessage(messageRepository.findByKey(messages.get(1).getKey()).orElseThrow());
+
 		//when
 		List<MessageForDeveloper> messagesForDeveloper = messageForDeveloperService.getMessagesForDeveloper(project.getId());
 		//then
@@ -73,14 +75,5 @@ public class MessageForDeveloperTestIT extends SpringTestsCustomExtension {
 				() -> assertEquals(messagesForDeveloper.get(1).getKey(), messages.get(2).getKey()),
 				() -> assertEquals(messagesForDeveloper.get(2).getKey(), messages.get(0).getKey())
 		);
-	}
-
-	private List<Message> createMessagesForTests(Project project) {
-		List<Message> messages = Arrays.asList(
-				new Message("key1", "Content1", project),
-				new Message("key2", "Content2", project),
-				new Message("key3", "Content3", project)
-		);
-		return messageRepository.saveAll(messages);
 	}
 }
