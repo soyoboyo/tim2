@@ -15,10 +15,7 @@ import org.tim.entities.Project;
 import org.tim.entities.Translation;
 import org.tim.exceptions.ValidationException;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
@@ -132,7 +129,9 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 	void whenGetMessageForTranslationWithLocaleAndTranslationExistThenReturnMessagesOrderedCorrectly() throws InterruptedException {
 		//given
 		Project project = projectService.getAllProjects().get(0);
-		List<Message> messages = createMessagesForTestsWithDelay(project);
+		List<Message> messages = new ArrayList<>(createMessagesForTestsWithDelay(project));
+		messages.sort(Comparator.comparing(Message::getUpdateDate, Comparator.reverseOrder()));
+
 		Translation t1 = new Translation(Locale.GERMANY, messages.get(2));
 		t1.setContent("Inhalt1");
 		Translation t2 = new Translation(Locale.GERMANY, messages.get(1));
