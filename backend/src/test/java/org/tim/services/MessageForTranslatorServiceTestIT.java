@@ -15,9 +15,7 @@ import org.tim.entities.Project;
 import org.tim.entities.Translation;
 import org.tim.exceptions.ValidationException;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,10 +78,10 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 	@Test
 	@DisplayName("As a Translator I see messages without translations but ordered correctly.")
-	void whenGetMessageForTranslationWithoutLocaleThenReturnMessagesWithoutTranslationAndSubstituteOrderedCorrectly() {
+	void whenGetMessageForTranslationWithoutLocaleThenReturnMessagesWithoutTranslationAndSubstituteOrderedCorrectly() throws InterruptedException {
 		//given
 		Project project = projectService.getAllProjects().get(0);
-		List<Message> messages = createMessagesForTests(project);
+		List<Message> messages = createMessagesForTestsWithDelay(project);
 		// when
 		List<MessageForTranslator> messageForTranslators = messageForTranslatorService.getMessagesForTranslator(project.getId());
 		// then
@@ -96,12 +94,12 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 	@Test
 	@DisplayName("As a Translator I see messages without translations but ordered correctly.")
-	void whenGetMessageForTranslationWithoutLocaleAndMessagesWereUpdatedThenReturnMessagesOrderedCorrectly() {
+	void whenGetMessageForTranslationWithoutLocaleAndMessagesWereUpdatedThenReturnMessagesOrderedCorrectly() throws InterruptedException {
 		//given
 		Project project = projectService.getAllProjects().get(0);
-		List<Message> messages = createMessagesForTests(project);
-		messages.get(1).setContent("New content");
-		messageRepository.saveAll(messages);
+		List<Message> messages = createMessagesForTestsWithDelay(project);
+		updateMessage(messageRepository.findByKey(messages.get(1).getKey()).orElseThrow());
+
 		// when
 		List<MessageForTranslator> messageForTranslators = messageForTranslatorService.getMessagesForTranslator(project.getId());
 		// then
@@ -128,10 +126,12 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 	@Test
 	@DisplayName("As a Translator I see messages with translations and ordered correctly.")
-	void whenGetMessageForTranslationWithLocaleAndTranslationExistThenReturnMessagesOrderedCorrectly() {
+	void whenGetMessageForTranslationWithLocaleAndTranslationExistThenReturnMessagesOrderedCorrectly() throws InterruptedException {
 		//given
 		Project project = projectService.getAllProjects().get(0);
-		List<Message> messages = createMessagesForTests(project);
+		List<Message> messages = new ArrayList<>(createMessagesForTestsWithDelay(project));
+		messages.sort(Comparator.comparing(Message::getUpdateDate, Comparator.reverseOrder()));
+
 		Translation t1 = new Translation(Locale.GERMANY, messages.get(2));
 		t1.setContent("Inhalt1");
 		Translation t2 = new Translation(Locale.GERMANY, messages.get(1));
@@ -152,25 +152,28 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 	@Test
 	@DisplayName("As a Translator I see messages with translations and ordered correctly.")
-	void whenGetMessageForTranslationWithLocaleAndTranslationPartlyExistAndMessagesWereUpdatedThenReturnMessagesOrderedCorrectly() {
+	void whenGetMessageForTranslationWithLocaleAndTranslationPartlyExistAndMessagesWereUpdatedThenReturnMessagesOrderedCorrectly() throws InterruptedException {
 		//given
 		Project project = projectService.getAllProjects().get(0);
-		List<Message> messages = createMessagesForTests(project);
+		List<Message> messages = createMessagesForTestsWithDelay(project);
+		updateMessage(messageRepository.findByKey(messages.get(1).getKey()).orElseThrow());
+		List<Message> messagesAfterUpdated = messageRepository.findAll();
+		messagesAfterUpdated.sort(Comparator.comparing(Message::getUpdateDate, Comparator.reverseOrder()));
+
 		Translation t1 = new Translation(Locale.GERMANY, messages.get(2));
 		t1.setContent("Inhalt1");
 		Translation t3 = new Translation(Locale.GERMANY, messages.get(0));
 		t3.setContent("Inhalt3");
 		List<Translation> translations = Arrays.asList(t1, t3);
 		translationRepository.saveAll(translations);
-		messages.get(1).setKey("newKey");
-		List<Message> messagesAfterUpdated = messageRepository.saveAll(messages);
+
 		// when
 		List<MessageForTranslator> messageForTranslators = messageForTranslatorService.getMessagesForTranslator(project.getId(), "de_DE");
 		// then
 		assertAll(
-//				() -> assertEquals(messageForTranslators.get(0).getKey(), messagesAfterUpdated.get(1).getKey()),
-//				() -> assertEquals(messageForTranslators.get(1).getKey(), messagesAfterUpdated.get(0).getKey()),
-//				() -> assertEquals(messageForTranslators.get(2).getKey(), messagesAfterUpdated.get(2).getKey())
+				() -> assertEquals(messageForTranslators.get(0).getKey(), messagesAfterUpdated.get(0).getKey()),
+				() -> assertEquals(messageForTranslators.get(1).getKey(), messagesAfterUpdated.get(1).getKey()),
+				() -> assertEquals(messageForTranslators.get(2).getKey(), messagesAfterUpdated.get(2).getKey())
 		);
 	}
 
@@ -261,14 +264,5 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 		// then
 		assertEquals("Witam", messageForTranslator.getPreviousMessageContent());
-	}
-
-	private List<Message> createMessagesForTests(Project project) {
-		List<Message> messages = Arrays.asList(
-				new Message("key1", "Content1", project),
-				new Message("key2", "Content2", project),
-				new Message("key3", "Content3", project)
-		);
-		return messageRepository.saveAll(messages);
 	}
 }

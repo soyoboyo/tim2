@@ -74,8 +74,8 @@ public class ImportService {
 		while (i < records.size()) {
 			String key, lastUpdated;
 			try {
-				key = records.get(i + KEY_ROW).get(KEY_COLUMN);
-				lastUpdated = records.get(i + LAST_UPDATED_ROW).get(LAST_UPDATED_COLUMN);
+				key = records.get(i + KEY_ROW).get(KEY_COLUMN).trim();
+				lastUpdated = records.get(i + LAST_UPDATED_ROW).get(LAST_UPDATED_COLUMN).trim();
 			} catch (Exception e) {
 				throw new Exception("Check if your delimiter is set to \",\" (comma)");
 			}
@@ -83,9 +83,9 @@ public class ImportService {
 			while (haveMoreLocales(i, records)) {
 				String locale, translationStatus, translation;
 				try {
-					locale = records.get(i + LOCALE_ROW).get(LOCALE_COLUMN);
-					translationStatus = records.get(i + TRANSLATION_STATUS_ROW).get(TRANSLATION_STATUS_COLUMN);
-					translation = records.get(i + NEW_TRANSLATION_ROW).get(NEW_TRANSLATION_COLUMN);
+					locale = records.get(i + LOCALE_ROW).get(LOCALE_COLUMN).trim();
+					translationStatus = records.get(i + TRANSLATION_STATUS_ROW).get(TRANSLATION_STATUS_COLUMN).trim();
+					translation = records.get(i + NEW_TRANSLATION_ROW).get(NEW_TRANSLATION_COLUMN).trim();
 				} catch (Exception e) {
 					throw new Exception("Check if your delimiter is set to \",\" (comma)");
 				}

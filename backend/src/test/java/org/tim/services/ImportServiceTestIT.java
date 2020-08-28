@@ -63,7 +63,7 @@ class ImportServiceTestIT extends SpringTestsCustomExtension {
 	}
 
 	@Test
-		// TODO: add @DisplayName
+	@DisplayName("Create messages for project from correct developer file")
 	void whenCorrectDeveloperFileImportedThenMessagesAreCreated() throws Exception {
 		//given
 		//when

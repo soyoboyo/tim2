@@ -41,6 +41,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Return all ready translations for project source locale")
 	void whenExportingProjectBySourceLocaleThenReturnExistingMessages() {
 		//given
 		List<Message> messages = createMessages(project);
@@ -56,6 +57,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 	}
 
 	@Test
+	@DisplayName("Return all ready translations for project target locale")
 	void whenExportingProjectByTargetLocaleThenReturnExistingTranslations() {
 		//given
 		List<Translation> translations = createTranslationsToEnglish();
