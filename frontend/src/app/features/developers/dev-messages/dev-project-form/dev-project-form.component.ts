@@ -22,10 +22,10 @@ export class DevProjectFormComponent implements OnInit {
 
 	projectParams: FormGroup;
 	projectNameControl = new FormControl([''], [Validators.required]);
-	sourceLanguageControl = new FormControl([''], [Validators.required, Validators.pattern('[a-z]{2} .{0,}|[a-z]{2}')]);
-	sourceCountryControl = new FormControl([''], [Validators.required, Validators.pattern('[A-Z]{2} .{0,}|[A-Z]{2}')]);
-	targetLanguageControl = new FormControl(null);
-	targetCountryControl = new FormControl(null);
+	sourceLanguageControl = new FormControl('', [Validators.required, Validators.pattern('[a-z]{2} .{0,}|[a-z]{2}')]);
+	sourceCountryControl = new FormControl('', [Validators.required, Validators.pattern('[A-Z]{2} .{0,}|[A-Z]{2}')]);
+	targetLanguageControl = new FormControl('');
+	targetCountryControl = new FormControl('');
 	filteredLanguages: Observable<any[]>;
 	filteredCountries: Observable<any[]>;
 	filteredTargetLanguages: Observable<any[]>;
@@ -288,4 +288,11 @@ export class DevProjectFormComponent implements OnInit {
 		array.splice(index, 1);
 	}
 
+	openAutocomplete($event: any) {
+		const formFieldName = $event.target.attributes.formcontrolname.value;
+		const formField = this.projectParams.controls[formFieldName];
+		if (formField.value === '') {
+			formField.patchValue('');
+		}
+	}
 }

@@ -20,6 +20,7 @@
 			<input formControlName="sourceLanguage"
 				   placeholder="Source language"
 				   [matAutocomplete]="autoSourceLanguage"
+				   (focus)="openAutocomplete($event)"
 				   matInput required>
 			<mat-autocomplete #autoSourceLanguage="matAutocomplete">
 				<mat-option *ngFor="let language of filteredLanguages | async" [value]="language" (onSelectionChange)="onSelectSourceLanguage(language)">
@@ -38,6 +39,7 @@
 			<input formControlName="sourceCountry"
 				   placeholder="Source country"
 				   [matAutocomplete]="autoSourceCountry"
+				   (focus)="openAutocomplete($event)"
 				   matInput required>
 			<mat-autocomplete #autoSourceCountry="matAutocomplete">
 				<mat-option *ngFor="let country of filteredCountries | async" [value]="country" (onSelectionChange)="onSelectSourceCountry(country)">
@@ -62,6 +64,7 @@
 			<input formControlName="targetLanguage"
 				   placeholder="Target language"
 				   [matAutocomplete]="autoTargetLanguage"
+				   (focus)="openAutocomplete($event)"
 				   matInput>
 			<button mat-button *ngIf="projectParams.get('targetLanguage').value" matSuffix mat-icon-button aria-label="Clear" type="button" (click)="projectParams.get('targetLanguage').patchValue(null, {emitEvent: true})">
 				<mat-icon>close</mat-icon>
@@ -77,6 +80,7 @@
 			<input formControlName="targetCountry"
 				   placeholder="Target country"
 				   [matAutocomplete]="autoTargetCountry"
+				   (focus)="openAutocomplete($event)"
 				   matInput>
 			<button mat-button *ngIf="projectParams.get('targetCountry').value" matSuffix mat-icon-button aria-label="Clear" type="button" (click)="projectParams.get('targetCountry').patchValue(null, {emitEvent: true})">
 				<mat-icon>close</mat-icon>
