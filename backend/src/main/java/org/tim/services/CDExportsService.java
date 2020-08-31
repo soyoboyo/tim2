@@ -14,8 +14,10 @@ import org.tim.repositories.MessageRepository;
 import org.tim.repositories.ProjectRepository;
 import org.tim.repositories.TranslationRepository;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -53,8 +55,10 @@ public class CDExportsService {
 		return translationsWithMessagesToMap(translations, messages);
 	}
 
-	public byte[] exportAllReadyTranslationsByProjectInZIP(Long projectId) throws IOException {
+	public byte[] exportAllReadyTranslationsByProjectInZIP(Long projectId, HttpServletResponse response) throws IOException {
 		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
+		response.setHeader("Content-Disposition", "attachment; filename=\"fully-translated_" + project.getName() + "_" + LocalDateTime.now() + ".zip\"");
+
 		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
 		Locale sourceLocale = project.getSourceLocale();
 		Set<LocaleWrapper> targetLocales = project.getTargetLocales();
@@ -71,8 +75,10 @@ public class CDExportsService {
 			for (LocaleWrapper localeWrapper : targetLocales) {
 				List<Translation> translations = translationRepository.findTranslationsByLocaleAndProjectId(localeWrapper.getLocale(), projectId);
 
-				zos.putNextEntry(new ZipEntry(localeWrapper.getLocale().toString() + ".json"));
-				zos.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(translationsToMap(translations)));
+				if (translations.size() == messages.size()) {
+					zos.putNextEntry(new ZipEntry(localeWrapper.getLocale().toString() + ".json"));
+					zos.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(translationsToMap(translations)));
+				}
 			}
 
 			zos.finish();

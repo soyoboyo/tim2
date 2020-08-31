@@ -3,6 +3,7 @@ package org.tim.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import static org.tim.constants.Mappings.*;
 
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('ROLE_DEVELOPER')")
 @RequestMapping(API_VERSION + EXPORT_CD)
 public class CDExportsController {
 
@@ -29,8 +31,6 @@ public class CDExportsController {
 
 	@GetMapping(path = MESSAGE + GET_BY_LOCALE + "/file")
 	public ResponseEntity<byte[]> exportAllReadyTranslationsByProjectInZIP(@PathVariable Long projectId, HttpServletResponse response) throws IOException {
-		response.setHeader("Content-Disposition", "attachment; filename=\"translations.zip\"");
-
-		return ResponseEntity.ok(cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectId));
+		return ResponseEntity.ok(cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectId, response));
 	}
 }

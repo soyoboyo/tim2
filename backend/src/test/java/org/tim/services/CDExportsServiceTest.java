@@ -6,25 +6,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.tim.configuration.SpringTestsCustomExtension;
+import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
 import org.tim.entities.Project;
 import org.tim.entities.Translation;
+import org.tim.exceptions.ValidationException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CDExportsServiceTest extends SpringTestsCustomExtension {
 
@@ -81,7 +80,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 		long projectID = project.getId();
 
 		//when
-		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectID);
+		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectID, new MockHttpServletResponse());
 		ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(bytes));
 		List<String> fileNamesInZip = getFileNames(zipInputStream);
 
@@ -97,12 +96,41 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 		List<Map<String, String>> translations = getTranslations();
 
 		//when
-		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectID);
+		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectID, new MockHttpServletResponse());
 		ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(bytes));
 		List<Map<String, String>> translationsFromFile = getTranslationsFromZIPFiles(zipInputStream);
 
 		//then
 		assertThat(translationsFromFile).containsAll(translations);
+	}
+
+	@Test
+	@DisplayName("Return messages for project and translations for only fully translated locales")
+	void whenExportingProjectByTargetLocaleThenReturnAllFullyTranslatedLocales() throws IOException {
+		//given
+		updateProjectWithEmptyTranslations();
+		long projectID = project.getId();
+		List<Map<String, String>> expectedTranslations = expectedTranslations();
+
+		//when
+		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectID, new MockHttpServletResponse());
+		ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(bytes));
+		List<Map<String, String>> translationsFromFile = getTranslationsFromZIPFiles(zipInputStream);
+
+		//then
+		assertThat(translationsFromFile).containsAll(expectedTranslations);
+	}
+
+	@Test
+	@DisplayName("Throw validation error during exporting translation when locale were sent in wrong format.")
+	public void whenExportAllReadyTranslationsByProjectAndByLocaleAndLocaleInWrongFormatThenThrowException() {
+		// given
+		String locale = "ag_XX7d9ww";
+
+		// then
+		assertThrows(ValidationException.class, () -> {
+			cdExportsService.exportAllReadyTranslationsByProjectAndByLocale(project.getId(), locale); // when
+		}, "Locale: " + locale + " doesn't exist.");
 	}
 
 	private List<Map<String, String>> getTranslations() {
@@ -170,12 +198,49 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 			Translation translation = new Translation();
 			translation.setIsValid(true);
 			translation.setLocale(Locale.ENGLISH);
-			translation.setContent(message.getContent() + "translation");
+			translation.setContent(message.getContent() + "translationEN");
 			translation.setMessage(message);
 
 			translations.add(translation);
 		}
 
 		return translations;
+	}
+
+	private List<Map<String, String>> expectedTranslations() {
+		HashMap<String, String> messages = new HashMap<>();
+		messages.put("test1", "test1");
+		messages.put("test2", "test2");
+		messages.put("test3", "test3");
+		messages.put("test4", "test4");
+		HashMap<String, String> translationsDE = new HashMap<>();
+		translationsDE.put("test1", "test1translationDE");
+		translationsDE.put("test2", "test2translationDE");
+		translationsDE.put("test3", "test3translationDE");
+		translationsDE.put("test4", "test4translationDE");
+
+		return List.of(messages, translationsDE);
+	}
+
+	private void updateProjectWithEmptyTranslations() {
+		project.addTargetLocale(List.of(new LocaleWrapper(Locale.GERMANY)));
+		projectRepository.save(project);
+
+		messageRepository.save(new Message("test4", "test4", project));
+
+		List<Message> messages = messageRepository.findAll();
+		List<Translation> translations = new ArrayList<>();
+
+		for (Message message : messages) {
+			Translation translation = new Translation();
+			translation.setIsValid(true);
+			translation.setLocale(Locale.GERMANY);
+			translation.setContent(message.getContent() + "translationDE");
+			translation.setMessage(message);
+
+			translations.add(translation);
+		}
+
+		translationRepository.saveAll(translations);
 	}
 }
