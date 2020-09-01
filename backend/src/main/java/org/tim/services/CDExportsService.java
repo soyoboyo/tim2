@@ -60,6 +60,8 @@ public class CDExportsService {
 		response.setHeader("Content-Disposition", "attachment; filename=\"fully-translated_" + project.getName() + "_" + LocalDateTime.now() + ".zip\"");
 
 		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
+		messages.sort(Comparator.comparing(Message::getKey));
+
 		Locale sourceLocale = project.getSourceLocale();
 		Set<LocaleWrapper> targetLocales = project.getTargetLocales();
 
@@ -76,6 +78,7 @@ public class CDExportsService {
 				List<Translation> translations = translationRepository.findTranslationsByLocaleAndProjectId(localeWrapper.getLocale(), projectId);
 
 				if (translations.size() == messages.size()) {
+					translations.sort(Comparator.comparing(translation -> translation.getMessage().getKey()));
 					zos.putNextEntry(new ZipEntry(localeWrapper.getLocale().toString() + ".json"));
 					zos.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(translationsToMap(translations)));
 				}
@@ -97,7 +100,7 @@ public class CDExportsService {
 	}
 
 	private Map<String, String> messagesToMap(List<Message> messages) {
-		Map<String, String> map = new HashMap<>();
+		Map<String, String> map = new LinkedHashMap<>();
 
 		for (Message message : messages) {
 			map.put(message.getKey(), message.getContent());
@@ -107,7 +110,7 @@ public class CDExportsService {
 	}
 
 	private Map<String, String> translationsToMap(List<Translation> translations) {
-		Map<String, String> map = new HashMap<>();
+		Map<String, String> map = new LinkedHashMap<>();
 
 		for (Translation translation : translations) {
 			map.put(translation.getMessage().getKey(), translation.getContent());
