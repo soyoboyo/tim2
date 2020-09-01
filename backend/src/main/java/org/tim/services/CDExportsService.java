@@ -55,6 +55,40 @@ public class CDExportsService {
 		return translationsWithMessagesToMap(translations, messages);
 	}
 
+	public byte[] exportTranslationsForProjectWithGivenLocalesInZIP(Long projectId, String[] locales, HttpServletResponse response) throws IOException {
+		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
+		response.setHeader("Content-Disposition", "attachment; filename=\"translations_" + project.getName() + "_" + LocalDateTime.now() + ".zip\"");
+
+		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
+		messages.sort(Comparator.comparing(Message::getKey));
+
+		Locale sourceLocale = project.getSourceLocale();
+
+		try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			 ZipOutputStream zos = new ZipOutputStream(byteArrayOutputStream)) {
+
+			ObjectMapper mapper = new ObjectMapper();
+
+			zos.putNextEntry(new ZipEntry(sourceLocale.toString() + ".json"));
+			zos.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(messagesToMap(messages)));
+
+
+			for (String locale : locales) {
+				List<Translation> translations = translationRepository.findTranslationsByLocaleAndProjectId(LocaleUtils.toLocale(locale), projectId);
+
+				if (translations.size() != 0) {
+					translations.sort(Comparator.comparing(translation -> translation.getMessage().getKey()));
+					zos.putNextEntry(new ZipEntry(locale + ".json"));
+					zos.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(translationsToMap(translations)));
+				}
+			}
+
+			zos.finish();
+
+			return byteArrayOutputStream.toByteArray();
+		}
+	}
+
 	public byte[] exportAllReadyTranslationsByProjectInZIP(Long projectId, HttpServletResponse response) throws IOException {
 		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
 		response.setHeader("Content-Disposition", "attachment; filename=\"fully-translated_" + project.getName() + "_" + LocalDateTime.now() + ".zip\"");

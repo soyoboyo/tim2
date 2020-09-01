@@ -123,7 +123,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 
 	@Test
 	@DisplayName("Throw validation error during exporting translation when locale were sent in wrong format.")
-	public void whenExportAllReadyTranslationsByProjectAndByLocaleAndLocaleInWrongFormatThenThrowException() {
+	void whenExportAllReadyTranslationsByProjectAndByLocaleAndLocaleInWrongFormatThenThrowException() {
 		// given
 		String locale = "ag_XX7d9ww";
 
@@ -131,6 +131,62 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 		assertThrows(ValidationException.class, () -> {
 			cdExportsService.exportAllReadyTranslationsByProjectAndByLocale(project.getId(), locale); // when
 		}, "Locale: " + locale + " doesn't exist.");
+	}
+
+	@Test
+	@DisplayName("Return messages and translations for project for given locales")
+	void whenExportingTranslationsForProjectWithGivenLocales() throws IOException {
+		//given
+		String[] locales = {"en", "pl_PL"};
+		updateProjectWithMultipleLocales();
+		List<Map<String, String>> expectedTranslations = expectedTranslationsForGivenLocales();
+
+		//when
+		byte[] bytes = cdExportsService.exportTranslationsForProjectWithGivenLocalesInZIP(project.getId(), locales, new MockHttpServletResponse());
+		List<Map<String, String>> translationsFromFile = getTranslationsFromZIPFiles(new ZipInputStream(new ByteArrayInputStream(bytes)));
+
+		//then
+		assertThat(translationsFromFile).containsAll(expectedTranslations);
+
+	}
+
+	private void updateProjectWithMultipleLocales() {
+		project.addTargetLocale(List.of(new LocaleWrapper(new Locale("pl", "PL"))));
+		projectRepository.save(project);
+
+		List<Message> messages = messageRepository.findAll();
+		List<Translation> translations = new ArrayList<>();
+
+		for (Message message : messages) {
+			Translation translation = new Translation();
+			translation.setIsValid(true);
+			translation.setLocale(new Locale("pl", "PL"));
+			translation.setContent(message.getContent() + "translationPL");
+			translation.setMessage(message);
+
+			translations.add(translation);
+		}
+
+		translationRepository.saveAll(translations);
+	}
+
+	private List<Map<String, String>> expectedTranslationsForGivenLocales() {
+		HashMap<String, String> messages = new HashMap<>();
+		messages.put("test1", "test1");
+		messages.put("test2", "test2");
+		messages.put("test3", "test3");
+
+		HashMap<String, String> translationsPL = new HashMap<>();
+		translationsPL.put("test1", "test1translationPL");
+		translationsPL.put("test2", "test2translationPL");
+		translationsPL.put("test3", "test3translationPL");
+
+		HashMap<String, String> translationsEN = new HashMap<>();
+		translationsEN.put("test1", "test1translationEN");
+		translationsEN.put("test2", "test2translationEN");
+		translationsEN.put("test3", "test3translationEN");
+
+		return List.of(messages, translationsPL, translationsEN);
 	}
 
 	private List<Map<String, String>> getTranslations() {
