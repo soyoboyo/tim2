@@ -25,7 +25,7 @@ import java.util.zip.ZipOutputStream;
 
 @Service
 @RequiredArgsConstructor
-public class CDExportsService {
+public class TranslationExportService {
 
 	private final TranslationRepository translationRepository;
 	private final ProjectRepository projectRepository;

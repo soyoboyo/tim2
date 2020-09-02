@@ -25,10 +25,10 @@ import java.util.zip.ZipInputStream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CDExportsServiceTest extends SpringTestsCustomExtension {
+class TranslationExportServiceTestIT extends SpringTestsCustomExtension {
 
 	@Autowired
-	private CDExportsService cdExportsService;
+	private TranslationExportService translationExportService;
 
 	private Project project;
 
@@ -47,7 +47,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 		String[] expectedMessageValues = messages.stream().map(Message::getContent).toArray(String[]::new);
 
 		//when
-		Map<String, String> exported = cdExportsService.exportAllReadyTranslationsByProjectAndByLocale(project.getId(), Locale.GERMAN.toString());
+		Map<String, String> exported = translationExportService.exportAllReadyTranslationsByProjectAndByLocale(project.getId(), Locale.GERMAN.toString());
 		//then
 		assertAll(
 				() -> assertEquals(3, exported.size()),
@@ -63,7 +63,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 		String[] expectedTranslations = translations.stream().map(Translation::getContent).toArray(String[]::new);
 
 		//when
-		Map<String, String> exported = cdExportsService.exportAllReadyTranslationsByProjectAndByLocale(project.getId(), Locale.ENGLISH.toString());
+		Map<String, String> exported = translationExportService.exportAllReadyTranslationsByProjectAndByLocale(project.getId(), Locale.ENGLISH.toString());
 
 		//then
 		assertAll(
@@ -80,7 +80,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 		long projectID = project.getId();
 
 		//when
-		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectID, new MockHttpServletResponse());
+		byte[] bytes = translationExportService.exportAllReadyTranslationsByProjectInZIP(projectID, new MockHttpServletResponse());
 		ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(bytes));
 		List<String> fileNamesInZip = getFileNames(zipInputStream);
 
@@ -96,7 +96,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 		List<Map<String, String>> translations = getTranslations();
 
 		//when
-		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectID, new MockHttpServletResponse());
+		byte[] bytes = translationExportService.exportAllReadyTranslationsByProjectInZIP(projectID, new MockHttpServletResponse());
 		ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(bytes));
 		List<Map<String, String>> translationsFromFile = getTranslationsFromZIPFiles(zipInputStream);
 
@@ -113,7 +113,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 		List<Map<String, String>> expectedTranslations = expectedTranslations();
 
 		//when
-		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectID, new MockHttpServletResponse());
+		byte[] bytes = translationExportService.exportAllReadyTranslationsByProjectInZIP(projectID, new MockHttpServletResponse());
 		ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(bytes));
 		List<Map<String, String>> translationsFromFile = getTranslationsFromZIPFiles(zipInputStream);
 
@@ -129,7 +129,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 
 		// then
 		assertThrows(ValidationException.class, () -> {
-			cdExportsService.exportAllReadyTranslationsByProjectAndByLocale(project.getId(), locale); // when
+			translationExportService.exportAllReadyTranslationsByProjectAndByLocale(project.getId(), locale); // when
 		}, "Locale: " + locale + " doesn't exist.");
 	}
 
@@ -142,7 +142,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 		List<Map<String, String>> expectedTranslations = expectedTranslationsForGivenLocales();
 
 		//when
-		byte[] bytes = cdExportsService.exportTranslationsForProjectWithGivenLocalesInZIP(project.getId(), locales, new MockHttpServletResponse());
+		byte[] bytes = translationExportService.exportTranslationsForProjectWithGivenLocalesInZIP(project.getId(), locales, new MockHttpServletResponse());
 		List<Map<String, String>> translationsFromFile = getTranslationsFromZIPFiles(new ZipInputStream(new ByteArrayInputStream(bytes)));
 
 		//then
@@ -157,7 +157,7 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 		long projectId = project.getId();
 
 		//when
-		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectId, new MockHttpServletResponse());
+		byte[] bytes = translationExportService.exportAllReadyTranslationsByProjectInZIP(projectId, new MockHttpServletResponse());
 		ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(bytes));
 		List<Map<String, String>> translationsFromFile = getTranslationsFromZIPFiles(zipInputStream);
 
