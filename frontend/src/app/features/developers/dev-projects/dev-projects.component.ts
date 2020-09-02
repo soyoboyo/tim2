@@ -327,6 +327,6 @@ export class DevProjectsComponent implements OnInit {
 	}
 
 	downloadTranslations(project: any) {
-		this.http.downloadZip(project.id);
+		this.http.downloadFullyTranslatedMessagesZip(project.id);
 	}
 }

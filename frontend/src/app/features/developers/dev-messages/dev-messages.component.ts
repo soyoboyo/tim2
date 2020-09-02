@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RestService } from '../../../shared/services/rest/rest.service';
 import { MessageDTO } from '../../../shared/types/DTOs/input/MessageDTO';
 import { SnackbarService } from '../../../shared/services/snackbar-service/snackbar.service';
@@ -41,6 +41,9 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	projectFormMode = 'Add';
 	showProjectForm = false;
 
+	selectedLocales = new FormControl();
+	availableLocales: any[] = [];
+
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
 				private http: RestService,
@@ -49,7 +52,8 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 				private confirmService: ConfirmationDialogService,
 				private projectStoreService: ProjectsStoreService,
 				private utilsService: UtilsService,
-				private translateService: TranslateService) {
+				private translateService: TranslateService,
+				private utils: UtilsService) {
 		this.selectedProject = this.projectStoreService.getSelectedProject();
 	}
 
@@ -129,6 +133,9 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 		// TODO: add boolean variable to check if any projects are loaded
 		this.utilsService.showElement(this.aggregateInfoElement);
 		this.utilsService.showElement(this.messagesTableElement);
+
+		this.availableLocales = this.selectedProject.targetLocales;
+		this.utils.sortByProperty(this.availableLocales, 'locale');
 	}
 
 	async getProjects() {
@@ -251,4 +258,11 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 		this.changeProject(result);
 	}
 
+	downloadFullyTranslatedMessages() {
+		this.http.downloadFullyTranslatedMessagesZip(this.selectedProject.id);
+	}
+
+	downloadTranslatedMessagesForGivenLocales() {
+		this.http.downloadTranslationsForSelectedLocales(this.selectedProject.id, this.selectedLocales.value);
+	}
 }

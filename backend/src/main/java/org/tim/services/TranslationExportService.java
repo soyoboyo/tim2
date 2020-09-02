@@ -3,6 +3,7 @@ package org.tim.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.LocaleUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.tim.entities.LocaleWrapper;
 import org.tim.entities.Message;
@@ -59,6 +60,7 @@ public class TranslationExportService {
 	public byte[] exportTranslationsForProjectWithGivenLocalesInZIP(Long projectId, String[] locales, HttpServletResponse response) throws IOException {
 		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
 		response.setHeader("Content-Disposition", "attachment; filename=\"translations_" + project.getName() + "_" + LocalDateTime.now() + ".zip\"");
+		response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION);
 
 		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
 		messages.sort(Comparator.comparing(Message::getKey));
@@ -93,6 +95,7 @@ public class TranslationExportService {
 	public byte[] exportAllReadyTranslationsByProjectInZIP(Long projectId, HttpServletResponse response) throws IOException {
 		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
 		response.setHeader("Content-Disposition", "attachment; filename=\"fully-translated_" + project.getName() + "_" + LocalDateTime.now() + ".zip\"");
+		response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION);
 
 		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
 		messages.sort(Comparator.comparing(Message::getKey));

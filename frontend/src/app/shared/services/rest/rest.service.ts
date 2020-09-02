@@ -81,14 +81,30 @@ export class RestService {
 		return this.URL + 'report/generate/' + project.id + parameters;
 	}
 
-	downloadZip(projectID) {
+	downloadFullyTranslatedMessagesZip(projectID) {
 		const url = this.URL + 'exportCD/message/getByLocale/' + projectID + '/file';
 		this.http.get(url, {
 			responseType: 'blob',
+			observe: 'response',
 			withCredentials: true
 		}).subscribe(response => {
-			const blob = new Blob([response], { type: 'application/zip' });
-			saveAs(blob, 'translations.zip');
+			const blob = new Blob([response.body]);
+			saveAs(blob, response.headers.get('content-disposition').split(';')[1].split('=')[1].replace(/"/g, ''));
+		});
+	}
+
+	downloadTranslationsForSelectedLocales(projectID, locales: string[]) {
+		const url = this.URL + 'exportCD/message/getByLocale/' + projectID;
+		this.http.get(url, {
+			params: {
+				locales: locales
+			},
+			responseType: 'blob',
+			observe: 'response',
+			withCredentials: true
+		}).subscribe(response => {
+			const blob = new Blob([response.body]);
+			saveAs(blob, response.headers.get('content-disposition').split(';')[1].split('=')[1].replace(/"/g, ''));
 		});
 	}
 

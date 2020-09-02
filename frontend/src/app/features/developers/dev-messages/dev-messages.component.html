@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="space-between">
 	<div [class.when-form-visible]="showProjectForm" [class.when-form-hidden]="!showProjectForm">
-		<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+		<div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
 			<div>
 				<mat-form-field class="select-project">
 					<mat-label>{{'selectProject' | translate}}</mat-label>
@@ -13,7 +13,8 @@
 				</mat-form-field>
 			</div>
 			<div fxLayoutGap="10px" *ngIf="selectedProject">
-				<input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="importCSV($event)" accept=".csv"/>
+				<input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="importCSV($event)"
+					   accept=".csv"/>
 				<button mat-raised-button
 						color="primary"
 						matTooltip="{{'importMessagesTooltip' | translate}}"
@@ -23,6 +24,17 @@
 					{{'importMessages' | translate}}
 				</button>
 			</div>
+			<div fxLayoutGap="10px" *ngIf="selectedProject">
+				<button mat-raised-button
+						color="primary"
+						matTooltip="Download fully translated messages for project"
+						matTooltipClass="tooltip-font"
+						[disabled]="!selectedProject"
+						(click)="downloadFullyTranslatedMessages()">
+					Download fully translated messages
+				</button>
+			</div>
+
 			<span style="flex: 1 1 auto;"></span>
 			<div>
 				<button mat-raised-button [matMenuTriggerFor]="menu">Manage projects</button>
@@ -31,6 +43,24 @@
 					<button mat-menu-item (click)="editCurrentProject()" [disabled]="!selectedProject">Edit</button>
 				</mat-menu>
 
+			</div>
+			<div fxLayoutGap="10px" *ngIf="selectedProject">
+				<mat-form-field>
+					<mat-label>{{'locales' | translate}}</mat-label>
+					<mat-select multiple [formControl]="selectedLocales">
+						<mat-option *ngFor="let locale of availableLocales"
+									[value]="locale.locale">{{locale.locale}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<button mat-raised-button
+						color="primary"
+						matTooltip="Download translated messages for selected locales"
+						matTooltipClass="tooltip-font"
+						[disabled]="!selectedProject || selectedLocales.value === null || selectedLocales.value.length < 1"
+						(click)="downloadTranslatedMessagesForGivenLocales()">
+					Download translated messages for selected locales
+				</button>
 			</div>
 		</div>
 
