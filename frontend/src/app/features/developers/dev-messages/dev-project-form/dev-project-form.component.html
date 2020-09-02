@@ -4,8 +4,8 @@
 
 		<mat-form-field class="form-field">
 			<input formControlName="projectName"
-				   placeholder="Project name *"
-				   matInput>
+				   placeholder="Project name"
+				   matInput required>
 			<mat-error *ngIf="projectNameControl.hasError('required')">
 				Project name is <strong>required</strong>
 			</mat-error>
