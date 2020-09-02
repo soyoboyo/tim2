@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -109,7 +110,7 @@ public class CDExportsService {
 
 
 			for (LocaleWrapper localeWrapper : targetLocales) {
-				List<Translation> translations = translationRepository.findTranslationsByLocaleAndProjectId(localeWrapper.getLocale(), projectId);
+				List<Translation> translations = getTranslationsOrSubstitutes(localeWrapper, project, messages);
 
 				if (translations.size() == messages.size()) {
 					translations.sort(Comparator.comparing(translation -> translation.getMessage().getKey()));
@@ -122,6 +123,38 @@ public class CDExportsService {
 
 			return byteArrayOutputStream.toByteArray();
 		}
+	}
+
+	private List<Translation> getTranslationsOrSubstitutes(LocaleWrapper localeWrapper, Project project, List<Message> messages) {
+		List<Translation> translations = translationRepository.findTranslationsByLocaleAndProjectId(localeWrapper.getLocale(), project.getId());
+
+		if (translations.size() != messages.size()) {
+			List<Message> translatedMessages = translations.stream().filter(translation -> messages.contains(translation.getMessage())).map(Translation::getMessage).collect(Collectors.toList());
+			List<Message> messagesToTranslate = messages.stream().filter(message -> !translatedMessages.contains(message)).collect(Collectors.toList());
+
+			translations.addAll(getSubstituteTranslations(project, localeWrapper, messagesToTranslate));
+		}
+
+		return translations;
+	}
+
+	private List<Translation> getSubstituteTranslations(Project project, LocaleWrapper localeWrapper, List<Message> messagesToTranslate) {
+		List<Translation> translations = new ArrayList<>();
+
+		LocaleWrapper substituteLocale = project.getReplaceableLocaleToItsSubstitute().get(localeWrapper);
+		while (substituteLocale != null) {
+			for (Message message : messagesToTranslate) {
+				Translation translation = translationRepository.findTranslationByLocaleAndMessageId(substituteLocale.getLocale(), message.getId());
+
+				if (translation != null) {
+					translations.add(translation);
+				}
+			}
+
+			substituteLocale = project.getReplaceableLocaleToItsSubstitute().get(substituteLocale);
+		}
+
+		return translations;
 	}
 
 	private Map<String, String> translationsWithMessagesToMap(List<Translation> translations, List<Message> messages) {

@@ -147,7 +147,66 @@ class CDExportsServiceTest extends SpringTestsCustomExtension {
 
 		//then
 		assertThat(translationsFromFile).containsAll(expectedTranslations);
+	}
 
+	@Test
+	@DisplayName("Use substitute translations when exporting project translations")
+	void whenExportingFullyTranslatedProjectUseSubstitutesForTranslations() throws IOException {
+		//given
+		updateProjectWithSubstituteLocales();
+		long projectId = project.getId();
+
+		//when
+		byte[] bytes = cdExportsService.exportAllReadyTranslationsByProjectInZIP(projectId, new MockHttpServletResponse());
+		ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(bytes));
+		List<Map<String, String>> translationsFromFile = getTranslationsFromZIPFiles(zipInputStream);
+
+		//then
+		assertThat(translationsFromFile).containsAll(expectedTranslationsWithSubstitute());
+	}
+
+	private void updateProjectWithSubstituteLocales() {
+		project.addTargetLocale(List.of(new LocaleWrapper(Locale.FRANCE), new LocaleWrapper(new Locale("pl", "PL"))));
+		projectRepository.save(project);
+		project.updateSubstituteLocale(localeWrapperRepository.findByLocale(Locale.ENGLISH), localeWrapperRepository.findByLocale(Locale.FRANCE));
+		project.updateSubstituteLocale(localeWrapperRepository.findByLocale(Locale.FRANCE), localeWrapperRepository.findByLocale(new Locale("pl", "PL")));
+		projectRepository.save(project);
+
+		messageRepository.save(new Message("test4", "test4", project));
+		messageRepository.save(new Message("test5", "test5", project));
+		List<Message> messages = messageRepository.findAll();
+
+		Translation translation = new Translation(Locale.FRANCE, messages.get(0));
+		translation.setIsValid(true);
+		translation.setContent(messages.get(0).getContent() + "translationFR");
+		Translation translation1 = new Translation(Locale.FRANCE, messages.get(1));
+		translation1.setIsValid(true);
+		translation1.setContent(messages.get(1).getContent() + "translationFR");
+		Translation translation3 = new Translation(Locale.FRANCE, messages.get(3));
+		translation3.setIsValid(true);
+		translation3.setContent(messages.get(3).getContent() + "translationFR");
+		Translation translation4 = new Translation(new Locale("pl", "PL"), messages.get(4));
+		translation4.setIsValid(true);
+		translation4.setContent(messages.get(4).getContent() + "translationPL");
+		translationRepository.saveAll(List.of(translation, translation3, translation4));
+	}
+
+	private List<Map<String, String>> expectedTranslationsWithSubstitute() {
+		HashMap<String, String> messages = new HashMap<>();
+		messages.put("test1", "test1");
+		messages.put("test2", "test2");
+		messages.put("test3", "test3");
+		messages.put("test4", "test4");
+		messages.put("test5", "test5");
+
+		HashMap<String, String> translationsENWithSubstitutes = new HashMap<>();
+		translationsENWithSubstitutes.put("test1", "test1translationEN");
+		translationsENWithSubstitutes.put("test2", "test2translationEN");
+		translationsENWithSubstitutes.put("test3", "test3translationEN");
+		translationsENWithSubstitutes.put("test4", "test4translationFR");
+		translationsENWithSubstitutes.put("test5", "test5translationPL");
+
+		return List.of(messages, translationsENWithSubstitutes);
 	}
 
 	private void updateProjectWithMultipleLocales() {
