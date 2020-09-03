@@ -1,3 +1,8 @@
+<div>
+
+</div>
+
+
 <div fxLayout="row" fxLayoutAlign="space-between">
 	<div [class.when-form-visible]="showProjectForm" [class.when-form-hidden]="!showProjectForm">
 		<div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
@@ -24,16 +29,7 @@
 					{{'importMessages' | translate}}
 				</button>
 			</div>
-			<div fxLayoutGap="10px" *ngIf="selectedProject">
-				<button mat-raised-button
-						color="primary"
-						matTooltip="Download fully translated messages for project"
-						matTooltipClass="tooltip-font"
-						[disabled]="!selectedProject"
-						(click)="downloadFullyTranslatedMessages()">
-					Download fully translated messages
-				</button>
-			</div>
+
 
 			<span style="flex: 1 1 auto;"></span>
 			<div>
@@ -44,29 +40,47 @@
 				</mat-menu>
 
 			</div>
-			<div fxLayoutGap="10px" *ngIf="selectedProject">
-				<mat-form-field>
-					<mat-label>{{'locales' | translate}}</mat-label>
-					<mat-select multiple [formControl]="selectedLocales">
-						<mat-option *ngFor="let locale of availableLocales"
-									[value]="locale.locale">{{locale.locale}}
-						</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<button mat-raised-button
-						color="primary"
-						matTooltip="Download translated messages for selected locales"
-						matTooltipClass="tooltip-font"
-						[disabled]="!selectedProject || selectedLocales.value === null || selectedLocales.value.length < 1"
-						(click)="downloadTranslatedMessagesForGivenLocales()">
-					Download translated messages for selected locales
-				</button>
-			</div>
+
 		</div>
 
-		<div [id]="aggregateInfoId">
+		<mat-divider></mat-divider>
+		<div fxLayoutGap="10px" *ngIf="selectedProject">
+			<mat-form-field>
+				<mat-label>{{'locales' | translate}}</mat-label>
+				<mat-select #localesSelect multiple [formControl]="selectedLocalesFormControl">
+					<mat-option [value]="" (click)="toggleAllSelection()">All</mat-option>
+					<mat-option *ngFor="let locale of availableLocales"
+								[value]="locale.locale">{{locale.locale}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+			<button mat-raised-button
+					color="primary"
+					matTooltip="Download translated messages for selected locales"
+					matTooltipClass="tooltip-font"
+					[disabled]="!selectedProject || selectedLocalesFormControl.value === null || selectedLocalesFormControl.value.length < 1"
+					(click)="downloadTranslatedMessagesForGivenLocales()">
+				Download selected
+			</button>
+
+			<button mat-raised-button
+					color="primary"
+					matTooltip="Download all messages for fully translated locales"
+					matTooltipClass="tooltip-font"
+					[disabled]="!selectedProject"
+					(click)="downloadFullyTranslatedMessages()">
+				Download all
+			</button>
+
+		</div>
+
+		<mat-divider></mat-divider>
+
+		<div [id]="aggregateInfoId" style="margin-top: 16px; margin-bottom: 16px;">
 			<app-aggregate-info [selectedProjectId]="selectedProjectId"></app-aggregate-info>
 		</div>
+
+		<mat-divider></mat-divider>
 
 		<div *ngIf="showForm" class="form-wrapper">
 			<mat-card id="form-messages" *ngIf="showForm" class="form-container mat-elevation-z4">
@@ -136,6 +150,4 @@
 	<div *ngIf="showProjectForm">
 		<app-dev-project-form (hideForm)="projectActionComplete($event)" [formModeInput]="projectFormMode"></app-dev-project-form>
 	</div>
-
-
 </div>

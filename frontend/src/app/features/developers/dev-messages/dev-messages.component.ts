@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RestService } from '../../../shared/services/rest/rest.service';
 import { MessageDTO } from '../../../shared/types/DTOs/input/MessageDTO';
@@ -8,6 +8,8 @@ import { ProjectsStoreService } from '../../../stores/projects-store/projects-st
 import { UtilsService } from '../../../shared/services/utils-service/utils.service';
 import { Project } from '../../../shared/types/entities/Project';
 import { TranslateService } from '@ngx-translate/core';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
 	selector: 'app-dev-messages',
@@ -41,8 +43,12 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	projectFormMode = 'Add';
 	showProjectForm = false;
 
-	selectedLocales = new FormControl();
+	// locales select
+	@ViewChild('localesSelect') localesSelect: MatSelect;
+	selectedLocalesFormControl = new FormControl();
 	availableLocales: any[] = [];
+	selectedLocales: any[] = [];
+	allSelected = false;
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
@@ -63,6 +69,19 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 		this.getMessages();
 	}
 
+	toggleAllSelection() {
+		this.allSelected = !this.allSelected;  // to control select-unselect
+
+		if (this.allSelected) {
+			this.localesSelect.options.forEach((item: MatOption) => item.select());
+		} else {
+			this.localesSelect.options.forEach((item: MatOption) => {
+				item.deselect();
+			});
+		}
+		this.localesSelect.close();
+	}
+
 	initProjectForm() {
 		this.messageParams = this.formBuilder.group({
 			key: ['', [Validators.required]],
@@ -77,7 +96,6 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 			params.value.content,
 			params.value.description,
 			this.selectedProject.id);
-
 		if (!this.toUpdate) {
 			this.addMessage(body);
 		} else {
@@ -259,10 +277,14 @@ export class DevMessagesComponent implements OnInit, AfterViewInit {
 	}
 
 	downloadFullyTranslatedMessages() {
-		this.http.downloadFullyTranslatedMessagesZip(this.selectedProject.id);
+		this.http.downloadTranslationsForAllFullyTranslatedLocales(this.selectedProject.id);
 	}
 
 	downloadTranslatedMessagesForGivenLocales() {
-		this.http.downloadTranslationsForSelectedLocales(this.selectedProject.id, this.selectedLocales.value);
+		this.selectedLocales = this.selectedLocalesFormControl.value;
+		if (this.allSelected) {
+			this.selectedLocales = this.selectedLocales.slice(1);
+		}
+		this.http.downloadTranslationsForSelectedLocales(this.selectedProject.id, this.selectedLocales);
 	}
 }

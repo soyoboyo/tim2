@@ -81,7 +81,7 @@ export class RestService {
 		return this.URL + 'report/generate/' + project.id + parameters;
 	}
 
-	downloadFullyTranslatedMessagesZip(projectID) {
+	downloadTranslationsForAllFullyTranslatedLocales(projectID) {
 		const url = this.URL + 'exportCD/message/getByLocale/' + projectID + '/file';
 		this.http.get(url, {
 			responseType: 'blob',

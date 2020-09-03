@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -59,7 +60,7 @@ public class TranslationExportService {
 
 	public byte[] exportTranslationsForProjectWithGivenLocalesInZIP(Long projectId, String[] locales, HttpServletResponse response) throws IOException {
 		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
-		response.setHeader("Content-Disposition", "attachment; filename=\"translations_" + project.getName() + "_" + LocalDateTime.now() + ".zip\"");
+		response.setHeader("Content-Disposition", "attachment; filename=\"translations_" + project.getName() + "_" + getFormattedTimestamp("dd-MM-yy_HH-mm") + ".zip\"");
 		response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION);
 
 		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
@@ -79,7 +80,7 @@ public class TranslationExportService {
 			for (String locale : locales) {
 				List<Translation> translations = translationRepository.findTranslationsByLocaleAndProjectId(LocaleUtils.toLocale(locale), projectId);
 
-				if (translations.size() != 0) {
+				if (!translations.isEmpty()) {
 					translations.sort(Comparator.comparing(translation -> translation.getMessage().getKey()));
 					zos.putNextEntry(new ZipEntry(locale + ".json"));
 					zos.write(mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(translationsToMap(translations)));
@@ -94,7 +95,7 @@ public class TranslationExportService {
 
 	public byte[] exportAllReadyTranslationsByProjectInZIP(Long projectId, HttpServletResponse response) throws IOException {
 		Project project = projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("project"));
-		response.setHeader("Content-Disposition", "attachment; filename=\"fully-translated_" + project.getName() + "_" + LocalDateTime.now() + ".zip\"");
+		response.setHeader("Content-Disposition", "attachment; filename=\"fully-translated_" + project.getName() + "_" + getFormattedTimestamp("dd-MM-yy_HH-mm") + ".zip\"");
 		response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION);
 
 		List<Message> messages = messageRepository.findMessagesByProjectIdAndIsArchivedFalse(projectId);
@@ -187,5 +188,11 @@ public class TranslationExportService {
 		}
 
 		return map;
+	}
+
+	private static String getFormattedTimestamp(String format) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+		LocalDateTime now = LocalDateTime.now();
+		return now.format(formatter);
 	}
 }
