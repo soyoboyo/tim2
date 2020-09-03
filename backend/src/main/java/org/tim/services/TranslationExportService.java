@@ -171,23 +171,21 @@ public class TranslationExportService {
 	}
 
 	private Map<String, String> messagesToMap(List<Message> messages) {
-		Map<String, String> map = new LinkedHashMap<>();
-
-		for (Message message : messages) {
-			map.put(message.getKey(), message.getContent());
-		}
-
-		return map;
+		return messages.stream().collect(Collectors.toMap(
+				Message::getKey,
+				Message::getContent,
+				(first, second) -> first,
+				LinkedHashMap::new
+		));
 	}
 
 	private Map<String, String> translationsToMap(List<Translation> translations) {
-		Map<String, String> map = new LinkedHashMap<>();
-
-		for (Translation translation : translations) {
-			map.put(translation.getMessage().getKey(), translation.getContent());
-		}
-
-		return map;
+		return translations.stream().collect(Collectors.toMap(
+				t -> t.getMessage().getKey(),
+				Translation::getContent,
+				(first, second) -> first,
+				LinkedHashMap::new
+		));
 	}
 
 	private static String getFormattedTimestamp(String format) {
