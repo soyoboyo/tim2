@@ -326,7 +326,4 @@ export class DevProjectsComponent implements OnInit {
 		array.splice(index, 1);
 	}
 
-	downloadTranslations(project: any) {
-		this.http.downloadZip(project.id);
-	}
 }
