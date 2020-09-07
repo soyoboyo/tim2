@@ -2,6 +2,7 @@ package com.oauth.server;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,18 +29,18 @@ public class SecurityTestsIT {
 	@Autowired
 	private WebApplicationContext webapp;
 
-
 	private MockMvc mockMvc;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webapp)
 				.apply(springSecurity())
 				.build();
 	}
 
 	@Test
-	public void whenUserLoginWithCorrectCredentialsThen() throws Exception {
+	@DisplayName("When user login then return oauth body")
+	public void whenUserLoginWithCorrectCredentialsThenReturnOauthBody() throws Exception {
 		mockMvc.perform(post("/oauth/token")
 				.param("username", "prog")
 				.param("password", "prog")
@@ -55,6 +56,7 @@ public class SecurityTestsIT {
 	}
 
 	@Test
+	@DisplayName("When user login with wrong credentials then return error with description")
 	public void whenUserLoginWithWrongCredentials() throws Exception {
 		mockMvc.perform(post("/oauth/token")
 				.param("username", "bad")
