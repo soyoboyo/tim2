@@ -150,7 +150,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 
 	@Test
 	@DisplayName("Check if new translation version in history is created properly")
-	void whenTranslationIsUpdatedThenTranslationVersionIsCreated() {
+	void whenTranslationIsUpdatedThenTranslationVersionIsCreated() throws InterruptedException {
 		// given
 		Project project = createEmptyGermanToEnglishProject();
 		Message message = createRandomMessage(project);
@@ -158,6 +158,7 @@ public class TranslationServiceTestIT extends SpringTestsCustomExtension {
 		translationCreateDTO.setContent("content version 0");
 		Translation translation = translationService.createTranslation(translationCreateDTO, message.getId());
 		translationUpdateDTO.setContent("content version 1");
+		Thread.sleep(1);
 		translationService.updateTranslation(translationUpdateDTO, translation.getId(), message.getId());
 		translationUpdateDTO.setContent("content version 2");
 		// when

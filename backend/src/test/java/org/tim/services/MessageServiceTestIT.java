@@ -133,7 +133,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 
 	@Test
 	@DisplayName("Assert that new message version is created when message is updated.")
-	void whenMessageIsUpdatedThenMessageVersionIsCreated() {
+	void whenMessageIsUpdatedThenMessageVersionIsCreated() throws InterruptedException {
 		// given
 		Project project = createEmptyGermanToEnglishProject();
 		MessageDTO messageDTO = random(MessageDTO.class);
@@ -144,6 +144,7 @@ public class MessageServiceTestIT extends SpringTestsCustomExtension {
 
 		messageDTO.setKey("key 1");
 		messageDTO.setContent("content version 1");
+		Thread.sleep(1);
 		messageService.updateMessage(messageDTO, message.getId());
 		messageDTO.setKey("key 2");
 		messageDTO.setContent("content version 2");

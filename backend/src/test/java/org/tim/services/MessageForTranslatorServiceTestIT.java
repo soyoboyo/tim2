@@ -240,7 +240,7 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 
 	@Test
 	@DisplayName("As a Translator I see previous content of an updated Message.")
-	void whenTranslationIsOutdated_thenGetPreviousMessageContent() {
+	void whenTranslationIsOutdated_thenGetPreviousMessageContent() throws InterruptedException {
 		// given
 		Long projectId = projectService.getAllProjects().get(0).getId();
 		MessageDTO messageDTO = random(MessageDTO.class);
@@ -254,9 +254,11 @@ public class MessageForTranslatorServiceTestIT extends SpringTestsCustomExtensio
 		messageForTranslator.setTranslation(mapper.map(translation, TranslationForTranslator.class));
 
 		messageDTO.setContent("Witamy serdecznie");
+		Thread.sleep(1);
 		messageService.updateMessage(messageDTO, message.getId());
 
 		messageDTO.setContent("Witam użytkownika");
+		Thread.sleep(1);
 		messageService.updateMessage(messageDTO, message.getId());
 
 		// when
