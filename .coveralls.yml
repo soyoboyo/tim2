@@ -1,0 +1,2 @@
+repo_token: qKDY8OQujkIEm0rOYphM0HvUwfW3FEGfP
+gem 'coveralls', require: false

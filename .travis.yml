@@ -19,7 +19,7 @@ jobs:
         script:
           - cd backend
           - chmod +x mvnw
-          - mvn test
+          - mvn test -B
       - stage: build
         script:
          - cd frontend
