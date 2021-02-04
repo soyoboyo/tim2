@@ -1,0 +1,51 @@
+- Projekt stoi na naszym serwerze.
+- My mamy SUPER-ADMINÓW, którzy mogą zrobić wszystko.
+- My tworzymy AGENCJE i tworzymy JEDNO KONTO TYPU ADMIN-TRAN.
+
+- Każda FIRMA ma swoich ADMINÓW i DEVELOPERÓW.
+- Każda AGENCJA ma swoich ADMINÓW i TŁUMACZY.
+
+
+- Przychodzi firma i kupuje dostęp do produktu:
+	- Zakładamy im FIRMĘ i konto ADMINA.
+	- ADMIN-DEV może:
+		- tworzyć PROJEKTY i nimi zarządzać
+		- tworzyć/usuwać konta DEVELOPEROM
+		- widzi i zarządza, która AGENCJA tłumaczy wybrane target-locales
+		- przypisywać/usuwać DEVELOPERÓW do wybranych PROJEKTÓW
+		- zmieniać upraweniania ADMINÓW i DEVELOPERÓW (inny wariant, tylko my czyli SUPER-ADMIN, może nadawać/usuwać adminów)
+		- ADMIN może kompletnie usunąć PROJEKT, ale inny ADMIN musi dać na to approve
+		
+	- DEVELOPER może:
+		- widzieć i edytować swoje PROJEKTY (nie zmieniać: nazwy, source locale i przypisanej agencji)
+		- importować wiadomości
+		- przeglądać wiadomości, tłumaczenia i historię
+		- dodawać i zarządzać wiadomościami
+		- przeglądać statystyki podsumowujące
+		- oznaczać wiadomości/tłumaczenia z błędami
+		
+
+Po dodaniu projektu przed ADMIN-DEV:
+	- wybiera które target-locales będą robione przez którą agencję wybierająć jej identyfikator
+	- łączenie PROJEKTU z AGENCJĄ do dokończenia... 
+	
+	- ADMIN-TRAN może:
+		- dodawać/usuwać tłumaczy do agencji
+		- jakoś łączyć się z projektem/firmą
+	- TRANSLATOR: 
+		- może pobierać raport z target-locales przydzielonymi do agencji
+		- może uploadować plik z przetłumaczonymi wiadomościami 
+		- może zarządzać tłumaczeniami
+		- widzi historię tłumaczeń
+
+
+
+
+
+
+
+
+
+
+
+
