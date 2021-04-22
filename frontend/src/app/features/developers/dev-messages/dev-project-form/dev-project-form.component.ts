@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Project } from '../../../../shared/types/entities/Project';
@@ -14,18 +14,18 @@ import { ProjectsStoreService } from '../../../../stores/projects-store/projects
 	templateUrl: './dev-project-form.component.html',
 	styleUrls: ['./dev-project-form.component.scss']
 })
-export class DevProjectFormComponent implements OnInit {
+export class DevProjectFormComponent implements OnInit, OnChanges {
 
 	formMode = 'Add';
 	toUpdate: any = null;
 	isLoadingResults = true;
 
 	projectParams: FormGroup;
-	projectNameControl = new FormControl([''], [Validators.required]);
-	sourceLanguageControl = new FormControl([''], [Validators.required, Validators.pattern('[a-z]{2} .{0,}|[a-z]{2}')]);
-	sourceCountryControl = new FormControl([''], [Validators.required, Validators.pattern('[A-Z]{2} .{0,}|[A-Z]{2}')]);
-	targetLanguageControl = new FormControl(null);
-	targetCountryControl = new FormControl(null);
+	projectNameControl = new FormControl('', [Validators.required]);
+	sourceLanguageControl = new FormControl('', [Validators.required, Validators.pattern('[a-z]{2} .{0,}|[a-z]{2}')]);
+	sourceCountryControl = new FormControl('', [Validators.required, Validators.pattern('[A-Z]{2} .{0,}|[A-Z]{2}')]);
+	targetLanguageControl = new FormControl('');
+	targetCountryControl = new FormControl('');
 	filteredLanguages: Observable<any[]>;
 	filteredCountries: Observable<any[]>;
 	filteredTargetLanguages: Observable<any[]>;
@@ -42,6 +42,7 @@ export class DevProjectFormComponent implements OnInit {
 
 	@Output() hideForm = new EventEmitter<Project>();
 	@Input() formModeInput: any;
+	formVisible = false;
 
 	constructor(private formBuilder: FormBuilder,
 				private cd: ChangeDetectorRef,
@@ -51,7 +52,12 @@ export class DevProjectFormComponent implements OnInit {
 				private projectStoreService: ProjectsStoreService) {
 	}
 
+	ngOnChanges(changes: SimpleChanges): void {
+		console.log(this.formVisible);
+	}
+
 	ngOnInit() {
+		this.formVisible = true;
 		this.initProjectForm();
 		if (this.formModeInput !== 'Add') {
 			this.editProject(this.projectStoreService.getSelectedProject());
@@ -288,4 +294,11 @@ export class DevProjectFormComponent implements OnInit {
 		array.splice(index, 1);
 	}
 
+	openAutocomplete($event: any) {
+		const formFieldName = $event.target.attributes.formcontrolname.value;
+		const formField = this.projectParams.controls[formFieldName];
+		if (formField.value === '') {
+			formField.patchValue('');
+		}
+	}
 }

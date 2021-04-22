@@ -31,10 +31,6 @@
             <email>mikolaj.banaszkiewicz2@gmail.com</email>
         </developer>
         <developer>
-            <name>Szymon Sakowicz</name>
-            <email>szymon@sakowi.cz</email>
-        </developer>
-        <developer>
             <name>Wojciech Spoton</name>
             <email>wojtek.spoton@gmail.com</email>
         </developer>
@@ -240,16 +236,24 @@
                                 verify
                             </goal>
                             <goal>
-                                integration-test
-                            </goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
+								integration-test
+							</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>4.0.0</version>
+				<configuration>
+					<repoToken>qKDY8OQujkIEm0rOYphM0HvUwfW3FEGfP</repoToken>
+				</configuration>
+			</plugin>
+		</plugins>
     </build>
 </project>

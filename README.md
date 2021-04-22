@@ -1,5 +1,9 @@
 # tim (Translation & Internationalization Manager)
 
+[![Travis CI](https://travis-ci.com/tubidubidam/tim2.svg?branch=develop)](https://travis-ci.org/tubidubidam/tim2) [![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6InR1YmlkdWJpZGFtIiwicmVwbzEiOiJ0aW0yIiwiaW5jbHVkZUxpbnQiOmZhbHNlLCJhdXRob3JJZCI6MjA0NTUsImlhdCI6MTU5ODYzODc3MX0.alSBJCVF65_l8Hbt-qnewG6AJv9hq1bnlFrqbn-UeAY)](https://www.deepcode.ai/app/gh/tubidubidam/tim2/_/dashboard?utm_content=gh%2Ftubidubidam%2Ftim2) [![Issues](https://img.shields.io/github/issues-raw/tubidubidam/tim2?maxAge=25000)](https://github.com/tubidubidam/tim2/issues)  [![GitHub last commit](https://img.shields.io/github/last-commit/tubidubidam/tim2.svg?style=flat)]()
+[![GitHub commit activity the past week, 4 weeks, year](https://img.shields.io/github/commit-activity/y/tubidubidam/tim2.svg?style=flat)]()
+[![Coverage Status](https://coveralls.io/repos/github/tubidubidam/tim2/badge.svg?branch=develop)](https://coveralls.io/github/tubidubidam/tim2?branch=develop)
+
 ## Table of contents
 1. Project overview
 1. Functionalities
@@ -19,6 +23,8 @@ Main features:
 * good integration with other systems used in software development, that is:
   * exporting reports with missing translations
   * exporting ready translations in format acceptable by Spring applications
+
+
 
 # 2. Functionalities
 For super-admin:
